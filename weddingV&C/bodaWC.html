@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Boda Carlos & Vanessa - Invitación Interactiva</title>
-  
+  <title>Boda de Carlos & Vanessa</title>
+  <link rel="icon" href="mnt/data/favicon.png" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Forum&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap" rel="stylesheet">
@@ -726,36 +726,57 @@
       isPlaying = !isPlaying;
     }
 
-    function enviarWhatsApp(event) {
+function enviarWhatsApp(event) {
   event.preventDefault(); 
 
-  const telefonoDestino = "522202662703"; // Cambia por tu número
+  const telefonoDestino = "521234567890"; // Recuerda cambiar esto por tu número real
   const asistencia = document.getElementById('wa-asistencia').value;
+  
   const totalPases = dataInvitado.adultos + dataInvitado.ninos;
+  
+  // Magia de gramática: Detectamos si es 1 persona o varias
+  const esPlural = totalPases > 1;
+  const txtSoySomos = esPlural ? "Somos" : "Soy";
+  const txtConfirmo = esPlural ? "confirmamos nuestra" : "confirmo mi";
+  const txtUtilizaremos = esPlural ? "Utilizaremos con gusto nuestros " + totalPases + " pases" : "Utilizaré con gusto mi único pase";
+  const txtPodremos = esPlural ? "podremos" : "podré";
 
-  // Usamos palabras clave temporales
-  let textoBase = "¡Hola Carlos y Vanessa! [SALUDO]\n\n";
-  textoBase += "Soy *" + dataInvitado.nombre + "*.\n\n";
+  let textoBase = "¡Hola Carlos y Vanessa! [SALUDO][ANILLO]\n\n";
+  textoBase += txtSoySomos + " *" + dataInvitado.nombre + "*. [BRINDIS]\n\n";
   
   if (asistencia === "si") {
-    textoBase += "[SI] *¡Confirmo mi asistencia!*\n";
-    textoBase += "Utilizaremos nuestros " + totalPases + " pases (" + dataInvitado.adultos + " Adultos y " + dataInvitado.ninos + " Niños).";
+    textoBase += "[FIESTA] *¡Por supuesto que " + txtConfirmo + " asistencia!*\n";
+    
+    // Ajustamos la palabra Adulto/Adultos y Niño/Niños para que tenga sentido
+    let textoAdultos = dataInvitado.adultos + (dataInvitado.adultos === 1 ? " Adulto" : " Adultos");
+    let textoNinos = "";
+    if (dataInvitado.ninos > 0) {
+      textoNinos = " y " + dataInvitado.ninos + (dataInvitado.ninos === 1 ? " Niño" : " Niños");
+    }
+    
+    textoBase += txtUtilizaremos + " (" + textoAdultos + textoNinos + ").\n\n";
+    textoBase += "¡Ya queremos que sea el gran día para celebrar con ustedes! [BAILE]";
   } else {
-    textoBase += "[NO] *Lamentablemente no podré asistir.*\n";
-    textoBase += "Muchas gracias por la invitación y felicidades.";
+    textoBase += "[TRISTE] *Lamentablemente, en esta ocasión no " + txtPodremos + " acompañarlos.*\n\n";
+    textoBase += "Les agradecemos muchísimo la invitación y les deseamos una boda espectacular y llena de amor. [CORAZON]";
   }
 
   // Convertimos el texto a formato URL
   let textoCodificado = encodeURIComponent(textoBase);
   
-  // Reemplazamos las palabras clave por el código hexadecimal exacto del emoji
-  // %F0%9F%91%8B = 👋 | %E2%9C%85 = ✅ | %E2%9D%8C = ❌
-  textoCodificado = textoCodificado.replace("%5BSALUDO%5D", "%F0%9F%91%8B");
-  textoCodificado = textoCodificado.replace("%5BSI%5D", "%E2%9C%85");
-  textoCodificado = textoCodificado.replace("%5BNO%5D", "%E2%9D%8C");
+  // Reemplazamos los comodines por los emojis
+  textoCodificado = textoCodificado.replace("%5BSALUDO%5D", "%F0%9F%91%8B");  // 👋 
+  textoCodificado = textoCodificado.replace("%5BANILLO%5D", "%F0%9F%92%8D");  // 💍 
+  textoCodificado = textoCodificado.replace("%5BBRINDIS%5D", "%F0%9F%A5%82"); // 🥂 
+  textoCodificado = textoCodificado.replace("%5BFIESTA%5D", "%F0%9F%8E%89");  // 🎉 
+  textoCodificado = textoCodificado.replace("%5BBAILE%5D", "%F0%9F%92%83");   // 💃 
+  textoCodificado = textoCodificado.replace("%5BTRISTE%5D", "%F0%9F%A5%BA");  // 🥺 
+  textoCodificado = textoCodificado.replace("%5BCORAZON%5D", "%F0%9F%92%96"); // 💖 
 
+  // Armamos el enlace final
   const urlWhatsApp = "https://api.whatsapp.com/send?phone=" + telefonoDestino + "&text=" + textoCodificado;
   
+  // Abrimos WhatsApp
   window.open(urlWhatsApp, '_blank');
 }
 
