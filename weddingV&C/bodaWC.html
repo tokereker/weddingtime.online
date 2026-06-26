@@ -727,28 +727,37 @@
     }
 
     function enviarWhatsApp(event) {
-      event.preventDefault(); 
+  event.preventDefault(); 
 
-      // ===== CAMBIA ESTE NÚMERO POR TU WHATSAPP REAL =====
-      const telefonoDestino = "521234567890"; 
-      // ===================================================
+  const telefonoDestino = "522202662703"; // Cambia por tu número
+  const asistencia = document.getElementById('wa-asistencia').value;
+  const totalPases = dataInvitado.adultos + dataInvitado.ninos;
 
-      const asistencia = document.getElementById('wa-asistencia').value;
-      const totalPases = dataInvitado.adultos + dataInvitado.ninos;
+  // Usamos palabras clave temporales
+  let textoBase = "¡Hola Carlos y Vanessa! [SALUDO]\n\n";
+  textoBase += "Soy *" + dataInvitado.nombre + "*.\n\n";
+  
+  if (asistencia === "si") {
+    textoBase += "[SI] *¡Confirmo mi asistencia!*\n";
+    textoBase += "Utilizaremos nuestros " + totalPases + " pases (" + dataInvitado.adultos + " Adultos y " + dataInvitado.ninos + " Niños).";
+  } else {
+    textoBase += "[NO] *Lamentablemente no podré asistir.*\n";
+    textoBase += "Muchas gracias por la invitación y felicidades.";
+  }
 
-      let texto = `¡Hola Carlos y Vanessa! 💍\n\n`;
-      texto += `Soy *${dataInvitado.nombre}*.\n\n`;
-      
-      if (asistencia === "si") {
-        texto += `✅ *¡Confirmo mi asistencia!*\n`;
-        texto += `Utilizaremos nuestros ${totalPases} pases (${dataInvitado.adultos} Adultos y ${dataInvitado.ninos} Niños).`;
-      } else {
-        texto += `❌ *Lamentablemente no podré asistir.*\nMuchas gracias por la invitación y felicidades.`;
-      }
+  // Convertimos el texto a formato URL
+  let textoCodificado = encodeURIComponent(textoBase);
+  
+  // Reemplazamos las palabras clave por el código hexadecimal exacto del emoji
+  // %F0%9F%91%8B = 👋 | %E2%9C%85 = ✅ | %E2%9D%8C = ❌
+  textoCodificado = textoCodificado.replace("%5BSALUDO%5D", "%F0%9F%91%8B");
+  textoCodificado = textoCodificado.replace("%5BSI%5D", "%E2%9C%85");
+  textoCodificado = textoCodificado.replace("%5BNO%5D", "%E2%9D%8C");
 
-      const urlWhatsApp = `https://wa.me/${telefonoDestino}?text=${encodeURIComponent(texto)}`;
-      window.open(urlWhatsApp, '_blank');
-    }
+  const urlWhatsApp = "https://api.whatsapp.com/send?phone=" + telefonoDestino + "&text=" + textoCodificado;
+  
+  window.open(urlWhatsApp, '_blank');
+}
 
     const countDownDate = new Date("2026-09-19T00:00:00").getTime();
     setInterval(function() {
