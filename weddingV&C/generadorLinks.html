@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Generador de Enlaces RSVP - Boda C & V</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  
+  <!-- Librería segura para leer Excel/CSV localmente sin internet/servidores -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+  <style>
+    body { 
+      font-family: 'Nunito', sans-serif; 
+      padding: 40px 20px; 
+      background: #f4f4f9; 
+      color: #333; 
+    }
+    .container { 
+      max-width: 900px; 
+      margin: 0 auto; 
+      background: white; 
+      padding: 40px; 
+      border-radius: 12px; 
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05); 
+    }
+    h1 { color: #4E5316; margin-top: 0; }
+    p { font-size: 16px; color: #555; }
+    
+    .input-group { margin-bottom: 25px; }
+    input[type="text"] { 
+      width: 100%; padding: 12px; border: 1px solid #ccc; 
+      border-radius: 6px; font-family: inherit; font-size: 16px; box-sizing: border-box;
+    }
+    
+    /* Estilo para el input de archivo */
+    .file-drop-area {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      width: 100%;
+      max-width: 100%;
+      padding: 40px;
+      border: 2px dashed #00a2d9;
+      border-radius: 8px;
+      background-color: rgba(0, 162, 217, 0.05);
+      transition: 0.2s;
+      box-sizing: border-box;
+    }
+    .file-drop-area.is-active { background-color: rgba(0, 162, 217, 0.1); }
+    .fake-btn {
+      background-color: #00a2d9;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+    .file-msg {
+      font-size: 14px;
+      color: #555;
+    }
+    .file-input {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      cursor: pointer;
+      opacity: 0;
+    }
+
+    .btn-generar { 
+      background: #4E5316; color: white; border: none; padding: 15px 30px; 
+      cursor: pointer; border-radius: 8px; font-size: 18px; font-weight: bold; width: 100%; transition: 0.3s;
+    }
+    .btn-generar:hover { background: #3a3e10; }
+    
+    table { width: 100%; border-collapse: collapse; margin-top: 30px; font-size: 14px; }
+    th, td { padding: 12px; border-bottom: 1px solid #eee; text-align: left; }
+    th { background: #f8f9fa; font-weight: bold; color: #4E5316; }
+    
+    .link-td { max-width: 300px; word-wrap: break-word; color: #00a2d9; font-family: monospace;}
+    
+    .copy-btn { 
+      background: #00a2d9; color: white; border: none; font-size: 13px; 
+      padding: 8px 15px; border-radius: 5px; cursor: pointer; transition: 0.3s;
+    }
+    .copy-btn:hover { background: #0088b5; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1><span style="font-size: 30px;">💍</span> Generador de Enlaces Secretos</h1>
+    <p>Usa esta herramienta para crear automáticamente los links de tus invitados cargando tu archivo <b>.csv</b> o <b>.xlsx</b> (Excel).</p>
+    
+    <hr style="border: 0; height: 1px; background: #eee; margin: 30px 0;">
+
+    <div class="input-group">
+      <label style="font-weight: bold; display: block; margin-bottom: 8px;">1. Revisa la URL base de tu página web:</label>
+      <input type="text" id="baseUrl" value="https://misitio.com/invitacion.html" placeholder="Ej. https://misitio.com">
+    </div>
+    
+    <div class="input-group">
+      <label style="font-weight: bold; display: block; margin-bottom: 8px;">2. Sube tu archivo de Excel o CSV:</label>
+      <p style="font-size: 14px; margin-top: 0;">Columna A: Nombre | Columna B: Adultos | Columna C: Niños.</p>
+      
+      <div class="file-drop-area">
+        <span class="fake-btn">Elige un archivo</span>
+        <span class="file-msg" id="fileNameDisplay">o arrástralo y suéltalo aquí (.csv, .xlsx)</span>
+        <input class="file-input" type="file" id="fileInput" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+      </div>
+    </div>
+    
+    <button class="btn-generar" onclick="procesarArchivo()">Generar Enlaces Mágicos</button>
+
+    <div id="resultArea" style="display: none;">
+      <h2 style="margin-top: 40px; color: #4E5316;">Tus Enlaces Listos</h2>
+      <p id="contadorMensaje" style="color: #666; font-weight: bold;"></p>
+      <table id="resultTable">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Pases (A/N)</th>
+            <th>Enlace Generado</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    // Mostrar nombre del archivo seleccionado
+    const fileInput = document.querySelector('.file-input');
+    const fileMsg = document.querySelector('.file-msg');
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length > 0) {
+        fileMsg.textContent = fileInput.files[0].name;
+      }
+    });
+
+    // Procesar el archivo con SheetJS
+    function procesarArchivo() {
+      let baseUrl = document.getElementById('baseUrl').value.trim();
+      const file = fileInput.files[0];
+      
+      if (!baseUrl) return alert('Por favor, ingresa la URL base de tu sitio web.');
+      if (!file) return alert('Por favor, selecciona un archivo .csv o Excel primero.');
+
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        try {
+          const data = new Uint8Array(e.target.result);
+          // Leer el archivo
+          const workbook = XLSX.read(data, {type: 'array'});
+          // Obtener la primera hoja
+          const firstSheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[firstSheetName];
+          // Convertir a Array (arreglo de filas)
+          const jsonArray = XLSX.utils.sheet_to_json(worksheet, {header: 1});
+          
+          generarTabla(jsonArray, baseUrl);
+        } catch (error) {
+          alert("Hubo un error leyendo el archivo. Asegúrate de que sea un .csv o .xlsx válido.");
+          console.error(error);
+        }
+      };
+
+      reader.readAsArrayBuffer(file);
+    }
+
+    function generarTabla(datosFilas, baseUrl) {
+      const tbody = document.querySelector('#resultTable tbody');
+      tbody.innerHTML = ''; 
+      let count = 0;
+
+      datosFilas.forEach((fila, index) => {
+        // Ignorar filas vacías
+        if (fila.length === 0) return;
+
+        let nombre = fila[0] ? String(fila[0]).trim() : "";
+        let adultos = fila[1] !== undefined ? String(fila[1]).trim() : "0";
+        let ninos = fila[2] !== undefined ? String(fila[2]).trim() : "0";
+
+        // Si la fila no tiene nombre, la saltamos
+        if (!nombre) return;
+
+        // Detectar y omitir la fila de encabezados (ej. si dice "Adultos" en vez de un número)
+        if (isNaN(parseInt(adultos)) && index === 0) return; 
+
+        // Forzar a 0 si hay celdas vacías en números
+        if (isNaN(parseInt(adultos))) adultos = "0";
+        if (isNaN(parseInt(ninos))) ninos = "0";
+
+        const totalPases = parseInt(adultos) + parseInt(ninos);
+
+        // 1. Empaquetamos la información (Nombre|Adultos|Niños)
+        const textoSecreto = `${nombre}|${adultos}|${ninos}`;
+        
+        // 2. Codificamos a Base64
+        const base64 = window.btoa(unescape(encodeURIComponent(textoSecreto)));
+        
+        // 3. Construimos el link final
+        const separador = baseUrl.includes('?') ? '&' : '?';
+        const urlFinal = `${baseUrl}${separador}g=${base64}`;
+
+        // 4. Agregamos a la tabla
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${nombre}</strong></td>
+          <td>${totalPases} <span style="font-size:12px; color:#888;">(${adultos}A / ${ninos}N)</span></td>
+          <td class="link-td">${urlFinal}</td>
+          <td>
+            <button class="copy-btn" onclick="copiarAlPortapapeles(this, '${urlFinal}')">
+              Copiar Enlace
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+        count++;
+      });
+      
+      document.getElementById('contadorMensaje').innerText = `Se generaron enlaces para ${count} invitados.`;
+      document.getElementById('resultArea').style.display = 'block';
+    }
+
+    function copiarAlPortapapeles(boton, texto) {
+      navigator.clipboard.writeText(texto).then(() => {
+        const textoOriginal = boton.innerText;
+        boton.innerText = '¡Copiado!';
+        boton.style.background = '#4E5316'; 
+        
+        setTimeout(() => {
+          boton.innerText = textoOriginal;
+          boton.style.background = '#00a2d9';
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>
