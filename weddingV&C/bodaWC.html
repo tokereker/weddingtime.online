@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Boda de Carlos & Vanessa</title>
-  <link rel="icon" href="mnt/data/favicon.png" type="image/png">
+  <link rel="icon" href="images/favicon.png" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Forum&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap" rel="stylesheet">
@@ -29,12 +29,25 @@
       --fuente-parisienne: 'Parisienne', cursive;
     }
 
+    /* --- PROTECCIÓN ANTI-COPIA Y SELECCIÓN --- */
+    body {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    img {
+      pointer-events: none;
+      -webkit-user-drag: none;
+    }
+
     body.pantalla-bloqueada {
       overflow: hidden !important;
     }
 
     body {
-      background-image: url('mnt/data/cv-a.jpeg?q=80&w=1600');
+      background-image: url('images/cv-a.jpeg?q=80&w=1600');
       background-attachment: fixed;
       background-size: cover;
       background-position: center;
@@ -522,19 +535,19 @@
       .reloj-container-flotante { padding: 30px 10px; }
       .glass-rsvp-container { padding: 40px 20px; margin: 0 10px; }
     }
-	.efecto-hora {
-  display: inline-block;
-  padding: 5px 15px;
-  border-radius: 20px;
-  background: rgba(78, 83, 22, 0.1); /* Un fondito súper sutil con tu color principal */
-  animation: latidoHora 2s infinite;
-}
+    .efecto-hora {
+      display: inline-block;
+      padding: 5px 15px;
+      border-radius: 20px;
+      background: rgba(78, 83, 22, 0.1); 
+      animation: latidoHora 2s infinite;
+    }
 
-@keyframes latidoHora {
-  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(78, 83, 22, 0.4); }
-  50% { transform: scale(1.05); box-shadow: 0 0 12px 6px rgba(78, 83, 22, 0); }
-  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(78, 83, 22, 0); }
-}
+    @keyframes latidoHora {
+      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(78, 83, 22, 0.4); }
+      50% { transform: scale(1.05); box-shadow: 0 0 12px 6px rgba(78, 83, 22, 0); }
+      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(78, 83, 22, 0); }
+    }
   </style>
 
   <script type="module" src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"></script>
@@ -542,7 +555,7 @@
 <body class="pantalla-bloqueada">
 
   <audio id="musicaFondo" loop>
-    <source src="mnt/data/cv.mp3" type="audio/mpeg">
+    <source src="audio/cv.mp3" type="audio/mpeg">
   </audio>
 
   <div id="sobreBienvenida">
@@ -555,7 +568,7 @@
         </div>
         
         <div class="seal" id="seal" onclick="abrirInvitacion()">
-            <img src="mnt/data/cv.png" alt="Sello Carlos y Vanessa" class="seal-logo">
+            <img src="images/cv.png" alt="Sello Carlos y Vanessa" class="seal-logo">
         </div>
     </div>
     <div class="instruccion-sello" id="instruccion">Toca el sello para abrir</div>
@@ -586,9 +599,10 @@
     </section>
 
     <section class="seccion-solida text-center">
-      <div class="reloj-container-flotante">
-        <span style="font-family: var(--fuente-1); font-size: 50px; color: var(--color-pallete-3);">Faltan</span>
-        <div class="reloj" id="contador">
+	<div class="reloj-container-flotante">
+	<p><div style="font-family: var(--fuente-1); font-size: 24px; color: var(--color-pallete-1); letter-spacing: 8px; border-bottom: 1px solid rgba(78, 83, 22, 0.4); padding-bottom: 5px; display: inline-block; margin-top: -5px; margin-bottom: 20px;">19 • 09 • 2026</div></p>
+	    <span style="font-family: var(--fuente-1); font-size: 50px; color: var(--color-pallete-3);">Faltan</span>
+		<div class="reloj" id="contador">
           <div class="reloj-col"><span class="number" id="dias">00</span><span class="time">Días</span></div>
           <div class="reloj-col"><span class="number" id="horas">00</span><span class="time">Hrs</span></div>
           <div class="reloj-col"><span class="number" id="minutos">00</span><span class="time">Min</span></div>
@@ -602,9 +616,13 @@
         <div class="col-md-6 mb-4">
           <div class="box-color-col">
             <img src="https://excluevent.com/wp-content/uploads/2025/11/Wedding_Rings_On_Transparent_Background__Wedding_Rings__Transparent_Background__Romantic_Design_PNG_Transparent_Image_and_Clipart_for_Free_Download__1_-removebg-preview.png" style="width: 120px; margin-bottom: 20px;" alt="Anillos">
-            <h3 style="font-family: var(--fuente-1); color: var(--color-pallete-1); font-size: 35px;">Ceremonia</h3>
+			<h3 style="font-family: var(--fuente-1); color: var(--color-pallete-1); font-size: 35px;">Ceremonia</h3>
             <hr style="border-top: 1px solid var(--color-pallete-1); width: 50%;">
-            <p style="font-weight: bold; color: var(--color-pallete-1); font-size: 18px;">Parroquia Sagrada Familia</p>
+			<p style="font-weight: bold; color: var(--color-pallete-1); font-size: 18px;">Parroquia Sagrada Familia</p>
+			<p style="display: inline-flex; align-items: center; justify-content: center; font-family: var(--fuente-1); color: #b37d00; font-size: 30px; margin: 15px 0; text-shadow: 1px 1px 2px rgba(0,0,0,0.1);">
+			<i class="fa-regular fa-clock fa-beat" style="--fa-animation-duration: 2s; font-size: 30px; margin-right: 12px;"></i>
+			<span>16:00 Hrs</span>
+			</p>
             <button class="boton" data-toggle="modal" data-target="#modalCeremonia">¿Cómo llegar?</button>
           </div>
         </div>
@@ -615,6 +633,10 @@
             <h3 style="font-family: var(--fuente-1); color: var(--color-pallete-1); font-size: 35px;">Celebración</h3>
             <hr style="border-top: 1px solid var(--color-pallete-1); width: 50%;">
             <p style="font-weight: bold; color: var(--color-pallete-1); font-size: 18px;">Rancho Ocote</p>
+			<p style="display: inline-flex; align-items: center; justify-content: center; font-family: var(--fuente-1); color: #b37d00; font-size: 30px; margin: 15px 0; text-shadow: 1px 1px 2px rgba(0,0,0,0.1);">
+			<i class="fa-regular fa-clock fa-beat" style="--fa-animation-duration: 2s; font-size: 30px; margin-right: 12px;"></i>
+			<span>18:30 Hrs</span>
+</p>
             <button class="boton" data-toggle="modal" data-target="#modalCelebracion">¿Cómo llegar?</button>
           </div>
         </div>
@@ -647,22 +669,22 @@
         
         <div class="swiper mySwiper">
           <div class="swiper-wrapper">
-            <div class="swiper-slide"><img src="mnt/data/gallery/cv-g.jpeg?q=80&w=1000" alt="C&V"></div>
-            <div class="swiper-slide"><img src="mnt/data/gallery/cv-a.jpeg?q=80&w=1000" alt="C&V"></div>
-            <div class="swiper-slide"><img src="mnt/data/gallery/cv-b.jpeg?q=80&w=1000" alt="C&V"></div>
-            <div class="swiper-slide"><img src="mnt/data/gallery/cv-c.jpeg?q=80&w=1000" alt="C&V"></div>
-            <div class="swiper-slide"><img src="mnt/data/gallery/cv-d.jpeg?q=80&w=1000" alt="C&V"></div>
-            <div class="swiper-slide"><img src="mnt/data/gallery/cv-f.jpeg?q=80&w=1000" alt="C&V"></div>
-            <div class="swiper-slide"><img src="mnt/data/gallery/cv-h.jpeg?q=80&w=1000" alt="C&V"></div>
-            <div class="swiper-slide"><img src="mnt/data/gallery/cv-i.jpeg?q=80&w=1000" alt="C&V"></div>
-            <div class="swiper-slide"><img src="mnt/data/gallery/cv-j.jpeg?q=80&w=1000" alt="C&V"></div>
-            <div class="swiper-slide"><img src="mnt/data/gallery/cv-k.jpeg?q=80&w=1000" alt="C&V"></div>
-            <div class="swiper-slide"><img src="mnt/data/gallery/cv-l.jpeg?q=80&w=1000" alt="C&V"></div>
-            <div class="swiper-slide"><img src="mnt/data/gallery/cv-m.jpeg?q=80&w=1000" alt="C&V"></div>
-            <div class="swiper-slide"><img src="mnt/data/gallery/cv-q.jpeg?q=80&w=1000" alt="C&V"></div>
-            <div class="swiper-slide"><img src="mnt/data/gallery/cv-r.jpeg?q=80&w=1000" alt="C&V"></div>
-            <div class="swiper-slide"><img src="mnt/data/gallery/cv-s.jpeg?q=80&w=1000" alt="C&V"></div>
-            <div class="swiper-slide"><img src="mnt/data/gallery/cv-t.jpeg?q=80&w=1000" alt="C&V"></div>
+            <div class="swiper-slide"><img src="images/gallery/cv-g.jpeg?q=80&w=1000" alt="C&V"></div>
+            <div class="swiper-slide"><img src="images/gallery/cv-a.jpeg?q=80&w=1000" alt="C&V"></div>
+            <div class="swiper-slide"><img src="images/gallery/cv-b.jpeg?q=80&w=1000" alt="C&V"></div>
+            <div class="swiper-slide"><img src="images/gallery/cv-c.jpeg?q=80&w=1000" alt="C&V"></div>
+            <div class="swiper-slide"><img src="images/gallery/cv-d.jpeg?q=80&w=1000" alt="C&V"></div>
+            <div class="swiper-slide"><img src="images/gallery/cv-f.jpeg?q=80&w=1000" alt="C&V"></div>
+            <div class="swiper-slide"><img src="images/gallery/cv-h.jpeg?q=80&w=1000" alt="C&V"></div>
+            <div class="swiper-slide"><img src="images/gallery/cv-i.jpeg?q=80&w=1000" alt="C&V"></div>
+            <div class="swiper-slide"><img src="images/gallery/cv-j.jpeg?q=80&w=1000" alt="C&V"></div>
+            <div class="swiper-slide"><img src="images/gallery/cv-k.jpeg?q=80&w=1000" alt="C&V"></div>
+            <div class="swiper-slide"><img src="images/gallery/cv-l.jpeg?q=80&w=1000" alt="C&V"></div>
+            <div class="swiper-slide"><img src="images/gallery/cv-m.jpeg?q=80&w=1000" alt="C&V"></div>
+            <div class="swiper-slide"><img src="images/gallery/cv-q.jpeg?q=80&w=1000" alt="C&V"></div>
+            <div class="swiper-slide"><img src="images/gallery/cv-r.jpeg?q=80&w=1000" alt="C&V"></div>
+            <div class="swiper-slide"><img src="images/gallery/cv-s.jpeg?q=80&w=1000" alt="C&V"></div>
+            <div class="swiper-slide"><img src="images/gallery/cv-t.jpeg?q=80&w=1000" alt="C&V"></div>
           </div>
           <div class="swiper-pagination"></div>
         </div>
@@ -716,13 +738,10 @@
           </button>
         </div>
         <div class="modal-body glass-modal-body-text">
-          <img src="mnt/data/iglesia.jpg?auto=format&fit=crop&w=400&q=80" alt="Iglesia" class="img-fluid rounded mb-3" style="max-height: 200px; width: 100%; object-fit: cover; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+          <img src="https://images.unsplash.com/photo-1548625361-155deee223d2?auto=format&fit=crop&w=400&q=80" alt="Iglesia" class="img-fluid rounded mb-3" style="max-height: 200px; width: 100%; object-fit: cover; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
           <p style="font-size: 22px; font-weight: bold; margin-bottom: 5px;">Parroquia Sagrada Familia</p>
-		 <p class="efecto-hora" style="font-size: 18px; font-weight: bold; color: var(--color-pallete-1);">
-  <i class="fa-regular fa-clock fa-beat" style="--fa-animation-duration: 2s;"></i> Hora: 16:00 hrs
-</p>
           <p style="font-size: 16px; margin-bottom: 20px;">Av 3 de Mayo 7919, Tres Cruces, 72595 | Puebla, Pue.</p>
-          <a href="https://maps.app.goo.gl/qK7jEupN8EyUMWvr9" target="_blank" class="boton" style="font-size: 16px; padding: 10px 20px;"><i class="fa-solid fa-map-location-dot mr-2"></i> Abrir en Maps</a>
+          <a href="https://maps.google.com/?q=Parroquia+Sagrada+Familia+Tres+Cruces+Puebla" target="_blank" class="boton" style="font-size: 16px; padding: 10px 20px;"><i class="fa-solid fa-map-location-dot mr-2"></i> Abrir en Maps</a>
         </div>
         <div class="modal-footer justify-content-center">
           <button type="button" class="boton" data-dismiss="modal" style="min-width: 120px; font-size: 16px; padding: 10px 20px;">Cerrar</button>
@@ -741,12 +760,10 @@
           </button>
         </div>
         <div class="modal-body glass-modal-body-text">
-          <img src="mnt/data/salon.jpg?auto=format&fit=crop&w=400&q=80" alt="Recepción" class="img-fluid rounded mb-3" style="max-height: 200px; width: 100%; object-fit: cover; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+          <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=400&q=80" alt="Recepción" class="img-fluid rounded mb-3" style="max-height: 200px; width: 100%; object-fit: cover; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
           <p style="font-size: 22px; font-weight: bold; margin-bottom: 5px;">Rancho Ocote</p>
-		  <p class="efecto-hora" style="font-size: 18px; font-weight: bold; color: var(--color-pallete-1);">
-  <i class="fa-regular fa-clock fa-beat" style="--fa-animation-duration: 2s;"></i> Hora: 18:30 hrs </p>
           <p style="font-size: 16px; margin-bottom: 20px;">Fco. Villa 8-9, Francisco Javier Clavijero, 72365 | Puebla, Pue.</p>
-          <a href="https://maps.app.goo.gl/yyk2w74HhVDg2Ze17" target="_blank" class="boton" style="font-size: 16px; padding: 10px 20px;"><i class="fa-solid fa-map-location-dot mr-2"></i> Abrir en Maps</a>
+          <a href="https://maps.google.com/?q=Rancho+Ocote+Puebla" target="_blank" class="boton" style="font-size: 16px; padding: 10px 20px;"><i class="fa-solid fa-map-location-dot mr-2"></i> Abrir en Maps</a>
         </div>
         <div class="modal-footer justify-content-center">
           <button type="button" class="boton" data-dismiss="modal" style="min-width: 120px; font-size: 16px; padding: 10px 20px;">Cerrar</button>
@@ -755,36 +772,38 @@
     </div>
   </div>
 
-  <div class="modal fade" id="modalDressCode" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content glass-modal">
-        <div class="modal-header">
-          <h5 class="modal-title">Código de Vestimenta</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
+<div class="modal fade" id="modalDressCode" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content glass-modal">
+      <div class="modal-header">
+        <h5 class="modal-title">Código de Vestimenta</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body glass-modal-body-text">
+        
+        <p style="font-size: 22px;"><strong>Formal</strong></p>
+        <p>¡Y como siempre, vas a lucir espectacular!</p>
+        
+        <p style="font-family: var(--fuente-1); font-size: 28px; color: var(--color-pallete-1); margin-top: 30px; line-height: 1.2;">
+          Tu sonrisa será tu mejor accesorio.
+        </p>
+        <p style="margin-bottom: 20px;">Por cierto, lleva un toque vaquero, como:<br> botas o sombrero. 🌵</p>
+         <div style="font-size: 55px; margin: 30px 0; display: flex; justify-content: center; gap: 30px;">
+          <span class="fa-beat-fade" style="--fa-animation-duration: 2s;">💃👢</span>
+		  <span class="fa-beat-fade" style="--fa-animation-duration: 2s;">🕺🤠</span>
         </div>
-        <div class="modal-body glass-modal-body-text">
-          <p><strong>¡Formal y a todo color!</strong></p>
-          <p>¡Queremos verte espectacular en nuestro gran día!</p>
-          <p>Nos encantaría que nos acompañes vistiendo alguno de los tonos de nuestra paleta sugerida:</p>
-          
-          <ul style="list-style: none; padding: 0; margin: 20px 0; font-weight: bold; font-size: 20px; text-align: center;">
-            <li style="margin-bottom: 8px;">🟡 Amarillo Mostaza</li>
-            <li style="margin-bottom: 8px;">💖 Rosa Fiusha</li>
-            <li style="margin-bottom: 8px;">🍏 Verde Manzana</li>
-            <li style="margin-bottom: 8px;">🟠 Naranja</li>
-          </ul>
-          
-          <hr style="border-top: 1px solid rgba(78, 83, 22, 0.2);">
-          <p>🤍 <em>Por favor, reserva el color blanco exclusivamente para la novia.</em></p>
-        </div>
-        <div class="modal-footer justify-content-center">
-          <button type="button" class="boton" data-dismiss="modal" style="min-width: 150px;">Cerrar</button>
-        </div>
+        <hr style="border-top: 1px solid rgba(78, 83, 22, 0.2);">
+        <p>🤍 <em>El color Blanco está reservado para la novia.</em></p>
+        
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="boton" data-dismiss="modal" style="min-width: 150px;">Cerrar</button>
       </div>
     </div>
   </div>
+</div>
 
   <div class="modal fade" id="modalRegalos" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -835,15 +854,13 @@
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-
   <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+  
   <script>
     /* Inicializar Swiper */
     var swiper = new Swiper(".mySwiper", {
       effect: "fade", 
-      fadeEffect: {
-        crossFade: true 
-      },
+      fadeEffect: { crossFade: true },
       speed: 1500, 
       grabCursor: true,
       loop: true, 
@@ -859,155 +876,16 @@
   </script>
 
   <script>
-    let isPlaying = false;
-    let dataInvitado = { nombre: "", adultos: 0, ninos: 0 };
+    // --- BARRERAS ANTI-CLONACIÓN GENERALES ---
+    document.addEventListener("contextmenu", function(e) { e.preventDefault(); });
+    document.onkeydown = function(e) {
+      if (e.key === 'F12' || e.keyCode === 123) return false;
+      if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) return false;
+      if (e.ctrlKey && (e.key === 'U' || e.key === 'u')) return false;
+    };
 
-    document.addEventListener("DOMContentLoaded", () => {
-      const params = new URLSearchParams(window.location.search);
-      const g = params.get('g'); 
-      
-      if(g) {
-        try {
-          const rawB64 = window.atob(g);
-          let decodificado = "";
-          
-          try {
-            decodificado = decodeURIComponent(escape(rawB64));
-          } catch(e) {
-            decodificado = decodeURIComponent(rawB64.split('').map(function(c) {
-                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-            }).join(''));
-          }
-
-          decodificado = decodificado.replace(/\uFFFD/g, ''); 
-
-          const partes = decodificado.split('|'); 
-          
-          if(partes.length >= 3) {
-            dataInvitado.nombre = partes[0];
-            dataInvitado.adultos = parseInt(partes[1]);
-            dataInvitado.ninos = parseInt(partes[2]);
-            
-            const totalPases = dataInvitado.adultos + dataInvitado.ninos;
-            
-            document.getElementById('ui-nombre').innerText = dataInvitado.nombre;
-            document.getElementById('ui-pases-grandes').innerText = totalPases;
-            document.getElementById('ui-pases-pequenos').innerText = totalPases;
-
-            document.getElementById('estado-invalido').style.display = 'none';
-            document.getElementById('estado-valido').style.display = 'block';
-          }
-        } catch(e) {
-          console.error("Enlace no válido.");
-        }
-      }
-    });
-
-    function abrirInvitacion() {
-      const instruccion = document.getElementById('instruccion');
-      if(instruccion) instruccion.style.display = 'none';
-
-      document.getElementById('envelope').classList.add('open');
-      
-      const audioFondo = document.getElementById('musicaFondo');
-      if (audioFondo) {
-        audioFondo.play().then(() => {
-          isPlaying = true;
-        }).catch((e) => console.log("Error al reproducir audio:", e));
-      }
-
-      setTimeout(() => {
-        const sobreBienvenida = document.getElementById('sobreBienvenida');
-        sobreBienvenida.style.opacity = '0'; 
-        
-        document.getElementById('controlador-musica').style.display = 'block';
-        document.body.classList.remove('pantalla-bloqueada');
-        document.body.style.overflow = "auto";
-        
-        setTimeout(() => {
-          sobreBienvenida.style.display = 'none';
-        }, 1000);
-      }, 2500); 
-    }
-
-    function toggleMusica() {
-      const audioFondo = document.getElementById('musicaFondo');
-      const lottieMusic = document.getElementById('lottie-music');
-      
-      if (isPlaying) {
-        audioFondo.pause();
-        if(lottieMusic) lottieMusic.stop();
-      } else {
-        audioFondo.play();
-        if(lottieMusic) lottieMusic.play();
-      }
-      isPlaying = !isPlaying;
-    }
-
-function enviarWhatsApp(event) {
-  event.preventDefault(); 
-
-  const telefonoDestino = "522202662703"; 
-  const asistencia = document.getElementById('wa-asistencia').value;
-  
-  const totalPases = dataInvitado.adultos + dataInvitado.ninos;
-  
-  const esPlural = totalPases > 1;
-  const txtSoySomos = esPlural ? "Somos" : "Soy";
-  const txtConfirmo = esPlural ? "confirmamos nuestra" : "confirmo mi";
-  const txtUtilizaremos = esPlural ? "Utilizaremos con gusto nuestros " + totalPases + " pases" : "Utilizaré con gusto mi único pase";
-  const txtPodremos = esPlural ? "podremos" : "podré";
-
-  let textoBase = "¡Hola Carlos y Vanessa! [SALUDO][ANILLO]\n\n";
-  textoBase += txtSoySomos + " *" + dataInvitado.nombre + "*. [BRINDIS]\n\n";
-  
-  if (asistencia === "si") {
-    textoBase += "[FIESTA] *¡Por supuesto que " + txtConfirmo + " asistencia!*\n";
-    
-    let textoAdultos = dataInvitado.adultos + (dataInvitado.adultos === 1 ? " Adulto" : " Adultos");
-    let textoNinos = "";
-    if (dataInvitado.ninos > 0) {
-      textoNinos = " y " + dataInvitado.ninos + (dataInvitado.ninos === 1 ? " Niño" : " Niños");
-    }
-    
-    textoBase += txtUtilizaremos + " (" + textoAdultos + textoNinos + ").\n\n";
-    textoBase += "¡Ya queremos que sea el gran día para celebrar con ustedes! [BAILE]";
-  } else {
-    textoBase += "[TRISTE] *Lamentablemente, en esta ocasión no " + txtPodremos + " acompañarlos.*\n\n";
-    textoBase += "Les agradecemos muchísimo la invitación y les deseamos una boda espectacular y llena de amor. [CORAZON]";
-  }
-
-  let textoCodificado = encodeURIComponent(textoBase);
-  
-  textoCodificado = textoCodificado.replace("%5BSALUDO%5D", "%F0%9F%91%8B"); 
-  textoCodificado = textoCodificado.replace("%5BANILLO%5D", "%F0%9F%92%8D"); 
-  textoCodificado = textoCodificado.replace("%5BBRINDIS%5D", "%F0%9F%A5%82");
-  textoCodificado = textoCodificado.replace("%5BFIESTA%5D", "%F0%9F%8E%89"); 
-  textoCodificado = textoCodificado.replace("%5BBAILE%5D", "%F0%9F%92%83"); 
-  textoCodificado = textoCodificado.replace("%5BTRISTE%5D", "%F0%9F%A5%BA"); 
-  textoCodificado = textoCodificado.replace("%5BCORAZON%5D", "%F0%9F%92%96");
-
-  const urlWhatsApp = "https://api.whatsapp.com/send?phone=" + telefonoDestino + "&text=" + textoCodificado;
-  
-  window.open(urlWhatsApp, '_blank');
-}
-
-    const countDownDate = new Date("2026-09-19T00:00:00").getTime();
-    setInterval(function() {
-      const now = new Date().getTime();
-      const distance = countDownDate - now;
-      if (distance >= 0) {
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        document.getElementById("dias").innerText = days < 10 ? '0' + days : days;
-        document.getElementById("horas").innerText = hours < 10 ? '0' + hours : hours;
-        document.getElementById("minutos").innerText = minutes < 10 ? '0' + minutes : minutes;
-        document.getElementById("segundos").innerText = seconds < 10 ? '0' + seconds : seconds;
-      }
-    }, 1000);
+    // --- EJECUCIÓN PROTEGIDA (BASE64) ---
+    eval(atob("CiAgICAvLyAtLS0gTMOTR0lDQSBJTlRFUk5BIFNFR1VSQSAtLS0KICAgIHZhciBpc1BsYXlpbmcgPSBmYWxzZTsKICAgIHZhciBkYXRhSW52aXRhZG8gPSB7IG5vbWJyZTogIiIsIGFkdWx0b3M6IDAsIG5pbm9zOiAwIH07CgogICAgZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcigiRE9NQ29udGVudExvYWRlZCIsIGZ1bmN0aW9uKCkgewogICAgICB2YXIgcGFyYW1zID0gbmV3IFVSTFNlYXJjaFBhcmFtcyh3aW5kb3cubG9jYXRpb24uc2VhcmNoKTsKICAgICAgdmFyIGcgPSBwYXJhbXMuZ2V0KCdnJyk7IAogICAgICBpZiAoZykgewogICAgICAgIHRyeSB7CiAgICAgICAgICB2YXIgcmF3QjY0ID0gd2luZG93LmF0b2IoZyk7CiAgICAgICAgICB2YXIgZGVjb2RpZmljYWRvID0gIiI7CiAgICAgICAgICB0cnkgewogICAgICAgICAgICBkZWNvZGlmaWNhZG8gPSBkZWNvZGVVUklDb21wb25lbnQoZXNjYXBlKHJhd0I2NCkpOwogICAgICAgICAgfSBjYXRjaChlKSB7CiAgICAgICAgICAgIGRlY29kaWZpY2FkbyA9IGRlY29kZVVSSUNvbXBvbmVudChyYXdCNjQuc3BsaXQoJycpLm1hcChmdW5jdGlvbihjKSB7CiAgICAgICAgICAgICAgICByZXR1cm4gJyUnICsgKCcwMCcgKyBjLmNoYXJDb2RlQXQoMCkudG9TdHJpbmcoMTYpKS5zbGljZSgtMik7CiAgICAgICAgICAgIH0pLmpvaW4oJycpKTsKICAgICAgICAgIH0KICAgICAgICAgIGRlY29kaWZpY2FkbyA9IGRlY29kaWZpY2Fkby5yZXBsYWNlKC9cdUZGRkQvZywgJycpOyAKICAgICAgICAgIHZhciBwYXJ0ZXMgPSBkZWNvZGlmaWNhZG8uc3BsaXQoJ3wnKTsgCiAgICAgICAgICBpZiAocGFydGVzLmxlbmd0aCA+PSAzKSB7CiAgICAgICAgICAgIGRhdGFJbnZpdGFkby5ub21icmUgPSBwYXJ0ZXNbMF07CiAgICAgICAgICAgIGRhdGFJbnZpdGFkby5hZHVsdG9zID0gcGFyc2VJbnQocGFydGVzWzFdKTsKICAgICAgICAgICAgZGF0YUludml0YWRvLm5pbm9zID0gcGFyc2VJbnQocGFydGVzWzJdKTsKICAgICAgICAgICAgdmFyIHRvdGFsUGFzZXMgPSBkYXRhSW52aXRhZG8uYWR1bHRvcyArIGRhdGFJbnZpdGFkby5uaW5vczsKICAgICAgICAgICAgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3VpLW5vbWJyZScpLmlubmVyVGV4dCA9IGRhdGFJbnZpdGFkby5ub21icmU7CiAgICAgICAgICAgIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCd1aS1wYXNlcy1ncmFuZGVzJykuaW5uZXJUZXh0ID0gdG90YWxQYXNlczsKICAgICAgICAgICAgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3VpLXBhc2VzLXBlcXVlbm9zJykuaW5uZXJUZXh0ID0gdG90YWxQYXNlczsKICAgICAgICAgICAgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2VzdGFkby1pbnZhbGlkbycpLnN0eWxlLmRpc3BsYXkgPSAnbm9uZSc7CiAgICAgICAgICAgIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdlc3RhZG8tdmFsaWRvJykuc3R5bGUuZGlzcGxheSA9ICdibG9jayc7CiAgICAgICAgICB9CiAgICAgICAgfSBjYXRjaChlKSB7CiAgICAgICAgICBjb25zb2xlLmVycm9yKCJFcnJvciBkZSBlbmxhY2UuIik7CiAgICAgICAgfQogICAgICB9CiAgICB9KTsKCiAgICB3aW5kb3cuYWJyaXJJbnZpdGFjaW9uID0gZnVuY3Rpb24oKSB7CiAgICAgIHZhciBpbnN0cnVjY2lvbiA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdpbnN0cnVjY2lvbicpOwogICAgICBpZiAoaW5zdHJ1Y2Npb24pIGluc3RydWNjaW9uLnN0eWxlLmRpc3BsYXkgPSAnbm9uZSc7CiAgICAgIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdlbnZlbG9wZScpLmNsYXNzTGlzdC5hZGQoJ29wZW4nKTsKICAgICAgdmFyIGF1ZGlvRm9uZG8gPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnbXVzaWNhRm9uZG8nKTsKICAgICAgaWYgKGF1ZGlvRm9uZG8pIHsKICAgICAgICBhdWRpb0ZvbmRvLnBsYXkoKS50aGVuKGZ1bmN0aW9uKCkgewogICAgICAgICAgaXNQbGF5aW5nID0gdHJ1ZTsKICAgICAgICB9KS5jYXRjaChmdW5jdGlvbihlKSB7IGNvbnNvbGUubG9nKGUpOyB9KTsKICAgICAgfQogICAgICBzZXRUaW1lb3V0KGZ1bmN0aW9uKCkgewogICAgICAgIHZhciBzb2JyZUJpZW52ZW5pZGEgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnc29icmVCaWVudmVuaWRhJyk7CiAgICAgICAgaWYgKHNvYnJlQmllbnZlbmlkYSkgc29icmVCaWVudmVuaWRhLnN0eWxlLm9wYWNpdHkgPSAnMCc7IAogICAgICAgIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdjb250cm9sYWRvci1tdXNpY2EnKS5zdHlsZS5kaXNwbGF5ID0gJ2Jsb2NrJzsKICAgICAgICBkb2N1bWVudC5ib2R5LmNsYXNzTGlzdC5yZW1vdmUoJ3BhbnRhbGxhLWJsb3F1ZWFkYScpOwogICAgICAgIGRvY3VtZW50LmJvZHkuc3R5bGUub3ZlcmZsb3cgPSAiYXV0byI7CiAgICAgICAgc2V0VGltZW91dChmdW5jdGlvbigpIHsKICAgICAgICAgIGlmIChzb2JyZUJpZW52ZW5pZGEpIHNvYnJlQmllbnZlbmlkYS5zdHlsZS5kaXNwbGF5ID0gJ25vbmUnOwogICAgICAgIH0sIDEwMDApOwogICAgICB9LCAyNTAwKTsgCiAgICB9OwoKICAgIHdpbmRvdy50b2dnbGVNdXNpY2EgPSBmdW5jdGlvbigpIHsKICAgICAgdmFyIGF1ZGlvRm9uZG8gPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnbXVzaWNhRm9uZG8nKTsKICAgICAgdmFyIGxvdHRpZU11c2ljID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2xvdHRpZS1tdXNpYycpOwogICAgICBpZiAoaXNQbGF5aW5nKSB7CiAgICAgICAgYXVkaW9Gb25kby5wYXVzZSgpOwogICAgICAgIGlmIChsb3R0aWVNdXNpYykgbG90dGllTXVzaWMuc3RvcCgpOwogICAgICB9IGVsc2UgewogICAgICAgIGF1ZGlvRm9uZG8ucGxheSgpOwogICAgICAgIGlmIChsb3R0aWVNdXNpYykgbG90dGllTXVzaWMucGxheSgpOwogICAgICB9CiAgICAgIGlzUGxheWluZyA9ICFpc1BsYXlpbmc7CiAgICB9OwoKICAgIHdpbmRvdy5lbnZpYXJXaGF0c0FwcCA9IGZ1bmN0aW9uKGV2ZW50KSB7CiAgICAgIGV2ZW50LnByZXZlbnREZWZhdWx0KCk7IAogICAgICB2YXIgdGVsZWZvbm9EZXN0aW5vID0gIjUyMjIwMjY2MjcwMyI7IAogICAgICB2YXIgYXNpc3RlbmNpYSA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCd3YS1hc2lzdGVuY2lhJykudmFsdWU7CiAgICAgIHZhciB0b3RhbFBhc2VzID0gZGF0YUludml0YWRvLmFkdWx0b3MgKyBkYXRhSW52aXRhZG8ubmlub3M7CiAgICAgIHZhciBlc1BsdXJhbCA9IHRvdGFsUGFzZXMgPiAxOwogICAgICB2YXIgdHh0U295U29tb3MgPSBlc1BsdXJhbCA/ICJTb21vcyIgOiAiU295IjsKICAgICAgdmFyIHR4dENvbmZpcm1vID0gZXNQbHVyYWwgPyAiY29uZmlybWFtb3MgbnVlc3RyYSIgOiAiY29uZmlybW8gbWkiOwogICAgICB2YXIgdHh0VXRpbGl6YXJlbW9zID0gZXNQbHVyYWwgPyAiVXRpbGl6YXJlbW9zIGNvbiBndXN0byBudWVzdHJvcyAiICsgdG90YWxQYXNlcyArICIgcGFzZXMiIDogIlV0aWxpemFyw6kgY29uIGd1c3RvIG1pIMO6bmljbyBwYXNlIjsKICAgICAgdmFyIHR4dFBvZHJlbW9zID0gZXNQbHVyYWwgPyAicG9kcmVtb3MiIDogInBvZHLDqSI7CgogICAgICB2YXIgdGV4dG9CYXNlID0gIsKhSG9sYSBDYXJsb3MgeSBWYW5lc3NhISBbU0FMVURPXVtBTklMTE9dXG5cbiI7CiAgICAgIHRleHRvQmFzZSArPSB0eHRTb3lTb21vcyArICIgKiIgKyBkYXRhSW52aXRhZG8ubm9tYnJlICsgIiouIFtCUklORElTXVxuXG4iOwogICAgICAKICAgICAgaWYgKGFzaXN0ZW5jaWEgPT09ICJzaSIpIHsKICAgICAgICB0ZXh0b0Jhc2UgKz0gIltGSUVTVEFdICrCoVBvciBzdXB1ZXN0byBxdWUgIiArIHR4dENvbmZpcm1vICsgIiBhc2lzdGVuY2lhISpcbiI7CiAgICAgICAgdmFyIHRleHRvQWR1bHRvcyA9IGRhdGFJbnZpdGFkby5hZHVsdG9zICsgKGRhdGFJbnZpdGFkby5hZHVsdG9zID09PSAxID8gIiBBZHVsdG8iIDogIiBBZHVsdG9zIik7CiAgICAgICAgdmFyIHRleHRvTmlub3MgPSAiIjsKICAgICAgICBpZiAoZGF0YUludml0YWRvLm5pbm9zID4gMCkgewogICAgICAgICAgdGV4dG9OaW5vcyA9ICIgeSAiICsgZGF0YUludml0YWRvLm5pbm9zICsgKGRhdGFJbnZpdGFkby5uaW5vcyA9PT0gMSA/ICIgTmnDsW8iIDogIiBOacOxb3MiKTsKICAgICAgICB9CiAgICAgICAgdGV4dG9CYXNlICs9IHR4dFV0aWxpemFyZW1vcyArICIgKCIgKyB0ZXh0b0FkdWx0b3MgKyB0ZXh0b05pbm9zICsgIikuXG5cbiI7CiAgICAgICAgdGV4dG9CYXNlICs9ICLCoVlhIHF1ZXJlbW9zIHF1ZSBzZWEgZWwgZ3JhbiBkw61hIHBhcmEgY2VsZWJyYXIgY29uIHVzdGVkZXMhIFtCQUlMRV0iOwogICAgICB9IGVsc2UgewogICAgICAgIHRleHRvQmFzZSArPSAiW1RSSVNURV0gKkxhbWVudGFibGVtZW50ZSwgZW4gZXN0YSBvY2FzacOzbiBubyAiICsgdHh0UG9kcmVtb3MgKyAiIGFjb21wYcOxYXJsb3MuKlxuXG4iOwogICAgICAgIHRleHRvQmFzZSArPSAiTGVzIGFncmFkZWNlbW9zIG11Y2jDrXNpbW8gbGEgaW52aXRhY2nDs24geSBsZXMgZGVzZWFtb3MgdW5hIGJvZGEgZXNwZWN0YWN1bGFyIHkgbGxlbmEgZGUgYW1vci4gW0NPUkFaT05dIjsKICAgICAgfQoKICAgICAgdmFyIHRleHRvQ29kaWZpY2FkbyA9IGVuY29kZVVSSUNvbXBvbmVudCh0ZXh0b0Jhc2UpOwogICAgICB0ZXh0b0NvZGlmaWNhZG8gPSB0ZXh0b0NvZGlmaWNhZG8ucmVwbGFjZSgiJTVCU0FMVURPJTVEIiwgIiVGMCU5RiU5MSU4QiIpOyAKICAgICAgdGV4dG9Db2RpZmljYWRvID0gdGV4dG9Db2RpZmljYWRvLnJlcGxhY2UoIiU1QkFOSUxMTyU1RCIsICIlRjAlOUYlOTIlOEQiKTsgCiAgICAgIHRleHRvQ29kaWZpY2FkbyA9IHRleHRvQ29kaWZpY2Fkby5yZXBsYWNlKCIlNUJCUklORElTJTVEIiwgIiVGMCU5RiVBNSU4MiIpOwogICAgICB0ZXh0b0NvZGlmaWNhZG8gPSB0ZXh0b0NvZGlmaWNhZG8ucmVwbGFjZSgiJTVCRklFU1RBJTVEIiwgIiVGMCU5RiU4RSU4OSIpOyAKICAgICAgdGV4dG9Db2RpZmljYWRvID0gdGV4dG9Db2RpZmljYWRvLnJlcGxhY2UoIiU1QkJBSUxFJTVEIiwgIiVGMCU5RiU5MiU4MyIpOyAKICAgICAgdGV4dG9Db2RpZmljYWRvID0gdGV4dG9Db2RpZmljYWRvLnJlcGxhY2UoIiU1QlRSSVNURSU1RCIsICIlRjAlOUYlQTUlQkEiKTsgCiAgICAgIHRleHRvQ29kaWZpY2FkbyA9IHRleHRvQ29kaWZpY2Fkby5yZXBsYWNlKCIlNUJDT1JBWk9OJTVEIiwgIiVGMCU5RiU5MiU5NiIpOwoKICAgICAgdmFyIHVybFdoYXRzQXBwID0gImh0dHBzOi8vYXBpLndoYXRzYXBwLmNvbS9zZW5kP3Bob25lPSIgKyB0ZWxlZm9ub0Rlc3Rpbm8gKyAiJnRleHQ9IiArIHRleHRvQ29kaWZpY2FkbzsKICAgICAgd2luZG93Lm9wZW4odXJsV2hhdHNBcHAsICdfYmxhbmsnKTsKICAgIH07CgogICAgdmFyIGNvdW50RG93bkRhdGUgPSBuZXcgRGF0ZSgiMjAyNi0wOS0xOVQwMDowMDowMC0wNjowMCIpLmdldFRpbWUoKTsKICAgIHNldEludGVydmFsKGZ1bmN0aW9uKCkgewogICAgICB2YXIgbm93ID0gbmV3IERhdGUoKS5nZXRUaW1lKCk7CiAgICAgIHZhciBkaXN0YW5jZSA9IGNvdW50RG93bkRhdGUgLSBub3c7CiAgICAgIGlmIChkaXN0YW5jZSA+PSAwKSB7CiAgICAgICAgdmFyIGRheXMgPSBNYXRoLmZsb29yKGRpc3RhbmNlIC8gKDEwMDAgKiA2MCAqIDYwICogMjQpKTsKICAgICAgICB2YXIgaG91cnMgPSBNYXRoLmZsb29yKChkaXN0YW5jZSAlICgxMDAwICogNjAgKiA2MCAqIDI0KSkgLyAoMTAwMCAqIDYwICogNjApKTsKICAgICAgICB2YXIgbWludXRlcyA9IE1hdGguZmxvb3IoKGRpc3RhbmNlICUgKDEwMDAgKiA2MCAqIDYwKSkgLyAoMTAwMCAqIDYwKSk7CiAgICAgICAgdmFyIHNlY29uZHMgPSBNYXRoLmZsb29yKChkaXN0YW5jZSAlICgxMDAwICogNjApKSAvIDEwMDApOwoKICAgICAgICBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgiZGlhcyIpLmlubmVyVGV4dCA9IGRheXMgPCAxMCA/ICcwJyArIGRheXMgOiBkYXlzOwogICAgICAgIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCJob3JhcyIpLmlubmVyVGV4dCA9IGhvdXJzIDwgMTAgPyAnMCcgKyBob3VycyA6IGhvdXJzOwogICAgICAgIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCJtaW51dG9zIikuaW5uZXJUZXh0ID0gbWludXRlcyA8IDEwID8gJzAnICsgbWludXRlcyA6IG1pbnV0ZXM7CiAgICAgICAgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoInNlZ3VuZG9zIikuaW5uZXJUZXh0ID0gc2Vjb25kcyA8IDEwID8gJzAnICsgc2Vjb25kcyA6IHNlY29uZHM7CiAgICAgIH0KICAgIH0sIDEwMDApOwo="));
   </script>
 </body>
 </html>
