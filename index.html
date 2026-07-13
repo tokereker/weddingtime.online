@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-width=1.0">
+    <title>Tu Pase Digital | Invitaciones Únicas</title>
+    <!-- Fuentes elegantes de Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <style>
+        /* Variables de color */
+        :root {
+            --primary-color: #1a252c; /* Azul/Gris muy oscuro elegante */
+            --accent-color: #d4af37; /* Dorado premium */
+            --accent-hover: #b5952f;
+            --bg-color: #fcfcfc;
+            --text-color: #333333;
+            --whatsapp-color: #25D366;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-color);
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* --- LOGO Y NAVEGACIÓN --- */
+        .navbar {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .logo-svg {
+            width: 180px;
+            height: auto;
+            fill: #ffffff;
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
+        }
+
+        /* --- SECCIÓN HERO (Fondo llamativo) --- */
+        .hero {
+            position: relative;
+            height: 100vh;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            color: white;
+            /* Imagen de fondo de Unsplash (Boda/Luces elegantes) con una capa oscura encima */
+            background: linear-gradient(rgba(26, 37, 44, 0.75), rgba(26, 37, 44, 0.6)), 
+                        url('https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat fixed;
+        }
+
+        .hero h1 {
+            color: white;
+            font-size: 4rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+            animation: fadeInDown 1s ease;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            font-weight: 300;
+            max-width: 700px;
+            margin: 0 auto 40px auto;
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+            animation: fadeInUp 1s ease;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+            animation: fadeInUp 1.2s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(212, 175, 55, 0.4);
+        }
+
+        /* --- SECCIÓN SERVICIOS --- */
+        .services {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .services h2 {
+            font-size: 2.8rem;
+            margin-bottom: 50px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .services h2::after {
+            content: '';
+            width: 60px;
+            height: 3px;
+            background-color: var(--accent-color);
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border-bottom: 5px solid var(--accent-color);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card h3 {
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        /* --- SECCIÓN PORTAFOLIO (Con Video Carrusel Integrado) --- */
+        .portfolio {
+            background-color: #f9f9f9;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .portfolio h2 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+        }
+        
+        .portfolio p.subtitle {
+            margin-bottom: 40px;
+            color: #666;
+            font-style: italic;
+        }
+
+        .video-container {
+            max-width: 750px;
+            margin: 0 auto 35px auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            background: #000;
+        }
+
+        .promo-video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .portfolio-link-container {
+            margin-top: 25px;
+        }
+
+        .btn-secondary {
+            display: inline-block;
+            color: var(--primary-color);
+            font-weight: 700;
+            border: 2px solid var(--primary-color);
+            padding: 14px 35px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        /* --- BOTÓN FLOTANTE WHATSAPP --- */
+        .whatsapp-float {
+            position: fixed;
+            width: 65px;
+            height: 65px;
+            bottom: 40px;
+            right: 40px;
+            background-color: var(--whatsapp-color);
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            box-shadow: 2px 2px 15px rgba(0,0,0,0.3);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .whatsapp-icon {
+            width: 40px;
+            height: 40px;
+            fill: currentColor;
+        }
+
+        /* Animaciones */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsivo */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.8rem; }
+            .services h2, .portfolio h2 { font-size: 2.2rem; }
+            .whatsapp-float { width: 55px; height: 55px; bottom: 20px; right: 20px; }
+            .whatsapp-icon { width: 32px; height: 32px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navegación y Logo Creado por Código (SVG) -->
+    <nav class="navbar">
+        <svg class="logo-svg" viewBox="0 0 300 80" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="40" r="20" fill="none" stroke="#d4af37" stroke-width="3"/>
+            <circle cx="75" cy="40" r="20" fill="none" stroke="#d4af37" stroke-width="3"/>
+            <text x="110" y="42" font-family="'Playfair Display', serif" font-size="28" font-weight="700" fill="#ffffff">Tu Pase Digital</text>
+            <text x="112" y="60" font-family="'Montserrat', sans-serif" font-size="10" font-weight="300" letter-spacing="4" fill="#d4af37">INVITACIONES</text>
+        </svg>
+    </nav>
+
+    <!-- Sección Principal -->
+    <header class="hero">
+        <h1>Tu Invitación, Tu Estilo</h1>
+        <p>Creamos invitaciones digitales 100% personalizadas que dejarán a tus invitados sin palabras. Innovación, elegancia y tecnología para tu evento inolvidable.</p>
+        <a href="https://wa.me/522202662703?text=Hola,%20vengo%20de%20la%20página%20web%20y%20me%20gustaría%20cotizar%20una%20invitación%20digital." target="_blank" class="btn">Cotiza por WhatsApp</a>
+    </header>
+
+    <!-- Por qué elegirnos -->
+    <section class="services">
+        <h2>Lo que nos distingue</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>Diseño 100% Personalizado</h3>
+                <p>No usamos plantillas prefabricadas. Diseñamos cada detalle y color a la medida exacta del estilo de tu boda o evento.</p>
+            </div>
+            <div class="card">
+                <h3>Asignación de Mesas</h3>
+                <p>Organiza a tus invitados de manera inteligente y 100% digital. Ellos sabrán exactamente en qué mesa sentarse.</p>
+            </div>
+            <div class="card">
+                <h3>Envíos por WhatsApp</h3>
+                <p>Facilitamos la entrega. Envía las invitaciones directamente al WhatsApp de tus invitados con un solo clic.</p>
+            </div>
+            <div class="card">
+                <h3>Portal de Auto-creación</h3>
+                <p>¿Prefieres hacerlo tú mismo? Te damos acceso a nuestro portal exclusivo para que diseñes tu propio pase digital.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Portafolio Actualizada con Video Carrusel y Enlace Solicitado -->
+    <section class="portfolio">
+        <h2>Conoce Nuestro Último Trabajo</h2>
+        <p class="subtitle">Protegemos la privacidad de nuestros clientes mostrando sus pases en formato dinámico.</p>
+        
+        <!-- Contenedor del Video -->
+        <div class="video-container">
+            <video class="promo-video" controls autoplay muted loop playsinline>
+                <source src="wedding/mnt/data/video_demo.mp4" type="video/mp4">
+                Tu navegador no soporta la reproducción de video.
+            </video>
+        </div>
+
+        <!-- Enlace Solicitado -->
+        <div class="portfolio-link-container">
+            <a href="wedding/bodaWC.html" target="_blank" class="btn-secondary">
+                Ver demo real: Boda José Carlos y Vanessa
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Tu Pase Digital. Todos los derechos reservados.</p>
+        <p><a href="https://tupasedigital.online/" style="color: var(--accent-color);">www.tupasedigital.online</a></p>
+    </footer>
+
+    <!-- Botón Flotante WhatsApp -->
+    <a href="https://wa.me/522202662703?text=Hola,%20me%20gustaría%20recibir%20más%20información%20sobre%20Tu%20Pase%20Digital." class="whatsapp-float" target="_blank" aria-label="Contactar por WhatsApp">
+        <svg class="whatsapp-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+            <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zM223.9 413.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 334.3l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.4-186.6 184.4zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+        </svg>
+    </a>
+
+</body>
+</html>
