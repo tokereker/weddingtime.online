@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boda de Carlos & Vanessa</title>
+  <link rel="icon" href="mnt/data/favicon.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Forum&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+
+  <style>
+    :root {
+      /* Paleta de colores Original */
+      --color-pallete-1: #4E5316; 
+      --color-pallete-2: #4E5316;
+      --color-pallete-3: #4E5316;
+      --color-pallete-4: #FEF5E6; 
+      --color-pallete-5: rgba(254, 245, 230, 0.85); 
+      --color-7: #676767;
+      
+      --fuente-1: 'DM Serif Display', serif;
+      --fuente-2: "Nunito", sans-serif;
+      --fuente-parisienne: 'Parisienne', cursive;
+    }
+
+    /* --- PROTECCIÓN ANTI-COPIA Y SELECCIÓN --- */
+    body {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    img {
+      pointer-events: none;
+      -webkit-user-drag: none;
+    }
+
+    body.pantalla-bloqueada {
+      overflow: hidden !important;
+    }
+
+    body {
+      background-image: url('mnt/data/cv-a.jpeg?q=80&w=1600');
+      background-attachment: fixed;
+      background-size: cover;
+      background-position: center;
+      background-color: var(--color-pallete-3);
+      font-family: var(--fuente-2);
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    /* --- MODAL DE BIENVENIDA (Sobre Animado) --- */
+    #sobreBienvenida {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100vh;
+      z-index: 9999;
+      background: rgba(20, 22, 5, 0.9);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 1s ease;
+    }
+
+    .envelope-wrapper {
+      position: relative;
+      width: 90vw;
+      max-width: 550px;
+      height: 350px;
+      perspective: 1200px; 
+      transition: all 1.2s ease 1.5s; 
+      margin-top: 50px; 
+    }
+
+    @media (max-width: 450px) {
+        .envelope-wrapper { height: 260px; }
+    }
+
+    .envelope {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: #d1cbbd;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.15); 
+      border-radius: 2px;
+    }
+
+    .card-inside {
+      position: absolute;
+      bottom: 5px;
+      left: 5%;
+      width: 90%;
+      height: 95%;
+      background-color: #ffffff;
+      border-radius: 4px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      z-index: 1;
+    }
+
+    .side-flaps {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, #ece8dc 0%, #e2ddcf 50%, #ece8dc 100%);
+      clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
+      z-index: 2;
+      filter: drop-shadow(0 0 4px rgba(0,0,0,0.1));
+    }
+
+    .bottom-flap {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to top, #e6e0d2 0%, #dfd8c8 100%);
+      clip-path: polygon(0 100%, 50% 55%, 100% 100%);
+      z-index: 3;
+      filter: drop-shadow(0 -4px 6px rgba(0,0,0,0.1));
+    }
+
+    .top-flap {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, #ede9df 0%, #e3ddcc 100%);
+      clip-path: polygon(0 0, 100% 0, 50% 58%);
+      transform-origin: top;
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s, z-index 0s 1s;
+      z-index: 5;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.25)); 
+    }
+
+    .seal {
+      position: absolute;
+      top: 57%; 
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle at 35% 35%, #fceabb, #f8b500, #b37d00, #664600);
+      border-radius: 50%;
+      z-index: 6;
+      cursor: pointer;
+      box-shadow: 
+          inset 0 0 15px rgba(100, 50, 0, 0.7),
+          0 8px 15px rgba(0,0,0,0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.4s ease;
+      border: 1px solid #8c6000;
+      overflow: hidden; 
+    }
+
+    .seal-logo {
+      width: 110%; 
+      height: auto;
+      mix-blend-mode: multiply; 
+      opacity: 0.85; 
+      filter: contrast(1.3) brightness(0.9); 
+      transition: transform 0.3s ease;
+      pointer-events: none;
+    }
+
+    .seal:hover .seal-logo {
+      transform: scale(1.05);
+    }
+
+    .instruccion-sello {
+      color: rgba(255, 255, 255, 0.8);
+      margin-top: 40px;
+      font-size: 14px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    .envelope-wrapper.open .seal {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(1.5);
+      pointer-events: none;
+    }
+
+    .envelope-wrapper.open .top-flap {
+      transform: rotateX(180deg);
+      z-index: 0;
+    }
+
+    .envelope-wrapper.open {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(60px) scale(0.95);
+    }
+
+    /* --- REPRODUCTOR --- */
+    #controlador-musica {
+      position: fixed;
+      z-index: 9000;
+      bottom: 20px;
+      right: 20px;
+      display: none;
+    }
+
+    .music-anim-icon {
+      width: 60px;
+      height: 60px;
+      cursor: pointer;
+      background: var(--color-pallete-4);
+      border-radius: 50%;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .inv-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .seccion-solida {
+      background-color: transparent;
+      position: relative;
+      margin: 60px 0;
+      padding: 20px;
+    }
+
+    /* --- PORTADA --- */
+    .portada {
+      height: 100vh;
+      min-height: 800px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .filtro-portada {
+      position: absolute; top:0; left:0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.4); z-index: 1;
+    }
+    .content-portada { z-index: 2; color: white; }
+    
+    .fecha-destacada {
+      font-family: var(--fuente-1); font-size: 26px; color: white;
+      letter-spacing: 5px; margin-bottom: 30px; padding: 10px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.7);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+      display: inline-block;
+    }
+    .nombres-portada {
+      font-family: var(--fuente-1); font-size: 90px; line-height: 1;
+      display: flex; align-items: center; justify-content: center; gap: 15px;
+    }
+    .phrase-life {
+      font-family: var(--fuente-2); font-size: 22px;
+      margin-top: 30px; margin-bottom: 20px; padding: 0 15px;
+    }
+    .scroll-down-container {
+      width: 100%; display: flex; justify-content: center;
+      opacity: 0.8; margin-top: 10px;
+    }
+    .ampersand {
+      font-family: var(--fuente-2); font-size: 40px;
+      background-color: var(--color-pallete-1); border-radius: 50%;
+      width: 60px; height: 60px; display: flex; justify-content: center; align-items: center;
+      color: white; 
+    }
+
+    .boton {
+      display: inline-block; background: var(--color-pallete-3);
+      color: var(--color-pallete-4); font-family: var(--fuente-1);
+      border-radius: 10px; font-size: 20px; padding: 12px 30px;
+      text-decoration: none; transition: all 0.3s;
+      min-width: 200px; text-align: center; border: none; cursor: pointer;
+    }
+    .boton:hover { background: #3a3e10; color: #fff; text-decoration: none; }
+
+    .reloj-container-flotante {
+      background-color: var(--color-pallete-5);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      padding: 40px 20px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.2);
+      box-shadow: 0px 15px 35px rgba(0,0,0,0.15);
+      display: inline-block;
+    }
+
+    .reloj { display: flex; justify-content: center; gap: 20px; margin-top: 20px; flex-wrap: wrap; }
+    .reloj-col { display: flex; flex-direction: column; border-right: 1px solid rgba(78, 83, 22, 0.2); padding-right: 20px; }
+    .reloj-col:last-child { border-right: none; }
+    .reloj-col .number { font-family: var(--fuente-1); font-size: 55px; color: var(--color-pallete-1); line-height: 1; }
+    .reloj-col .time { font-size: 20px; color: var(--color-pallete-3); }
+
+    .box-color-col {
+      background-color: var(--color-pallete-5); 
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      border-radius: 20px;
+      padding: 35px 20px; 
+      border: 1px solid rgba(255,255,255,0.2);
+      text-align: center; 
+      height: 100%;
+      box-shadow: 0px 10px 30px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .box-color-col:hover { transform: translateY(-5px); }
+
+    .fiesta-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; align-items: stretch; }
+
+    lottie-player, dotlottie-player { width: 80px; height: 80px; margin: 0 auto; }
+
+    /* --- SWIPER GALLERY --- */
+    .swiper {
+      width: 100%;
+      max-width: 900px;
+      padding-top: 20px;
+      padding-bottom: 50px;
+    }
+    .swiper-slide {
+      width: 100%;
+      height: 400px;
+      background: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    @media (min-width: 768px) {
+      .swiper-slide { height: 600px; }
+    }
+    .swiper-slide img {
+      display: block;
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain; 
+      border-radius: 15px; 
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+    .swiper-pagination-bullet-active {
+      background: var(--color-pallete-1) !important;
+    }
+
+    /* ========================================================
+       ESTILOS PARA LA SECCIÓN RSVP (Efecto Cristal y Colores) 
+       ======================================================== */
+    .glass-rsvp-container {
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 20px;
+      padding: 50px 30px;
+      max-width: 420px;
+      margin: 0 auto;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+      text-align: center;
+    }
+    
+    .rsvp-title {
+      font-family: var(--fuente-parisienne);
+      font-size: 50px;
+      color: #ffffff; 
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.4); 
+      margin-bottom: 5px;
+      line-height: 1.1;
+    }
+
+    .rsvp-name {
+      font-family: var(--fuente-parisienne);
+      font-size: 45px;
+      color: #ffd14b; 
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.4); 
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+
+    .rsvp-subtitle {
+      font-family: var(--fuente-1);
+      font-size: 24px;
+      font-style: italic;
+      color: #ffffff; 
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
+      margin-bottom: 15px;
+    }
+
+    .rsvp-number {
+      font-family: var(--fuente-1);
+      font-size: 80px;
+      color: #d4af37; 
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+      line-height: 1;
+      margin-bottom: 0;
+    }
+
+    .rsvp-footer {
+      font-family: var(--fuente-2);
+      font-size: 16px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #ffffff; 
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+      margin-bottom: 30px;
+      font-weight: bold;
+    }
+
+    /* Mensaje de error si no hay enlace válido */
+    .rsvp-invalido {
+      text-align: center;
+      padding: 20px 0;
+    }
+    .rsvp-invalido i {
+      font-size: 50px;
+      color: #d4af37; 
+      margin-bottom: 15px;
+    }
+    .rsvp-invalido h3 {
+      font-family: var(--fuente-1);
+      color: #ffffff;
+      font-size: 32px;
+      margin-bottom: 15px;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
+    }
+    .rsvp-invalido p {
+      font-family: var(--fuente-2);
+      color: #ffffff;
+      font-size: 18px;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+      line-height: 1.5;
+    }
+
+    .glass-select {
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      color: #333;
+      border-radius: 10px;
+      padding: 15px;
+      width: 100%;
+      margin-bottom: 20px;
+      font-family: var(--fuente-2);
+      font-size: 16px;
+      transition: all 0.3s ease;
+      font-weight: 600;
+    }
+    .glass-select:focus { outline: none; border-color: #DAA520 }
+
+    .btn-blue-rsvp {
+      background: #FF4FA3; 
+      color: white;
+      font-family: var(--fuente-2);
+      font-weight: bold;
+      font-size: 18px;
+      letter-spacing: 1px;
+      border: none;
+      padding: 16px;
+      width: 100%;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 162, 217, 0.3);
+      text-transform: uppercase;
+    }
+    .btn-blue-rsvp:hover { 
+      background: #FF69B4; 
+      transform: translateY(-2px); 
+      box-shadow: 0 6px 20px rgba(0, 162, 217, 0.4); 
+    }
+
+    /* ========================================================
+       ESTILOS DE VENTANAS MODALES (Estilo Cristal)
+       ======================================================== */
+    .glass-modal {
+      background: rgba(254, 245, 230, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(78, 83, 22, 0.3);
+      border-radius: 20px;
+      color: var(--color-pallete-1);
+    }
+    .glass-modal .modal-header {
+      border-bottom: 1px solid rgba(78, 83, 22, 0.2);
+    }
+    .glass-modal .modal-footer {
+      border-top: 1px solid rgba(78, 83, 22, 0.2);
+    }
+    .glass-modal .modal-title {
+      font-family: var(--fuente-1);
+      font-size: 30px;
+      width: 100%;
+      text-align: center;
+    }
+    .glass-modal .close {
+      color: var(--color-pallete-1);
+      opacity: 0.8;
+    }
+    .glass-modal-body-text {
+      font-family: var(--fuente-2);
+      font-size: 18px;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      .nombres-portada { flex-direction: column; font-size: 60px; }
+      .fecha-destacada { font-size: 20px; margin-bottom: 20px; }
+      .seccion-solida { margin: 30px 10px; padding: 10px; } 
+      .reloj-col .number { font-size: 35px; }
+      .reloj { gap: 10px; }
+      .reloj-col { padding-right: 10px; }
+      .swiper-slide { height: 350px; }
+      .reloj-container-flotante { padding: 30px 10px; }
+      .glass-rsvp-container { padding: 40px 20px; margin: 0 10px; }
+    }
+    .efecto-hora {
+      display: inline-block;
+      padding: 5px 15px;
+      border-radius: 20px;
+      background: rgba(78, 83, 22, 0.1); 
+      animation: latidoHora 2s infinite;
+    }
+
+    @keyframes latidoHora {
+      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(78, 83, 22, 0.4); }
+      50% { transform: scale(1.05); box-shadow: 0 0 12px 6px rgba(78, 83, 22, 0); }
+      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(78, 83, 22, 0); }
+    }
+  </style>
+
+  <script type="module" src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"></script>
+</head>
+<body class="pantalla-bloqueada">
+
+  <audio id="musicaFondo" loop>
+    <source src="mnt/data/cv.mp3" type="audio/mpeg">
+  </audio>
+
+  <div id="sobreBienvenida">
+    <div class="envelope-wrapper" id="envelope">
+        <div class="envelope">
+            <div class="card-inside"></div>
+            <div class="side-flaps"></div>
+            <div class="bottom-flap"></div>
+            <div class="top-flap"></div>
+        </div>
+        
+        <div class="seal" id="seal" onclick="abrirInvitacion()">
+            <img src="mnt/data/cv.png" alt="Sello Carlos y Vanessa" class="seal-logo">
+        </div>
+    </div>
+    <div class="instruccion-sello" id="instruccion">Toca el sello para abrir</div>
+  </div>
+
+  <div id="controlador-musica">
+    <div class="music-anim-icon" id="btnToggleMusica" onclick="toggleMusica()">
+      <lottie-player id="lottie-music" src="https://lottie.host/81096522-3767-4a5a-861f-d32abc760dda/0n5MhRB5do.json" background="transparent" speed="1" loop autoplay></lottie-player>
+    </div>
+  </div>
+
+  <div class="inv-container">
+    <section class="portada">
+      <div class="filtro-portada"></div>
+      <div class="content-portada">
+        <div class="fecha-destacada">00.00.00</div>
+        <div class="nombres-portada">
+          <span>Carlos</span>
+          <span class="ampersand">&</span>
+          <span>Vanessa</span>
+        </div>
+        <p style="font-family: var(--fuente-1); font-size: 40px; margin-top: 20px;">¡Nos casamos!</p>
+        <p class="phrase-life">Y TODO LO HIZO Hermoso a su tiempo Ecl.3,11</p>
+        <div class="scroll-down-container">
+          <lottie-player src="https://lottie.host/fe23dee9-72c1-4da5-8d6d-7657e250957b/JGLrleJfdF.json" background="transparent" speed="0.6" style="width: 50px; height: 50px;" loop autoplay></lottie-player>
+        </div>
+      </div>
+    </section>
+
+    <section class="seccion-solida text-center">
+	<div class="reloj-container-flotante">
+	<p><div style="font-family: var(--fuente-1); font-size: 24px; color: var(--color-pallete-1); letter-spacing: 8px; border-bottom: 1px solid rgba(78, 83, 22, 0.4); padding-bottom: 5px; display: inline-block; margin-top: -5px; margin-bottom: 20px;">00 • 00 • 00</div></p>
+	    <span style="font-family: var(--fuente-1); font-size: 50px; color: var(--color-pallete-3);">Faltan</span>
+		<div class="reloj" id="contador">
+          <div class="reloj-col"><span class="number" id="dias">00</span><span class="time">Días</span></div>
+          <div class="reloj-col"><span class="number" id="horas">00</span><span class="time">Hrs</span></div>
+          <div class="reloj-col"><span class="number" id="minutos">00</span><span class="time">Min</span></div>
+          <div class="reloj-col"><span class="number" id="segundos">00</span><span class="time">Seg</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="seccion-solida">
+      <div class="row">
+        <div class="col-md-6 mb-4">
+          <div class="box-color-col">
+            <img src="https://excluevent.com/wp-content/uploads/2025/11/Wedding_Rings_On_Transparent_Background__Wedding_Rings__Transparent_Background__Romantic_Design_PNG_Transparent_Image_and_Clipart_for_Free_Download__1_-removebg-preview.png" style="width: 120px; margin-bottom: 20px;" alt="Anillos">
+			<h3 style="font-family: var(--fuente-1); color: var(--color-pallete-1); font-size: 35px;">Ceremonia</h3>
+            <hr style="border-top: 1px solid var(--color-pallete-1); width: 50%;">
+			<p style="font-weight: bold; color: var(--color-pallete-1); font-size: 18px;">Catedral de Puebla</p>
+			<p style="display: inline-flex; align-items: center; justify-content: center; font-family: var(--fuente-1); color: #b37d00; font-size: 30px; margin: 15px 0; text-shadow: 1px 1px 2px rgba(0,0,0,0.1);">
+			<i class="fa-regular fa-clock fa-beat" style="--fa-animation-duration: 2s; font-size: 30px; margin-right: 12px;"></i>
+			<span>00:00 Hrs</span>
+			</p>
+            <button class="boton" data-toggle="modal" data-target="#modalCeremonia">¿Cómo llegar?</button>
+          </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+          <div class="box-color-col">
+            <img src="https://excluevent.com/wp-content/uploads/2024/11/Diseno-sin-titulo-68.png" style="width: 120px; margin-bottom: 20px;" alt="Fiesta">
+            <h3 style="font-family: var(--fuente-1); color: var(--color-pallete-1); font-size: 35px;">Celebración</h3>
+            <hr style="border-top: 1px solid var(--color-pallete-1); width: 50%;">
+            <p style="font-weight: bold; color: var(--color-pallete-1); font-size: 18px;">Rancho Puebla</p>
+			<p style="display: inline-flex; align-items: center; justify-content: center; font-family: var(--fuente-1); color: #b37d00; font-size: 30px; margin: 15px 0; text-shadow: 1px 1px 2px rgba(0,0,0,0.1);">
+			<i class="fa-regular fa-clock fa-beat" style="--fa-animation-duration: 2s; font-size: 30px; margin-right: 12px;"></i>
+			<span>00:00 Hrs</span>
+</p>
+            <button class="boton" data-toggle="modal" data-target="#modalCelebracion">¿Cómo llegar?</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="seccion-solida">
+      <div class="fiesta-grid">
+        <div class="box-color-col">
+          <h3 style="font-family: var(--fuente-1); color: var(--color-pallete-1); font-size: 30px;">Dress Code</h3>
+          <lottie-player src="https://lottie.host/c893d772-080c-4ad9-83a2-13cfb1cf0e03/YlQx88fzZY.json" background="transparent" speed="1" loop autoplay></lottie-player>
+          <button class="boton mt-3" data-toggle="modal" data-target="#modalDressCode">Ver</button>
+        </div>
+        <div class="box-color-col">
+          <h3 style="font-family: var(--fuente-1); color: var(--color-pallete-1); font-size: 30px;">Mesa de Regalos</h3>
+          <dotlottie-player src="https://lottie.host/f23c31c3-cb2d-4edc-a669-4ffe5fa108d0/hFjo0mI1cA.lottie" background="transparent" speed="1" loop autoplay></dotlottie-player>
+          <button class="boton mt-3" data-toggle="modal" data-target="#modalRegalos">Opciones</button>
+        </div>
+        <div class="box-color-col">
+          <h3 style="font-family: var(--fuente-1); color: var(--color-pallete-1); font-size: 30px;">Tips y Notas</h3>
+          <lottie-player src="https://lottie.host/1d85c4fd-5db8-43ac-b256-435643920e8b/oEAKcUN7Ix.json" background="transparent" speed="1" loop autoplay></lottie-player>
+          <button class="boton mt-3" data-toggle="modal" data-target="#modalTips">Ver</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="seccion-solida">
+      <div class="box-color-col" style="padding: 20px;">
+        <h2 style="font-family: var(--fuente-1); text-align: center; color: #4E5316; margin-bottom: 30px; margin-top: 20px;">Momentos Juntos</h2>
+        
+        <div class="swiper mySwiper">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide"><img src="mnt/data/gallery/cv-a.jpeg?q=80&w=1000" alt="C&V"></div>
+            <div class="swiper-slide"><img src="mnt/data/gallery/cv-b.jpeg?q=80&w=1000" alt="C&V"></div>
+            <div class="swiper-slide"><img src="mnt/data/gallery/cv-c.jpeg?q=80&w=1000" alt="C&V"></div>
+            <div class="swiper-slide"><img src="mnt/data/gallery/cv-d.jpeg?q=80&w=1000" alt="C&V"></div>
+            <div class="swiper-slide"><img src="mnt/data/gallery/cv-f.jpeg?q=80&w=1000" alt="C&V"></div>
+			<div class="swiper-slide"><img src="mnt/data/gallery/cv-m.jpeg?q=80&w=1000" alt="C&V"></div>
+            <div class="swiper-slide"><img src="mnt/data/gallery/cv-q.jpeg?q=80&w=1000" alt="C&V"></div>
+
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="seccion-solida" id="seccion-confirmacion">
+      <div class="glass-rsvp-container">
+        
+        <div id="estado-valido" style="display: none;">
+          <div class="rsvp-title">Están</div>
+          <div class="rsvp-title" style="margin-top: -15px;">Invitados</div>
+          
+          <div class="rsvp-name" id="ui-nombre"></div>
+          
+          <div class="rsvp-subtitle">¡Los esperamos!</div>
+          
+          <div class="rsvp-number" id="ui-pases-grandes"></div>
+          <div class="rsvp-footer">Invitación válida por <span id="ui-pases-pequenos"></span> PASES</div>
+
+          <form onsubmit="enviarWhatsApp(event)">
+            <select id="wa-asistencia" class="glass-select" required>
+              <option value="" disabled selected>Selecciona una opción...</option>
+              <option value="si">Sí, asistiremos</option>
+              <option value="no">Lamentablemente no podremos asistir</option>
+            </select>
+
+            <button type="submit" class="btn-blue-rsvp">Confirma tu asistencia</button>
+          </form>
+        </div>
+
+        <div id="estado-invalido" class="rsvp-invalido">
+          <i class="fa-solid fa-lock"></i>
+          <h3>Invitación Privada</h3>
+          <p>Lo sentimos, no pudimos verificar tu enlace.</p>
+          <p>Para confirmar tu asistencia, asegúrate de ingresar utilizando el <b>enlace personalizado</b> que te enviamos por mensaje.</p>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <div class="modal fade" id="modalCeremonia" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content glass-modal">
+        <div class="modal-header">
+          <h5 class="modal-title" style="font-size: 26px;">Ceremonia</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body glass-modal-body-text">
+          <img src="mnt/data/iglesia.jpg?auto=format&fit=crop&w=400&q=80" alt="Iglesia" class="img-fluid rounded mb-3" style="max-height: 200px; width: 100%; object-fit: cover; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+          <p style="font-size: 22px; font-weight: bold; margin-bottom: 5px;">Catedral de Puebla</p>
+          <p style="font-size: 16px; margin-bottom: 20px;">Av. 16 de Septiembre s/n, Centro Histórico, 72000 Puebla, Pue.</p>
+          <a href="https://maps.app.goo.gl/nqF11jSBrEXko29BA" target="_blank" class="boton" style="font-size: 16px; padding: 10px 20px;"><i class="fa-solid fa-map-location-dot mr-2"></i> Abrir en Maps</a>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="boton" data-dismiss="modal" style="min-width: 120px; font-size: 16px; padding: 10px 20px;">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalCelebracion" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content glass-modal">
+        <div class="modal-header">
+          <h5 class="modal-title" style="font-size: 26px;">Celebración </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body glass-modal-body-text">
+          <img src="mnt/data/salon.jpg?auto=format&fit=crop&w=400&q=80" alt="Recepción" class="img-fluid rounded mb-3" style="max-height: 200px; width: 100%; object-fit: cover; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+          <p style="font-size: 22px; font-weight: bold; margin-bottom: 5px;">Rancho 95</p>
+          <p style="font-size: 16px; margin-bottom: 20px;">C. Sirio 2912, Colonia Rinconada, Sur Oriente, 72193 Heroica Puebla de Zaragoza, Pue.</p>
+          <a href="https://maps.app.goo.gl/Cgvj1hmkvj25zj3L7" target="_blank" class="boton" style="font-size: 16px; padding: 10px 20px;"><i class="fa-solid fa-map-location-dot mr-2"></i> Abrir en Maps</a>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="boton" data-dismiss="modal" style="min-width: 120px; font-size: 16px; padding: 10px 20px;">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="modal fade" id="modalDressCode" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content glass-modal">
+      <div class="modal-header">
+        <h5 class="modal-title">Código de Vestimenta</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body glass-modal-body-text">
+        
+        <p style="font-size: 22px;"><strong>Formal</strong></p>
+        <p>¡Y como siempre, vas a lucir espectacular!</p>
+        
+        <p style="font-family: var(--fuente-1); font-size: 28px; color: var(--color-pallete-1); margin-top: 30px; line-height: 1.2;">
+          Tu sonrisa será tu mejor accesorio.
+        </p>
+        <p style="margin-bottom: 20px;">Por cierto, lleva un toque vaquero, como:<br> botas o sombrero. 🌵</p>
+         <div style="font-size: 55px; margin: 30px 0; display: flex; justify-content: center; gap: 30px;">
+          <span class="fa-beat-fade" style="--fa-animation-duration: 2s;">💃👢</span>
+		  <span class="fa-beat-fade" style="--fa-animation-duration: 2s;">🕺🤠</span>
+        </div>
+        <hr style="border-top: 1px solid rgba(78, 83, 22, 0.2);">
+        <p>🤍 <em>El color Blanco está reservado para la novia.</em></p>
+        
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="boton" data-dismiss="modal" style="min-width: 150px;">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div class="modal fade" id="modalRegalos" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content glass-modal">
+        <div class="modal-header">
+          <h5 class="modal-title">Mesa de Regalos</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body glass-modal-body-text">
+          <p>Tu presencia es nuestro mayor regalo, pero si deseas tener un detalle con nosotros, contamos con mesa de regalos:</p>
+          <div style="background: rgba(78, 83, 22, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0;">
+            <p style="margin-bottom: 5px;"><strong>Liverpool</strong></p>
+            <p style="margin-bottom: 0;">Evento: <strong>123456789</strong></p>
+          </div>
+          <p>O si prefieres, agradeceremos tu aportación en efectivo el día del evento (Lluvia de sobres).</p>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="boton" data-dismiss="modal" style="min-width: 150px;">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalTips" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content glass-modal">
+        <div class="modal-header">
+          <h5 class="modal-title">Tips y Notas</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body glass-modal-body-text">
+          <p><i class="fa-solid fa-clock mb-2" style="font-size: 24px;"></i><br><strong>Puntualidad</strong><br>Sugerimos llegar 15 minutos antes a la ceremonia religiosa.</p>
+          <hr style="border-top: 1px solid rgba(78, 83, 22, 0.2);">
+          <p><i class="fa-solid fa-hands-praying mb-2" style="font-size: 24px;"></i><br>Querida familia y amigos:<br><strong>Lo más importante para nosotros como un nuevo matrimonio ante los ojos de Dios, y lo que da sentido a todo, es la Celebración Eucarística. </strong></p>
+			<p>Esperamos de todo corazón que nos acompañen primero en la iglesia para dar gracias a Dios. Después nos vemos en la fiesta para celebrar.</p>
+		</div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="boton" data-dismiss="modal" style="min-width: 150px;">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+  
+  <script>
+    /* Inicializar Swiper */
+    var swiper = new Swiper(".mySwiper", {
+      effect: "fade", 
+      fadeEffect: { crossFade: true },
+      speed: 1500, 
+      grabCursor: true,
+      loop: true, 
+      autoplay: {
+        delay: 3500, 
+        disableOnInteraction: false,
+      },
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+    });
+  </script>
+
+  <script>
+    // --- BARRERAS ANTI-CLONACIÓN GENERALES ---
+    document.addEventListener("contextmenu", function(e) { e.preventDefault(); });
+    document.onkeydown = function(e) {
+      if (e.key === 'F12' || e.keyCode === 123) return false;
+      if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) return false;
+      if (e.ctrlKey && (e.key === 'U' || e.key === 'u')) return false;
+    };
+
+    // --- EJECUCIÓN PROTEGIDA (BASE64) ---
+    eval(atob("CiAgICAvLyAtLS0gTMOTR0lDQSBJTlRFUk5BIFNFR1VSQSAtLS0KICAgIHZhciBpc1BsYXlpbmcgPSBmYWxzZTsKICAgIHZhciBkYXRhSW52aXRhZG8gPSB7IG5vbWJyZTogIiIsIGFkdWx0b3M6IDAsIG5pbm9zOiAwIH07CgogICAgZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcigiRE9NQ29udGVudExvYWRlZCIsIGZ1bmN0aW9uKCkgewogICAgICB2YXIgcGFyYW1zID0gbmV3IFVSTFNlYXJjaFBhcmFtcyh3aW5kb3cubG9jYXRpb24uc2VhcmNoKTsKICAgICAgdmFyIGcgPSBwYXJhbXMuZ2V0KCdnJyk7IAogICAgICBpZiAoZykgewogICAgICAgIHRyeSB7CiAgICAgICAgICB2YXIgcmF3QjY0ID0gd2luZG93LmF0b2IoZyk7CiAgICAgICAgICB2YXIgZGVjb2RpZmljYWRvID0gIiI7CiAgICAgICAgICB0cnkgewogICAgICAgICAgICBkZWNvZGlmaWNhZG8gPSBkZWNvZGVVUklDb21wb25lbnQoZXNjYXBlKHJhd0I2NCkpOwogICAgICAgICAgfSBjYXRjaChlKSB7CiAgICAgICAgICAgIGRlY29kaWZpY2FkbyA9IGRlY29kZVVSSUNvbXBvbmVudChyYXdCNjQuc3BsaXQoJycpLm1hcChmdW5jdGlvbihjKSB7CiAgICAgICAgICAgICAgICByZXR1cm4gJyUnICsgKCcwMCcgKyBjLmNoYXJDb2RlQXQoMCkudG9TdHJpbmcoMTYpKS5zbGljZSgtMik7CiAgICAgICAgICAgIH0pLmpvaW4oJycpKTsKICAgICAgICAgIH0KICAgICAgICAgIGRlY29kaWZpY2FkbyA9IGRlY29kaWZpY2Fkby5yZXBsYWNlKC9cdUZGRkQvZywgJycpOyAKICAgICAgICAgIHZhciBwYXJ0ZXMgPSBkZWNvZGlmaWNhZG8uc3BsaXQoJ3wnKTsgCiAgICAgICAgICBpZiAocGFydGVzLmxlbmd0aCA+PSAzKSB7CiAgICAgICAgICAgIGRhdGFJbnZpdGFkby5ub21icmUgPSBwYXJ0ZXNbMF07CiAgICAgICAgICAgIGRhdGFJbnZpdGFkby5hZHVsdG9zID0gcGFyc2VJbnQocGFydGVzWzFdKTsKICAgICAgICAgICAgZGF0YUludml0YWRvLm5pbm9zID0gcGFyc2VJbnQocGFydGVzWzJdKTsKICAgICAgICAgICAgdmFyIHRvdGFsUGFzZXMgPSBkYXRhSW52aXRhZG8uYWR1bHRvcyArIGRhdGFJbnZpdGFkby5uaW5vczsKICAgICAgICAgICAgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3VpLW5vbWJyZScpLmlubmVyVGV4dCA9IGRhdGFJbnZpdGFkby5ub21icmU7CiAgICAgICAgICAgIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCd1aS1wYXNlcy1ncmFuZGVzJykuaW5uZXJUZXh0ID0gdG90YWxQYXNlczsKICAgICAgICAgICAgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3VpLXBhc2VzLXBlcXVlbm9zJykuaW5uZXJUZXh0ID0gdG90YWxQYXNlczsKICAgICAgICAgICAgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2VzdGFkby1pbnZhbGlkbycpLnN0eWxlLmRpc3BsYXkgPSAnbm9uZSc7CiAgICAgICAgICAgIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdlc3RhZG8tdmFsaWRvJykuc3R5bGUuZGlzcGxheSA9ICdibG9jayc7CiAgICAgICAgICB9CiAgICAgICAgfSBjYXRjaChlKSB7CiAgICAgICAgICBjb25zb2xlLmVycm9yKCJFcnJvciBkZSBlbmxhY2UuIik7CiAgICAgICAgfQogICAgICB9CiAgICB9KTsKCiAgICB3aW5kb3cuYWJyaXJJbnZpdGFjaW9uID0gZnVuY3Rpb24oKSB7CiAgICAgIHZhciBpbnN0cnVjY2lvbiA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdpbnN0cnVjY2lvbicpOwogICAgICBpZiAoaW5zdHJ1Y2Npb24pIGluc3RydWNjaW9uLnN0eWxlLmRpc3BsYXkgPSAnbm9uZSc7CiAgICAgIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdlbnZlbG9wZScpLmNsYXNzTGlzdC5hZGQoJ29wZW4nKTsKICAgICAgdmFyIGF1ZGlvRm9uZG8gPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnbXVzaWNhRm9uZG8nKTsKICAgICAgaWYgKGF1ZGlvRm9uZG8pIHsKICAgICAgICBhdWRpb0ZvbmRvLnBsYXkoKS50aGVuKGZ1bmN0aW9uKCkgewogICAgICAgICAgaXNQbGF5aW5nID0gdHJ1ZTsKICAgICAgICB9KS5jYXRjaChmdW5jdGlvbihlKSB7IGNvbnNvbGUubG9nKGUpOyB9KTsKICAgICAgfQogICAgICBzZXRUaW1lb3V0KGZ1bmN0aW9uKCkgewogICAgICAgIHZhciBzb2JyZUJpZW52ZW5pZGEgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnc29icmVCaWVudmVuaWRhJyk7CiAgICAgICAgaWYgKHNvYnJlQmllbnZlbmlkYSkgc29icmVCaWVudmVuaWRhLnN0eWxlLm9wYWNpdHkgPSAnMCc7IAogICAgICAgIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdjb250cm9sYWRvci1tdXNpY2EnKS5zdHlsZS5kaXNwbGF5ID0gJ2Jsb2NrJzsKICAgICAgICBkb2N1bWVudC5ib2R5LmNsYXNzTGlzdC5yZW1vdmUoJ3BhbnRhbGxhLWJsb3F1ZWFkYScpOwogICAgICAgIGRvY3VtZW50LmJvZHkuc3R5bGUub3ZlcmZsb3cgPSAiYXV0byI7CiAgICAgICAgc2V0VGltZW91dChmdW5jdGlvbigpIHsKICAgICAgICAgIGlmIChzb2JyZUJpZW52ZW5pZGEpIHNvYnJlQmllbnZlbmlkYS5zdHlsZS5kaXNwbGF5ID0gJ25vbmUnOwogICAgICAgIH0sIDEwMDApOwogICAgICB9LCAyNTAwKTsgCiAgICB9OwoKICAgIHdpbmRvdy50b2dnbGVNdXNpY2EgPSBmdW5jdGlvbigpIHsKICAgICAgdmFyIGF1ZGlvRm9uZG8gPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnbXVzaWNhRm9uZG8nKTsKICAgICAgdmFyIGxvdHRpZU11c2ljID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2xvdHRpZS1tdXNpYycpOwogICAgICBpZiAoaXNQbGF5aW5nKSB7CiAgICAgICAgYXVkaW9Gb25kby5wYXVzZSgpOwogICAgICAgIGlmIChsb3R0aWVNdXNpYykgbG90dGllTXVzaWMuc3RvcCgpOwogICAgICB9IGVsc2UgewogICAgICAgIGF1ZGlvRm9uZG8ucGxheSgpOwogICAgICAgIGlmIChsb3R0aWVNdXNpYykgbG90dGllTXVzaWMucGxheSgpOwogICAgICB9CiAgICAgIGlzUGxheWluZyA9ICFpc1BsYXlpbmc7CiAgICB9OwoKICAgIHdpbmRvdy5lbnZpYXJXaGF0c0FwcCA9IGZ1bmN0aW9uKGV2ZW50KSB7CiAgICAgIGV2ZW50LnByZXZlbnREZWZhdWx0KCk7IAogICAgICB2YXIgdGVsZWZvbm9EZXN0aW5vID0gIjUyMjIwMjY2MjcwMyI7IAogICAgICB2YXIgYXNpc3RlbmNpYSA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCd3YS1hc2lzdGVuY2lhJykudmFsdWU7CiAgICAgIHZhciB0b3RhbFBhc2VzID0gZGF0YUludml0YWRvLmFkdWx0b3MgKyBkYXRhSW52aXRhZG8ubmlub3M7CiAgICAgIHZhciBlc1BsdXJhbCA9IHRvdGFsUGFzZXMgPiAxOwogICAgICB2YXIgdHh0U295U29tb3MgPSBlc1BsdXJhbCA/ICJTb21vcyIgOiAiU295IjsKICAgICAgdmFyIHR4dENvbmZpcm1vID0gZXNQbHVyYWwgPyAiY29uZmlybWFtb3MgbnVlc3RyYSIgOiAiY29uZmlybW8gbWkiOwogICAgICB2YXIgdHh0VXRpbGl6YXJlbW9zID0gZXNQbHVyYWwgPyAiVXRpbGl6YXJlbW9zIGNvbiBndXN0byBudWVzdHJvcyAiICsgdG90YWxQYXNlcyArICIgcGFzZXMiIDogIlV0aWxpemFyw6kgY29uIGd1c3RvIG1pIMO6bmljbyBwYXNlIjsKICAgICAgdmFyIHR4dFBvZHJlbW9zID0gZXNQbHVyYWwgPyAicG9kcmVtb3MiIDogInBvZHLDqSI7CgogICAgICB2YXIgdGV4dG9CYXNlID0gIsKhSG9sYSBDYXJsb3MgeSBWYW5lc3NhISBbU0FMVURPXVtBTklMTE9dXG5cbiI7CiAgICAgIHRleHRvQmFzZSArPSB0eHRTb3lTb21vcyArICIgKiIgKyBkYXRhSW52aXRhZG8ubm9tYnJlICsgIiouIFtCUklORElTXVxuXG4iOwogICAgICAKICAgICAgaWYgKGFzaXN0ZW5jaWEgPT09ICJzaSIpIHsKICAgICAgICB0ZXh0b0Jhc2UgKz0gIltGSUVTVEFdICrCoVBvciBzdXB1ZXN0byBxdWUgIiArIHR4dENvbmZpcm1vICsgIiBhc2lzdGVuY2lhISpcbiI7CiAgICAgICAgdmFyIHRleHRvQWR1bHRvcyA9IGRhdGFJbnZpdGFkby5hZHVsdG9zICsgKGRhdGFJbnZpdGFkby5hZHVsdG9zID09PSAxID8gIiBBZHVsdG8iIDogIiBBZHVsdG9zIik7CiAgICAgICAgdmFyIHRleHRvTmlub3MgPSAiIjsKICAgICAgICBpZiAoZGF0YUludml0YWRvLm5pbm9zID4gMCkgewogICAgICAgICAgdGV4dG9OaW5vcyA9ICIgeSAiICsgZGF0YUludml0YWRvLm5pbm9zICsgKGRhdGFJbnZpdGFkby5uaW5vcyA9PT0gMSA/ICIgTmnDsW8iIDogIiBOacOxb3MiKTsKICAgICAgICB9CiAgICAgICAgdGV4dG9CYXNlICs9IHR4dFV0aWxpemFyZW1vcyArICIgKCIgKyB0ZXh0b0FkdWx0b3MgKyB0ZXh0b05pbm9zICsgIikuXG5cbiI7CiAgICAgICAgdGV4dG9CYXNlICs9ICLCoVlhIHF1ZXJlbW9zIHF1ZSBzZWEgZWwgZ3JhbiBkw61hIHBhcmEgY2VsZWJyYXIgY29uIHVzdGVkZXMhIFtCQUlMRV0iOwogICAgICB9IGVsc2UgewogICAgICAgIHRleHRvQmFzZSArPSAiW1RSSVNURV0gKkxhbWVudGFibGVtZW50ZSwgZW4gZXN0YSBvY2FzacOzbiBubyAiICsgdHh0UG9kcmVtb3MgKyAiIGFjb21wYcOxYXJsb3MuKlxuXG4iOwogICAgICAgIHRleHRvQmFzZSArPSAiTGVzIGFncmFkZWNlbW9zIG11Y2jDrXNpbW8gbGEgaW52aXRhY2nDs24geSBsZXMgZGVzZWFtb3MgdW5hIGJvZGEgZXNwZWN0YWN1bGFyIHkgbGxlbmEgZGUgYW1vci4gW0NPUkFaT05dIjsKICAgICAgfQoKICAgICAgdmFyIHRleHRvQ29kaWZpY2FkbyA9IGVuY29kZVVSSUNvbXBvbmVudCh0ZXh0b0Jhc2UpOwogICAgICB0ZXh0b0NvZGlmaWNhZG8gPSB0ZXh0b0NvZGlmaWNhZG8ucmVwbGFjZSgiJTVCU0FMVURPJTVEIiwgIiVGMCU5RiU5MSU4QiIpOyAKICAgICAgdGV4dG9Db2RpZmljYWRvID0gdGV4dG9Db2RpZmljYWRvLnJlcGxhY2UoIiU1QkFOSUxMTyU1RCIsICIlRjAlOUYlOTIlOEQiKTsgCiAgICAgIHRleHRvQ29kaWZpY2FkbyA9IHRleHRvQ29kaWZpY2Fkby5yZXBsYWNlKCIlNUJCUklORElTJTVEIiwgIiVGMCU5RiVBNSU4MiIpOwogICAgICB0ZXh0b0NvZGlmaWNhZG8gPSB0ZXh0b0NvZGlmaWNhZG8ucmVwbGFjZSgiJTVCRklFU1RBJTVEIiwgIiVGMCU5RiU4RSU4OSIpOyAKICAgICAgdGV4dG9Db2RpZmljYWRvID0gdGV4dG9Db2RpZmljYWRvLnJlcGxhY2UoIiU1QkJBSUxFJTVEIiwgIiVGMCU5RiU5MiU4MyIpOyAKICAgICAgdGV4dG9Db2RpZmljYWRvID0gdGV4dG9Db2RpZmljYWRvLnJlcGxhY2UoIiU1QlRSSVNURSU1RCIsICIlRjAlOUYlQTUlQkEiKTsgCiAgICAgIHRleHRvQ29kaWZpY2FkbyA9IHRleHRvQ29kaWZpY2Fkby5yZXBsYWNlKCIlNUJDT1JBWk9OJTVEIiwgIiVGMCU5RiU5MiU5NiIpOwoKICAgICAgdmFyIHVybFdoYXRzQXBwID0gImh0dHBzOi8vYXBpLndoYXRzYXBwLmNvbS9zZW5kP3Bob25lPSIgKyB0ZWxlZm9ub0Rlc3Rpbm8gKyAiJnRleHQ9IiArIHRleHRvQ29kaWZpY2FkbzsKICAgICAgd2luZG93Lm9wZW4odXJsV2hhdHNBcHAsICdfYmxhbmsnKTsKICAgIH07CgogICAgdmFyIGNvdW50RG93bkRhdGUgPSBuZXcgRGF0ZSgiMjAyNi0wOS0xOVQwMDowMDowMC0wNjowMCIpLmdldFRpbWUoKTsKICAgIHNldEludGVydmFsKGZ1bmN0aW9uKCkgewogICAgICB2YXIgbm93ID0gbmV3IERhdGUoKS5nZXRUaW1lKCk7CiAgICAgIHZhciBkaXN0YW5jZSA9IGNvdW50RG93bkRhdGUgLSBub3c7CiAgICAgIGlmIChkaXN0YW5jZSA+PSAwKSB7CiAgICAgICAgdmFyIGRheXMgPSBNYXRoLmZsb29yKGRpc3RhbmNlIC8gKDEwMDAgKiA2MCAqIDYwICogMjQpKTsKICAgICAgICB2YXIgaG91cnMgPSBNYXRoLmZsb29yKChkaXN0YW5jZSAlICgxMDAwICogNjAgKiA2MCAqIDI0KSkgLyAoMTAwMCAqIDYwICogNjApKTsKICAgICAgICB2YXIgbWludXRlcyA9IE1hdGguZmxvb3IoKGRpc3RhbmNlICUgKDEwMDAgKiA2MCAqIDYwKSkgLyAoMTAwMCAqIDYwKSk7CiAgICAgICAgdmFyIHNlY29uZHMgPSBNYXRoLmZsb29yKChkaXN0YW5jZSAlICgxMDAwICogNjApKSAvIDEwMDApOwoKICAgICAgICBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgiZGlhcyIpLmlubmVyVGV4dCA9IGRheXMgPCAxMCA/ICcwJyArIGRheXMgOiBkYXlzOwogICAgICAgIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCJob3JhcyIpLmlubmVyVGV4dCA9IGhvdXJzIDwgMTAgPyAnMCcgKyBob3VycyA6IGhvdXJzOwogICAgICAgIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCJtaW51dG9zIikuaW5uZXJUZXh0ID0gbWludXRlcyA8IDEwID8gJzAnICsgbWludXRlcyA6IG1pbnV0ZXM7CiAgICAgICAgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoInNlZ3VuZG9zIikuaW5uZXJUZXh0ID0gc2Vjb25kcyA8IDEwID8gJzAnICsgc2Vjb25kcyA6IHNlY29uZHM7CiAgICAgIH0KICAgIH0sIDEwMDApOwo="));
+  </script>
+</body>
+</html>
