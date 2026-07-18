@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM y Creador Web - Tu Pase Digital</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- SheetJS (Excel Export/Import) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- jsPDF & html2canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="text-gray-800 h-screen flex flex-col overflow-hidden">
+
+    <!-- LOGIN -->
+    <div id="login-screen" class="fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center z-50 glass">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md text-center mx-4 animate-pop">
+            <i class="fa-solid fa-calendar-check text-5xl text-pink-500 mb-4"></i>
+            <h1 class="text-2xl font-bold mb-2">Tu Pase Digital</h1>
+            <p class="text-sm text-gray-500 mb-6">Plataforma de Gestión de Eventos</p>
+            <input type="text" id="login-user" placeholder="Usuario (Ej. admin o boda_ana)" class="w-full border-2 border-gray-100 p-3 rounded-xl mb-4 outline-none focus:border-pink-500 transition font-medium">
+            <div class="relative w-full mb-6">
+                <input type="password" id="login-pass" onkeypress="if(event.key === 'Enter') window.login()" placeholder="Contraseña" class="w-full border-2 border-gray-100 p-3 rounded-xl outline-none focus:border-pink-500 transition pr-10 font-medium">
+                <button onclick="window.togglePassword('login-pass')" class="absolute right-4 top-3.5 text-gray-400 hover:text-pink-500 transition"><i class="fa-solid fa-eye"></i></button>
+            </div>
+            <button onclick="window.login()" class="w-full bg-gray-900 hover:bg-black text-white font-bold py-3.5 px-4 rounded-xl transition shadow-lg flex justify-center items-center gap-2">
+                Entrar al Sistema <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- WIZARD (ONBOARDING) -->
+    <div id="welcome-modal" class="fixed inset-0 bg-gray-900 bg-opacity-80 items-center justify-center z-50 hidden glass">
+        <div class="bg-white p-6 md:p-8 rounded-3xl shadow-2xl w-full max-w-lg mx-4 animate-pop max-h-[95vh] overflow-y-auto custom-scrollbar">
+            <div class="text-center mb-6">
+                <i class="fa-solid fa-wand-magic-sparkles text-4xl text-pink-500 mb-3"></i>
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Configuremos tu Evento</h2>
+                <p class="text-xs text-gray-600">Completa esta información para personalizar tu plataforma.</p>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Motivo del Evento</label>
+                    <select id="welcome-event-type" onchange="document.getElementById('welcome-event-other-container').classList.toggle('hidden', this.value !== 'Otro')" class="w-full border-2 border-gray-200 p-2.5 rounded-xl text-sm outline-none bg-white focus:border-pink-500 font-bold text-gray-700 cursor-pointer">
+                        <option value="Boda">💍 Boda</option>
+                        <option value="XV Años">👑 XV Años</option>
+                        <option value="Bautizo">🕊️ Bautizo / Comunión</option>
+                        <option value="Cumpleaños">🎂 Cumpleaños</option>
+                        <option value="Otro">🎉 Otro Evento (Especificar)</option>
+                    </select>
+                    <div id="welcome-event-other-container" class="hidden mt-2">
+                        <input type="text" id="welcome-event-other" placeholder="Ej. Graduación Médica" class="w-full border-2 border-gray-200 p-2.5 rounded-xl text-sm outline-none focus:border-pink-500">
+                    </div>
+                </div>
+                
+                <div id="welcome-step-design" class="hidden space-y-4 border-t border-gray-100 pt-4">
+                    <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Datos de la Invitación</label>
+                    <div class="grid grid-cols-2 gap-3 mb-3">
+                        <input type="text" id="welcome-names" placeholder="Nombre(s) (Ej. Ana & Luis)" class="w-full border-2 border-gray-200 p-2.5 rounded-xl text-xs outline-none focus:border-purple-500">
+                        <input type="text" id="welcome-date" placeholder="Fecha (Ej. Sábado 24 de Nov)" class="w-full border-2 border-gray-200 p-2.5 rounded-xl text-xs outline-none focus:border-purple-500">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 mb-3">
+                        <input type="text" id="welcome-ceremony" placeholder="Ceremonia (Opcional)" class="w-full border-2 border-gray-200 p-2.5 rounded-xl text-xs outline-none focus:border-purple-500">
+                        <input type="text" id="welcome-reception" placeholder="Recepción (Hora y Lugar)" class="w-full border-2 border-gray-200 p-2.5 rounded-xl text-xs outline-none focus:border-purple-500">
+                    </div>
+                    <div>
+                        <input type="text" id="welcome-dresscode" placeholder="Código de Vestimenta (Opcional)" class="w-full border-2 border-gray-200 p-2.5 rounded-xl text-xs outline-none focus:border-purple-500 mb-3">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <input type="text" id="welcome-maps-c" placeholder="Link Maps Ceremonia" class="w-full border-2 border-gray-200 p-2.5 rounded-xl text-xs outline-none focus:border-green-500">
+                        <input type="text" id="welcome-maps-r" placeholder="Link Maps Recepción" class="w-full border-2 border-gray-200 p-2.5 rounded-xl text-xs outline-none focus:border-green-500">
+                    </div>
+                    <div class="pt-2">
+                        <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Fondo de Diseño (IA)</label>
+                        <input type="text" id="welcome-prompt" placeholder="Ej. Bosque de noche con luces doradas..." class="w-full border-2 border-gray-200 p-2.5 rounded-xl text-xs outline-none focus:border-blue-500">
+                    </div>
+                </div>
+
+                <div id="welcome-step-links" class="hidden border-t border-gray-100 pt-4">
+                    <div class="flex justify-between items-center mb-1.5">
+                        <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest">Método de Confirmación</label>
+                        <button onclick="window.showLinkInfo()" class="text-blue-500 hover:text-blue-700 bg-blue-50 w-5 h-5 rounded-full flex items-center justify-center transition" title="¿Qué significa esto?"><i class="fa-solid fa-info text-[10px]"></i></button>
+                    </div>
+                    <p class="text-[9px] text-gray-400 mb-2">¿Cómo confirmarán asistencia tus invitados?</p>
+                    <select id="welcome-link-type" onchange="document.getElementById('welcome-base-url-container').classList.toggle('hidden', this.value === 'crm')" class="w-full border-2 border-gray-200 p-2.5 rounded-xl text-xs outline-none bg-white focus:border-pink-500 font-bold text-gray-700 cursor-pointer transition">
+                        <option value="crm">🤖 Auto-RSVP (Sistema Nativo CRM)</option>
+                        <option value="normal">🌐 Link Clásico (Mi propia web)</option>
+                        <option value="base64">✨ Link Mágico (Base64)</option>
+                    </select>
+                    <div id="welcome-base-url-container" class="hidden mt-2">
+                        <label class="block text-[9px] font-bold text-gray-400 uppercase mb-1">URL de tu Invitación Web</label>
+                        <input type="text" id="welcome-base-url" placeholder="Ej. https://bodajose.tupasedigital.online" class="w-full border-2 border-gray-200 p-2.5 rounded-xl text-xs outline-none focus:border-pink-500 transition">
+                    </div>
+                </div>
+            </div>
+            <button onclick="window.saveWelcomeData()" class="w-full bg-gray-900 hover:bg-black text-white font-bold py-3.5 px-4 rounded-xl transition shadow-lg text-sm mt-6">Guardar y Entrar</button>
+        </div>
+    </div>
+
+    <!-- PANEL DE AGENCIA -->
+    <div id="admin-panel" class="hidden h-full flex flex-col bg-gray-100">
+        <header class="bg-gray-900 text-white px-6 py-4 flex justify-between items-center shrink-0">
+            <div class="flex items-center gap-3"><i class="fa-solid fa-shield-halved text-2xl text-blue-400"></i><h1 class="text-xl font-bold">Panel de Agencia</h1></div>
+            <button onclick="window.logout()" class="text-gray-300 hover:text-red-400 transition" title="Cerrar Sesión"><i class="fa-solid fa-sign-out-alt text-xl"></i></button>
+        </header>
+        <main class="flex-1 overflow-y-auto p-6">
+            <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow p-8">
+                <div id="admin-create-section">
+                    <h2 class="text-xl font-bold border-b pb-3 mb-6 text-gray-800">Crear Nuevo Usuario</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
+                        <div><label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">ID de Usuario</label><input type="text" id="new-client-user" placeholder="Ej. xv_sofia" class="w-full border-2 border-gray-200 p-2.5 rounded-lg text-sm outline-none focus:border-blue-500 font-medium"></div>
+                        <div><label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Contraseña</label><div class="relative"><input type="password" id="new-client-pass" class="w-full border-2 border-gray-200 p-2.5 rounded-lg text-sm outline-none focus:border-blue-500 pr-16 font-medium"><div class="absolute right-2 top-2.5 flex gap-2"><button onclick="window.generateRandomPassword('new-client-pass')" class="text-gray-400 hover:text-blue-500"><i class="fa-solid fa-dice"></i></button><button onclick="window.togglePassword('new-client-pass')" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-eye"></i></button></div></div></div>
+                        <div><label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Permisos (Rol)</label><select id="new-client-role" class="w-full border-2 border-gray-200 p-2.5 rounded-lg text-sm outline-none bg-white font-bold text-gray-700 cursor-pointer"><option value="Cliente">Cliente Festejado (CRM)</option><option value="Cliente Web">Cliente Web (Creador Pases)</option><option value="Soporte">Soporte (Agencia)</option><option value="Administrador">Administrador Global</option></select></div>
+                    </div>
+                    <button onclick="window.createClient()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold text-sm shadow-md mb-10"><i class="fa-solid fa-user-plus"></i> Registrar Usuario</button>
+                </div>
+                <h2 class="text-xl font-bold border-b pb-3 mb-4 text-gray-800">Cuentas Activas</h2>
+                <div class="overflow-x-auto border rounded-xl">
+                    <table class="w-full text-left text-sm whitespace-nowrap"><thead class="bg-gray-50 text-gray-600"><tr><th class="p-4 font-bold">ID Base de Datos</th><th class="p-4 font-bold">Etiqueta (Tipo)</th><th class="p-4 font-bold">Rol / Paquete</th><th class="p-4 font-bold text-center">Acciones</th></tr></thead><tbody id="clients-tbody" class="divide-y divide-gray-100 bg-white"></tbody></table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- APP PRINCIPAL -->
+    <div id="app-screen" class="hidden h-full flex flex-col">
+        <div id="impersonation-bar" class="hidden bg-yellow-400 text-yellow-900 px-6 py-2 text-sm font-bold flex justify-between items-center shrink-0">
+            <span><i class="fa-solid fa-user-secret mr-2"></i> Supervisando BD: <span id="impersonation-name" class="underline uppercase"></span></span>
+            <button onclick="window.exitImpersonation()" class="bg-gray-900 hover:bg-black text-white px-4 py-1.5 rounded-lg text-xs shadow">Salir al Panel</button>
+        </div>
+        <header class="bg-white shadow-sm border-b px-6 py-4 flex justify-between items-center shrink-0 flex-wrap gap-4 z-10">
+            <div class="flex items-center gap-3"><i id="header-main-icon" class="fa-solid fa-calendar-check text-2xl text-pink-500"></i><div><h1 class="text-xl font-bold text-gray-800 tracking-tight">Tu Pase Digital</h1><p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider" id="header-event-type">Cargando...</p></div></div>
+            <div class="flex items-center gap-4"><div class="text-right hidden md:block"><p class="text-sm font-bold uppercase text-gray-700" id="user-display">Usuario</p><p class="text-[10px] text-green-500 font-bold uppercase"><i class="fa-solid fa-cloud"></i> En línea</p></div><button onclick="window.logout()" class="w-10 h-10 bg-gray-100 hover:bg-red-50 text-gray-500 hover:text-red-500 rounded-full flex items-center justify-center"><i class="fa-solid fa-sign-out-alt"></i></button></div>
+        </header>
+        <nav class="bg-white border-b flex px-6 gap-2 shrink-0 text-sm font-medium overflow-x-auto custom-scrollbar">
+            <button onclick="window.switchTab('invitados')" id="tab-invitados" class="tab-btn py-4 px-4 border-b-2 border-pink-500 text-pink-600 whitespace-nowrap transition hidden"><i class="fa-solid fa-users mr-2"></i>Lista de Invitados</button>
+            <button onclick="window.switchTab('mesas')" id="tab-mesas" class="tab-btn py-4 px-4 border-b-2 border-transparent text-gray-500 hover:text-gray-800 whitespace-nowrap transition hidden"><i class="fa-solid fa-chair mr-2"></i>Acomodo de Mesas</button>
+            <button onclick="window.switchTab('estadisticas')" id="tab-estadisticas" class="tab-btn py-4 px-4 border-b-2 border-transparent text-gray-500 hover:text-gray-800 whitespace-nowrap transition hidden"><i class="fa-solid fa-chart-pie mr-2"></i>Logística</button>
+            <button onclick="window.switchTab('web')" id="tab-web" class="tab-btn py-4 px-4 border-b-2 border-transparent text-gray-500 hover:text-gray-800 whitespace-nowrap transition hidden"><i class="fa-solid fa-wand-magic-sparkles mr-2 text-purple-500"></i>Creador de Pases</button>
+        </nav>
+
+        <main class="flex-1 overflow-hidden p-4 md:p-6 bg-gray-50 relative">
+            <!-- CREADOR DE PASES WEB -->
+            <section id="view-web" class="h-full flex flex-col md:flex-row gap-6 hidden overflow-y-auto pb-20 custom-scrollbar">
+                <!-- Seccion resumida para la arquitectura, el HTML completo estaria aqui -->
+                <div class="w-full md:w-[400px] bg-white p-6 rounded-2xl shadow-sm border h-full overflow-y-auto shrink-0 custom-scrollbar flex flex-col gap-6">
+                    <div><h2 class="font-bold text-xl text-gray-800 flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles text-purple-500"></i> Diseña Tu Invitación</h2></div>
+                    <div class="space-y-4">
+                        <div class="relative"><label class="block text-[10px] font-bold text-gray-500 uppercase">Nombres</label><input type="text" id="web-names" onkeyup="window.updateWebPreview()" class="w-full border p-2 rounded text-sm text-center pr-8"></div>
+                    </div>
+                    <div class="mt-auto pt-6 border-t space-y-3">
+                        <div class="grid grid-cols-2 gap-3"><button onclick="window.descargarInvitacion('jpg')" class="bg-gray-800 text-white p-2 rounded shadow">JPG</button><button onclick="window.descargarInvitacion('pdf')" class="bg-gray-800 text-white p-2 rounded shadow">PDF</button></div>
+                    </div>
+                </div>
+                <div class="w-full md:flex-1 bg-gray-200 rounded-2xl border-4 flex items-center justify-center p-4">
+                    <div id="web-preview-canvas" class="w-full max-w-[400px] h-[750px] bg-white rounded-3xl shadow-xl relative overflow-hidden flex flex-col items-center">
+                        <p id="preview-names" class="text-3xl font-bold mt-20">Nombres</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CRM: INVITADOS -->
+            <section id="view-invitados" class="h-full flex flex-col hidden">
+                <div class="bg-white p-4 rounded-xl shadow border mb-4 flex justify-between items-center">
+                    <button onclick="window.downloadExcelTemplate()" class="bg-blue-50 text-blue-700 px-4 py-2 rounded text-sm font-bold">Plantilla</button>
+                    <label class="bg-green-50 text-green-700 px-4 py-2 rounded text-sm font-bold cursor-pointer">Subir Excel<input type="file" class="hidden" accept=".xlsx, .xls, .csv" onchange="window.importExcel(event)"></label>
+                </div>
+                <div class="bg-white border rounded-xl shadow-sm flex-1 overflow-auto custom-scrollbar">
+                    <table class="w-full text-left text-sm whitespace-nowrap">
+                        <thead class="bg-gray-50"><tr><th class="p-4">Invitado</th><th class="p-4">WhatsApp</th><th class="p-4">Adultos</th><th class="p-4">Acciones</th></tr></thead>
+                        <tbody id="guests-tbody" class="divide-y divide-gray-100"></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Script Principal -->
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>
