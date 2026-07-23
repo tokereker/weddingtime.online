@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestra Boda</title>
+    <!-- Tailwind CSS para estilos rápidos -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- SweetAlert2 para alertas bonitas (Prohibido usar alert() nativo) -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+        body { background-color: #F9F6F0; font-family: 'Georgia', serif; }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4 text-center">
+
+    <!-- CONTENEDOR PRINCIPAL DE LA INVITACIÓN -->
+    <div class="bg-white p-8 rounded-2xl shadow-xl max-w-md w-full border border-yellow-100">
+        <h1 class="text-3xl text-slate-800 mb-2 font-bold">José Carlos & Vanessa</h1>
+        <p class="text-slate-500 mb-6 italic">¡Nos casamos y queremos que estés ahí!</p>
+        
+        <hr class="border-yellow-200 mb-6">
+
+        <!-- AQUÍ SE PINTARÁN LOS DATOS DE FIREBASE -->
+        <div id="pantalla-carga" class="py-10 text-slate-400">
+            <i class="fa-solid fa-spinner fa-spin text-3xl mb-2"></i>
+            <p>Buscando tu invitación en la nube...</p>
+        </div>
+
+        <div id="pantalla-invitacion" class="hidden">
+            <p class="text-sm text-slate-500 uppercase tracking-widest mb-1">Pase Especial Para:</p>
+            <h2 id="nombre-invitado" class="text-2xl font-bold text-yellow-600 mb-4">Cargando...</h2>
+            
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 mb-6 flex justify-around">
+                <div>
+                    <p id="pases-adultos" class="text-2xl font-black text-slate-700">0</p>
+                    <p class="text-xs text-slate-500 uppercase">Adultos</p>
+                </div>
+                <div class="w-px bg-slate-200"></div>
+                <div>
+                    <p id="pases-ninos" class="text-2xl font-black text-slate-700">0</p>
+                    <p class="text-xs text-slate-500 uppercase">Niños</p>
+                </div>
+            </div>
+
+            <!-- BOTONES DE RSVP -->
+            <p class="text-sm text-slate-600 mb-3 font-bold">Por favor confirma tu asistencia:</p>
+            <div class="flex gap-3 flex-col sm:flex-row">
+                <button onclick="enviarRSVP('Confirmado')" class="flex-1 bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-bold transition shadow-md">
+                    ¡Sí, asistiré!
+                </button>
+                <button onclick="enviarRSVP('Declinado')" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 py-3 rounded-xl font-bold transition">
+                    No podré ir
+                </button>
+            </div>
+        </div>
+        
+        <!-- PANTALLA DE ERROR (Si el enlace está mal) -->
+        <div id="pantalla-error" class="hidden py-10 text-red-500">
+            <p class="text-xl font-bold mb-2">Enlace no válido</p>
+            <p class="text-sm text-slate-500">No pudimos encontrar tu pase en nuestra lista. Contacta a los novios.</p>
+        </div>
+    </div>
+
+    <!-- CÓDIGO FIREBASE (LA MAGIA) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Mismas credenciales que tu CRM
+        const firebaseConfig = {
+            apiKey: "AIzaSyCaRKtx54HYM5jXB2DgtZeLciUNB7Inqjw",
+            authDomain: "wedding-crm-6853f.firebaseapp.com",
+            databaseURL: "https://wedding-crm-6853f-default-rtdb.firebaseio.com",
+            projectId: "wedding-crm-6853f",
+            storageBucket: "wedding-crm-6853f.firebasestorage.app",
+            messagingSenderId: "956437103756",
+            appId: "1:956437103756:web:b2d27aad4e6bfded7327a9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Variables globales para guardar la info descargada
+        let bdCompleta = null;
+        let invitadoActual = null;
+        let userId = null;
+        let guestId = null;
+
+        window.onload = async function() {
+            // 1. LEER LA URL (Ej: ?u=bodajosecarlos&id=123456789)
+            const params = new URLSearchParams(window.location.search);
+            userId = params.get('u'); 
+            guestId = parseInt(params.get('id'));
+
+            if(!userId || !guestId) {
+                mostrarError();
+                return;
+            }
+
+            // 2. IR A FIREBASE Y DESCARGAR LOS DATOS
+            try {
+                const docRef = doc(db, 'artifacts', 'weddingflow', 'users', userId);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    bdCompleta = docSnap.data();
+                    
+                    // Buscar al invitado específico por su ID dentro de la lista
+                    invitadoActual = bdCompleta.invitados.find(g => g.id === guestId);
+
+                    if (invitadoActual) {
+                        // ¡Lo encontramos! Pintar los datos en pantalla
+                        document.getElementById('nombre-invitado').innerText = invitadoActual.nombre;
+                        
+                        // Compatibilidad con tu CRM (por si guardaste pases o adultos)
+                        let ads = parseInt(invitadoActual.adultos !== undefined ? invitadoActual.adultos : invitadoActual.pases) || 0;
+                        let nns = parseInt(invitadoActual.ninos) || 0;
+
+                        document.getElementById('pases-adultos').innerText = ads;
+                        document.getElementById('pases-ninos').innerText = nns;
+
+                        // Mostrar la invitación y ocultar el cargador
+                        document.getElementById('pantalla-carga').classList.add('hidden');
+                        document.getElementById('pantalla-invitacion').classList.remove('hidden');
+                    } else {
+                        mostrarError(); // El ID no existe en la base de datos
+                    }
+                } else {
+                    mostrarError(); // La boda (userId) no existe
+                }
+            } catch (error) {
+                console.error("Error conectando a Firebase:", error);
+                mostrarError();
+            }
+        };
+
+        window.enviarRSVP = async function(estado) {
+            // 'estado' será "Confirmado" o "Declinado"
+            
+            // Mostrar mensajito de carga
+            Swal.fire({
+                title: 'Enviando confirmación...',
+                allowOutsideClick: false,
+                didOpen: () => Swal.showLoading()
+            });
+
+            // Actualizar el estado en nuestra copia local de los datos
+            invitadoActual.status = estado;
+
+            // Reemplazar al invitado viejo por el actualizado en la lista completa
+            const index = bdCompleta.invitados.findIndex(g => g.id === guestId);
+            bdCompleta.invitados[index] = invitadoActual;
+
+            try {
+                // Mandar la lista completa de regreso a Firebase
+                const docRef = doc(db, 'artifacts', 'weddingflow', 'users', userId);
+                await setDoc(docRef, { invitados: bdCompleta.invitados }, { merge: true });
+
+                // Avisarle al usuario
+                Swal.fire({
+                    icon: estado === 'Confirmado' ? 'success' : 'info',
+                    title: estado === 'Confirmado' ? '¡Confirmado!' : 'Enterado',
+                    text: estado === 'Confirmado' ? 'Hemos avisado a los novios. ¡Te esperamos!' : 'Qué lástima, los novios ya fueron notificados.',
+                    confirmButtonColor: '#16a34a'
+                });
+            } catch (error) {
+                Swal.fire('Error', 'Hubo un problema de conexión. Intenta de nuevo.', 'error');
+            }
+        };
+
+        function mostrarError() {
+            document.getElementById('pantalla-carga').classList.add('hidden');
+            document.getElementById('pantalla-error').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
