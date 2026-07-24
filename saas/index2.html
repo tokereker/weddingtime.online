@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestra Boda | Tu Pase Digital</title>
+    
+    <!-- Fuentes Elegantes -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Iconos FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        /* VARIABLES DINÁMICAS (Se sobreescriben desde Firebase) */
+        :root {
+            --theme-color: #C3A343; /* Dorado por defecto */
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: transparent; /* TRANSPARENTE PARA EL IFRAME */
+            color: #2c3e50;
+        }
+        h1, h2, .fuente-elegante {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        /* Clases adaptadas para usar el color dinámico */
+        .text-tema { color: var(--theme-color); }
+        .bg-tema { background-color: var(--theme-color); }
+        .border-tema { border-color: var(--theme-color); }
+        .hover-bg-tema:hover { filter: brightness(0.9); }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85); /* Efecto cristal */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="glass-card rounded-3xl max-w-md w-full p-8 text-center relative overflow-hidden shadow-2xl">
+        
+        <div class="absolute top-0 left-0 w-full h-2 bg-tema"></div>
+
+        <!-- Pantalla de Carga -->
+        <div id="pantalla-carga" class="py-16 flex flex-col items-center justify-center">
+            <i class="fa-solid fa-circle-notch fa-spin text-4xl text-tema mb-4"></i>
+            <p class="text-sm font-semibold tracking-widest uppercase text-slate-400">Buscando tu invitación...</p>
+        </div>
+
+        <!-- Pantalla de Error -->
+        <div id="pantalla-error" class="hidden py-10">
+            <div class="w-20 h-20 bg-red-50 text-red-500 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 shadow-inner">
+                <i class="fa-solid fa-ticket-simple"></i>
+            </div>
+            <h2 class="fuente-elegante text-3xl font-bold mb-2 text-slate-800">Enlace no válido</h2>
+            <p class="text-sm text-slate-500 mb-6 font-medium">No pudimos encontrar tu pase en nuestra base de datos. Por favor, solicita un nuevo enlace a los organizadores.</p>
+        </div>
+
+        <!-- Pantalla Principal de la Invitación -->
+        <div id="pantalla-invitacion" class="hidden animate-fade-in">
+            
+            <div class="text-tema text-3xl mb-4">
+                <i class="fa-solid fa-rings-wedding" id="icono-evento"></i>
+            </div>
+            
+            <p class="text-xs font-bold tracking-[0.3em] uppercase text-slate-400 mb-2">Pase Digital Oficial</p>
+            <h1 class="fuente-elegante text-4xl font-bold text-slate-800 mb-1" id="titulo-evento">¡Bienvenidos!</h1>
+            <p class="text-sm text-slate-500 italic mb-8">Estaremos encantados de compartir este día contigo.</p>
+            
+            <div class="w-16 h-px bg-tema mx-auto mb-8"></div>
+
+            <div class="bg-white/90 rounded-2xl p-6 shadow-md border border-slate-100 mb-8 relative">
+                <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-tema text-white text-[10px] font-bold tracking-widest uppercase px-4 py-1 rounded-full shadow-lg whitespace-nowrap">
+                    Invitado Especial
+                </div>
+                <h2 id="nombre-invitado" class="fuente-elegante text-2xl font-bold text-slate-800 mb-4 mt-3">Cargando...</h2>
+                
+                <div class="flex justify-around items-center border-t border-slate-100 pt-5">
+                    <div class="flex-1">
+                        <p id="pases-adultos" class="text-3xl font-black text-slate-700">0</p>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-1"><i class="fa-solid fa-user mr-1 text-tema"></i> Adultos</p>
+                    </div>
+                    <div class="w-px h-12 bg-slate-200"></div>
+                    <div class="flex-1">
+                        <p id="pases-ninos" class="text-3xl font-black text-slate-700">0</p>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-1"><i class="fa-solid fa-child mr-1 text-tema"></i> Niños</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="zona-rsvp">
+                <p class="text-sm font-bold text-slate-600 mb-4">¿Contamos con tu presencia?</p>
+                <div class="flex flex-col gap-3">
+                    <button onclick="confirmarAsistencia('Confirmado')" class="w-full bg-tema hover-bg-tema text-white font-bold py-4 rounded-xl transition shadow-lg flex items-center justify-center gap-2 text-sm uppercase tracking-wider">
+                        <i class="fa-solid fa-check text-lg"></i> Sí, confirmamos
+                    </button>
+                    <button onclick="confirmarAsistencia('Declinado')" class="w-full bg-slate-50 hover:bg-slate-100 border-2 border-slate-200 text-slate-500 font-bold py-3 rounded-xl transition flex items-center justify-center gap-2 text-sm uppercase tracking-wider">
+                        No podremos asistir
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mensaje de estado -->
+            <div id="zona-estado-actual" class="hidden mt-6 bg-slate-50/80 p-5 rounded-2xl border border-slate-200 shadow-inner">
+                <p class="text-xs font-bold text-slate-500 mb-2 uppercase tracking-wider">Estado de tu invitación</p>
+                <p id="texto-estado" class="text-xl fuente-elegante font-bold"></p>
+                <button onclick="document.getElementById('zona-rsvp').classList.remove('hidden'); document.getElementById('zona-estado-actual').classList.add('hidden');" class="text-[10px] text-slate-400 hover:text-tema uppercase tracking-widest font-bold mt-4 underline transition"><i class="fa-solid fa-pen mr-1"></i> Modificar respuesta</button>
+            </div>
+            
+            <p class="text-[10px] text-slate-400 mt-8 pt-4 border-t border-slate-200/50 font-medium">Desarrollado por TPD Enterprise ©</p>
+        </div>
+
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCaRKtx54HYM5jXB2DgtZeLciUNB7Inqjw",
+            authDomain: "wedding-crm-6853f.firebaseapp.com",
+            databaseURL: "https://wedding-crm-6853f-default-rtdb.firebaseio.com",
+            projectId: "wedding-crm-6853f",
+            storageBucket: "wedding-crm-6853f.firebasestorage.app",
+            messagingSenderId: "956437103756",
+            appId: "1:956437103756:web:b2d27aad4e6bfded7327a9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        let baseDeDatosCompleta = null;
+        let invitadoActual = null;
+        let userId = null;
+        let guestId = null;
+
+        const animacionTailwind = document.createElement('style');
+        animacionTailwind.innerHTML = `
+            @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+            .animate-fade-in { animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        `;
+        document.head.appendChild(animacionTailwind);
+
+        window.onload = async function() {
+            const params = new URLSearchParams(window.location.search);
+            userId = params.get('u'); 
+            guestId = parseInt(params.get('id'));
+
+            if (!userId || !guestId) {
+                mostrarError();
+                return;
+            }
+
+            try {
+                await signInAnonymously(auth);
+                const docRef = doc(db, 'artifacts', 'weddingflow', 'users', userId);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    baseDeDatosCompleta = docSnap.data();
+                    
+                    if(baseDeDatosCompleta.config && baseDeDatosCompleta.config.themeColor) {
+                        document.documentElement.style.setProperty('--theme-color', baseDeDatosCompleta.config.themeColor);
+                    }
+
+                    if(baseDeDatosCompleta.eventType && baseDeDatosCompleta.eventType !== "Otro") {
+                        document.getElementById('titulo-evento').innerText = `Mi ${baseDeDatosCompleta.eventType}`;
+                        const tLower = baseDeDatosCompleta.eventType.toLowerCase();
+                        let icon = 'fa-calendar-check';
+                        if(tLower.includes('boda')) { document.getElementById('titulo-evento').innerText = `¡Nos Casamos!`; icon = 'fa-rings-wedding'; }
+                        else if(tLower.includes('xv') || tLower.includes('15')) icon = 'fa-crown';
+                        else if(tLower.includes('comunión') || tLower.includes('bautizo')) icon = 'fa-dove';
+                        else if(tLower.includes('cumple')) icon = 'fa-cake-candles';
+                        document.getElementById('icono-evento').className = `fa-solid ${icon}`;
+                    }
+
+                    invitadoActual = (baseDeDatosCompleta.invitados || []).find(g => g.id === guestId);
+
+                    if (invitadoActual) pintarDatos();
+                    else mostrarError();
+                } else {
+                    mostrarError();
+                }
+            } catch (error) {
+                console.error(error);
+                mostrarError();
+            }
+        };
+
+        function pintarDatos() {
+            document.getElementById('nombre-invitado').innerText = invitadoActual.nombre;
+            
+            let ads = parseInt(invitadoActual.adultos !== undefined ? invitadoActual.adultos : invitadoActual.pases) || 0;
+            let nns = parseInt(invitadoActual.ninos) || 0;
+
+            document.getElementById('pases-adultos').innerText = ads;
+            document.getElementById('pases-ninos').innerText = nns;
+
+            if (invitadoActual.status === 'Confirmado' || invitadoActual.status === 'Declinado') {
+                document.getElementById('zona-rsvp').classList.add('hidden');
+                document.getElementById('zona-estado-actual').classList.remove('hidden');
+                
+                const textoEstado = document.getElementById('texto-estado');
+                if (invitadoActual.status === 'Confirmado') {
+                    textoEstado.innerText = "¡Asistencia Confirmada! ✅";
+                    textoEstado.className = "text-xl fuente-elegante font-bold text-emerald-600";
+                } else {
+                    textoEstado.innerText = "No asistirás ❌";
+                    textoEstado.className = "text-xl fuente-elegante font-bold text-red-500";
+                }
+            }
+
+            document.getElementById('pantalla-carga').classList.add('hidden');
+            document.getElementById('pantalla-invitacion').classList.remove('hidden');
+        }
+
+        window.confirmarAsistencia = async function(nuevoEstado) {
+            Swal.fire({
+                title: 'Actualizando tu respuesta...',
+                allowOutsideClick: false,
+                didOpen: () => Swal.showLoading()
+            });
+
+            invitadoActual.status = nuevoEstado;
+            const index = baseDeDatosCompleta.invitados.findIndex(g => g.id === guestId);
+            baseDeDatosCompleta.invitados[index] = invitadoActual;
+
+            try {
+                const docRef = doc(db, 'artifacts', 'weddingflow', 'users', userId);
+                await setDoc(docRef, { invitados: baseDeDatosCompleta.invitados }, { merge: true });
+
+                const colorAlert = getComputedStyle(document.documentElement).getPropertyValue('--theme-color').trim();
+
+                Swal.fire({
+                    icon: nuevoEstado === 'Confirmado' ? 'success' : 'info',
+                    title: nuevoEstado === 'Confirmado' ? '¡Confirmado!' : 'Enterado',
+                    text: nuevoEstado === 'Confirmado' ? 'Hemos avisado a los organizadores. ¡Te esperamos!' : 'Qué lástima, los organizadores ya fueron notificados.',
+                    confirmButtonColor: colorAlert || '#C3A343'
+                }).then(() => {
+                    pintarDatos();
+                });
+            } catch (error) {
+                console.error(error);
+                Swal.fire('Error', 'Hubo un problema de conexión. Intenta de nuevo.', 'error');
+            }
+        };
+
+        function mostrarError() {
+            document.getElementById('pantalla-carga').classList.add('hidden');
+            document.getElementById('pantalla-error').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

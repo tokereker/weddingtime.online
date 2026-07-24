@@ -1,0 +1,1925 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TPD Enterprise - SaaS CRM & Hub</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- SheetJS (Excel Export/Import) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- jsPDF & html2canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- QRCode.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- HTML5 QR Code Scanner para Hostess -->
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Emoji Picker Element -->
+    <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@1.18.1/index.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        /* 5. Transparencia Absoluta y Tematización */
+        :root { --primary-color: #2563eb; }
+        body { font-family: 'Inter', sans-serif; background-color: transparent !important; }
+        
+        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        .table-container { max-height: calc(100vh - 320px); overflow-y: auto; overflow-x: auto; }
+        input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type=number] { -moz-appearance: textfield; }
+
+        /* Asistente TPD Chat */
+        #tpd-chat-widget { position: fixed; bottom: 90px; right: 20px; z-index: 9998; width: 90%; max-width: 350px; max-height: 500px; display: none; flex-direction: column; background: white; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); overflow: hidden; border: 1px solid #e2e8f0; }
+        #tpd-chat-header { background: linear-gradient(to right, var(--primary-color), #3b82f6); color: white; padding: 12px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        #tpd-chat-messages { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; background: #f8fafc; min-height: 250px; max-height: 350px;}
+        .tpd-msg { padding: 8px 12px; border-radius: 8px; font-size: 13px; max-width: 85%; word-wrap: break-word; }
+        .tpd-msg.user { background: var(--primary-color); color: white; align-self: flex-end; border-bottom-right-radius: 0; }
+        .tpd-msg.bot { background: white; color: #1e293b; align-self: flex-start; border-bottom-left-radius: 0; border: 1px solid #e2e8f0; }
+        
+        #tpd-fab { position: fixed; bottom: 20px; right: 20px; z-index: 9997; width: 60px; height: 60px; background: linear-gradient(to right, var(--primary-color), #3b82f6); color: white; border-radius: 50%; display: none; justify-content: center; align-items: center; font-size: 24px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: transform 0.2s; }
+        #tpd-fab:hover { transform: scale(1.1); }
+
+        .guest-card { cursor: grab; transition: transform 0.2s, box-shadow 0.2s; }
+        .guest-card:active { cursor: grabbing; transform: scale(0.98); }
+        .guest-card.dragging { opacity: 0.4; transform: scale(0.95); }
+        .table-dropzone { transition: background-color 0.2s; border: 2px dashed transparent; }
+        .table-dropzone.dragover { background-color: #eff6ff; border: 2px dashed var(--primary-color); border-radius: 0.5rem; }
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden text-slate-800">
+
+    <!-- LOGIN -->
+    <div id="view-login" class="fixed inset-0 bg-slate-900/40 flex justify-center items-center z-50 glass">
+        <div class="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-md text-center mx-4 border border-slate-200">
+            <div class="w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-600 text-white rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4 shadow-lg">
+                <i class="fa-solid fa-layer-group"></i>
+            </div>
+            <h1 class="text-3xl font-black mb-1 text-slate-900 tracking-tight">TPD Enterprise</h1>
+            <p class="text-slate-500 text-sm mb-8 font-medium">Plataforma SaaS de Gestión</p>
+            
+            <input type="text" id="login-user" placeholder="ID de Usuario o Agencia" class="w-full border-2 border-slate-100 p-4 rounded-xl mb-4 outline-none focus:border-blue-600 transition font-medium text-sm bg-slate-50 focus:bg-white">
+            <div class="relative w-full mb-8">
+                <input type="password" id="login-pass" onkeypress="if(event.key === 'Enter') window.appLogin()" placeholder="Contraseña" class="w-full border-2 border-slate-100 p-4 rounded-xl outline-none focus:border-blue-600 transition font-medium text-sm pr-12 bg-slate-50 focus:bg-white">
+                <button onclick="window.togglePassword('login-pass')" class="absolute right-4 top-4 text-slate-400 hover:text-blue-600 transition">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
+            </div>
+            
+            <button onclick="window.appLogin()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-4 rounded-xl shadow-lg transition text-lg flex items-center justify-center gap-2">
+                Iniciar Sesión <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL BIENVENIDA -->
+    <div id="welcome-modal" class="fixed inset-0 bg-slate-900/80 items-center justify-center z-50 hidden glass">
+        <div class="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-sm text-center mx-4 border border-slate-100">
+            <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-slate-800 mb-2">Configura tu Evento</h2>
+            <p class="text-sm text-slate-500 mb-6 font-medium">Selecciona el tipo de evento que vas a organizar.</p>
+            
+            <select id="welcome-event-type" onchange="window.toggleCustomEventInput('welcome-event-type', 'welcome-event-custom')" class="w-full border-2 border-slate-100 p-4 rounded-xl text-sm outline-none bg-slate-50 focus:bg-white focus:border-blue-500 mb-4 font-bold text-slate-700 cursor-pointer transition">
+                <option value="Boda">💍 Boda</option>
+                <option value="XV Años">👑 XV Años</option>
+                <option value="Primera Comunión">⛪ Primera Comunión</option>
+                <option value="Confirmación">🕊️ Confirmación</option>
+                <option value="Primera Comunión y Confirmación">⛪🕊️ Primera Comunión y Confirmación</option>
+                <option value="Bautizo">👼 Bautizo</option>
+                <option value="Cumpleaños">🎂 Cumpleaños</option>
+                <option value="Otro">✏️ Otro (Especificar)</option>
+            </select>
+            
+            <input type="text" id="welcome-event-custom" placeholder="Escribe el tipo de evento..." class="w-full border-2 border-slate-100 p-4 rounded-xl text-sm outline-none bg-slate-50 focus:bg-white focus:border-blue-500 mb-6 hidden font-medium transition">
+
+            <button onclick="window.saveWelcomeEventType()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded-xl transition shadow-lg text-lg flex items-center justify-center gap-2">
+                Guardar y Entrar <i class="fa-solid fa-check"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- PANEL ADMIN SAAS -->
+    <div id="view-admin" class="hidden h-full flex flex-col bg-slate-50">
+        <header class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center shadow-lg shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="bg-blue-500/20 p-2 rounded-lg"><i class="fa-solid fa-shield-halved text-blue-400 text-xl"></i></div>
+                <h1 class="font-bold text-lg tracking-wide">Alta de Usuarios (Agencia)</h1>
+            </div>
+            <button onclick="window.appLogout()" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2 border border-red-500/20"><i class="fa-solid fa-sign-out-alt"></i> Salir</button>
+        </header>
+        
+        <main class="flex-1 overflow-y-auto p-4 md:p-6 custom-scrollbar">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Crear Usuarios -->
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 lg:col-span-1 h-fit" id="admin-creator-panel">
+                    <h2 class="font-bold text-lg mb-6 text-slate-800 flex items-center gap-2"><i class="fa-solid fa-user-plus text-blue-500"></i> Nuevo Inquilino</h2>
+                    <div class="space-y-5">
+                        <div>
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">ID de Usuario</label>
+                            <input type="text" id="new-user" placeholder="Ej. boda_carlos" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 text-sm mt-1 font-medium bg-slate-50 focus:bg-white transition">
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Contraseña de Acceso</label>
+                            <div class="flex gap-2 mt-1">
+                                <input type="password" id="new-pass" placeholder="Contraseña" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 text-sm font-medium bg-slate-50 focus:bg-white transition">
+                                <button onclick="window.generateRandomPassword('new-pass')" class="bg-slate-100 border-2 border-slate-100 px-4 rounded-xl hover:bg-slate-200 hover:border-slate-200 text-slate-600 transition" title="Generar Automática"><i class="fa-solid fa-dice"></i></button>
+                                <button onclick="window.togglePassword('new-pass')" class="bg-slate-100 border-2 border-slate-100 px-4 rounded-xl hover:bg-slate-200 hover:border-slate-200 text-slate-600 transition"><i class="fa-solid fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Nivel de Acceso (Plan)</label>
+                            <select id="new-role" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 text-sm font-bold mt-1 bg-slate-50 cursor-pointer transition">
+                                <option value="Cliente">Cliente Festejado (CRM Completo)</option>
+                                <option value="Cliente Web">Cliente Web (Estudio IA Diseño)</option>
+                                <option value="Hostess">Hostess (Lector QR y Croquis)</option>
+                                <option value="Staff">Staff de Agencia (Soporte)</option>
+                                <option value="Administrador">Administrador Global</option>
+                            </select>
+                        </div>
+                        <button onclick="window.adminCreateUser()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl transition shadow-md mt-4 flex items-center justify-center gap-2"><i class="fa-solid fa-cloud-arrow-up"></i> Registrar Inquilino</button>
+                    </div>
+                </div>
+
+                <!-- Lista de Usuarios -->
+                <div class="bg-white rounded-3xl shadow-sm border border-slate-200 lg:col-span-2 overflow-hidden flex flex-col">
+                    <div class="p-5 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
+                        <h2 class="font-bold text-slate-800 flex items-center gap-2"><i class="fa-solid fa-server text-blue-500"></i> Instancias Activas</h2>
+                        <button onclick="window.adminLoadUsers()" class="text-slate-400 hover:text-blue-600 transition bg-white p-2 rounded-lg shadow-sm border border-slate-100" title="Refrescar"><i class="fa-solid fa-sync"></i></button>
+                    </div>
+                    <div class="overflow-x-auto flex-1 custom-scrollbar">
+                        <table class="w-full text-left text-sm whitespace-nowrap">
+                            <thead class="bg-slate-50 text-slate-600 border-b border-slate-100">
+                                <tr>
+                                    <th class="p-4 font-bold">ID Inquilino</th>
+                                    <th class="p-4 font-bold">Rol / Plan</th>
+                                    <th class="p-4 font-bold text-center">Estado</th>
+                                    <th class="p-4 font-bold text-right">Acciones de Gestión</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-users-tbody" class="divide-y divide-slate-100"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- WORKSPACE CRM COMPLETO (CLIENTE) -->
+    <div id="view-crm" class="hidden h-full flex flex-col bg-transparent">
+        <!-- Barra de Impersonation -->
+        <div id="crm-impersonation-bar" class="hidden bg-amber-400 text-amber-900 px-6 py-2 flex justify-between items-center font-bold text-sm shadow-inner shrink-0 z-20">
+            <span><i class="fa-solid fa-user-secret mr-2"></i> Estás supervisando la base de datos de: <span id="crm-imp-name" class="underline uppercase"></span></span>
+            <button onclick="window.appExitImpersonation()" class="bg-amber-700 hover:bg-amber-800 text-white px-4 py-1.5 rounded-lg shadow-sm text-xs transition">Salir al Panel</button>
+        </div>
+
+        <header class="bg-white shadow-sm border-b px-6 py-4 flex justify-between items-center z-10 shrink-0 flex-wrap gap-4 rounded-t-lg">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-xl"><i id="header-main-icon" class="fa-solid fa-calendar-check"></i></div>
+                <div>
+                    <h1 class="text-xl font-bold text-slate-800">Workspace CRM</h1>
+                    <p class="text-xs text-slate-500 font-bold uppercase tracking-wider" id="crm-header-id">Cargando...</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <!-- 2. Botón Llave añadido -->
+                <button onclick="window.changeOwnPassword()" class="text-slate-400 hover:text-amber-500 transition bg-slate-50 p-2 rounded-lg border border-slate-100 shadow-sm" title="Cambiar Contraseña"><i class="fa-solid fa-key"></i></button>
+                <div class="text-right hidden md:block">
+                    <p class="text-sm font-bold uppercase text-slate-700" id="user-display">Usuario</p>
+                    <p class="text-[10px] text-emerald-600 font-bold tracking-widest uppercase"><i class="fa-solid fa-cloud"></i> Nube Sincronizada</p>
+                </div>
+                <button onclick="window.appLogout()" class="text-slate-400 hover:text-red-500 transition bg-slate-50 p-2 rounded-lg border border-slate-100 shadow-sm" title="Cerrar Sesión"><i class="fa-solid fa-sign-out-alt"></i></button>
+            </div>
+        </header>
+
+        <nav class="bg-white border-b flex px-6 shrink-0 gap-8 font-semibold text-sm overflow-x-auto custom-scrollbar">
+            <button onclick="window.crmSwitchTab('guests')" id="tab-guests" class="py-4 text-blue-600 border-b-2 border-blue-600 whitespace-nowrap transition-colors"><i class="fa-solid fa-users mr-2"></i>Lista de Invitados</button>
+            <button onclick="window.crmSwitchTab('tables')" id="tab-tables" class="py-4 text-slate-500 hover:text-slate-800 border-b-2 border-transparent whitespace-nowrap transition-colors"><i class="fa-solid fa-chair mr-2"></i>Acomodo de Mesas</button>
+            <button onclick="window.crmSwitchTab('stats')" id="tab-stats" class="py-4 text-slate-500 hover:text-slate-800 border-b-2 border-transparent whitespace-nowrap transition-colors"><i class="fa-solid fa-chart-pie mr-2"></i>Logística & Proveedores</button>
+        </nav>
+
+        <main class="flex-1 overflow-hidden p-4 md:p-6 flex flex-col relative bg-slate-50/90 backdrop-blur-md rounded-b-lg">
+            
+            <!-- SECCIÓN INVITADOS -->
+            <section id="crm-sec-guests" class="h-full flex flex-col">
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-4 shrink-0 flex flex-col gap-4">
+                    <div class="flex flex-col xl:flex-row items-center gap-4 justify-between">
+                        <!-- Buscador -->
+                        <div class="flex items-center gap-2 w-full xl:w-auto">
+                            <div class="relative flex-1 md:w-72">
+                                <i class="fa-solid fa-search absolute left-3 top-3 text-slate-400 text-sm"></i>
+                                <input type="text" id="crm-search" onkeyup="window.crmRenderGuests()" placeholder="Buscar familia o invitado..." class="w-full border-2 border-slate-100 p-2 pl-9 text-sm rounded-xl outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition font-medium">
+                            </div>
+                            <button onclick="document.getElementById('crm-search').value=''; window.crmRenderGuests()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-2.5 rounded-xl text-sm font-bold transition shadow-sm" title="Limpiar Búsqueda"><i class="fa-solid fa-eraser"></i></button>
+                            <button onclick="window.crmLoadData()" class="bg-slate-100 hover:bg-slate-200 text-blue-600 px-3 py-2.5 rounded-xl text-sm font-bold transition shadow-sm" title="Sincronizar Datos"><i class="fa-solid fa-sync"></i></button>
+                        </div>
+                        
+                        <!-- Botones de Acción -->
+                        <div class="flex items-center gap-2 w-full xl:w-auto overflow-x-auto pb-2 xl:pb-0 custom-scrollbar">
+                            <button onclick="window.openAddGuestModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap flex items-center gap-2">
+                                <i class="fa-solid fa-user-plus"></i> Añadir
+                            </button>
+                            
+                            <div class="h-8 w-px bg-slate-200 mx-1 shrink-0"></div>
+                            
+                            <button onclick="window.crmDeleteSelected()" class="bg-white border-2 border-red-100 text-red-500 hover:bg-red-50 hover:border-red-200 px-3 py-2 rounded-xl text-sm font-bold transition flex items-center gap-1" title="Borrar Seleccionados"><i class="fa-solid fa-trash-can"></i> <span class="hidden sm:inline">Selección</span></button>
+                            <button onclick="window.crmDeleteAllGuests()" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-xl text-sm font-bold transition shadow-sm flex items-center gap-1" title="Vaciar toda la lista"><i class="fa-solid fa-dumpster-fire"></i> <span class="hidden sm:inline">Vaciar</span></button>
+                            
+                            <div class="h-8 w-px bg-slate-200 mx-1 shrink-0"></div>
+                            
+                            <button onclick="window.downloadExcelTemplate()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 border-2 border-slate-200 px-3 py-2 rounded-xl text-sm font-bold transition whitespace-nowrap flex items-center gap-2" title="Descargar formato para rellenar">
+                                <i class="fa-solid fa-file-arrow-down"></i> Plantilla
+                            </button>
+                            <label class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2 rounded-xl text-sm font-bold shadow-md cursor-pointer transition whitespace-nowrap flex items-center gap-2">
+                                <i class="fa-solid fa-upload"></i> Subir Excel
+                                <input type="file" id="excel-uploader" class="hidden" accept=".xlsx, .xls" onchange="window.crmImportExcel(event)">
+                            </label>
+                            
+                            <div class="h-8 w-px bg-slate-200 mx-1 shrink-0"></div>
+
+                            <button onclick="window.crmExportExcel()" class="bg-slate-800 hover:bg-slate-900 text-white px-3 py-2 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap" title="Descargar Excel con Datos"><i class="fa-solid fa-file-excel"></i></button>
+                            <button onclick="window.crmExportPDF()" class="bg-slate-800 hover:bg-slate-900 text-white px-3 py-2 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap" title="Descargar Lista de Puerta PDF"><i class="fa-solid fa-file-pdf"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white border border-slate-200 rounded-2xl shadow-sm flex-1 table-container relative custom-scrollbar overflow-hidden flex flex-col">
+                    <div class="overflow-x-auto flex-1 custom-scrollbar">
+                        <table class="w-full text-left text-sm whitespace-nowrap" id="main-guests-table">
+                            <thead class="bg-slate-50 text-slate-500 border-b border-slate-200 sticky top-0 z-10 text-xs uppercase tracking-wider font-bold shadow-sm">
+                                <tr>
+                                    <th class="p-4 text-center w-12"><input type="checkbox" onclick="document.querySelectorAll('.g-cb').forEach(cb=>cb.checked=this.checked)" class="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"></th>
+                                    <th class="p-4">Familia / Invitado</th>
+                                    <th class="p-4">Grupo</th>
+                                    <th class="p-4"><i class="fa-brands fa-whatsapp text-emerald-500"></i> WhatsApp</th>
+                                    <th class="p-4 text-center">Adultos</th>
+                                    <th class="p-4 text-center">Niños</th>
+                                    <th class="p-4 text-center">Estado RSVP</th>
+                                    <th class="p-4">Observaciones</th>
+                                    <th class="p-4 text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="crm-guests-tbody" class="divide-y divide-slate-100"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN MESAS -->
+            <section id="crm-sec-tables" class="h-full flex flex-col hidden">
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-4 shrink-0 flex flex-col gap-4">
+                    <div class="flex flex-wrap justify-between items-center gap-4">
+                        <h2 class="font-bold text-lg text-slate-800 flex items-center gap-2"><i class="fa-solid fa-chair text-blue-500"></i> Acomodo de Mesas</h2>
+                        <div class="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0 custom-scrollbar">
+                            <label class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 px-3 py-2 rounded-xl text-sm font-bold cursor-pointer transition whitespace-nowrap flex items-center gap-2" title="Sube el mapa de tu salón">
+                                <i class="fa-solid fa-map"></i> Subir Croquis Salón
+                                <input type="file" class="hidden" accept="image/*" onchange="window.uploadCroquis(event)">
+                            </label>
+                            
+                            <div class="h-6 w-px bg-slate-200 mx-1 shrink-0"></div>
+
+                            <button onclick="window.crmExportTablesPDF()" class="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap flex items-center gap-2"><i class="fa-solid fa-print"></i> Reporte Mesas PDF</button>
+                            <button onclick="window.randomizeTables()" class="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap flex items-center gap-2"><i class="fa-solid fa-dice"></i> Llenado Automático</button>
+                            <div class="h-6 w-px bg-slate-200 mx-1 shrink-0"></div>
+                            <button onclick="window.deleteAllTables()" class="bg-white border-2 border-red-100 text-red-500 hover:bg-red-50 px-3 py-2 rounded-xl text-sm font-bold transition whitespace-nowrap" title="Borrar Todas las Mesas"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-4 items-center bg-slate-50 p-3 rounded-xl border border-slate-100">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Capacidad Sillas:</span>
+                            <div class="inline-flex items-center bg-white rounded-lg border border-slate-200 shadow-sm p-1">
+                                <button type="button" onclick="document.getElementById('crm-table-cap').stepDown(); window.crmUpdateConfig('capacity', document.getElementById('crm-table-cap').value)" class="w-7 h-7 rounded-md hover:bg-blue-50 hover:text-blue-600 font-bold flex items-center justify-center text-slate-500 transition"><i class="fa-solid fa-minus text-[10px]"></i></button>
+                                <input type="number" id="crm-table-cap" value="10" min="1" onchange="window.crmUpdateConfig('capacity', this.value)" class="w-12 text-center bg-transparent text-sm font-bold outline-none m-0 p-0 pointer-events-none">
+                                <button type="button" onclick="document.getElementById('crm-table-cap').stepUp(); window.crmUpdateConfig('capacity', document.getElementById('crm-table-cap').value)" class="w-7 h-7 rounded-md hover:bg-blue-50 hover:text-blue-600 font-bold flex items-center justify-center text-slate-500 transition"><i class="fa-solid fa-plus text-[10px]"></i></button>
+                            </div>
+                        </div>
+                        <div class="h-8 w-px bg-slate-200 hidden md:block"></div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Crear Mesas:</span>
+                            <div class="flex items-center gap-2">
+                                <input type="number" id="num-tables-add" value="1" min="1" class="border-2 border-slate-200 p-1.5 w-16 text-center rounded-lg text-sm outline-none font-bold bg-white focus:border-blue-500 transition">
+                                <button onclick="window.addMultipleTables()" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm font-bold shadow-md transition flex items-center gap-1"><i class="fa-solid fa-plus"></i> Añadir</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Thumbnail del Croquis -->
+                        <div id="croquis-preview-container" class="ml-auto hidden items-center gap-2 bg-white p-1 rounded-lg border border-slate-200 shadow-sm">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase ml-2">Croquis Activo:</span>
+                            <img id="croquis-thumbnail" src="" class="h-8 w-auto rounded object-cover cursor-pointer hover:opacity-80" onclick="window.viewCroquisFull()" title="Ver Croquis">
+                            <button onclick="window.deleteCroquis()" class="text-red-400 hover:text-red-600 px-2 text-xs"><i class="fa-solid fa-times"></i></button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex-1 flex flex-col md:flex-row gap-6 overflow-hidden">
+                    <div class="w-full md:w-1/4 lg:w-1/5 bg-white border border-slate-200 rounded-2xl shadow-sm flex flex-col h-64 md:h-full shrink-0 overflow-hidden">
+                        <div class="p-4 border-b border-slate-100 bg-slate-50 font-bold text-slate-700 flex justify-between items-center">
+                            <span class="text-sm"><i class="fa-solid fa-users-slash text-slate-400 mr-2"></i> Sin Asignar</span>
+                            <span id="crm-unassigned-badge" class="bg-red-100 text-red-700 px-2.5 py-0.5 rounded-full text-xs font-black shadow-sm">0 pases</span>
+                        </div>
+                        <div id="crm-unassigned-list" class="flex-1 p-3 overflow-y-auto space-y-2 bg-slate-50/50 table-dropzone custom-scrollbar" ondragover="window.allowDrop(event)" ondragleave="window.leaveDrop(event)" ondrop="window.dropGuest(event, 0)"></div>
+                    </div>
+                    <div id="crm-tables-grid" class="flex-1 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 content-start pb-6 custom-scrollbar pr-2"></div>
+                </div>
+            </section>
+
+            <!-- SECCIÓN ESTADÍSTICAS Y LOGÍSTICA -->
+            <section id="crm-sec-stats" class="h-full overflow-y-auto hidden custom-scrollbar pb-32">
+                <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
+                    <button onclick="window.exportStatsExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-3.5 rounded-2xl shadow-xl font-bold flex items-center gap-2 transform transition hover:scale-105" title="Exportar Logística a Excel">
+                        <i class="fa-solid fa-file-excel text-xl"></i> Exportar Datos
+                    </button>
+                    <button onclick="window.exportStatsPDF()" class="bg-slate-900 hover:bg-black text-white px-5 py-3.5 rounded-2xl shadow-xl font-bold flex items-center gap-2 transform transition hover:scale-105" title="Exportar Reporte a PDF">
+                        <i class="fa-solid fa-file-pdf text-xl"></i> Reporte Logístico
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto" id="stats-print-area">
+                    <!-- Asistencia -->
+                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 md:col-span-2 lg:col-span-1">
+                        <h3 class="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2"><i class="fa-solid fa-chart-pie text-blue-500"></i> Asistencia General</h3>
+                        <div class="grid grid-cols-3 gap-4 text-center mb-6">
+                            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100">
+                                <p class="text-4xl font-black text-slate-800" id="st-tot">0</p>
+                                <p class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mt-2">Lugares Totales</p>
+                            </div>
+                            <div class="bg-emerald-50 rounded-2xl p-4 border border-emerald-100">
+                                <p class="text-4xl font-black text-emerald-600" id="st-conf">0</p>
+                                <p class="text-[10px] text-emerald-700 uppercase tracking-widest font-bold mt-2">Confirmados</p>
+                            </div>
+                            <div class="bg-red-50 rounded-2xl p-4 border border-red-100">
+                                <p class="text-4xl font-black text-red-500" id="st-decl">0</p>
+                                <p class="text-[10px] text-red-700 uppercase tracking-widest font-bold mt-2">Declinados</p>
+                            </div>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded-2xl border border-blue-100 flex justify-around text-center">
+                            <div>
+                                <p class="text-2xl font-black text-blue-700" id="st-adu">0</p>
+                                <p class="text-xs text-blue-800 font-bold mt-1 uppercase tracking-wider"><i class="fa-solid fa-user"></i> Adultos Conf.</p>
+                            </div>
+                            <div class="w-px bg-blue-200"></div>
+                            <div>
+                                <p class="text-2xl font-black text-blue-700" id="st-nin">0</p>
+                                <p class="text-xs text-blue-800 font-bold mt-1 uppercase tracking-wider"><i class="fa-solid fa-child"></i> Niños Conf.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mesa de Dulces -->
+                    <div class="bg-amber-50 p-6 rounded-3xl shadow-sm border border-amber-200">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-lg font-bold text-amber-900 flex items-center gap-2"><i class="fa-solid fa-candy-cane text-amber-500"></i> Mesa de Dulces</h3>
+                            <button onclick="window.crmRenderStats()" class="bg-amber-200 hover:bg-amber-300 text-amber-800 px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm" title="Recalcular"><i class="fa-solid fa-sync"></i></button>
+                        </div>
+                        <div class="flex items-center gap-6 mb-6">
+                            <div class="bg-white rounded-2xl p-4 border border-amber-100 text-center shadow-sm flex-1">
+                                <p class="text-4xl font-black text-amber-600" id="st-dul-tot">0</p>
+                                <p class="text-[10px] font-bold text-amber-800 uppercase tracking-widest mt-1">Piezas Recomendadas</p>
+                            </div>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex justify-between text-sm bg-white p-3 rounded-xl border border-amber-100 shadow-sm"><span class="font-bold text-slate-700">Salados / Picosos (35%)</span><span class="font-black text-amber-700" id="st-dul-sal">0 pz</span></div>
+                            <div class="flex justify-between text-sm bg-white p-3 rounded-xl border border-amber-100 shadow-sm"><span class="font-bold text-slate-700">Chocolates / Dulces (25%)</span><span class="font-black text-amber-700" id="st-dul-cho">0 pz</span></div>
+                            <div class="flex justify-between text-sm bg-white p-3 rounded-xl border border-amber-100 shadow-sm"><span class="font-bold text-slate-700">Postres Gourmet (20%)</span><span class="font-black text-amber-700" id="st-dul-pos">0 pz</span></div>
+                            <div class="flex justify-between text-sm bg-white p-3 rounded-xl border border-amber-100 shadow-sm"><span class="font-bold text-slate-700">Snacks a granel (20%)</span><span class="font-black text-amber-700" id="st-dul-gra">0 pz</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Bebidas -->
+                    <div class="bg-indigo-50 p-6 rounded-3xl shadow-sm border border-indigo-200">
+                        <h3 class="text-lg font-bold text-indigo-900 mb-6 flex items-center gap-2"><i class="fa-solid fa-wine-glass-empty text-indigo-500"></i> Bebidas y Hielos</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between text-sm bg-white p-3.5 rounded-xl border border-indigo-100 shadow-sm"><span class="font-bold text-slate-700">Botellas Destilado <span class="text-[10px] text-slate-400 font-normal uppercase">(1 c/3 adu)</span></span><span class="font-black text-indigo-700" id="st-bot">0 bts</span></div>
+                            <div class="flex justify-between text-sm bg-white p-3.5 rounded-xl border border-indigo-100 shadow-sm"><span class="font-bold text-slate-700">Cervezas <span class="text-[10px] text-slate-400 font-normal uppercase">(3 c/adu)</span></span><span class="font-black text-indigo-700" id="st-cer">0 pz</span></div>
+                            <div class="flex justify-between text-sm bg-white p-3.5 rounded-xl border border-indigo-100 shadow-sm"><span class="font-bold text-slate-700">Mezcladores/Refresco</span><span class="font-black text-indigo-700" id="st-ref">0 L</span></div>
+                            <div class="flex justify-between text-sm bg-white p-3.5 rounded-xl border border-indigo-100 shadow-sm"><span class="font-bold text-slate-700">Hielo <span class="text-[10px] text-slate-400 font-normal uppercase">(1kg c/adu)</span></span><span class="font-black text-indigo-700" id="st-hie">0 kg</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Amenidades -->
+                    <div class="bg-purple-50 p-6 rounded-3xl shadow-sm border border-purple-200">
+                        <h3 class="text-lg font-bold text-purple-900 mb-6 flex items-center gap-2"><i class="fa-solid fa-gift text-purple-500"></i> Recuerdos & Amenidades</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between text-sm bg-white p-3.5 rounded-xl border border-purple-100 shadow-sm"><span class="font-bold text-slate-700">Recuerdos Pareja</span><span class="font-black text-purple-700" id="rec-parejas">0 pz</span></div>
+                            <div class="flex justify-between text-sm bg-white p-3.5 rounded-xl border border-purple-100 shadow-sm"><span class="font-bold text-slate-700">Sandalias (Mujeres)</span><span class="font-black text-purple-700" id="rec-sandalias">0 prs</span></div>
+                            <div class="flex justify-between text-sm bg-white p-3.5 rounded-xl border border-purple-100 shadow-sm"><span class="font-bold text-slate-700">Kit Anticruda</span><span class="font-black text-purple-700" id="rec-anticruda">0 pz</span></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- WORKSPACE HOSTESS (LECTOR QR Y CROQUIS) -->
+    <div id="view-hostess" class="hidden h-full flex flex-col bg-slate-900 text-white relative">
+        <header class="bg-slate-800 px-4 py-4 flex justify-between items-center shadow-lg border-b border-slate-700 z-10">
+            <div class="flex items-center gap-3">
+                <div class="bg-blue-500 text-white p-2 rounded-lg"><i class="fa-solid fa-qrcode"></i></div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight">Recepción Hostess</h1>
+                    <p class="text-[10px] text-blue-300 font-bold uppercase tracking-wider" id="hostess-event-id">Evento</p>
+                </div>
+            </div>
+            <!-- 1. Botón inteligente Hostess -->
+            <button onclick="window.hostessSmartExit()" class="text-slate-400 hover:text-white transition p-2"><i class="fa-solid fa-sign-out-alt"></i></button>
+        </header>
+
+        <main class="flex-1 flex flex-col items-center justify-start p-4 overflow-y-auto custom-scrollbar relative z-0">
+            <div class="w-full max-w-md">
+                <div class="flex bg-slate-800 rounded-xl p-1 mb-4 shadow-inner">
+                    <button id="htab-scanner" onclick="window.hostessSwitchTab('scanner')" class="flex-1 py-2 rounded-lg text-sm font-bold bg-blue-600 text-white transition">Escanear QR</button>
+                    <button id="htab-croquis" onclick="window.hostessSwitchTab('croquis')" class="flex-1 py-2 rounded-lg text-sm font-bold text-slate-400 transition hover:text-white">Ver Croquis</button>
+                </div>
+
+                <div id="hview-scanner" class="flex flex-col items-center w-full">
+                    <div id="reader" class="w-full bg-black rounded-2xl overflow-hidden shadow-2xl border-2 border-slate-700 mb-4 min-h-[300px] flex items-center justify-center">
+                        <p class="text-slate-500 text-sm font-medium"><i class="fa-solid fa-camera mb-2 text-2xl"></i><br>Cámara en espera</p>
+                    </div>
+                    
+                    <button id="btn-start-scanner" onclick="window.startScanner()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl shadow-lg transition text-lg flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-camera"></i> Iniciar Lector QR
+                    </button>
+                    
+                    <div class="text-center mt-6 w-full">
+                        <p class="text-xs text-slate-500 uppercase tracking-widest font-bold mb-2">Búsqueda Manual:</p>
+                        <input type="text" id="hostess-search" onkeyup="window.hostessManualSearch()" placeholder="Nombre del invitado..." class="w-full bg-slate-800 border border-slate-700 p-3 rounded-xl text-sm outline-none focus:border-blue-500 text-white placeholder-slate-500 text-center">
+                        <div id="hostess-search-results" class="mt-2 space-y-2 max-h-40 overflow-y-auto custom-scrollbar"></div>
+                    </div>
+                </div>
+
+                <div id="hview-croquis" class="hidden flex-col items-center w-full">
+                    <div class="bg-slate-800 p-4 rounded-2xl border border-slate-700 w-full text-center">
+                        <h3 class="font-bold text-blue-400 mb-2"><i class="fa-solid fa-map"></i> Mapa del Salón</h3>
+                        <img id="hostess-croquis-img" src="" class="w-full rounded-xl shadow-lg border border-slate-600 hidden">
+                        <p id="hostess-no-croquis" class="text-sm text-slate-400 py-8 italic">El organizador no ha subido un croquis.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Resultado QR Hostess -->
+    <div id="hostess-result-modal" class="fixed inset-0 bg-slate-900/95 items-center justify-center z-50 hidden backdrop-blur-sm p-4">
+        <div class="bg-white text-slate-900 p-6 rounded-3xl shadow-2xl w-full max-w-sm text-center border-4 border-emerald-500 relative overflow-hidden transform transition-all scale-95 opacity-0" id="hostess-result-box">
+            <button onclick="window.closeHostessResult()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800"><i class="fa-solid fa-times text-xl"></i></button>
+
+            <div class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-4xl mx-auto mb-4 border-4 border-white shadow-lg">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            
+            <h2 class="text-2xl font-black mb-1 text-slate-800" id="hr-name">Familia</h2>
+            <p class="text-sm text-slate-500 font-bold uppercase tracking-wider mb-6" id="hr-group">Grupo</p>
+            
+            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 mb-6 shadow-sm">
+                <p class="text-[10px] uppercase font-bold text-slate-400 mb-1">Mesa Asignada</p>
+                <p class="text-3xl font-black text-blue-600" id="hr-table">Mesa 1</p>
+            </div>
+            
+            <div class="flex justify-around bg-slate-50 rounded-2xl p-4 border border-slate-100 mb-6 shadow-sm">
+                <div><p class="text-2xl font-black text-slate-800" id="hr-adu">0</p><p class="text-[10px] font-bold text-slate-500 uppercase"><i class="fa-solid fa-user"></i> Adultos</p></div>
+                <div class="w-px bg-slate-200"></div>
+                <div><p class="text-2xl font-black text-slate-800" id="hr-nin">0</p><p class="text-[10px] font-bold text-slate-500 uppercase"><i class="fa-solid fa-child"></i> Niños</p></div>
+            </div>
+
+            <button onclick="window.closeHostessResult()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 rounded-xl shadow-lg transition text-lg">Aceptar e Ingresar</button>
+        </div>
+    </div>
+
+    <!-- Modal Añadir Invitado -->
+    <div id="add-guest-modal" class="fixed inset-0 bg-slate-900/75 items-center justify-center z-50 hidden glass p-4">
+        <div class="bg-white p-6 rounded-3xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto border border-slate-100">
+            <h3 class="text-xl font-black text-slate-800 mb-6 flex items-center gap-2"><i class="fa-solid fa-user-plus text-blue-500"></i> Nuevo Invitado</h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Nombre o Familia *</label>
+                    <input type="text" id="modal-guest-name" placeholder="Ej. Familia Pérez" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition font-medium">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Grupo</label>
+                        <select id="modal-guest-group" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50 cursor-pointer font-bold text-slate-700 transition">
+                            <option value="Familia">Familia</option>
+                            <option value="Amigos">Amigos</option>
+                            <option value="Trabajo">Trabajo</option>
+                            <option value="Conocidos">Conocidos</option>
+                            <option value="Otros" selected>Otros</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1"><i class="fa-brands fa-whatsapp text-emerald-500"></i> WhatsApp</label>
+                        <input type="text" id="modal-guest-phone" placeholder="10 dígitos" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition font-medium">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Adultos</label>
+                        <input type="number" id="modal-guest-ads" min="1" value="1" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50 text-center font-black text-lg transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Niños</label>
+                        <input type="number" id="modal-guest-kids" min="0" value="0" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50 text-center font-black text-lg transition">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">RSVP</label>
+                        <select id="modal-guest-status" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50 cursor-pointer font-bold text-slate-700 transition">
+                            <option value="Pendiente" selected>⏳ Pendiente</option>
+                            <option value="Confirmado">✅ Confirmado</option>
+                            <option value="Declinado">❌ Declinado</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Mesa</label>
+                        <select id="modal-guest-mesa" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50 cursor-pointer font-bold text-slate-700 transition">
+                            <option value="0">Sin Asignar</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Notas / Alergias</label>
+                    <input type="text" id="modal-guest-obs" placeholder="Menú infantil, alergias..." class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition font-medium">
+                </div>
+            </div>
+            <div class="mt-8 flex justify-end gap-3 border-t border-slate-100 pt-6">
+                <button onclick="document.getElementById('add-guest-modal').classList.replace('flex', 'hidden')" class="px-5 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition">Cancelar</button>
+                <button onclick="window.saveModalGuest()" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-md transition flex items-center gap-2"><i class="fa-solid fa-check"></i> Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Ticket / QR Rediseñado (3) -->
+    <div id="ticket-modal" class="fixed inset-0 bg-slate-900/90 items-center justify-center z-50 hidden glass p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden flex flex-col border border-slate-200">
+            <div id="ticket-content" class="p-8 text-center relative bg-gradient-to-br from-slate-900 to-slate-800 text-white border-b-4 border-blue-500">
+                <h3 class="text-2xl font-black mb-1" id="ticket-event-name">Cargando...</h3>
+                <p class="text-xs text-blue-300 font-bold uppercase tracking-widest mb-6">Pase de Acceso Oficial</p>
+                <div class="bg-white p-4 rounded-2xl inline-block mb-6 shadow-xl"><div id="ticket-qrcode"></div></div>
+                <h2 class="text-xl font-bold text-white mb-1 drop-shadow-md" id="ticket-guest-name">Invitado</h2>
+                <p class="text-sm text-slate-300 mb-2 font-medium" id="ticket-guest-passes">0 Pases</p>
+            </div>
+            <div class="grid grid-cols-2 gap-2 bg-slate-50 p-4 border-t border-slate-200">
+                 <button onclick="window.downloadNativeTicket()" class="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-xl font-bold transition flex justify-center items-center gap-2 shadow-md"><i class="fa-solid fa-download"></i> Descargar PDF</button>
+                 <button onclick="window.sendTicketWAAntiBlock()" class="bg-emerald-500 hover:bg-emerald-600 text-white p-3 rounded-xl font-bold transition flex justify-center items-center gap-2 shadow-md"><i class="fa-brands fa-whatsapp"></i> Enviar por WA</button>
+            </div>
+            <button onclick="document.getElementById('ticket-modal').classList.replace('flex','hidden')" class="w-full bg-slate-200 hover:bg-slate-300 p-4 text-slate-700 font-bold transition">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Modal WhatsApp -->
+    <div id="wa-standard-modal" class="fixed inset-0 bg-slate-900/80 items-center justify-center z-50 hidden glass p-4">
+        <div class="bg-white p-6 rounded-3xl shadow-2xl w-full max-w-lg border-t-4 border-emerald-500 flex flex-col max-h-[90vh]">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-black text-slate-800 flex items-center gap-2"><i class="fa-brands fa-whatsapp text-emerald-500 text-xl"></i> Notificación WhatsApp</h3>
+                <button onclick="document.getElementById('wa-standard-modal').classList.replace('flex', 'hidden')" class="text-slate-400 hover:text-slate-600 transition"><i class="fa-solid fa-times text-xl"></i></button>
+            </div>
+            
+            <div class="mb-4 bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100">
+                <label class="block text-xs font-bold text-emerald-800 uppercase tracking-wider mb-2">Asistente de Redacción</label>
+                <div class="flex gap-2">
+                    <!-- 4. Interactive onChange added -->
+                    <select id="local-tone-select" onchange="window.applyLocalTemplate()" class="flex-1 border-2 border-emerald-100 p-2.5 rounded-xl text-sm outline-none bg-white text-slate-700 font-bold cursor-pointer">
+                        <option value="emotivo">Emotivo y Lleno de Energía 🎉</option>
+                        <option value="formal">Elegante y Formal 🎩</option>
+                        <option value="casual">Casual y Directo 👋</option>
+                    </select>
+                    <button type="button" onclick="window.applyLocalTemplate()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl shadow-md transition flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
+                </div>
+                <label class="flex items-center gap-2 mt-4 pt-4 border-t border-emerald-100 cursor-pointer">
+                    <input type="checkbox" id="wa-include-link" class="w-4 h-4 text-emerald-600 rounded border-emerald-300 focus:ring-emerald-500" checked onchange="window.applyLocalTemplate()">
+                    <span class="text-xs font-bold text-slate-600 flex items-center gap-1">
+                        Adjuntar Link Mágico (Pase Digital y RSVP)
+                        <div class="relative group inline-block ml-1">
+                            <i class="fa-solid fa-circle-info text-blue-500 hover:text-blue-700 transition text-sm"></i>
+                            <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block w-64 bg-slate-800 text-white text-[10px] p-2.5 rounded-lg shadow-xl z-50 text-center font-medium leading-relaxed cursor-default pointer-events-none">
+                                El enlace se construye concatenando la URL base del sistema, enviando vía GET el parámetro 'u' (ID del Host/Agencia) y el parámetro 'id' (ID único del invitado). Ej: https://{userId}.tupasedigital.online/?u={userId}&id={guestId}
+                                <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-800"></div>
+                            </div>
+                        </div>
+                    </span>
+                </label>
+            </div>
+            
+            <div class="relative w-full mb-2">
+                <div class="flex justify-end mb-1">
+                    <button type="button" onclick="document.getElementById('emoji-picker-container').classList.toggle('hidden')" class="text-slate-500 hover:text-emerald-600 transition text-xs font-bold bg-slate-100 px-3 py-1.5 rounded-lg flex items-center gap-1"><i class="fa-regular fa-face-smile"></i> Emojis</button>
+                </div>
+                <div id="emoji-picker-container" class="absolute z-10 hidden shadow-2xl border rounded-2xl bg-white mt-1 right-0 overflow-hidden">
+                    <emoji-picker class="light"></emoji-picker>
+                </div>
+            </div>
+            
+            <textarea id="wa-standard-msg" class="w-full border-2 border-slate-100 p-4 rounded-2xl text-sm outline-none flex-1 resize-none bg-slate-50 focus:bg-white focus:border-emerald-300 transition font-medium min-h-[160px]" placeholder="Mensaje..."></textarea>
+            
+            <button type="button" id="wa-standard-send-btn" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 rounded-xl shadow-lg mt-4 transition flex items-center justify-center gap-2 text-lg"><i class="fa-solid fa-paper-plane"></i> Enviar por WhatsApp</button>
+        </div>
+    </div>
+
+    <!-- Asistente TPD Chat -->
+    <div id="tpd-fab" onclick="window.toggleTPDChat()" title="Asistente de Eventos">
+        <i class="fa-solid fa-headset"></i>
+    </div>
+    <div id="tpd-chat-widget">
+        <div id="tpd-chat-header" onclick="window.toggleTPDChat()">
+            <span><i class="fa-solid fa-robot mr-2"></i> Asistente IA TPD</span>
+            <i class="fa-solid fa-chevron-down"></i>
+        </div>
+        <div id="tpd-chat-messages" class="custom-scrollbar">
+            <div class="tpd-msg bot">¡Hola! Soy tu asistente de logística. Escribe palabras como <b>mesas</b>, <b>bebidas</b>, <b>dulces</b>, <b>niños</b> o <b>resumen</b> y haré los cálculos por ti basados en tu lista actual.</div>
+        </div>
+        <div class="flex border-t border-slate-200 p-3 bg-white gap-2">
+            <input type="text" id="tpd-chat-input" placeholder="Ej. Calcula el alcohol..." onkeypress="if(event.key === 'Enter') window.sendTPDChat()" class="flex-1 border-2 border-slate-100 rounded-xl px-4 py-2 text-sm outline-none focus:border-blue-400 transition bg-slate-50">
+            <button onclick="window.sendTPDChat()" class="bg-blue-600 text-white rounded-xl w-10 h-10 flex items-center justify-center hover:bg-blue-700 shadow-md transition"><i class="fa-solid fa-paper-plane text-xs"></i></button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, onSnapshot, collection, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const MASTER_PASSWORD = "T0k3r3k3r"; 
+        const firebaseConfig = {
+            apiKey: "AIzaSyCaRKtx54HYM5jXB2DgtZeLciUNB7Inqjw",
+            authDomain: "wedding-crm-6853f.firebaseapp.com",
+            databaseURL: "https://wedding-crm-6853f-default-rtdb.firebaseio.com",
+            projectId: "wedding-crm-6853f",
+            storageBucket: "wedding-crm-6853f.firebasestorage.app",
+            messagingSenderId: "956437103756",
+            appId: "1:956437103756:web:b2d27aad4e6bfded7327a9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        
+        let unsubscribe = null;
+        let currentUser = null;
+        let currentRole = null;
+        let currentEventType = "";
+        let impersonatingId = null;
+        
+        let state = { 
+            invitados: [], 
+            mesas: [{ id: 1, nombre: "Mesa VIP" }], 
+            config: { capacidadMesa: 10 },
+            croquis: null,
+            themeColor: '#2563eb'
+        };
+        
+        const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, timerProgressBar: true });
+
+        window.addPDFFooter = function(docInstance) {
+            const pageCount = docInstance.internal.getNumberOfPages();
+            const pageWidth = docInstance.internal.pageSize.getWidth();
+            const pageHeight = docInstance.internal.pageSize.getHeight();
+            for (let i = 1; i <= pageCount; i++) {
+                docInstance.setPage(i);
+                docInstance.setFontSize(8);
+                docInstance.setTextColor(150);
+                docInstance.text("Generado por tupasedigital.online", pageWidth / 2, pageHeight - 8, { align: 'center' });
+            }
+        };
+
+        window.togglePassword = function(id) {
+            const el = document.getElementById(id);
+            el.type = el.type === "password" ? "text" : "password";
+        };
+
+        window.generateRandomPassword = function(targetId) {
+            const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#";
+            let pass = "";
+            for(let i=0; i<8; i++) pass += chars.charAt(Math.floor(Math.random() * chars.length));
+            const passInput = document.getElementById(targetId);
+            passInput.type = 'text';
+            passInput.value = pass;
+        };
+
+        const picker = document.querySelector('emoji-picker');
+        if (picker) {
+            picker.addEventListener('emoji-click', event => {
+                const textarea = document.getElementById('wa-standard-msg');
+                const start = textarea.selectionStart;
+                const end = textarea.selectionEnd;
+                textarea.value = textarea.value.substring(0, start) + event.detail.unicode + textarea.value.substring(end);
+                textarea.selectionStart = textarea.selectionEnd = start + event.detail.unicode.length;
+                textarea.focus();
+                document.getElementById('emoji-picker-container').classList.add('hidden');
+            });
+        }
+
+        // ============================================================================
+        // 1. SISTEMA DE LOGIN Y ENRUTAMIENTO SAAS ACTUALIZADO
+        // ============================================================================
+        window.appLogin = async function() {
+            const user = document.getElementById('login-user').value.trim().toLowerCase();
+            const pass = document.getElementById('login-pass').value.trim();
+
+            if (!user || !pass) return Swal.fire('Error', 'Ingresa ID y contraseña.', 'error');
+            Swal.fire({ title: 'Autenticando...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+
+            try {
+                await signInAnonymously(auth);
+
+                if (user === 'admin' && pass === MASTER_PASSWORD) {
+                    currentRole = 'Administrador';
+                    window.loadAdminPanel();
+                    return;
+                }
+
+                const docRef = doc(db, 'artifacts', 'weddingflow', 'users', user);
+                const snap = await getDoc(docRef);
+
+                if (snap.exists()) {
+                    const data = snap.data();
+                    if (data.pass !== pass && pass !== MASTER_PASSWORD) {
+                        return Swal.fire('Error', 'Contraseña incorrecta', 'error');
+                    }
+                    if (data.status === 'Suspendido' && pass !== MASTER_PASSWORD) {
+                        return Swal.fire('Acceso Suspendido', 'Tu cuenta se encuentra suspendida. Contacta a tu agencia.', 'warning');
+                    }
+                    
+                    currentRole = data.role || 'Cliente';
+                    
+                    if (currentRole === 'Hostess') {
+                        Swal.close();
+                        const { value: eventId } = await Swal.fire({
+                            title: 'Recepción Hostess',
+                            input: 'text',
+                            inputLabel: 'ID del Evento',
+                            inputPlaceholder: 'Ingresa el ID del evento (Ej. boda_ana)',
+                            showCancelButton: true,
+                            confirmButtonColor: '#2563eb'
+                        });
+                        if (eventId) window.loadHostessView(eventId.toLowerCase().trim());
+                        else window.appLogout();
+                        return;
+                    }
+
+                    if (currentRole === 'Administrador' || currentRole === 'Staff' || currentRole === 'Soporte') {
+                        window.loadAdminPanel(); 
+                    } else if (currentRole === 'Cliente Web') {
+                        // 1. Redirección limpia implementada
+                        window.location.href = `estudio_diseno.html?user=${user}`;
+                    } else {
+                        window.setupClientEnvironment(user, data); 
+                    }
+                } else {
+                    Swal.fire('Error', 'Inquilino/Usuario no encontrado en la base de datos.', 'error');
+                }
+            } catch (error) {
+                console.error(error);
+                Swal.fire('Error', 'Problema de conexión o credenciales inválidas.', 'error');
+            }
+        };
+
+        window.appLogout = async function() {
+            if(unsubscribe) unsubscribe();
+            if(window.html5QrcodeScanner) window.html5QrcodeScanner.clear();
+            await signOut(auth);
+            
+            currentUser = null; currentRole = null; impersonatingId = null;
+            document.getElementById('login-user').value = '';
+            document.getElementById('login-pass').value = '';
+            
+            ['view-admin', 'view-crm', 'view-hostess', 'crm-impersonation-bar', 'welcome-modal'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+                document.getElementById(id).classList.remove('flex');
+            });
+            document.getElementById('view-login').classList.remove('hidden');
+
+            document.getElementById('tpd-fab').style.display = 'none';
+            document.getElementById('tpd-chat-widget').style.display = 'none';
+        };
+
+        // ============================================================================
+        // CONSOLA DE ADMINISTRACIÓN Y SUPERVISIÓN
+        // ============================================================================
+        window.loadAdminPanel = async function() {
+            document.getElementById('view-login').classList.add('hidden');
+            document.getElementById('view-crm').classList.add('hidden');
+            document.getElementById('view-admin').classList.remove('hidden');
+            
+            document.getElementById('tpd-fab').style.display = 'none';
+            document.getElementById('tpd-chat-widget').style.display = 'none';
+
+            Swal.close();
+            
+            if(currentRole === 'Staff' || currentRole === 'Soporte') {
+                document.getElementById('admin-creator-panel').classList.add('hidden');
+            } else {
+                document.getElementById('admin-creator-panel').classList.remove('hidden');
+            }
+            
+            const colRef = collection(db, 'artifacts', 'weddingflow', 'users');
+            const snaps = await getDocs(colRef);
+            
+            const tbody = document.getElementById('admin-users-tbody');
+            tbody.innerHTML = '';
+            
+            snaps.forEach(docSnap => {
+                const d = docSnap.data();
+                if(docSnap.id === 'admin') return; 
+                
+                let tipoDisplay = '';
+                if (d.role === 'Administrador' || d.role === 'Staff' || d.role === 'Soporte') {
+                    tipoDisplay = '<span class="text-slate-400 italic">Agencia</span>';
+                } else if (d.role === 'Cliente Web') {
+                    tipoDisplay = '<span class="text-purple-500 font-bold">Diseño Web</span>';
+                } else if (d.role === 'Hostess') {
+                    tipoDisplay = '<span class="text-blue-500 font-bold">Staff Evento</span>';
+                } else {
+                    tipoDisplay = d.eventType ? `<span class="font-bold">${d.eventType}</span>` : '<span class="text-amber-500 font-bold">Por configurar</span>';
+                }
+
+                let bdg = d.status === 'Suspendido' ? '<span class="bg-red-100 text-red-700 px-2 py-1 rounded text-[10px] font-bold">Suspendido</span>' : '<span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-[10px] font-bold">Activo</span>';
+                
+                let btnSt = d.status === 'Suspendido' 
+                    ? `<button onclick="window.adminToggleStatus('${docSnap.id}','Activo')" class="text-emerald-500 hover:text-emerald-700 px-2 text-sm transition" title="Reactivar"><i class="fa-solid fa-play"></i></button>` 
+                    : `<button onclick="window.adminToggleStatus('${docSnap.id}','Suspendido')" class="text-amber-500 hover:text-amber-700 px-2 text-sm transition" title="Suspender (Impago)"><i class="fa-solid fa-pause"></i></button>`;
+                
+                let deleteBtn = currentRole === 'Administrador' ? `<button onclick="window.deleteClient('${docSnap.id}')" class="text-red-400 hover:text-red-600 px-2 text-sm transition" title="Borrar DB"><i class="fa-solid fa-trash-can"></i></button>` : '';
+
+                // 1. Modificación de roles a supervisar
+                let impBtn = '';
+                if (d.role === 'Cliente' || d.role === 'Cliente Web' || d.role === 'Hostess') {
+                     impBtn = `<button onclick="window.impStart('${docSnap.id}', '${d.role}')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-100 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1"><i class="fa-solid fa-eye"></i> Supervisar</button>`;
+                }
+
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-50 transition border-b border-slate-50';
+                tr.innerHTML = `
+                    <td class="p-4 font-bold text-slate-800">${docSnap.id} <br><span class="text-[10px] text-slate-500 uppercase tracking-wider font-medium">${tipoDisplay}</span></td>
+                    <td class="p-4 font-bold text-xs text-slate-500 uppercase tracking-wide">${d.role || 'Cliente'}</td>
+                    <td class="p-4 text-center">${bdg}</td>
+                    <td class="p-4 flex items-center justify-end gap-2">
+                        ${impBtn}
+                        <div class="h-6 w-px bg-slate-200 mx-1"></div>
+                        <button onclick="window.adminResetPassword('${docSnap.id}')" class="text-slate-400 hover:text-blue-600 transition p-2" title="Resetear Contraseña"><i class="fa-solid fa-key"></i></button>
+                        ${btnSt}
+                        ${deleteBtn}
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        };
+
+        window.adminCreateUser = async function() {
+            const user = document.getElementById('new-user').value.trim().toLowerCase();
+            const pass = document.getElementById('new-pass').value.trim();
+            const role = document.getElementById('new-role').value;
+
+            if(!user || !pass) return Swal.fire('Atención', 'Rellena el ID de usuario y la contraseña.', 'warning');
+            
+            const docRef = doc(db, 'artifacts', 'weddingflow', 'users', user);
+            await setDoc(docRef, { pass, role, status: 'Activo', eventType: "", invitados: [], mesas: [{id:1,nombre:"Mesa VIP"}], config: {capacidadMesa:10}, croquis: null });
+            
+            document.getElementById('new-user').value = '';
+            document.getElementById('new-pass').value = '';
+            Toast.fire({icon: 'success', title: 'Usuario Registrado'});
+            window.loadAdminPanel();
+        };
+
+        window.adminResetPassword = function(userId) {
+            Swal.fire({
+                title: `🔑 Reset Pass: ${userId}`,
+                input: 'text',
+                inputPlaceholder: 'Escribe nueva contraseña...',
+                showCancelButton: true,
+                confirmButtonColor: '#2563eb',
+                confirmButtonText: 'Guardar',
+                showDenyButton: true,
+                denyButtonText: 'Auto Generar',
+                denyButtonColor: '#64748b'
+            }).then(async (result) => {
+                if (result.isConfirmed && result.value) {
+                    await setDoc(doc(db, 'artifacts', 'weddingflow', 'users', userId), { pass: result.value.trim() }, { merge: true });
+                    Toast.fire({ icon: 'success', title: 'Actualizada' });
+                } else if (result.isDenied) {
+                    const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#";
+                    let genPass = "";
+                    for(let i=0; i<8; i++) genPass += chars.charAt(Math.floor(Math.random() * chars.length));
+                    await setDoc(doc(db, 'artifacts', 'weddingflow', 'users', userId), { pass: genPass }, { merge: true });
+                    Swal.fire('Contraseña Generada', `La nueva contraseña para <b>${userId}</b> es:<br><br><span class="text-2xl font-mono bg-slate-100 p-2 rounded">${genPass}</span>`, 'success');
+                }
+            });
+        };
+
+        window.adminToggleStatus = async function(userId, newStatus) {
+            await setDoc(doc(db, 'artifacts', 'weddingflow', 'users', userId), { status: newStatus }, { merge: true });
+            window.loadAdminPanel();
+        };
+
+        window.deleteClient = function(user) {
+            Swal.fire({
+                title: `¿Borrar Instancia de ${user}?`, text: "Peligro: Se perderán todos los datos permanentemente.", icon: 'error',
+                showCancelButton: true, confirmButtonColor: '#ef4444', confirmButtonText: 'Sí, borrar definitivamente'
+            }).then(async (res) => {
+                if(res.isConfirmed) {
+                    await deleteDoc(doc(db, 'artifacts', 'weddingflow', 'users', user));
+                    Toast.fire({icon:'success', title:'Instancia Borrada'});
+                    window.loadAdminPanel();
+                }
+            });
+        };
+
+        // 1. Impersonation modificada para Hostess
+        window.impStart = async function(user, userRole) {
+            if (userRole === 'Hostess') {
+                const { value: eventId } = await Swal.fire({
+                    title: 'Supervisar Hostess', input: 'text', inputLabel: 'ID del Evento',
+                    inputPlaceholder: 'Ingresa el ID (Ej. boda_ana)', showCancelButton: true, confirmButtonColor: '#2563eb'
+                });
+                if (eventId) { window.loadHostessView(eventId.toLowerCase().trim()); }
+                return;
+            }
+
+            impersonatingId = user;
+            document.getElementById('view-admin').classList.add('hidden');
+            
+            const docRef = doc(db, 'artifacts', 'weddingflow', 'users', user);
+            const snap = await getDoc(docRef);
+            if (snap.exists()) {
+                 const data = snap.data();
+                 if (data.role === 'Cliente Web') {
+                     window.location.href = `estudio_diseno.html?user=${user}`;
+                 } else {
+                     document.getElementById('crm-impersonation-bar').classList.remove('hidden');
+                     document.getElementById('crm-impersonation-bar').classList.add('flex');
+                     document.getElementById('crm-imp-name').innerText = user;
+                     window.setupClientEnvironment(user, data);
+                 }
+            }
+        };
+
+        window.appExitImpersonation = function() {
+            impersonatingId = null;
+            document.getElementById('crm-impersonation-bar').classList.add('hidden');
+            document.getElementById('crm-impersonation-bar').classList.remove('flex');
+            document.getElementById('view-crm').classList.add('hidden');
+            document.getElementById('view-hostess').classList.add('hidden');
+            if (unsubscribe) unsubscribe();
+            window.loadAdminPanel();
+        };
+
+        // ============================================================================
+        // 2. GESTIÓN DE CONTRASEÑAS PARA CLIENTE Y AGENCIA
+        // ============================================================================
+        window.changeOwnPassword = async function() {
+            const targetUser = impersonatingId || currentUser; 
+            
+            const { value: newPass } = await Swal.fire({
+                title: '🔒 Cambiar Contraseña',
+                input: 'password',
+                inputPlaceholder: 'Ingresa la nueva contraseña...',
+                showCancelButton: true,
+                confirmButtonColor: '#2563eb'
+            });
+
+            if (newPass) {
+                try {
+                    const docRef = doc(db, 'artifacts', 'weddingflow', 'users', targetUser);
+                    await setDoc(docRef, { pass: newPass.trim() }, { merge: true });
+                    Toast.fire({ icon: 'success', title: 'Contraseña Actualizada' });
+                } catch(e) {
+                    Swal.fire('Error', 'No se pudo cambiar la contraseña', 'error');
+                }
+            }
+        };
+
+        // ============================================================================
+        // WORKSPACE: CLIENTE CRM
+        // ============================================================================
+        window.setupClientEnvironment = function(userToLoad, dataSnapshot = null) {
+            currentUser = userToLoad;
+            document.getElementById('view-login').classList.add('hidden');
+            document.getElementById('view-admin').classList.add('hidden');
+            document.getElementById('view-crm').classList.remove('hidden');
+            
+            document.getElementById('tpd-fab').style.display = 'flex';
+            
+            document.getElementById('user-display').innerText = currentRole;
+            
+            if (dataSnapshot && !dataSnapshot.eventType && (!impersonatingId)) {
+                document.getElementById('welcome-modal').classList.remove('hidden');
+                document.getElementById('welcome-modal').classList.add('flex');
+            } else {
+                window.subscribeToUser(userToLoad);
+            }
+            Swal.close();
+        };
+
+        window.toggleCustomEventInput = function(selectId, inputId) {
+            const select = document.getElementById(selectId);
+            const input = document.getElementById(inputId);
+            if(select.value === 'Otro') {
+                input.classList.remove('hidden');
+                input.focus();
+            } else {
+                input.classList.add('hidden');
+                input.value = '';
+            }
+        };
+
+        window.saveWelcomeEventType = async function() {
+            const selectVal = document.getElementById('welcome-event-type').value;
+            let type = selectVal;
+            if(selectVal === 'Otro') {
+                type = document.getElementById('welcome-event-custom').value.trim();
+                if(!type) return Toast.fire({icon:'warning', title:'Escribe el tipo de evento'});
+            }
+
+            const activeTarget = impersonatingId || currentUser;
+            const docRef = doc(db, 'artifacts', 'weddingflow', 'users', activeTarget);
+            await setDoc(docRef, { eventType: type }, { merge: true });
+            document.getElementById('welcome-modal').classList.replace('flex', 'hidden');
+            window.subscribeToUser(activeTarget);
+        };
+
+        window.subscribeToUser = function(user) {
+            if (unsubscribe) unsubscribe();
+            const docRef = doc(db, 'artifacts', 'weddingflow', 'users', user);
+            
+            unsubscribe = onSnapshot(docRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    state.invitados = data.invitados || [];
+                    state.mesas = data.mesas || state.mesas;
+                    state.config = data.config || state.config;
+                    state.croquis = data.croquis || null;
+                    currentEventType = data.eventType || currentEventType;
+                    
+                    // 5. Tematización Dinámica conectada
+                    state.themeColor = data.config?.themeColor || '#2563eb'; 
+                    document.documentElement.style.setProperty('--primary-color', state.themeColor);
+                    
+                    const tipo = currentEventType || 'Evento';
+                    document.getElementById('crm-header-id').innerText = `${tipo} - ${user}`;
+                    
+                    const iconEl = document.getElementById('header-main-icon');
+                    if (iconEl) {
+                        iconEl.className = 'fa-solid ';
+                        const tLower = tipo.toLowerCase();
+                        if (tLower.includes('boda')) iconEl.classList.add('fa-ring');
+                        else if (tLower.includes('xv') || tLower.includes('15')) iconEl.classList.add('fa-crown');
+                        else if (tLower.includes('comunión') || tLower.includes('confirmación') || tLower.includes('bautizo')) iconEl.classList.add('fa-dove');
+                        else if (tLower.includes('cumple')) iconEl.classList.add('fa-cake-candles');
+                        else iconEl.classList.add('fa-calendar-check');
+                    }
+                    window.crmRenderAll();
+                }
+            });
+        };
+
+        window.crmSave = async function() {
+            const activeTarget = impersonatingId || currentUser;
+            if (!activeTarget || currentRole === 'Staff' || currentRole === 'Soporte') return;
+            const docRef = doc(db, 'artifacts', 'weddingflow', 'users', activeTarget);
+            try {
+                await setDoc(docRef, { invitados: state.invitados, mesas: state.mesas, config: state.config, croquis: state.croquis }, { merge: true });
+            } catch (e) { console.error(e); }
+        };
+
+        window.crmRenderAll = function() { window.crmRenderGuests(); window.crmRenderTables(); window.crmRenderStats(); };
+        window.crmLoadData = function() { window.crmRenderAll(); Toast.fire({icon:'success', title:'Datos sincronizados'}); };
+
+        window.crmSwitchTab = function(tab) {
+            ['guests', 'tables', 'stats'].forEach(t => {
+                document.getElementById(`crm-sec-${t}`).classList.add('hidden');
+                document.getElementById(`tab-${t}`).classList.replace('text-blue-600', 'text-slate-500');
+                document.getElementById(`tab-${t}`).classList.replace('border-blue-600', 'border-transparent');
+            });
+            document.getElementById(`crm-sec-${tab}`).classList.remove('hidden');
+            document.getElementById(`tab-${tab}`).classList.replace('text-slate-500', 'text-blue-600');
+            document.getElementById(`tab-${tab}`).classList.replace('border-transparent', 'border-blue-600');
+            if(tab === 'tables') window.crmRenderTables();
+            if(tab === 'stats') window.crmRenderStats();
+        };
+
+        window.openAddGuestModal = function() {
+            const mesaSelect = document.getElementById('modal-guest-mesa');
+            mesaSelect.innerHTML = '<option value="0">Sin Asignar</option>' + state.mesas.map(m => `<option value="${m.id}">${m.nombre}</option>`).join('');
+            
+            document.getElementById('modal-guest-name').value = '';
+            document.getElementById('modal-guest-phone').value = '';
+            document.getElementById('modal-guest-ads').value = '1';
+            document.getElementById('modal-guest-kids').value = '0';
+            document.getElementById('modal-guest-obs').value = '';
+            
+            document.getElementById('add-guest-modal').classList.remove('hidden');
+            document.getElementById('add-guest-modal').classList.add('flex');
+            setTimeout(()=>document.getElementById('modal-guest-name').focus(), 100);
+        };
+
+        window.saveModalGuest = function() {
+            const name = document.getElementById('modal-guest-name').value.trim();
+            const group = document.getElementById('modal-guest-group').value;
+            const phone = document.getElementById('modal-guest-phone').value.trim();
+            const pasesA = parseInt(document.getElementById('modal-guest-ads').value) || 1;
+            const pasesN = parseInt(document.getElementById('modal-guest-kids').value) || 0;
+            const status = document.getElementById('modal-guest-status').value;
+            const mesa = parseInt(document.getElementById('modal-guest-mesa').value) || 0;
+            const obs = document.getElementById('modal-guest-obs').value.trim();
+
+            if (!name) return Toast.fire({icon: 'warning', title: 'El nombre es obligatorio'});
+
+            state.invitados.push({
+                id: Date.now(), nombre: name, grupo: group, telefono: phone, 
+                adultos: pasesA, pases: pasesA, ninos: pasesN, status: status, mesa: mesa, observaciones: obs
+            });
+
+            document.getElementById('add-guest-modal').classList.replace('flex', 'hidden');
+            window.crmSave(); window.crmRenderAll();
+            Toast.fire({ icon: 'success', title: 'Invitado Guardado' });
+        };
+
+        window.crmRenderGuests = function() {
+            const tbody = document.getElementById('crm-guests-tbody');
+            const term = document.getElementById('crm-search').value.toLowerCase();
+            tbody.innerHTML = '';
+
+            const optionsGrupo = ["Familia", "Amigos", "Trabajo", "Conocidos", "Otros"];
+
+            state.invitados.filter(g => g.nombre.toLowerCase().includes(term)).forEach(g => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-50 transition border-b border-slate-50';
+                let stColor = g.status === 'Confirmado' ? 'text-emerald-700 bg-emerald-100 border-emerald-200' : (g.status === 'Declinado' ? 'text-red-700 bg-red-100 border-red-200' : 'text-amber-700 bg-amber-100 border-amber-200');
+                
+                let ads = parseInt(g.adultos !== undefined ? g.adultos : g.pases) || 0;
+                let nns = parseInt(g.ninos) || 0;
+
+                tr.innerHTML = `
+                    <td class="p-4 text-center"><input type="checkbox" class="g-cb w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer" value="${g.id}"></td>
+                    <td class="p-4 font-bold text-slate-800">${g.nombre}</td>
+                    <td class="p-4">
+                        <select onchange="window.crmUpdateGuest(${g.id}, 'grupo', this.value)" class="border border-slate-200 p-1.5 text-xs rounded-lg w-28 outline-none text-slate-700 bg-white cursor-pointer font-bold focus:border-blue-500 transition">
+                            ${optionsGrupo.map(opt => `<option value="${opt}" ${g.grupo===opt?'selected':''}>${opt}</option>`).join('')}
+                        </select>
+                    </td>
+                    <td class="p-4"><input type="text" value="${g.telefono || ''}" onchange="window.crmUpdateGuest(${g.id}, 'telefono', this.value)" placeholder="10 Digitos" class="border border-slate-200 p-1.5 text-xs rounded-lg w-28 outline-none focus:border-blue-500 transition"></td>
+                    <td class="p-4 text-center"><input type="number" min="0" value="${ads}" onchange="window.crmUpdateGuest(${g.id}, 'adultos', this.value)" class="border border-slate-200 p-1.5 text-xs rounded-lg w-16 text-center font-bold focus:border-blue-500 transition"></td>
+                    <td class="p-4 text-center"><input type="number" min="0" value="${nns}" onchange="window.crmUpdateGuest(${g.id}, 'ninos', this.value)" class="border border-slate-200 p-1.5 text-xs rounded-lg w-16 text-center font-bold focus:border-blue-500 transition"></td>
+                    <td class="p-4 text-center">
+                        <select onchange="window.crmUpdateGuest(${g.id}, 'status', this.value)" class="border p-1.5 text-xs rounded-lg outline-none ${stColor} font-bold cursor-pointer transition">
+                            <option value="Pendiente" ${g.status==='Pendiente'?'selected':''}>⏳ Pendiente</option>
+                            <option value="Confirmado" ${g.status==='Confirmado'?'selected':''}>✅ Confirmado</option>
+                            <option value="Declinado" ${g.status==='Declinado'?'selected':''}>❌ Declinado</option>
+                        </select>
+                    </td>
+                    <td class="p-4"><input type="text" value="${g.observaciones || ''}" onchange="window.crmUpdateGuest(${g.id}, 'observaciones', this.value)" placeholder="Notas..." class="border border-slate-200 p-1.5 text-xs rounded-lg w-40 outline-none focus:border-blue-500 transition"></td>
+                    <td class="p-4 text-center">
+                        <div class="flex justify-center gap-2">
+                            <button onclick="window.showTicket(${g.id})" class="bg-blue-50 hover:bg-blue-100 text-blue-600 border border-blue-200 w-8 h-8 rounded-lg shadow-sm text-sm font-bold transition flex items-center justify-center" title="Ver Pase QR"><i class="fa-solid fa-qrcode"></i></button>
+                            <button onclick="window.openLocalGeneratorModal(${g.id})" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-600 border border-emerald-200 w-8 h-8 rounded-lg shadow-sm text-sm font-bold transition flex items-center justify-center" title="WhatsApp"><i class="fa-brands fa-whatsapp text-lg"></i></button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        };
+
+        window.crmUpdateGuest = function(id, field, value) {
+            const guest = state.invitados.find(g => g.id === id);
+            if (!guest) return;
+            if (field === 'pases' || field === 'adultos' || field === 'ninos') {
+                value = parseInt(value) || 0;
+                if(value < 0) value = 0;
+                guest[field] = value;
+                if (field === 'adultos') guest.pases = value;
+                if (field === 'pases') guest.adultos = value;
+            } else { guest[field] = value; }
+            window.crmSave();
+        };
+
+        window.crmDeleteSelected = function() {
+            const selected = Array.from(document.querySelectorAll('.g-cb:checked')).map(cb => parseInt(cb.value));
+            if (selected.length === 0) return Toast.fire({ icon: 'info', title: 'Selecciona al menos uno' });
+            Swal.fire({ title: '¿Borrar Selección?', text: `Se borrarán ${selected.length} invitados.`, icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444' })
+            .then((r) => {
+                if (r.isConfirmed) {
+                    state.invitados = state.invitados.filter(g => !selected.includes(g.id));
+                    window.crmSave(); window.crmRenderAll(); Toast.fire({ icon: 'success', title: 'Borrados' });
+                }
+            });
+        };
+
+        window.crmDeleteAllGuests = function() {
+            if (state.invitados.length === 0) return;
+            Swal.fire({ title: '¡PELIGRO!', text: '¿Vaciar TODA la lista?', icon: 'error', showCancelButton: true, confirmButtonColor: '#ef4444' })
+            .then((r) => { if (r.isConfirmed) { state.invitados = []; window.crmSave(); window.crmRenderAll(); Toast.fire({ icon: 'success', title: 'Vaciada' }); } });
+        };
+
+        // ============================================================================
+        // 3. PASES QR REDISEÑADOS CON JSPDF NATIVO
+        // ============================================================================
+        window.showTicket = function(id) {
+            const guest = state.invitados.find(g => g.id === id);
+            if(!guest) return;
+            document.getElementById('ticket-event-name').innerText = currentEventType === 'Otro' ? 'Evento Especial' : currentEventType;
+            document.getElementById('ticket-guest-name').innerText = guest.nombre;
+            let ads = parseInt(guest.adultos !== undefined ? guest.adultos : guest.pases) || 0;
+            let nns = parseInt(guest.ninos) || 0;
+            document.getElementById('ticket-guest-passes').innerText = `${ads + nns} Pases (${ads} Adultos, ${nns} Niños)`;
+            const qrContainer = document.getElementById('ticket-qrcode');
+            qrContainer.innerHTML = '';
+            
+            const activeTarget = impersonatingId || currentUser;
+            const urlDinamica = `https://${activeTarget}.tupasedigital.online`;
+            const rsvpUrl = `${urlDinamica}/?u=${activeTarget}&id=${guest.id}`;
+            
+            new QRCode(qrContainer, { text: rsvpUrl, width: 140, height: 140, colorDark : "#1e293b", colorLight : "#ffffff", correctLevel : QRCode.CorrectLevel.H });
+            document.getElementById('ticket-modal').classList.remove('hidden');
+            document.getElementById('ticket-modal').classList.add('flex');
+        };
+
+        window.downloadNativeTicket = function() {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: [80, 150] });
+            
+            const activeColor = state.themeColor || '#0f172a';
+            pdf.setFillColor(activeColor);
+            pdf.rect(0, 0, 80, 150, 'F');
+            
+            pdf.setTextColor(255, 255, 255);
+            pdf.setFontSize(16);
+            pdf.text(document.getElementById('ticket-event-name').innerText, 40, 20, { align: 'center' });
+            pdf.setFontSize(10);
+            pdf.text("Pase de Acceso Oficial", 40, 30, { align: 'center' });
+            
+            const qrCanvas = document.querySelector('#ticket-qrcode canvas');
+            if (qrCanvas) {
+                const qrData = qrCanvas.toDataURL("image/png");
+                pdf.setFillColor(255, 255, 255);
+                pdf.rect(19, 39, 42, 42, 'F');
+                pdf.addImage(qrData, 'PNG', 20, 40, 40, 40);
+            }
+            
+            pdf.setFontSize(14);
+            pdf.text(document.getElementById('ticket-guest-name').innerText, 40, 95, { align: 'center' });
+            pdf.setFontSize(10);
+            pdf.text(document.getElementById('ticket-guest-passes').innerText, 40, 105, { align: 'center' });
+            
+            pdf.save(`Pase_${document.getElementById('ticket-guest-name').innerText}.pdf`);
+        };
+
+        window.sendTicketWAAntiBlock = function() {
+            const newTab = window.open('about:blank', '_blank');
+            window.downloadNativeTicket();
+            
+            const guestName = document.getElementById('ticket-guest-name').innerText;
+            const guest = state.invitados.find(g => g.nombre === guestName);
+            
+            if (!guest || !guest.telefono) {
+                newTab.close();
+                return Toast.fire({icon:'warning', title:'Invitado sin teléfono asignado'});
+            }
+            
+            const msg = encodeURIComponent(`¡Hola ${guest.nombre}! Aquí tienes tu Pase de Acceso Oficial. ¡Nos vemos pronto! ✨`);
+            setTimeout(() => {
+                newTab.location.href = `https://api.whatsapp.com/send?phone=${guest.telefono}&text=${msg}`;
+            }, 600);
+        };
+
+        // ============================================================================
+        // 4. ASISTENTE WHATSAPP: Traductor Humano, Textos Originales, Blindaje y Feedback
+        // ============================================================================
+        let currentTargetGuestId = null;
+        window.openLocalGeneratorModal = function(id) {
+            currentTargetGuestId = id;
+            document.getElementById('wa-standard-modal').classList.remove('hidden');
+            document.getElementById('wa-standard-modal').classList.add('flex');
+            window.applyLocalTemplate();
+        };
+
+        window.applyLocalTemplate = function() {
+            try {
+                if(!currentTargetGuestId) return;
+                const guest = state.invitados.find(g => g.id === currentTargetGuestId);
+                if(!guest) throw new Error("Invitado no encontrado");
+                
+                const tone = document.getElementById('local-tone-select').value;
+                const includeLink = document.getElementById('wa-include-link').checked;
+                
+                // Traductor Humano: Naturalización del tipo de evento
+                const eventoDinamico = {
+                    "Boda": "nuestra boda", "XV Años": "los XV años", "Bautizo": "el bautizo",
+                    "Primera Comunión": "la primera comunión", "Confirmación": "la confirmación",
+                    "Cumpleaños": "el cumpleaños"
+                }[currentEventType] || `nuestra celebración de ${currentEventType || 'evento'}`;
+                
+                // Pases originales con negritas
+                let ads = parseInt(guest.adultos !== undefined ? guest.adultos : guest.pases) || 1;
+                let nns = parseInt(guest.ninos) || 0;
+                let txtAdultos = ads === 1 ? "*1 pase para adulto*" : `*${ads} pases para adultos*`;
+                let txtNinos = nns === 0 ? "" : (nns === 1 ? " y *1 pase para un invitado infantil*" : ` y *${nns} pases para pequeños*`);
+                let txtPases = `${txtAdultos}${txtNinos}`;
+
+                let msg = "";
+                
+                // Textos ORIGINALES con la variable eventoDinamico inyectada
+                if (guest.status === 'Declinado') {
+                    msg = `¡Hola *${guest.nombre}*! 🥺 Nos da mucha tristeza saber que no podrán acompañarnos a ${eventoDinamico}, pero agradecemos muchísimo el tiempo que tomaste para avisarnos. ¡Los vamos a extrañar un montón! Un abrazo enorme. ✨`;
+                } 
+                else if (guest.status === 'Pendiente') {
+                    if (tone === 'formal') {
+                        msg = `Estimado/a *${guest.nombre}*, esperamos que se encuentre muy bien. Le escribimos para recordarle amablemente que tenemos reservados ${txtPases} para ${eventoDinamico} 🥂. Nos encantaría saber si contaremos con su valiosa presencia. ¡Por favor, confirme su asistencia en cuanto le sea posible! ✨🎩`;
+                    } else if (tone === 'casual') {
+                        msg = `¡Qué onda *${guest.nombre}*! 👋 Paso a recordarte que te apartamos ${txtPases} para festejar ${eventoDinamico} 🥳. ¡Ojalá sí puedas venir! Échame un mensajito para confirmar y saber si cuento contigo, ¿va? 😎`;
+                    } else {
+                        msg = `¡Hola *${guest.nombre}*! 💖 Estamos súper emocionados por ${eventoDinamico} y queremos recordarte que tienes reservados ${txtPases} con muchísimo cariño 🥰. Como aún no tenemos tu confirmación, queríamos pedirte que nos avises si nos acompañarás. ¡Nos haría muchísima ilusión verte ahí! 🎉✨`;
+                    }
+                } 
+                else {
+                    if (tone === 'formal') {
+                        msg = `Estimado/a *${guest.nombre}*, es un honor para nosotros informarle que tiene reservados ${txtPases} para ${eventoDinamico} 🥂. Su presencia será muy especial e importante para nosotros. ¡Le esperamos con gran entusiasmo! ✨🎩`;
+                    } else if (tone === 'casual') {
+                        msg = `¡Qué onda *${guest.nombre}*! 👋 Ya está todo listo y preparado. Te recordamos que tienes ${txtPases} para ${eventoDinamico} 🥳. ¡Prepárate para disfrutar muchísimo, nos vemos pronto! 😎`;
+                    } else {
+                        msg = `¡Hola *${guest.nombre}*! 🎉 Estamos contando los días y nos llena de alegría saber que compartiremos este momento tan mágico contigo. Te compartimos que tienes apartados ${txtPases} para ${eventoDinamico} 💖. ¡No podemos esperar para abrazarte y festejar juntos! 🥰✨`;
+                    }
+                }
+
+                // Link mágico original restaurado
+                if (includeLink && guest.status !== 'Declinado') {
+                    const activeTarget = impersonatingId || currentUser;
+                    const urlDinamica = `https://${activeTarget}.tupasedigital.online`;
+                    msg += `\n\n👉 *Consulta tu Pase Digital y Ubicaciones aquí:*\n${urlDinamica}/?u=${activeTarget}&id=${guest.id}`;
+                }
+
+                const msgBox = document.getElementById('wa-standard-msg');
+                msgBox.value = msg;
+                
+                // Feedback Visual (Destello Verde)
+                msgBox.style.transition = 'background-color 0.3s ease';
+                msgBox.style.backgroundColor = '#d1fae5'; 
+                setTimeout(() => { msgBox.style.backgroundColor = ''; }, 400);
+
+                document.getElementById('wa-standard-send-btn').onclick = function() {
+                    if(!guest.telefono) return Toast.fire({icon:'warning', title:'Sin teléfono asignado'});
+                    window.open(`https://api.whatsapp.com/send?phone=${guest.telefono}&text=${encodeURIComponent(msgBox.value)}`, '_blank');
+                    document.getElementById('wa-standard-modal').classList.replace('flex', 'hidden');
+                };
+            } catch (error) {
+                console.error("Error en ensamblaje de mensaje: ", error);
+            }
+        };
+
+        // LÓGICA MESAS, DRAG & DROP Y CROQUIS
+        window.uploadCroquis = function(e) {
+            const file = e.target.files[0];
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                const img = new Image();
+                img.onload = function() {
+                    const MAX_WIDTH = 800;
+                    const scale = img.width > MAX_WIDTH ? MAX_WIDTH / img.width : 1;
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width * scale;
+                    canvas.height = img.height * scale;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    const b64 = canvas.toDataURL('image/jpeg', 0.8);
+                    
+                    state.croquis = b64;
+                    window.crmSave();
+                    window.renderCroquisThumbnail();
+                    Toast.fire({icon:'success', title:'Croquis Subido Exitosamente'});
+                };
+                img.src = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+        };
+
+        window.renderCroquisThumbnail = function() {
+            const container = document.getElementById('croquis-preview-container');
+            const thumb = document.getElementById('croquis-thumbnail');
+            if (state.croquis) {
+                thumb.src = state.croquis;
+                container.classList.remove('hidden');
+                container.classList.add('flex');
+            } else {
+                container.classList.add('hidden');
+                container.classList.remove('flex');
+                thumb.src = '';
+            }
+        };
+
+        window.deleteCroquis = function() {
+            state.croquis = null;
+            window.crmSave();
+            window.renderCroquisThumbnail();
+            Toast.fire({icon:'info', title:'Croquis eliminado'});
+        };
+
+        window.viewCroquisFull = function() {
+            if(state.croquis) {
+                Swal.fire({
+                    imageUrl: state.croquis,
+                    imageAlt: 'Croquis del Salón',
+                    showConfirmButton: true,
+                    confirmButtonText: 'Cerrar',
+                    width: '90%',
+                    background: 'transparent',
+                    backdrop: `rgba(0,0,0,0.8)`
+                });
+            }
+        };
+
+        window.crmRenderTables = function() {
+            window.renderCroquisThumbnail();
+            const cap = state.config.capacidadMesa || 10;
+            document.getElementById('crm-table-cap').value = cap;
+            const cont = document.getElementById('crm-tables-grid');
+            const unassignedList = document.getElementById('crm-unassigned-list');
+            cont.innerHTML = ''; unassignedList.innerHTML = '';
+            let pasesSinAsignar = 0;
+
+            state.invitados.filter(g => g.mesa === 0).forEach(g => {
+                let ads = parseInt(g.adultos !== undefined ? g.adultos : g.pases) || 0;
+                let nns = parseInt(g.ninos) || 0;
+                pasesSinAsignar += (ads + nns);
+                unassignedList.appendChild(createGuestCard(g, true));
+            });
+            document.getElementById('crm-unassigned-badge').innerText = `${pasesSinAsignar} pases`;
+
+            state.mesas.forEach(mesa => {
+                const mesaDiv = document.createElement('div');
+                mesaDiv.className = 'bg-white border border-slate-200 rounded-2xl shadow-sm flex flex-col h-[280px] table-dropzone transition-all duration-200';
+                mesaDiv.setAttribute('ondragover', 'window.allowDrop(event)');
+                mesaDiv.setAttribute('ondragleave', 'window.leaveDrop(event)');
+                mesaDiv.setAttribute('ondrop', `window.dropGuest(event, ${mesa.id})`);
+                
+                const guestsInTable = state.invitados.filter(g => g.mesa === mesa.id);
+                let pasesMesa = guestsInTable.reduce((sum, g) => sum + (parseInt(g.adultos !== undefined ? g.adultos : g.pases) || 0) + (parseInt(g.ninos) || 0), 0);
+
+                let badgeColor = pasesMesa > cap ? 'bg-red-100 text-red-700' : (pasesMesa === cap ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700');
+
+                mesaDiv.innerHTML = `
+                    <div class="p-3 border-b border-slate-100 bg-slate-50 flex justify-between items-center rounded-t-2xl cursor-pointer hover:bg-slate-100 transition" onclick="window.renameTable(${mesa.id})" title="Renombrar Mesa">
+                        <span class="font-bold text-slate-700 truncate w-2/3 flex items-center gap-2"><i class="fa-solid fa-chair text-slate-300"></i> ${mesa.nombre}</span>
+                        <span class="text-xs px-2.5 py-1 rounded-full font-bold ${badgeColor} shadow-sm">${pasesMesa}/${cap}</span>
+                    </div>
+                    <div class="flex-1 p-2 overflow-y-auto space-y-2 bg-slate-50/30 custom-scrollbar"></div>
+                    <div class="p-2 border-t border-slate-100 bg-white rounded-b-2xl flex justify-center">
+                        <button onclick="window.deleteTable(${mesa.id})" class="text-[10px] text-slate-400 hover:text-red-500 hover:bg-red-50 font-bold uppercase tracking-wider transition px-3 py-1.5 rounded-lg"><i class="fa-solid fa-trash-can mr-1"></i> Borrar</button>
+                    </div>
+                `;
+                const listContainer = mesaDiv.querySelector('.flex-1');
+                guestsInTable.forEach(g => listContainer.appendChild(createGuestCard(g, false)));
+                cont.appendChild(mesaDiv);
+            });
+        };
+
+        window.allowDrop = function(ev) { ev.preventDefault(); ev.currentTarget.classList.add('dragover'); };
+        window.leaveDrop = function(ev) { ev.currentTarget.classList.remove('dragover'); };
+        window.dragGuest = function(ev, id) { ev.dataTransfer.setData("text/plain", id); setTimeout(() => ev.target.classList.add('dragging'), 0); };
+        window.dropGuest = function(ev, tableId) {
+            ev.preventDefault();
+            ev.currentTarget.classList.remove('dragover');
+            const gId = parseInt(ev.dataTransfer.getData("text/plain"));
+            if (!gId) return;
+            document.querySelectorAll('.dragging').forEach(el => el.classList.remove('dragging'));
+            state.invitados.find(g => g.id === gId).mesa = parseInt(tableId);
+            window.crmSave(); window.crmRenderTables();
+        };
+
+        function createGuestCard(g, isUnassigned) {
+            let ads = parseInt(g.adultos !== undefined ? g.adultos : g.pases) || 0;
+            let nns = parseInt(g.ninos) || 0;
+            const card = document.createElement('div');
+            card.className = 'guest-card bg-white p-2 rounded-xl shadow-sm border border-slate-200 text-sm flex justify-between items-center z-10 hover:border-blue-300 transition-colors';
+            card.setAttribute('draggable', 'true');
+            card.setAttribute('ondragstart', `window.dragGuest(event, ${g.id})`);
+            card.setAttribute('ondragend', `this.classList.remove('dragging')`);
+            
+            let extraHTML = isUnassigned ? `
+                <select onchange="window.assignTable(${g.id}, this.value)" class="text-[10px] border border-slate-200 rounded-lg outline-none w-20 bg-slate-50 font-bold text-slate-600 ml-1 cursor-pointer py-1">
+                    <option value="0">Mesa...</option>
+                    ${state.mesas.map(m => `<option value="${m.id}" ${g.mesa===m.id?'selected':''}>${m.nombre}</option>`).join('')}
+                </select>
+            ` : `
+                <button onclick="window.assignTable(${g.id}, 0)" class="text-slate-300 hover:text-red-500 hover:bg-red-50 transition px-2 py-1 rounded-lg" title="Quitar"><i class="fa-solid fa-times"></i></button>
+            `;
+
+            card.innerHTML = `
+                <div class="flex items-center gap-2 overflow-hidden flex-1">
+                    <i class="fa-solid fa-grip-vertical text-slate-300 text-xs cursor-grab px-1 shrink-0"></i>
+                    <div class="truncate">
+                        <p class="font-bold text-slate-700 text-xs truncate" title="${g.nombre}">${g.nombre}</p>
+                        <div class="flex gap-1.5 mt-1">
+                            ${ads > 0 ? `<span class="text-[9px] bg-blue-50 text-blue-600 px-1.5 rounded flex items-center gap-1 font-bold"><i class="fa-solid fa-user text-[8px]"></i> ${ads}</span>` : ''}
+                            ${nns > 0 ? `<span class="text-[9px] bg-purple-50 text-purple-600 px-1.5 rounded flex items-center gap-1 font-bold"><i class="fa-solid fa-child text-[8px]"></i> ${nns}</span>` : ''}
+                        </div>
+                    </div>
+                </div>
+                ${extraHTML}
+            `;
+            return card;
+        }
+
+        window.assignTable = function(gId, tId) { state.invitados.find(g => g.id === gId).mesa = parseInt(tId); window.crmSave(); window.crmRenderTables(); };
+        window.crmUpdateConfig = function(k, v) { state.config.capacidadMesa = parseInt(v) || 10; window.crmSave(); window.crmRenderTables(); };
+        window.addMultipleTables = function() {
+            let qty = parseInt(document.getElementById('num-tables-add').value) || 1;
+            for(let i=0; i<qty; i++) state.mesas.push({ id: Date.now() + i, nombre: `Mesa ${state.mesas.length + 1}` });
+            window.crmSave(); window.crmRenderTables();
+            Toast.fire({icon: 'success', title: `${qty} mesas agregadas`});
+        };
+        window.deleteTable = function(id) { state.mesas = state.mesas.filter(m => m.id !== id); state.invitados.forEach(g => { if(g.mesa === id) g.mesa = 0; }); window.crmSave(); window.crmRenderTables(); };
+        window.deleteAllTables = function() {
+            if(!state.mesas.length) return;
+            Swal.fire({ title: '¿Borrar todas las mesas?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444' }).then((r) => {
+                if(r.isConfirmed) { state.mesas = []; state.invitados.forEach(g => g.mesa = 0); window.crmSave(); window.crmRenderTables(); }
+            });
+        };
+        window.renameTable = function(id) {
+            const m = state.mesas.find(x => x.id === id);
+            Swal.fire({ title: 'Renombrar Mesa', input: 'text', inputValue: m.nombre, showCancelButton: true, confirmButtonColor: '#2563eb' }).then(r => {
+                if(r.isConfirmed && r.value) { m.nombre = r.value.trim(); window.crmSave(); window.crmRenderTables(); }
+            });
+        };
+        window.randomizeTables = function() {
+            if (!state.mesas.length) return Swal.fire('Atención', 'Crea algunas mesas primero.', 'info');
+            const cap = parseInt(state.config.capacidadMesa) || 10;
+            let unassigned = state.invitados.filter(g => g.mesa === 0).sort(() => Math.random() - 0.5);
+            unassigned.forEach(g => {
+                let pases = (parseInt(g.adultos) || 0) + (parseInt(g.ninos) || 0);
+                let target = state.mesas.find(m => {
+                    let cur = state.invitados.filter(i => i.mesa === m.id).reduce((s,i) => s + (parseInt(i.adultos)||0) + (parseInt(i.ninos)||0), 0);
+                    return (cur + pases) <= cap;
+                });
+                if (target) g.mesa = target.id;
+            });
+            window.crmSave(); window.crmRenderTables();
+            Toast.fire({icon:'success', title:'Llenado automático completado'});
+        };
+        window.copyBuscadorLink = function() {
+            const baseUrl = window.location.href.split('/').slice(0, -1).join('/');
+            const activeTarget = impersonatingId || currentUser;
+            navigator.clipboard.writeText(`${baseUrl}/buscador_mesas.html?u=${activeTarget}`);
+            Toast.fire({icon:'success', title:'¡Link Copiado!'});
+        };
+
+        // ESTADÍSTICAS Y LOGÍSTICA
+        window.crmRenderStats = function() {
+            let totalGeneral = 0, conf = 0, decl = 0, ninosTotales = 0, adultosTotales = 0;
+            state.invitados.forEach(g => {
+                let ads = parseInt(g.adultos !== undefined ? g.adultos : g.pases) || 0;
+                let nns = parseInt(g.ninos) || 0;
+                let tot = ads + nns;
+                totalGeneral += tot;
+                if(g.status === 'Confirmado') { conf += tot; adultosTotales += ads; ninosTotales += nns; }
+                if(g.status === 'Declinado') decl += tot;
+            });
+
+            document.getElementById('st-tot').innerText = totalGeneral;
+            document.getElementById('st-conf').innerText = conf;
+            document.getElementById('st-decl').innerText = decl;
+            document.getElementById('st-adu').innerText = adultosTotales;
+            document.getElementById('st-nin').innerText = ninosTotales;
+
+            const dul = Math.ceil((adultosTotales * 3.0) + (ninosTotales * 4.5));
+            document.getElementById('st-dul-tot').innerText = dul;
+            document.getElementById('st-dul-sal').innerText = Math.ceil(dul * 0.35) + ' pz';
+            document.getElementById('st-dul-cho').innerText = Math.ceil(dul * 0.25) + ' pz';
+            document.getElementById('st-dul-pos').innerText = Math.ceil(dul * 0.20) + ' pz';
+            document.getElementById('st-dul-gra').innerText = Math.ceil(dul * 0.20) + ' pz';
+
+            document.getElementById('st-bot').innerText = Math.ceil(adultosTotales / 3) + ' bts';
+            document.getElementById('st-cer').innerText = Math.ceil(adultosTotales * 3) + ' pz';
+            document.getElementById('st-ref').innerText = Math.ceil(((adultosTotales * 1) + (ninosTotales * 0.5)) * 1.15) + ' L';
+            document.getElementById('st-hie').innerText = Math.ceil(adultosTotales * 1) + ' kg';
+
+            document.getElementById('rec-parejas').innerText = Math.ceil((adultosTotales / 2) * 1.10) + ' pz';
+            document.getElementById('rec-sandalias').innerText = Math.ceil((adultosTotales * 0.5) * 1.10) + ' prs';
+            document.getElementById('rec-anticruda').innerText = Math.ceil(adultosTotales * 0.6) + ' pz';
+        };
+
+        window.downloadExcelTemplate = function() {
+            const data = [
+                {"Nombre": "Familia Ejemplo (Borrar)", "Adultos": 2, "Niños": 1, "WhatsApp": "1234567890", "Grupo": "Familia"}
+            ];
+            const ws = XLSX.utils.json_to_sheet(data);
+            const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Plantilla");
+            XLSX.writeFile(wb, `Plantilla_Invitados.xlsx`);
+        };
+
+        window.crmExportExcel = function() {
+            if(!state.invitados.length) return Toast.fire({icon:'warning', title:'Lista vacía'});
+            const data = state.invitados.map(g => ({
+                "Nombre": g.nombre, "WhatsApp": g.telefono||"", "Grupo": g.grupo,
+                "Adultos": g.adultos, "Niños": g.ninos, "Status": g.status,
+                "Mesa": g.mesa === 0 ? "Sin Asignar" : (state.mesas.find(m => m.id === g.mesa)?.nombre || g.mesa)
+            }));
+            const ws = XLSX.utils.json_to_sheet(data);
+            const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Invitados");
+            XLSX.writeFile(wb, `Lista_${impersonatingId||currentUser}.xlsx`);
+        };
+
+        window.crmExportPDF = function() {
+            if(!state.invitados.length) return Toast.fire({icon:'warning', title:'Lista vacía'});
+            const { jsPDF } = window.jspdf; const doc = new jsPDF();
+            doc.text(`Lista de Acceso (Puerta) - ${impersonatingId||currentUser}`, 14, 15);
+            const body = state.invitados.map(g => [g.nombre, `${g.adultos}A, ${g.ninos}N`, g.status, g.mesa===0?'-':state.mesas.find(m=>m.id===g.mesa)?.name, '']);
+            doc.autoTable({ startY: 20, head: [['Nombre', 'Pases', 'Status', 'Mesa', 'Firma']], body: body, theme: 'grid', headStyles: { fillColor: [37, 99, 235] } });
+            window.addPDFFooter(doc);
+            doc.save(`Puerta_${impersonatingId||currentUser}.pdf`);
+        };
+
+        window.crmExportTablesPDF = function() {
+            if(!state.mesas.length) return;
+            const { jsPDF } = window.jspdf; const doc = new jsPDF();
+            doc.text(`Acomodo de Mesas - ${impersonatingId||currentUser}`, 14, 15); let y = 25;
+            state.mesas.forEach(t => {
+                const gt = state.invitados.filter(g => g.mesa === t.id); if(!gt.length) return;
+                doc.setFontSize(12); doc.setTextColor(37, 99, 235); doc.text(`${t.nombre} (${gt.reduce((s,g)=>s+(g.adultos||g.pases)+g.ninos,0)} pax)`, 14, y); y+=5;
+                doc.autoTable({ startY: y, head: [['Invitado', 'Pases']], body: gt.map(g=>[g.nombre, `${g.adultos||g.pases}A, ${g.ninos}N`]), theme: 'plain' });
+                y = doc.lastAutoTable.finalY + 10; if(y>270){ doc.addPage(); y=20; }
+            });
+            window.addPDFFooter(doc);
+            doc.save(`Mesas_${impersonatingId||currentUser}.pdf`);
+        };
+
+        window.exportStatsPDF = async function() {
+            try {
+                Swal.fire({ title: 'Generando PDF...', didOpen: () => Swal.showLoading() });
+                const canvas = await html2canvas(document.getElementById('stats-print-area'), { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
+                const { jsPDF } = window.jspdf; const pdf = new jsPDF('p','mm','a4');
+                pdf.text(`Reporte Logístico - ${impersonatingId||currentUser}`, 14, 15);
+                pdf.addImage(canvas.toDataURL('PNG'), 10, 25, 190, (canvas.height*190)/canvas.width);
+                window.addPDFFooter(pdf);
+                pdf.save(`Logistica_${impersonatingId||currentUser}.pdf`);
+                Swal.close();
+            } catch(e) { Swal.fire('Error', 'No se pudo generar PDF', 'error'); }
+        };
+
+        window.exportStatsExcel = function() {
+            const stats = [
+                { Cat: "Asistencia", Item: "Lugares Totales", Valor: document.getElementById('st-tot').innerText },
+                { Cat: "Asistencia", Item: "Confirmados", Valor: document.getElementById('st-conf').innerText },
+                { Cat: "Bebidas", Item: "Botellas", Valor: document.getElementById('st-bot').innerText },
+                { Cat: "Bebidas", Item: "Cervezas", Valor: document.getElementById('st-cer').innerText },
+                { Cat: "Bebidas", Item: "Refresco", Valor: document.getElementById('st-ref').innerText },
+                { Cat: "Mesa Dulces", Item: "Piezas Totales", Valor: document.getElementById('st-dul-tot').innerText }
+            ];
+            const ws = XLSX.utils.json_to_sheet(stats);
+            const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Logistica");
+            XLSX.writeFile(wb, `Logistica_${impersonatingId||currentUser}.xlsx`);
+        };
+
+        window.crmImportExcel = function(e) {
+            const f = e.target.files[0]; if(!f) return; const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = new Uint8Array(e.target.result); const wb = XLSX.read(data, {type: 'array'});
+                    const json = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], {defval: ""});
+                    
+                    let count = 0;
+                    json.forEach((r, i) => {
+                        let nom = ''; let a = 0; let n = 0; let tel = ''; let grp = 'Otros';
+                        for (let k in r) {
+                            const kl = k.toLowerCase().trim();
+                            if(kl.includes('nombre') || kl.includes('invitado') || kl.includes('familia')) nom = r[k];
+                            else if(kl.includes('adulto') || kl.includes('pase')) a = parseInt(r[k]) || 0;
+                            else if(kl.includes('niño') || kl.includes('nino') || kl.includes('menor')) n = parseInt(r[k]) || 0;
+                            else if(kl.includes('tel') || kl.includes('whats') || kl.includes('cel')) tel = String(r[k]);
+                            else if(kl.includes('grupo')) grp = r[k] || 'Otros';
+                        }
+
+                        if(nom && nom.trim() !== '' && !nom.includes('Borrar')) {
+                            if(a === 0 && n === 0) a = 1;
+                            state.invitados.push({ id: Date.now()+i, nombre: nom, adultos: a, ninos: n, mesa: 0, status: 'Pendiente', telefono: tel, grupo: grp });
+                            count++;
+                        }
+                    });
+                    window.crmSave(); window.crmRenderAll(); 
+                    Swal.fire('Éxito', `Importados ${count} registros`, 'success'); 
+                } catch(err) {
+                    Swal.fire('Error', 'Archivo no válido. Descarga la plantilla.', 'error');
+                }
+            }; 
+            reader.readAsArrayBuffer(f);
+            e.target.value = '';
+        };
+
+        // ============================================================================
+        // ASISTENTE TPD LOCAL
+        // ============================================================================
+        window.toggleTPDChat = function() {
+            const chat = document.getElementById('tpd-chat-widget');
+            const fab = document.getElementById('tpd-fab');
+            if(chat.style.display === 'flex') { chat.style.display = 'none'; fab.style.display = 'flex'; }
+            else { chat.style.display = 'flex'; fab.style.display = 'none'; document.getElementById('tpd-chat-input').focus(); }
+        };
+
+        window.sendTPDChat = function() {
+            const input = document.getElementById('tpd-chat-input');
+            const text = input.value.trim().toLowerCase();
+            if(!text) return;
+            const container = document.getElementById('tpd-chat-messages');
+            container.innerHTML += `<div class="tpd-msg user">${text}</div>`;
+            input.value = ''; container.scrollTop = container.scrollHeight;
+
+            const loadingId = 'loading-' + Date.now();
+            container.innerHTML += `<div id="${loadingId}" class="tpd-msg bot"><i class="fa-solid fa-spinner fa-spin"></i> Analizando CRM...</div>`;
+            container.scrollTop = container.scrollHeight;
+
+            setTimeout(() => {
+                document.getElementById(loadingId).remove();
+                let reply = "Pídeme calcular <b>bebidas</b>, <b>mesas</b>, <b>dulces</b> o hacer un <b>resumen</b> de tu evento.";
+                
+                let cAdu = 0, cNin = 0, sinMesa = 0;
+                state.invitados.forEach(g => {
+                    if (g.status === 'Confirmado') {
+                        cAdu += parseInt(g.adultos) || parseInt(g.pases) || 0;
+                        cNin += parseInt(g.ninos) || 0;
+                        if(g.mesa === 0) sinMesa += (parseInt(g.adultos) || 0) + (parseInt(g.ninos) || 0);
+                    }
+                });
+
+                if (text.includes('resumen') || text.includes('cuantos') || text.includes('cuántos') || text.includes('estatus')) {
+                    reply = `Tienes <b>${cAdu} adultos</b> y <b>${cNin} niños</b> confirmados. (${cAdu+cNin} en total).`;
+                    if(sinMesa > 0) reply += `<br>⚠️ ¡Ojo! Tienes ${sinMesa} lugares sin mesa asignada.`;
+                } else if (text.includes('bebida') || text.includes('alcohol') || text.includes('hielo')) {
+                    if(cAdu === 0) reply = "Aún no tienes adultos confirmados para calcular bebidas.";
+                    else reply = `Para ${cAdu} adultos necesitas aprox:<br>🍷 <b>${Math.ceil(cAdu/3)}</b> botellas destilado<br>🍺 <b>${cAdu*3}</b> cervezas<br>🧊 <b>${cAdu} kg</b> de hielo.`;
+                } else if (text.includes('dulce') || text.includes('postre')) {
+                    let total = Math.ceil((cAdu * 3.0) + (cNin * 4.5));
+                    reply = `🍬 Sugiero <b>${total} piezas</b> en total para la mesa de postres (35% salado, 25% chocolate, 40% dulce/snack).`;
+                } else if (text.includes('mesa') || text.includes('silla') || text.includes('acomodo')) {
+                    let capacidad = state.mesas.length * (parseInt(state.config.capacidadMesa)||10);
+                    reply = `Tienes capacidad para <b>${capacidad} personas</b> en tus mesas actuales.<br>Tienes <b>${cAdu+cNin} confirmados</b>.`;
+                    if((cAdu+cNin) > capacidad) reply += "<br>❌ Faltan lugares, ¡crea más mesas!";
+                    else reply += "<br>✅ Tienes espacio suficiente.";
+                } else if (text.includes('niño')) {
+                    reply = `Actualmente hay <b>${cNin} niños</b> confirmados. Considera menú infantil o amenidades.`;
+                }
+
+                container.innerHTML += `<div class="tpd-msg bot">${reply}</div>`;
+                container.scrollTop = container.scrollHeight;
+            }, 600);
+        };
+
+        // ============================================================================
+        // WORKSPACE: HOSTESS Y LÓGICA DE ESCANEO
+        // ============================================================================
+        window.loadHostessView = async function(eventId) {
+            const docRef = doc(db, 'artifacts', 'weddingflow', 'users', eventId);
+            const snap = await getDoc(docRef);
+            
+            // 1. Eliminar restricción de roles (Ahora puede ingresar con cualquier ID válido)
+            if (snap.exists()) {
+                impersonatingId = eventId;
+                document.getElementById('view-login').classList.add('hidden');
+                document.getElementById('view-hostess').classList.remove('hidden');
+                document.getElementById('view-hostess').classList.add('flex');
+                
+                document.getElementById('tpd-fab').style.display = 'none';
+                document.getElementById('tpd-chat-widget').style.display = 'none';
+                
+                const data = snap.data();
+                const tipo = data.eventType || 'Evento';
+                document.getElementById('hostess-event-id').innerText = `${tipo} - ${eventId}`;
+                
+                state.invitados = data.invitados || [];
+                state.mesas = data.mesas || [];
+                state.croquis = data.croquis || null;
+                
+                if (state.croquis) {
+                    document.getElementById('hostess-croquis-img').src = state.croquis;
+                    document.getElementById('hostess-croquis-img').classList.remove('hidden');
+                    document.getElementById('hostess-no-croquis').classList.add('hidden');
+                }
+                
+                window.hostessSwitchTab('scanner');
+                
+                if (unsubscribe) unsubscribe();
+                unsubscribe = onSnapshot(docRef, (docSnap) => {
+                     if (docSnap.exists()) {
+                         const d = docSnap.data();
+                         state.invitados = d.invitados || [];
+                         state.mesas = d.mesas || [];
+                         if(d.croquis && d.croquis !== state.croquis) {
+                             state.croquis = d.croquis;
+                             document.getElementById('hostess-croquis-img').src = state.croquis;
+                             document.getElementById('hostess-croquis-img').classList.remove('hidden');
+                             document.getElementById('hostess-no-croquis').classList.add('hidden');
+                         }
+                     }
+                });
+                Swal.close();
+            } else {
+                Swal.fire('Error', 'El ID de evento no existe o no tiene formato correcto.', 'error').then(() => window.appLogout());
+            }
+        };
+
+        // 1. Botón inteligente Hostess
+        window.hostessSmartExit = function() {
+            if (impersonatingId && currentRole !== 'Hostess') {
+                window.appExitImpersonation();
+            } else {
+                window.appLogout();
+            }
+        };
+
+        window.hostessSwitchTab = function(tab) {
+            document.getElementById('hview-scanner').classList.add('hidden');
+            document.getElementById('hview-croquis').classList.add('hidden');
+            document.getElementById('htab-scanner').className = 'flex-1 py-2 rounded-lg text-sm font-bold text-slate-400 transition hover:text-white';
+            document.getElementById('htab-croquis').className = 'flex-1 py-2 rounded-lg text-sm font-bold text-slate-400 transition hover:text-white';
+            
+            document.getElementById(`hview-${tab}`).classList.remove('hidden');
+            document.getElementById(`hview-${tab}`).classList.add('flex');
+            document.getElementById(`htab-${tab}`).className = 'flex-1 py-2 rounded-lg text-sm font-bold bg-blue-600 text-white shadow-md transition';
+            
+            if(tab === 'croquis' && window.html5QrcodeScanner) window.html5QrcodeScanner.clear();
+        };
+
+        window.startScanner = function() {
+            document.getElementById('btn-start-scanner').classList.add('hidden');
+            window.html5QrcodeScanner = new Html5Qrcode("reader");
+            const config = { fps: 10, qrbox: { width: 250, height: 250 }, aspectRatio: 1.0 };
+            
+            window.html5QrcodeScanner.start(
+                { facingMode: "environment" }, config, 
+                (decodedText) => {
+                    try {
+                        const url = new URL(decodedText);
+                        const gId = parseInt(url.searchParams.get("id"));
+                        if(gId) {
+                            window.html5QrcodeScanner.stop();
+                            document.getElementById('btn-start-scanner').classList.remove('hidden');
+                            window.processHostessAccess(gId);
+                        } else Toast.fire({icon:'error', title:'QR Inválido'});
+                    } catch(e) { Toast.fire({icon:'error', title:'QR no es de TPD'}); }
+                },
+                (errorMessage) => { }
+            ).catch(err => {
+                Swal.fire('Error', 'No se pudo iniciar la cámara.', 'error');
+                document.getElementById('btn-start-scanner').classList.remove('hidden');
+            });
+        };
+
+        window.hostessManualSearch = function() {
+            const query = document.getElementById('hostess-search').value.toLowerCase();
+            const resContainer = document.getElementById('hostess-search-results');
+            resContainer.innerHTML = '';
+            if(query.length < 2) return;
+
+            const results = state.invitados.filter(g => g.nombre.toLowerCase().includes(query));
+            results.forEach(g => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full bg-slate-700 hover:bg-slate-600 text-white p-3 rounded-lg text-left text-sm font-bold flex justify-between items-center transition';
+                btn.innerHTML = `<span>${g.nombre}</span> <i class="fa-solid fa-arrow-right"></i>`;
+                btn.onclick = () => window.processHostessAccess(g.id);
+                resContainer.appendChild(btn);
+            });
+        };
+
+        window.processHostessAccess = function(gId) {
+            const g = state.invitados.find(x => x.id === gId);
+            if(!g) return Swal.fire('Error', 'Invitado no encontrado.', 'error');
+
+            document.getElementById('hr-name').innerText = g.nombre;
+            document.getElementById('hr-group').innerText = g.grupo || 'Otros';
+            document.getElementById('hr-adu').innerText = parseInt(g.adultos !== undefined ? g.adultos : g.pases) || 0;
+            document.getElementById('hr-nin').innerText = parseInt(g.ninos) || 0;
+            
+            const mName = g.mesa === 0 ? "Sin Asignar" : (state.mesas.find(m => m.id === g.mesa)?.nombre || "Desconocida");
+            document.getElementById('hr-table').innerText = mName;
+
+            const modal = document.getElementById('hostess-result-modal');
+            const box = document.getElementById('hostess-result-box');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                box.classList.remove('scale-95', 'opacity-0');
+                box.classList.add('scale-100', 'opacity-100');
+            }, 10);
+            
+            window.hostessSwitchTab('croquis');
+        };
+
+        window.closeHostessResult = function() {
+            const modal = document.getElementById('hostess-result-modal');
+            const box = document.getElementById('hostess-result-box');
+            box.classList.remove('scale-100', 'opacity-100');
+            box.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => { modal.classList.replace('flex', 'hidden'); }, 200);
+            document.getElementById('hostess-search').value = '';
+            document.getElementById('hostess-search-results').innerHTML = '';
+        };
+    </script>
+</body>
+</html>
