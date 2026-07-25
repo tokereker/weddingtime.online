@@ -828,10 +828,10 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updatePassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, getDoc, setDoc, onSnapshot, collection, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        const MASTER_PASSWORD = "T0k3r3k3r"; 
+        // APP PRINCIPAL
         const firebaseConfig = {
             apiKey: "AIzaSyCaRKtx54HYM5jXB2DgtZeLciUNB7Inqjw",
             authDomain: "wedding-crm-6853f.firebaseapp.com",
@@ -845,6 +845,10 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+
+        // APP SECUNDARIA PARA CREAR USUARIOS SIN CERRAR LA SESIÓN DEL ADMINISTRADOR
+        const secondaryApp = initializeApp(firebaseConfig, "SecondaryApp");
+        const secondaryAuth = getAuth(secondaryApp);
         
         let unsubscribe = null;
         let currentUser = null;
@@ -933,23 +937,20 @@
             Swal.fire({ title: 'Autenticando...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
 
             try {
-                await signInAnonymously(auth);
+                // TRUCO DE PSEUDO-CORREO PARA FIREBASE AUTH
+                const pseudoEmail = `${user}@tpd.com`;
 
-                if (user === 'admin' && pass === MASTER_PASSWORD) {
-                    currentRole = 'Administrador';
-                    await window.loadAdminPanel();
-                    return;
-                }
+                // AUTENTICACIÓN REAL ENCRIPTADA
+                await signInWithEmailAndPassword(auth, pseudoEmail, pass);
 
                 const docRef = doc(db, 'artifacts', 'weddingflow', 'users', user);
                 const snap = await getDoc(docRef);
 
                 if (snap.exists()) {
                     const data = snap.data();
-                    if (data.pass !== pass && pass !== MASTER_PASSWORD) {
-                        return Swal.fire('Error', 'Contraseña o usuario incorrectos.', 'error');
-                    }
-                    if (data.status === 'Suspendido' && pass !== MASTER_PASSWORD) {
+                    
+                    if (data.status === 'Suspendido') {
+                        await signOut(auth);
                         return Swal.fire('Acceso Suspendido', 'Tu cuenta se encuentra suspendida.', 'warning');
                     }
                     
@@ -969,10 +970,16 @@
                         window.setupClientEnvironment(user, data); 
                     }
                 } else {
-                    Swal.fire('Error', 'Inquilino/Usuario no encontrado.', 'error');
+                    if (user === 'admin') {
+                        currentRole = 'Administrador';
+                        await window.loadAdminPanel();
+                        return;
+                    }
+                    Swal.fire('Error', 'Inquilino/Usuario no encontrado en la base de datos.', 'error');
                 }
             } catch (error) {
-                Swal.fire('Error de Conexión', 'Credenciales inválidas o problema de red. Intenta de nuevo.', 'error');
+                console.error(error);
+                Swal.fire('Error de Acceso', 'Credenciales inválidas o problema de red.', 'error');
             }
         };
 
@@ -1000,22 +1007,26 @@
         };
 
         window.changeOwnPassword = function() {
-            const targetUser = impersonatingId || currentUser;
-            if(!targetUser) return;
             Swal.fire({
                 title: 'Cambiar Contraseña',
                 input: 'password',
-                inputPlaceholder: 'Ingresa la nueva contraseña...',
+                inputPlaceholder: 'Ingresa la nueva contraseña (mínimo 6 caracteres)...',
                 showCancelButton: true,
                 confirmButtonColor: '#2563eb',
                 confirmButtonText: 'Actualizar'
             }).then(async (result) => {
                 if (result.isConfirmed && result.value) {
                     try {
-                        await setDoc(doc(db, 'artifacts', 'weddingflow', 'users', targetUser), { pass: result.value.trim() }, { merge: true });
-                        Toast.fire({ icon: 'success', title: 'Contraseña actualizada' });
+                        const user = auth.currentUser;
+                        if(user) {
+                            await updatePassword(user, result.value.trim());
+                            Toast.fire({ icon: 'success', title: 'Contraseña actualizada en la bóveda de seguridad' });
+                        } else {
+                            throw new Error("No estás autenticado");
+                        }
                     } catch(e) {
-                        Swal.fire('Error', 'No se pudo cambiar la contraseña.', 'error');
+                        console.error(e);
+                        Swal.fire('Error', 'Por seguridad, debes cerrar sesión, volver a iniciar e intentarlo de nuevo.', 'error');
                     }
                 }
             });
@@ -1074,7 +1085,7 @@
                         <td class="p-4 flex items-center justify-end gap-2">
                             ${impBtn}
                             <div class="h-6 w-px bg-slate-200 mx-1"></div>
-                            <button onclick="window.adminResetPassword('${docSnap.id}')" class="text-slate-400 hover:text-blue-600 transition p-2" title="Resetear Contraseña"><i class="fa-solid fa-key"></i></button>
+                            <button onclick="window.adminResetPassword('${docSnap.id}')" class="text-slate-400 hover:text-blue-600 transition p-2" title="Información de Contraseña"><i class="fa-solid fa-key"></i></button>
                             ${btnSt}
                             ${deleteBtn}
                         </td>
@@ -1097,33 +1108,34 @@
 
                 if(!user || !pass) return Swal.fire('Atención', 'Rellena el ID de usuario y la contraseña.', 'warning');
                 
+                const pseudoEmail = `${user}@tpd.com`;
+
+                // 1. Crear usuario en la bóveda segura de Firebase Auth usando la app secundaria
+                await createUserWithEmailAndPassword(secondaryAuth, pseudoEmail, pass);
+                await signOut(secondaryAuth); // Limpiamos la app secundaria
+
+                // 2. Guardar datos en Firestore (¡SIN la contraseña por seguridad!)
                 const docRef = doc(db, 'artifacts', 'weddingflow', 'users', user);
-                await setDoc(docRef, { pass, role, status: 'Activo', eventType: "", invitados: [], mesas: [{id:1,nombre:"Mesa VIP"}], config: {capacidadMesa:10, themeColor: '#C3A343', extras: 0, totalExtrasCost: 0, fontFamily: 'Playfair Display'}, croquis: null });
+                await setDoc(docRef, { role, status: 'Activo', eventType: "", invitados: [], mesas: [{id:1,nombre:"Mesa VIP"}], config: {capacidadMesa:10, themeColor: '#C3A343', extras: 0, totalExtrasCost: 0, fontFamily: 'Playfair Display'}, croquis: null });
                 
                 document.getElementById('new-user').value = ''; document.getElementById('new-pass').value = '';
-                Toast.fire({icon: 'success', title: 'Usuario Registrado'});
+                Toast.fire({icon: 'success', title: 'Usuario Registrado de forma Segura'});
                 window.loadAdminPanel();
-            } catch(e) { Swal.fire('Error', 'Fallo al crear usuario en la BD', 'error'); }
+            } catch(e) { 
+                console.error(e);
+                let msg = 'Fallo al crear usuario en la BD';
+                if(e.code === 'auth/email-already-in-use') msg = 'Este ID de usuario ya existe.';
+                if(e.code === 'auth/weak-password') msg = 'La contraseña debe tener al menos 6 caracteres por seguridad.';
+                Swal.fire('Error', msg, 'error'); 
+            }
         };
 
         window.adminResetPassword = function(userId) {
             Swal.fire({
-                title: `🔑 Reset Pass: ${userId}`,
-                input: 'text', inputPlaceholder: 'Escribe nueva contraseña...',
-                showCancelButton: true, confirmButtonColor: '#2563eb', confirmButtonText: 'Guardar',
-                showDenyButton: true, denyButtonText: 'Auto Generar', denyButtonColor: '#64748b'
-            }).then(async (result) => {
-                try {
-                    if (result.isConfirmed && result.value) {
-                        await setDoc(doc(db, 'artifacts', 'weddingflow', 'users', userId), { pass: result.value.trim() }, { merge: true });
-                        Toast.fire({ icon: 'success', title: 'Actualizada' });
-                    } else if (result.isDenied) {
-                        const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#";
-                        let genPass = ""; for(let i=0; i<8; i++) genPass += chars.charAt(Math.floor(Math.random() * chars.length));
-                        await setDoc(doc(db, 'artifacts', 'weddingflow', 'users', userId), { pass: genPass }, { merge: true });
-                        Swal.fire('Contraseña Generada', `La nueva contraseña para <b>${userId}</b> es:<br><br><span class="text-2xl font-mono bg-slate-100 p-2 rounded">${genPass}</span>`, 'success');
-                    }
-                } catch(e) { Toast.fire({icon: 'error', title: 'Error de BD'}); }
+                title: 'Aviso de Seguridad',
+                icon: 'info',
+                text: 'Debido a la nueva encriptación, las contraseñas ahora deben reiniciarse directamente desde la pestaña "Authentication" en tu consola de Firebase.',
+                confirmButtonColor: '#2563eb'
             });
         };
 
@@ -1135,7 +1147,13 @@
         };
 
         window.deleteClient = function(user) {
-            Swal.fire({ title: `¿Borrar Instancia de ${user}?`, text: "Peligro: Se perderán todos los datos permanentemente.", icon: 'error', showCancelButton: true, confirmButtonColor: '#ef4444', confirmButtonText: 'Sí, borrar definitivamente'
+            Swal.fire({ 
+                title: `¿Borrar Instancia de ${user}?`, 
+                text: "Peligro: Se perderán los datos en la base de datos. (Recuerda también borrar el correo del cliente desde tu consola de Firebase Auth para liberar el acceso).", 
+                icon: 'error', 
+                showCancelButton: true, 
+                confirmButtonColor: '#ef4444', 
+                confirmButtonText: 'Sí, borrar base de datos'
             }).then(async (res) => {
                 try {
                     if(res.isConfirmed) { await deleteDoc(doc(db, 'artifacts', 'weddingflow', 'users', user)); Toast.fire({icon:'success', title:'Instancia Borrada'}); window.loadAdminPanel(); }
