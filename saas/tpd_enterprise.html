@@ -936,14 +936,21 @@
             if (!user || !pass) return Swal.fire('Error', 'Ingresa ID y contraseña.', 'error');
             Swal.fire({ title: 'Autenticando...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
 
-            try {
-                // TRUCO DE PSEUDO-CORREO PARA FIREBASE AUTH
-                const pseudoEmail = `${user}admin@tpd.online`;
+            // TRUCO DEFINITIVO PARA EVITAR CORREOS DUPLICADOS
+            let pseudoEmail = user;
+            if (!user.includes('@')) {
+                // Si el usuario escribe solo "admin", agregamos el dominio correcto
+                pseudoEmail = `${user}@tpd.online`;
+            }
 
+            try {
                 // AUTENTICACIÓN REAL ENCRIPTADA
                 await signInWithEmailAndPassword(auth, pseudoEmail, pass);
 
-                const docRef = doc(db, 'artifacts', 'weddingflow', 'users', user);
+                // Extraemos el ID limpio para buscar en la base de datos (ej. "admin")
+                const dbUserId = user.includes('@') ? user.split('@')[0] : user;
+
+                const docRef = doc(db, 'artifacts', 'weddingflow', 'users', dbUserId);
                 const snap = await getDoc(docRef);
 
                 if (snap.exists()) {
@@ -965,12 +972,12 @@
                     if (currentRole === 'Administrador' || currentRole === 'Staff' || currentRole === 'Soporte') {
                         await window.loadAdminPanel(); 
                     } else if (currentRole === 'Cliente Web') {
-                        window.location.href = `estudio_diseno.html?user=${user}`;
+                        window.location.href = `estudio_diseno.html?user=${dbUserId}`;
                     } else {
-                        window.setupClientEnvironment(user, data); 
+                        window.setupClientEnvironment(dbUserId, data); 
                     }
                 } else {
-                    if (user === 'admin') {
+                    if (dbUserId === 'admin') {
                         currentRole = 'Administrador';
                         await window.loadAdminPanel();
                         return;
@@ -1130,7 +1137,7 @@
 
                 if(!user || !pass) return Swal.fire('Atención', 'Rellena el ID de usuario y la contraseña.', 'warning');
                 
-                const pseudoEmail = `${user}admin@tpd.online`;
+                const pseudoEmail = `${user}@tpd.online`;
 
                 // 1. Crear usuario en la bóveda segura de Firebase Auth usando la app secundaria
                 await createUserWithEmailAndPassword(secondaryAuth, pseudoEmail, pass);
