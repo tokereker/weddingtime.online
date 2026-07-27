@@ -936,10 +936,8 @@
             if (!user || !pass) return Swal.fire('Error', 'Ingresa ID y contraseña.', 'error');
             Swal.fire({ title: 'Autenticando...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
 
-            // TRUCO DEFINITIVO PARA EVITAR CORREOS DUPLICADOS
             let pseudoEmail = user;
             if (!user.includes('@')) {
-                // Si el usuario escribe solo "admin", agregamos el dominio correcto
                 pseudoEmail = `${user}@tpd.online`;
             }
 
@@ -947,9 +945,7 @@
                 // AUTENTICACIÓN REAL ENCRIPTADA
                 await signInWithEmailAndPassword(auth, pseudoEmail, pass);
 
-                // Extraemos el ID limpio para buscar en la base de datos (ej. "admin")
                 const dbUserId = user.includes('@') ? user.split('@')[0] : user;
-
                 const docRef = doc(db, 'artifacts', 'weddingflow', 'users', dbUserId);
                 const snap = await getDoc(docRef);
 
@@ -986,7 +982,11 @@
                 }
             } catch (error) {
                 console.error(error);
-                Swal.fire('Error de Acceso', 'Credenciales inválidas o problema de red.', 'error');
+                Swal.fire({
+                    title: 'Acceso Rechazado por Firebase',
+                    html: `El sistema intentó entrar a la bóveda con este correo exacto:<br><br><b>${pseudoEmail}</b><br><br>Verifica en tu consola de Firebase > Authentication que ese correo y la contraseña coincidan letra por letra.`,
+                    icon: 'error'
+                });
             }
         };
 
@@ -1085,7 +1085,7 @@
                     if (d.role === 'Cliente' || d.role === 'Cliente Web' || d.role === 'Hostess') {
                          impBtn = `<button onclick="window.impStart('${docSnap.id}', '${d.role}')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-100 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1"><i class="fa-solid fa-eye"></i> Supervisar</button>`;
                          
-// Modulito Premium (Estrella)
+                         // Modulito Premium (Estrella)
                          let isPremium = d.hasPremiumLink === true;
                          premiumBtn = `
                          <div class="relative group flex items-center">
