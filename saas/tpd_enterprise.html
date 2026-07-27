@@ -938,7 +938,7 @@
 
             try {
                 // TRUCO DE PSEUDO-CORREO PARA FIREBASE AUTH
-                const pseudoEmail = `${user}@tpd.com`;
+                const pseudoEmail = `${user}admin@tpd.online`;
 
                 // AUTENTICACIÓN REAL ENCRIPTADA
                 await signInWithEmailAndPassword(auth, pseudoEmail, pass);
@@ -1130,7 +1130,7 @@
 
                 if(!user || !pass) return Swal.fire('Atención', 'Rellena el ID de usuario y la contraseña.', 'warning');
                 
-                const pseudoEmail = `${user}@tpd.com`;
+                const pseudoEmail = `${user}admin@tpd.online`;
 
                 // 1. Crear usuario en la bóveda segura de Firebase Auth usando la app secundaria
                 await createUserWithEmailAndPassword(secondaryAuth, pseudoEmail, pass);
