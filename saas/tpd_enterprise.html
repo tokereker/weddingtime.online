@@ -1085,15 +1085,15 @@
                     if (d.role === 'Cliente' || d.role === 'Cliente Web' || d.role === 'Hostess') {
                          impBtn = `<button onclick="window.impStart('${docSnap.id}', '${d.role}')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-100 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1"><i class="fa-solid fa-eye"></i> Supervisar</button>`;
                          
-                         // Modulito Premium (Estrella)
+// Modulito Premium (Estrella)
                          let isPremium = d.hasPremiumLink === true;
                          premiumBtn = `
                          <div class="relative group flex items-center">
                              <button onclick="window.adminTogglePremium('${docSnap.id}', ${isPremium})" class="${isPremium ? 'text-amber-500 hover:text-amber-600' : 'text-slate-300 hover:text-slate-400'} transition p-2 text-lg">
                                  <i class="fa-solid fa-star"></i>
                              </button>
-                             <div class="absolute bottom-full right-0 mb-2 hidden group-hover:block w-48 bg-slate-800 text-white text-[10px] p-2.5 rounded-lg shadow-xl z-50 text-center font-medium pointer-events-none">
-                                 (i) Activa esto cuando el cliente contrate el servicio Premium (Link Mágico RSVP y Diseño).
+                             <div class="absolute bottom-full right-0 mb-2 hidden group-hover:block w-72 bg-slate-800 text-white text-xs p-3 rounded-xl shadow-xl z-[9999] text-center font-medium pointer-events-none leading-relaxed">
+                                 💡 Activa esto cuando el cliente contrate el módulo Premium (Link Mágico RSVP por WhatsApp y Diseño de Tipografía/Color personalizado).
                                  <div class="absolute top-full right-4 border-4 border-transparent border-t-slate-800"></div>
                              </div>
                          </div>`;
