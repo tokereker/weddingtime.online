@@ -291,7 +291,8 @@
             </section>
 
             <!-- SECCIÓN MESAS -->
-            <section id="crm-sec-tables" class="flex-1 h-full min-h-0 w-full flex flex-col hidden relative">
+            <!-- CORRECCIÓN DE ALTURA: Se añade h-0 para asegurar el cálculo de la barra de scroll -->
+            <section id="crm-sec-tables" class="flex-1 min-h-0 h-0 w-full flex flex-col hidden relative">
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-4 shrink-0 flex flex-col gap-4">
                     <div class="flex flex-wrap justify-between items-center gap-4">
                         <h2 class="font-bold text-lg text-slate-800 flex items-center gap-2"><i class="fa-solid fa-chair text-blue-500"></i> Acomodo de Mesas</h2>
@@ -320,11 +321,17 @@
                             </div>
                         </div>
                         <div class="h-8 w-px bg-slate-200 hidden md:block"></div>
+                        
+                        <!-- BOTONES +/- DE CREAR MESAS REDISEÑADOS -->
                         <div class="flex items-center gap-3">
                             <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Crear Mesas:</span>
                             <div class="flex items-center gap-2">
-                                <input type="number" id="num-tables-add" value="1" min="1" class="border-2 border-slate-200 p-1.5 w-16 text-center rounded-lg text-sm outline-none font-bold bg-white focus:border-blue-500 transition">
-                                <button onclick="window.addMultipleTables()" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm font-bold shadow-md transition flex items-center gap-1"><i class="fa-solid fa-plus"></i> Añadir</button>
+                                <div class="inline-flex items-center bg-white rounded-lg border border-slate-200 shadow-sm p-1">
+                                    <button type="button" onclick="document.getElementById('num-tables-add').stepDown()" class="w-7 h-7 rounded-md hover:bg-blue-50 hover:text-blue-600 font-bold flex items-center justify-center text-slate-500 transition"><i class="fa-solid fa-minus text-[10px]"></i></button>
+                                    <input type="number" id="num-tables-add" value="1" min="1" class="w-8 text-center bg-transparent text-sm font-bold outline-none m-0 p-0 pointer-events-none">
+                                    <button type="button" onclick="document.getElementById('num-tables-add').stepUp()" class="w-7 h-7 rounded-md hover:bg-blue-50 hover:text-blue-600 font-bold flex items-center justify-center text-slate-500 transition"><i class="fa-solid fa-plus text-[10px]"></i></button>
+                                </div>
+                                <button onclick="window.addMultipleTables()" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-sm font-bold shadow-md transition flex items-center gap-1"><i class="fa-solid fa-plus"></i> Añadir</button>
                             </div>
                         </div>
                         
@@ -336,8 +343,8 @@
                     </div>
                 </div>
                 
-                <!-- CORRECCIÓN DE BARRAS DE SCROLL (overflow-hidden en parent, overflow-y-auto en hijos) -->
-                <div class="flex-1 h-full min-h-0 flex flex-col md:flex-row gap-6 overflow-hidden">
+                <!-- CORRECCIÓN DE BARRAS DE SCROLL: Se añadió h-0 al contenedor principal flexible -->
+                <div class="flex-1 flex flex-col md:flex-row gap-6 min-h-0 h-0">
                     <div class="w-full md:w-1/4 lg:w-1/5 bg-white border border-slate-200 rounded-2xl shadow-sm flex flex-col h-64 md:h-full shrink-0 min-h-0 overflow-hidden">
                         <div class="p-4 border-b border-slate-100 bg-slate-50 font-bold text-slate-700 flex justify-between items-center shrink-0">
                             <span class="text-sm"><i class="fa-solid fa-users-slash text-slate-400 mr-2"></i> Sin Asignar</span>
@@ -345,14 +352,15 @@
                         </div>
                         <div id="crm-unassigned-list" class="flex-1 p-3 overflow-y-auto space-y-2 bg-slate-50/50 table-dropzone custom-scrollbar min-h-0" ondragover="window.allowDrop(event)" ondragleave="window.leaveDrop(event)" ondrop="window.dropGuest(event, 0)"></div>
                     </div>
-                    <div id="crm-tables-grid" class="flex-1 overflow-y-auto min-h-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 content-start pb-6 custom-scrollbar pr-2">
+                    <!-- Se asegura overflow-y-auto para el grid de mesas -->
+                    <div id="crm-tables-grid" class="flex-1 overflow-y-auto h-full min-h-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 content-start pb-6 custom-scrollbar pr-2">
                     </div>
                 </div>
             </section>
 
-            <!-- SECCIÓN ESTADÍSTICAS & DASHBOARD LOGÍSTICO -->
-            <!-- CORRECCIÓN SCROLL: Asegurado overflow-y-auto y boundaries correctos -->
-            <section id="crm-sec-stats" class="flex-1 h-full min-h-0 w-full overflow-y-auto hidden custom-scrollbar pb-32 pr-2 relative">
+            <!-- SECCIÓN ESTADÍSTICAS & DASHBOARD LOGÍSTICO (VERSIÓN 2.6 BENTO GRID) -->
+            <!-- CORRECCIÓN SCROLL: h-0 añadido para evitar que el contenedor desborde su límite flex -->
+            <section id="crm-sec-stats" class="flex-1 min-h-0 h-0 w-full overflow-y-auto hidden custom-scrollbar pb-32 pr-2 relative">
                 <div class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col gap-2 sm:gap-3">
                     <button onclick="window.exportStatsExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl shadow-xl font-bold flex items-center gap-2 transform transition hover:scale-105 text-xs sm:text-sm" title="Exportar Logística a Excel">
                         <i class="fa-solid fa-file-excel text-lg"></i> Excel
@@ -737,27 +745,37 @@
         </div>
     </div>
 
-    <!-- Modal Visual TICKET QR Rediseñado Horizontal y Nativo -->
+    <!-- Modal Visual TICKET QR Rediseñado -->
     <div id="ticket-modal" class="fixed inset-0 bg-slate-900/90 items-center justify-center z-50 hidden glass p-4">
-        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm flex flex-col border border-slate-200">
-            <div class="p-8 text-center relative bg-[#0f172a] text-white rounded-t-3xl border-b-4 border-blue-500">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm flex flex-col border border-slate-200 overflow-hidden">
+            
+            <!-- HEADER DEL PASE REDISEÑADO -->
+            <div id="ticket-header-bg" class="p-8 text-center relative bg-slate-900 text-white rounded-t-3xl border-b-4 border-blue-500 overflow-hidden">
                 
-                <!-- NUEVO: MÓDULO PARA SUBIR FONDO (SOLO PREMIUM) -->
-                <div id="premium-pdf-bg-uploader" class="mb-4" style="display: none;">
-                    <label class="text-[10px] text-blue-300 font-bold uppercase tracking-widest cursor-pointer hover:text-white transition flex items-center justify-center gap-1 border border-blue-500/50 hover:border-blue-400 py-1.5 px-3 rounded-lg mx-auto w-fit">
-                        <i class="fa-solid fa-image"></i> Subir Fondo Premium para PDF
-                        <input type="file" id="ticket-logo-upload" class="hidden" accept="image/*" onchange="window.handleTicketLogo(event)">
-                    </label>
-                    <img id="ticket-logo-preview" src="" class="h-24 w-auto mx-auto mt-2 hidden rounded shadow-sm bg-white/10 p-1 object-contain">
-                    <button onclick="window.clearTicketLogo()" id="btn-clear-logo" class="hidden text-[10px] text-red-400 font-bold uppercase mt-2 mx-auto underline hover:text-red-300">Quitar Fondo</button>
-                </div>
+                <!-- CAPA DE IMAGEN DE FONDO (Premium) -->
+                <img id="ticket-bg-image" src="" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 z-0 pointer-events-none">
+                
+                <!-- FILTRO OSCURO PARA QUE SE LEA EL TEXTO -->
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/70 to-slate-900/40 z-0 pointer-events-none"></div>
 
-                <h3 class="text-2xl font-black mb-1" id="ticket-event-name">Cargando...</h3>
-                <p class="text-xs text-blue-300 font-bold uppercase tracking-widest mb-6">Pase de Acceso Oficial</p>
-                <div class="bg-white p-4 rounded-2xl inline-block mb-6 shadow-xl"><div id="ticket-qrcode"></div></div>
-                <h2 class="text-xl font-bold text-white mb-1" id="ticket-guest-name">Invitado</h2>
-                <p class="text-sm text-slate-300 font-medium" id="ticket-guest-passes">0 Pases</p>
+                <!-- CONTENIDO DEL TICKET -->
+                <div class="relative z-10">
+                    <div id="premium-pdf-bg-uploader" class="mb-6" style="display: none;">
+                        <label class="text-[9px] text-white font-bold uppercase tracking-widest cursor-pointer hover:bg-white/20 transition flex items-center justify-center gap-1 border border-white/50 py-1.5 px-3 rounded-full mx-auto w-fit backdrop-blur-sm shadow-lg">
+                            <i class="fa-solid fa-image"></i> Subir Fondo Premium para PDF
+                            <input type="file" id="ticket-logo-upload" class="hidden" accept="image/*" onchange="window.handleTicketLogo(event)">
+                        </label>
+                        <button onclick="window.clearTicketLogo()" id="btn-clear-logo" class="hidden text-[10px] text-red-300 font-bold uppercase mt-2 mx-auto underline hover:text-red-200">Quitar Fondo</button>
+                    </div>
+
+                    <h3 class="text-2xl font-black mb-1" id="ticket-event-name">Cargando...</h3>
+                    <p class="text-[10px] text-blue-200 font-bold uppercase tracking-widest mb-6">Pase de Acceso Oficial</p>
+                    <div class="bg-white p-3 rounded-2xl inline-block mb-4 shadow-2xl"><div id="ticket-qrcode"></div></div>
+                    <h2 class="text-xl font-bold text-white mb-1 drop-shadow-md" id="ticket-guest-name">Invitado</h2>
+                    <p class="text-sm text-slate-300 font-medium drop-shadow-md" id="ticket-guest-passes">0 Pases</p>
+                </div>
             </div>
+
             <div class="p-4 bg-slate-50 rounded-b-3xl">
                  <div class="grid grid-cols-2 gap-3 mb-3">
                      <button onclick="window.downloadNativeTicket()" class="bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-2xl font-bold shadow-md transition flex flex-col items-center justify-center gap-1">
@@ -870,7 +888,7 @@
         let impersonatingId = null;
         let currentTargetGuestId = null; 
         
-        // VARIABLE PARA EL LOGO DEL PDF
+        // VARIABLE PARA LA IMAGEN DE FONDO PREMIUM
         let currentTicketLogo = null;
         
         let hCurrentGuest = null;
@@ -1101,23 +1119,17 @@
                     if (d.role === 'Cliente' || d.role === 'Cliente Web' || d.role === 'Hostess') {
                          impBtn = `<button onclick="window.impStart('${docSnap.id}', '${d.role}')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-100 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1"><i class="fa-solid fa-eye"></i> Supervisar</button>`;
                          
-                         // Modulito Premium (Estrella) - SOLO APARECE SI ES "Cliente" completo
+                         // Modulito Premium (Estrella) - CÓDIGO NATIVO SIN GLOBOS QUE SE CORTEN
                          if (d.role === 'Cliente') {
                              let isPremium = d.hasPremiumLink === true;
                              premiumBtn = `
-                             <div class="relative group flex items-center">
-                                 <button onclick="window.adminTogglePremium('${docSnap.id}', ${isPremium})" class="${isPremium ? 'text-amber-500 hover:text-amber-600' : 'text-slate-300 hover:text-slate-400'} transition p-2 text-xl" title="Activar/Desactivar Módulo Premium">
-                                     <i class="fa-solid fa-star"></i>
-                                 </button>
-                                 <div class="absolute bottom-full right-0 mb-2 hidden group-hover:block w-56 bg-slate-800 text-white text-[10px] p-2 rounded-xl shadow-xl z-50 text-center font-medium pointer-events-none leading-tight border border-slate-700">
-                                     💡 Módulo Premium: Web + WA + PDF.
-                                     <div class="absolute top-full right-4 border-4 border-transparent border-t-slate-800"></div>
-                                 </div>
-                             </div>`;
+                             <button onclick="window.adminTogglePremium('${docSnap.id}', ${isPremium})" class="${isPremium ? 'text-amber-500 hover:text-amber-600' : 'text-slate-300 hover:text-slate-400'} transition p-2 text-xl" title="💡 Módulo Premium: Diseño Web, Link WhatsApp y PDF Personalizado.">
+                                 <i class="fa-solid fa-star"></i>
+                             </button>`;
                          }
                     }
 
-                    // Boton 'i' de información solo para roles de agencia
+                    // Boton 'i' de información
                     if (d.role === 'Administrador' || d.role === 'Staff' || d.role === 'Soporte') {
                         infoAdminBtn = `<button onclick="window.adminResetPassword('${docSnap.id}')" class="text-blue-400 hover:text-blue-600 transition p-2" title="Información de Contraseña"><i class="fa-solid fa-circle-info text-lg"></i></button>`;
                     }
@@ -1380,7 +1392,13 @@
         };
         
         window.crmRenderAll = function() { window.crmRenderGuests(); window.crmRenderTables(); window.crmRenderStats(); };
-        window.crmLoadData = function() { window.crmRenderAll(); Toast.fire({icon:'success', title:'Datos sincronizados'}); };
+        
+        // Función mejorada del botón de Refrescar
+        window.crmLoadData = function() { 
+            document.getElementById('crm-search').value = ''; // Limpia el buscador si se atoró
+            window.crmRenderAll(); 
+            Toast.fire({icon:'success', title:'Datos y vistas sincronizados'}); 
+        };
 
         window.crmUpdateConfig = function(k, v) { 
             if(['capacidadMesa', 'capacity', 'eventDuration', 'flowersPerTable'].includes(k)) {
@@ -1504,15 +1522,20 @@
             .then((r) => { if (r.isConfirmed) { state.invitados = []; window.crmSave(); window.crmRenderAll(); Toast.fire({ icon: 'success', title: 'Vaciada' }); } });
         };
 
-        // FUNCIÓN NUEVA: Manejar la subida del fondo del ticket Premium
+        // FUNCIÓN NUEVA: Manejar la subida de la imagen de fondo Premium para el ticket
         window.handleTicketLogo = function(e) {
             const file = e.target.files[0];
             if(!file) return;
             const reader = new FileReader();
             reader.onload = function(ev) {
                 currentTicketLogo = ev.target.result;
-                document.getElementById('ticket-logo-preview').src = currentTicketLogo;
-                document.getElementById('ticket-logo-preview').classList.remove('hidden');
+                
+                // Mostrar en la pantalla HTML
+                const bgImageLayer = document.getElementById('ticket-bg-image');
+                bgImageLayer.src = currentTicketLogo;
+                bgImageLayer.classList.remove('opacity-0');
+                bgImageLayer.classList.add('opacity-100');
+                
                 document.getElementById('btn-clear-logo').classList.remove('hidden');
             };
             reader.readAsDataURL(file);
@@ -1520,8 +1543,13 @@
 
         window.clearTicketLogo = function() {
             currentTicketLogo = null;
-            document.getElementById('ticket-logo-preview').src = '';
-            document.getElementById('ticket-logo-preview').classList.add('hidden');
+            
+            // Ocultar de la pantalla HTML
+            const bgImageLayer = document.getElementById('ticket-bg-image');
+            bgImageLayer.src = '';
+            bgImageLayer.classList.remove('opacity-100');
+            bgImageLayer.classList.add('opacity-0');
+            
             document.getElementById('btn-clear-logo').classList.add('hidden');
             document.getElementById('ticket-logo-upload').value = '';
         };
@@ -1530,33 +1558,45 @@
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: [80, 150] });
             
-            // Si el cliente subió un fondo premium, lo estiramos sobre todo el PDF
+            // Fondo Base del PDF
+            const activeColor = state.config.themeColor || '#0f172a';
+            pdf.setFillColor(activeColor);
+            pdf.rect(0, 0, 80, 150, 'F');
+            
+            let currentY = 20;
+
+            // Si subieron un fondo premium, lo estiramos sobre la mitad superior del pase de forma elegante
             if (currentTicketLogo) {
-                pdf.addImage(currentTicketLogo, 'PNG', 0, 0, 80, 150);
-            } else {
-                const activeColor = state.config.themeColor || '#0f172a';
-                pdf.setFillColor(activeColor);
-                pdf.rect(0, 0, 80, 150, 'F');
+                // Dibujamos la imagen como cabecera (top)
+                pdf.addImage(currentTicketLogo, 'PNG', 0, 0, 80, 75);
+                
+                // Dibujamos un filtro oscuro encima de la foto para que las letras se lean perfecto
+                pdf.setFillColor(15, 23, 42); // slate-900
+                pdf.setGState(new pdf.GState({opacity: 0.65}));
+                pdf.rect(0, 0, 80, 75, 'F');
+                pdf.setGState(new pdf.GState({opacity: 1.0})); // Restablecemos la opacidad normal
+                
+                currentY = 25; // Empujamos un poco el texto
             }
             
             pdf.setTextColor(255, 255, 255);
             pdf.setFontSize(16);
-            pdf.text(document.getElementById('ticket-event-name').innerText, 40, 20, { align: 'center' });
+            pdf.text(document.getElementById('ticket-event-name').innerText, 40, currentY, { align: 'center' });
             pdf.setFontSize(10);
-            pdf.text("Pase de Acceso Oficial", 40, 30, { align: 'center' });
+            pdf.text("Pase de Acceso Oficial", 40, currentY + 10, { align: 'center' });
             
             const qrCanvas = document.querySelector('#ticket-qrcode canvas');
             if (qrCanvas) {
                 const qrData = qrCanvas.toDataURL("image/png");
                 pdf.setFillColor(255, 255, 255);
-                pdf.rect(19, 39, 42, 42, 'F');
-                pdf.addImage(qrData, 'PNG', 20, 40, 40, 40);
+                pdf.rect(19, currentY + 19, 42, 42, 'F');
+                pdf.addImage(qrData, 'PNG', 20, currentY + 20, 40, 40);
             }
             
             pdf.setFontSize(14);
-            pdf.text(document.getElementById('ticket-guest-name').innerText, 40, 95, { align: 'center' });
+            pdf.text(document.getElementById('ticket-guest-name').innerText, 40, currentY + 75, { align: 'center' });
             pdf.setFontSize(10);
-            pdf.text(document.getElementById('ticket-guest-passes').innerText, 40, 105, { align: 'center' });
+            pdf.text(document.getElementById('ticket-guest-passes').innerText, 40, currentY + 85, { align: 'center' });
             
             pdf.save(`Pase_${document.getElementById('ticket-guest-name').innerText}.pdf`);
         };
@@ -1659,6 +1699,7 @@
 
                 if (includeLink && guest.status !== 'Declinado') {
                     const activeTarget = impersonatingId || currentUser;
+                    // Corrección para subdominio exacto solicitado
                     msg += `\n\n👉 *Consulta tu Pase Digital y Ubicaciones aquí:*\nhttps://boda.tupasedigital.online/index2.html?u=${activeTarget}&id=${guest.id}`;
                 }
 
