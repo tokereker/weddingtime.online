@@ -31,7 +31,6 @@
         body { font-family: 'Inter', sans-serif; background-color: transparent !important; }
         
         .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
-        .table-container { max-height: calc(100vh - 320px); overflow-y: auto; overflow-x: auto; }
         input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
         input[type=number] { -moz-appearance: textfield; }
 
@@ -69,7 +68,7 @@
             <h1 class="text-3xl font-black mb-1 text-slate-900 tracking-tight">TPD Enterprise</h1>
             <p class="text-slate-500 text-sm mb-8 font-medium">Plataforma SaaS de Gestión</p>
             
-            <input type="text" id="login-user" placeholder="ID de Usuario o Agencia" class="w-full border-2 border-slate-100 p-4 rounded-xl mb-4 outline-none focus:border-blue-600 transition font-medium text-sm bg-slate-50 focus:bg-white">
+            <input type="text" id="login-user" placeholder="ID de Usuario o Email Completo" class="w-full border-2 border-slate-100 p-4 rounded-xl mb-4 outline-none focus:border-blue-600 transition font-medium text-sm bg-slate-50 focus:bg-white">
             <div class="relative w-full mb-8">
                 <input type="password" id="login-pass" onkeypress="if(event.key === 'Enter') window.appLogin()" placeholder="Contraseña" class="w-full border-2 border-slate-100 p-4 rounded-xl outline-none focus:border-blue-600 transition font-medium text-sm pr-12 bg-slate-50 focus:bg-white">
                 <button onclick="window.togglePassword('login-pass')" class="absolute right-4 top-4 text-slate-400 hover:text-blue-600 transition">
@@ -157,7 +156,7 @@
                 <div class="bg-white rounded-3xl shadow-sm border border-slate-200 lg:col-span-2 overflow-hidden flex flex-col">
                     <div class="p-5 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
                         <h2 class="font-bold text-slate-800 flex items-center gap-2"><i class="fa-solid fa-server text-blue-500"></i> Instancias Activas</h2>
-                        <button onclick="window.adminLoadUsers()" class="text-slate-400 hover:text-blue-600 transition bg-white p-2 rounded-lg shadow-sm border border-slate-100" title="Refrescar"><i class="fa-solid fa-sync"></i></button>
+                        <button onclick="window.adminLoadUsers()" class="text-slate-400 hover:text-blue-600 transition bg-white p-2 rounded-lg shadow-sm border border-slate-100" title="Refrescar Sincronización"><i class="fa-solid fa-sync"></i></button>
                     </div>
                     <div class="overflow-x-auto flex-1 custom-scrollbar">
                         <table class="w-full text-left text-sm whitespace-nowrap">
@@ -224,10 +223,10 @@
         </nav>
 
         <!-- ESTRUCTURA BLINDADA PARA SCROLL -->
-        <main class="flex-1 min-h-0 p-4 md:p-6 flex flex-col relative bg-slate-50/90 backdrop-blur-md rounded-b-lg overflow-hidden">
+        <main class="flex-1 flex flex-col min-h-0 bg-slate-50/90 backdrop-blur-md rounded-b-lg p-4 md:p-6">
             
             <!-- SECCIÓN INVITADOS -->
-            <section id="crm-sec-guests" class="flex-1 min-h-0 flex flex-col h-full overflow-hidden">
+            <section id="crm-sec-guests" class="flex flex-col flex-1 min-h-0 w-full overflow-hidden">
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-4 shrink-0 flex flex-col gap-4">
                     <div class="flex flex-col xl:flex-row items-center gap-4 justify-between">
                         <!-- Buscador -->
@@ -269,8 +268,8 @@
                     </div>
                 </div>
 
-                <div class="bg-white border border-slate-200 rounded-2xl shadow-sm flex-1 relative overflow-hidden flex flex-col">
-                    <div class="overflow-y-auto overflow-x-auto flex-1 custom-scrollbar">
+                <div class="bg-white border border-slate-200 rounded-2xl shadow-sm flex-1 relative overflow-hidden flex flex-col min-h-0">
+                    <div class="overflow-y-auto overflow-x-auto flex-1 custom-scrollbar min-h-0">
                         <table class="w-full text-left text-sm whitespace-nowrap" id="main-guests-table">
                             <thead class="bg-slate-50 text-slate-500 border-b border-slate-200 sticky top-0 z-10 text-xs uppercase tracking-wider font-bold shadow-sm">
                                 <tr>
@@ -292,7 +291,7 @@
             </section>
 
             <!-- SECCIÓN MESAS -->
-            <section id="crm-sec-tables" class="flex-1 min-h-0 flex flex-col h-full overflow-hidden hidden">
+            <section id="crm-sec-tables" class="hidden flex-col flex-1 min-h-0 w-full overflow-hidden">
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-4 shrink-0 flex flex-col gap-4">
                     <div class="flex flex-wrap justify-between items-center gap-4">
                         <h2 class="font-bold text-lg text-slate-800 flex items-center gap-2"><i class="fa-solid fa-chair text-blue-500"></i> Acomodo de Mesas</h2>
@@ -316,7 +315,7 @@
                             <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Capacidad Sillas:</span>
                             <div class="inline-flex items-center bg-white rounded-lg border border-slate-200 shadow-sm p-1">
                                 <button type="button" onclick="document.getElementById('crm-table-cap').stepDown(); window.crmUpdateConfig('capacidadMesa', document.getElementById('crm-table-cap').value)" class="w-7 h-7 rounded-md hover:bg-blue-50 hover:text-blue-600 font-bold flex items-center justify-center text-slate-500 transition"><i class="fa-solid fa-minus text-[10px]"></i></button>
-                                <input type="number" id="crm-table-cap" value="10" min="1" onchange="window.crmUpdateConfig('capacidadMesa', this.value)" class="w-12 text-center bg-transparent text-sm font-bold outline-none m-0 p-0 pointer-events-none">
+                                <input type="number" id="crm-table-cap" value="10" min="1" onchange="window.crmUpdateConfig('capacidadMesa', this.value)" class="w-10 text-center bg-transparent text-sm font-bold outline-none m-0 p-0">
                                 <button type="button" onclick="document.getElementById('crm-table-cap').stepUp(); window.crmUpdateConfig('capacidadMesa', document.getElementById('crm-table-cap').value)" class="w-7 h-7 rounded-md hover:bg-blue-50 hover:text-blue-600 font-bold flex items-center justify-center text-slate-500 transition"><i class="fa-solid fa-plus text-[10px]"></i></button>
                             </div>
                         </div>
@@ -327,7 +326,7 @@
                             <div class="flex items-center gap-2">
                                 <div class="inline-flex items-center bg-white rounded-lg border border-slate-200 shadow-sm p-1">
                                     <button type="button" onclick="document.getElementById('num-tables-add').stepDown()" class="w-7 h-7 rounded-md hover:bg-blue-50 hover:text-blue-600 font-bold flex items-center justify-center text-slate-500 transition"><i class="fa-solid fa-minus text-[10px]"></i></button>
-                                    <input type="number" id="num-tables-add" value="1" min="1" class="w-8 text-center bg-transparent text-sm font-bold outline-none m-0 p-0 pointer-events-none">
+                                    <input type="number" id="num-tables-add" value="1" min="1" class="w-10 text-center bg-transparent text-sm font-bold outline-none m-0 p-0">
                                     <button type="button" onclick="document.getElementById('num-tables-add').stepUp()" class="w-7 h-7 rounded-md hover:bg-blue-50 hover:text-blue-600 font-bold flex items-center justify-center text-slate-500 transition"><i class="fa-solid fa-plus text-[10px]"></i></button>
                                 </div>
                                 <button onclick="window.addMultipleTables()" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-sm font-bold shadow-md transition flex items-center gap-1"><i class="fa-solid fa-plus"></i> Añadir</button>
@@ -356,7 +355,7 @@
             </section>
 
             <!-- SECCIÓN ESTADÍSTICAS & DASHBOARD LOGÍSTICO -->
-            <section id="crm-sec-stats" class="flex-1 min-h-0 flex flex-col h-full overflow-y-auto hidden custom-scrollbar pb-32">
+            <section id="crm-sec-stats" class="hidden flex-col flex-1 min-h-0 w-full overflow-y-auto custom-scrollbar pb-32 pr-2">
                 <div class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col gap-2 sm:gap-3">
                     <button onclick="window.exportStatsExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl shadow-xl font-bold flex items-center gap-2 transform transition hover:scale-105 text-xs sm:text-sm" title="Exportar Logística a Excel">
                         <i class="fa-solid fa-file-excel text-lg"></i> Excel
@@ -745,14 +744,14 @@
     <div id="ticket-modal" class="fixed inset-0 bg-slate-900/90 items-center justify-center z-50 hidden glass p-4">
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm flex flex-col border border-slate-200 overflow-hidden">
             
-            <!-- HEADER DEL PASE REDISEÑADO (Fondo dinámico 90%) -->
+            <!-- HEADER DEL PASE REDISEÑADO -->
             <div id="ticket-header-bg" class="p-8 pb-4 text-center relative text-white rounded-t-3xl overflow-hidden transition-colors duration-300 flex flex-col justify-between" style="min-height: 400px; background-color: #0f172a;">
                 
-                <!-- CAPA DE IMAGEN DE FONDO (Premium) al 90% -->
-                <img id="ticket-bg-image" src="" class="absolute top-0 left-0 w-full h-[90%] object-cover opacity-0 transition-opacity duration-500 z-0 pointer-events-none">
+                <!-- CAPA DE IMAGEN DE FONDO (Premium) al 95% -->
+                <img id="ticket-bg-image" src="" class="absolute top-0 left-0 w-full h-[95%] object-cover opacity-0 transition-opacity duration-500 z-0 pointer-events-none">
                 
                 <!-- FILTRO OSCURO -->
-                <div id="ticket-dark-overlay" class="absolute top-0 left-0 w-full h-[90%] bg-slate-900/60 z-0 pointer-events-none hidden"></div>
+                <div id="ticket-dark-overlay" class="absolute top-0 left-0 w-full h-[95%] bg-slate-900/60 z-0 pointer-events-none hidden"></div>
 
                 <!-- CONTENIDO DEL TICKET -->
                 <div class="relative z-10 flex flex-col h-full justify-between flex-1">
@@ -1074,7 +1073,6 @@
         };
 
         window.changeOwnPassword = function() {
-            // NUEVO: Bloqueo de seguridad si estás en modo supervisar
             if (impersonatingId) {
                 return Swal.fire({
                     title: 'Acción protegida',
@@ -1117,7 +1115,6 @@
                 
                 document.getElementById('tpd-fab').style.display = 'none';
                 document.getElementById('tpd-chat-widget').style.display = 'none';
-                Swal.close();
                 
                 if(currentRole === 'Staff' || currentRole === 'Soporte') {
                     document.getElementById('admin-creator-panel').classList.add('hidden');
@@ -1138,7 +1135,10 @@
                     else if (d.role === 'Staff' || d.role === 'Soporte') tipoDisplay = `<span class="text-slate-500 font-bold">${d.role}</span>`;
                     else if (d.role === 'Cliente Web') tipoDisplay = '<span class="text-purple-500 font-bold">Diseño Web</span>';
                     else if (d.role === 'Hostess') tipoDisplay = '<span class="text-blue-500 font-bold">Staff Evento</span>';
-                    else tipoDisplay = d.eventType ? `<span class="font-bold text-slate-800">${d.eventType}</span>` : '<span class="text-amber-500 font-bold">Por configurar</span>';
+                    else tipoDisplay = d.eventType ? `<span class="font-bold text-slate-800">${d.eventType} (CRM Completo)</span>` : '<span class="text-amber-500 font-bold">Por configurar (CRM Completo)</span>';
+
+                    let rolTexto = d.role || 'Cliente';
+                    if(rolTexto === 'Cliente') rolTexto = 'Cliente Festejado (CRM Completo)';
 
                     let bdg = d.status === 'Suspendido' ? '<span class="bg-red-100 text-red-700 px-2 py-1 rounded text-[10px] font-bold">Suspendido</span>' : '<span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-[10px] font-bold">Activo</span>';
                     
@@ -1172,7 +1172,7 @@
                     tr.className = 'hover:bg-slate-50 transition border-b border-slate-50';
                     tr.innerHTML = `
                         <td class="p-4 font-bold text-slate-800">${docSnap.id} <br><span class="text-[10px] text-slate-500 uppercase tracking-wider font-medium">${tipoDisplay}</span></td>
-                        <td class="p-4 font-bold text-xs text-slate-500 uppercase tracking-wide">${d.role || 'Cliente'}</td>
+                        <td class="p-4 font-bold text-xs text-slate-500 uppercase tracking-wide">${rolTexto}</td>
                         <td class="p-4 text-center">${bdg}</td>
                         <td class="p-4 flex items-center justify-end gap-2">
                             ${impBtn}
@@ -1191,7 +1191,12 @@
             }
         };
 
-        window.adminLoadUsers = window.loadAdminPanel;
+        window.adminLoadUsers = async function() {
+            Swal.fire({ title: 'Actualizando...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+            await window.loadAdminPanel();
+            Swal.close();
+            Toast.fire({ icon: 'success', title: 'Panel actualizado' });
+        };
 
         window.adminCreateUser = async function() {
             try {
@@ -1231,7 +1236,7 @@
 
         window.adminResetPassword = function(userId) {
             Swal.fire({
-                title: 'Restablecer Contraseña (Modo Gratis)',
+                title: 'Restablecer Contraseña',
                 icon: 'info',
                 html: 'Como usamos correos encriptados de sistema, Firebase no puede enviar un correo de recuperación.<br><br><b>La solución gratis:</b><br>1. Ve a tu consola de Firebase > Authentication.<br>2. Borra el correo de este usuario.<br>3. Vuelve a crear al usuario desde este panel con el <b>mismo ID</b> y la nueva contraseña.<br><br>¡Toda su información en Firestore seguirá intacta!',
                 confirmButtonColor: '#2563eb'
@@ -1427,6 +1432,9 @@
         window.crmRenderAll = function() { window.crmRenderGuests(); window.crmRenderTables(); window.crmRenderStats(); };
         
         window.crmLoadData = async function() { 
+            const btn = document.activeElement;
+            if(btn) btn.blur();
+
             document.getElementById('crm-search').value = ''; 
             Swal.fire({ title: 'Sincronizando...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
             try {
@@ -1440,7 +1448,10 @@
                     state.croquis = data.croquis || null;
                     window.crmRenderAll();
                     Swal.close();
-                    Toast.fire({icon:'success', title:'Nube Sincronizada y Actualizada'});
+                    Toast.fire({icon:'success', title:'Base de datos sincronizada'});
+                } else {
+                    Swal.close();
+                    Toast.fire({icon:'error', title:'Error al sincronizar'});
                 }
             } catch(e) {
                 Swal.fire('Error', 'Fallo al sincronizar', 'error');
@@ -1460,13 +1471,18 @@
 
         window.crmSwitchTab = function(tab) {
             ['guests', 'tables', 'stats'].forEach(t => {
-                document.getElementById(`crm-sec-${t}`).classList.add('hidden');
+                const sec = document.getElementById(`crm-sec-${t}`);
+                sec.classList.add('hidden');
+                sec.classList.remove('flex');
                 document.getElementById(`tab-${t}`).classList.replace('text-blue-600', 'text-slate-500');
                 document.getElementById(`tab-${t}`).classList.replace('border-blue-600', 'border-transparent');
             });
-            document.getElementById(`crm-sec-${tab}`).classList.remove('hidden');
+            const activeSec = document.getElementById(`crm-sec-${tab}`);
+            activeSec.classList.remove('hidden');
+            activeSec.classList.add('flex');
             document.getElementById(`tab-${tab}`).classList.replace('text-slate-500', 'text-blue-600');
             document.getElementById(`tab-${tab}`).classList.replace('border-transparent', 'border-blue-600');
+            
             if(tab === 'tables') window.crmRenderTables();
             if(tab === 'stats') window.crmRenderStats();
         };
@@ -1610,21 +1626,26 @@
             const activeColor = state.config.themeColor || '#0f172a';
             
             if (currentTicketLogo) {
-                pdf.addImage(currentTicketLogo, 'PNG', 0, 0, 80, 135);
+                // 95% del pase = 142.5mm
+                pdf.addImage(currentTicketLogo, 'PNG', 0, 0, 80, 142.5);
                 pdf.setFillColor(15, 23, 42); 
                 pdf.setGState(new pdf.GState({opacity: 0.65})); 
-                pdf.rect(0, 0, 80, 135, 'F');
+                pdf.rect(0, 0, 80, 142.5, 'F');
                 pdf.setGState(new pdf.GState({opacity: 1.0})); 
+                
+                // 5% restante = 7.5mm
                 pdf.setFillColor(activeColor);
-                pdf.rect(0, 135, 80, 15, 'F');
+                pdf.rect(0, 142.5, 80, 7.5, 'F');
             } else {
                 pdf.setFillColor(activeColor);
                 pdf.rect(0, 0, 80, 150, 'F');
             }
             
             pdf.setTextColor(255, 255, 255);
+            pdf.setFont(undefined, 'bold'); // LETRA MÁS FUERTE (NEGRITA)
             pdf.setFontSize(16);
             pdf.text(document.getElementById('ticket-event-name').innerText, 40, 20, { align: 'center' });
+            
             pdf.setFontSize(10);
             pdf.text("Pase de Acceso Oficial", 40, 30, { align: 'center' });
             
@@ -1640,6 +1661,9 @@
             pdf.text(document.getElementById('ticket-guest-name').innerText, 40, 95, { align: 'center' });
             pdf.setFontSize(10);
             pdf.text(document.getElementById('ticket-guest-passes').innerText, 40, 105, { align: 'center' });
+            
+            // AGREGA MARCA DE AGUA EN EL PDF
+            window.addPDFFooter(pdf);
             
             pdf.save(`Pase_${document.getElementById('ticket-guest-name').innerText}.pdf`);
         };
