@@ -69,7 +69,7 @@
             <h1 class="text-3xl font-black mb-1 text-slate-900 tracking-tight">TPD Enterprise</h1>
             <p class="text-slate-500 text-sm mb-8 font-medium">Plataforma SaaS de Gestión</p>
             
-            <input type="text" id="login-user" placeholder="ID de Usuario o Email Completo" class="w-full border-2 border-slate-100 p-4 rounded-xl mb-4 outline-none focus:border-blue-600 transition font-medium text-sm bg-slate-50 focus:bg-white">
+            <input type="text" id="login-user" placeholder="ID de Usuario o Agencia" class="w-full border-2 border-slate-100 p-4 rounded-xl mb-4 outline-none focus:border-blue-600 transition font-medium text-sm bg-slate-50 focus:bg-white">
             <div class="relative w-full mb-8">
                 <input type="password" id="login-pass" onkeypress="if(event.key === 'Enter') window.appLogin()" placeholder="Contraseña" class="w-full border-2 border-slate-100 p-4 rounded-xl outline-none focus:border-blue-600 transition font-medium text-sm pr-12 bg-slate-50 focus:bg-white">
                 <button onclick="window.togglePassword('login-pass')" class="absolute right-4 top-4 text-slate-400 hover:text-blue-600 transition">
@@ -224,10 +224,10 @@
         </nav>
 
         <!-- ESTRUCTURA BLINDADA PARA SCROLL -->
-        <main class="flex-1 relative overflow-hidden bg-slate-50/90 backdrop-blur-md rounded-b-lg">
+        <main class="flex-1 min-h-0 p-4 md:p-6 flex flex-col relative bg-slate-50/90 backdrop-blur-md rounded-b-lg overflow-hidden">
             
             <!-- SECCIÓN INVITADOS -->
-            <section id="crm-sec-guests" class="absolute inset-0 p-4 md:p-6 flex flex-col">
+            <section id="crm-sec-guests" class="flex-1 min-h-0 flex flex-col h-full overflow-hidden">
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-4 shrink-0 flex flex-col gap-4">
                     <div class="flex flex-col xl:flex-row items-center gap-4 justify-between">
                         <!-- Buscador -->
@@ -292,8 +292,7 @@
             </section>
 
             <!-- SECCIÓN MESAS -->
-            <!-- CORRECCIÓN DE ALTURA: Se añade h-0 para asegurar el cálculo de la barra de scroll -->
-            <section id="crm-sec-tables" class="absolute inset-0 p-4 md:p-6 flex flex-col hidden">
+            <section id="crm-sec-tables" class="flex-1 min-h-0 flex flex-col h-full overflow-hidden hidden">
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-4 shrink-0 flex flex-col gap-4">
                     <div class="flex flex-wrap justify-between items-center gap-4">
                         <h2 class="font-bold text-lg text-slate-800 flex items-center gap-2"><i class="fa-solid fa-chair text-blue-500"></i> Acomodo de Mesas</h2>
@@ -323,7 +322,6 @@
                         </div>
                         <div class="h-8 w-px bg-slate-200 hidden md:block"></div>
                         
-                        <!-- BOTONES +/- DE CREAR MESAS REDISEÑADOS -->
                         <div class="flex items-center gap-3">
                             <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Crear Mesas:</span>
                             <div class="flex items-center gap-2">
@@ -344,8 +342,7 @@
                     </div>
                 </div>
                 
-                <!-- CORRECCIÓN DE BARRAS DE SCROLL: Se añadió h-0 al contenedor principal flexible -->
-                <div class="flex-1 flex flex-col md:flex-row gap-6 min-h-0 h-0">
+                <div class="flex-1 flex flex-col md:flex-row gap-6 min-h-0 overflow-hidden">
                     <div class="w-full md:w-1/4 lg:w-1/5 bg-white border border-slate-200 rounded-2xl shadow-sm flex flex-col h-64 md:h-full shrink-0 min-h-0 overflow-hidden">
                         <div class="p-4 border-b border-slate-100 bg-slate-50 font-bold text-slate-700 flex justify-between items-center shrink-0">
                             <span class="text-sm"><i class="fa-solid fa-users-slash text-slate-400 mr-2"></i> Sin Asignar</span>
@@ -353,15 +350,13 @@
                         </div>
                         <div id="crm-unassigned-list" class="flex-1 p-3 overflow-y-auto space-y-2 bg-slate-50/50 table-dropzone custom-scrollbar min-h-0" ondragover="window.allowDrop(event)" ondragleave="window.leaveDrop(event)" ondrop="window.dropGuest(event, 0)"></div>
                     </div>
-                    <!-- Se asegura overflow-y-auto para el grid de mesas -->
-                    <div id="crm-tables-grid" class="flex-1 overflow-y-auto h-full min-h-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 content-start pb-6 custom-scrollbar pr-2">
+                    <div id="crm-tables-grid" class="flex-1 overflow-y-auto min-h-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 content-start pb-6 custom-scrollbar pr-2">
                     </div>
                 </div>
             </section>
 
-            <!-- SECCIÓN ESTADÍSTICAS & DASHBOARD LOGÍSTICO (VERSIÓN 2.6 BENTO GRID) -->
-            <!-- CORRECCIÓN SCROLL: Absolute inset para forzar límites -->
-            <section id="crm-sec-stats" class="absolute inset-0 p-4 md:p-6 overflow-y-auto hidden custom-scrollbar pb-32">
+            <!-- SECCIÓN ESTADÍSTICAS & DASHBOARD LOGÍSTICO -->
+            <section id="crm-sec-stats" class="flex-1 min-h-0 flex flex-col h-full overflow-y-auto hidden custom-scrollbar pb-32">
                 <div class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col gap-2 sm:gap-3">
                     <button onclick="window.exportStatsExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl shadow-xl font-bold flex items-center gap-2 transform transition hover:scale-105 text-xs sm:text-sm" title="Exportar Logística a Excel">
                         <i class="fa-solid fa-file-excel text-lg"></i> Excel
@@ -751,20 +746,20 @@
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm flex flex-col border border-slate-200 overflow-hidden">
             
             <!-- HEADER DEL PASE REDISEÑADO (Fondo dinámico 90%) -->
-            <div id="ticket-header-bg" class="p-8 pb-4 text-center relative text-white rounded-t-3xl overflow-hidden transition-colors duration-300" style="min-height: 400px;">
+            <div id="ticket-header-bg" class="p-8 pb-4 text-center relative text-white rounded-t-3xl overflow-hidden transition-colors duration-300 flex flex-col justify-between" style="min-height: 400px; background-color: #0f172a;">
                 
                 <!-- CAPA DE IMAGEN DE FONDO (Premium) al 90% -->
                 <img id="ticket-bg-image" src="" class="absolute top-0 left-0 w-full h-[90%] object-cover opacity-0 transition-opacity duration-500 z-0 pointer-events-none">
                 
-                <!-- FILTRO OSCURO PARA QUE SE LEA EL TEXTO (Ajustado al 90%) -->
+                <!-- FILTRO OSCURO -->
                 <div id="ticket-dark-overlay" class="absolute top-0 left-0 w-full h-[90%] bg-slate-900/60 z-0 pointer-events-none hidden"></div>
 
                 <!-- CONTENIDO DEL TICKET -->
-                <div class="relative z-10 flex flex-col h-full justify-between">
+                <div class="relative z-10 flex flex-col h-full justify-between flex-1">
                     <div>
                         <div id="premium-pdf-bg-uploader" class="mb-4" style="display: none;">
                             <label class="text-[9px] text-white font-bold uppercase tracking-widest cursor-pointer hover:bg-white/20 transition flex items-center justify-center gap-1 border border-white/50 py-1.5 px-3 rounded-full mx-auto w-fit backdrop-blur-sm shadow-lg">
-                                <i class="fa-solid fa-image"></i> Subir Fondo Premium para PDF
+                                <i class="fa-solid fa-image"></i> Fondo Premium (Opcional)
                                 <input type="file" id="ticket-logo-upload" class="hidden" accept="image/*" onchange="window.handleTicketLogo(event)">
                             </label>
                             <button onclick="window.clearTicketLogo()" id="btn-clear-logo" class="hidden text-[10px] text-red-300 font-bold uppercase mt-2 mx-auto underline hover:text-red-200">Quitar Fondo</button>
@@ -776,12 +771,12 @@
                         <div class="bg-white p-3 rounded-2xl inline-block mb-4 shadow-2xl"><div id="ticket-qrcode"></div></div>
                         
                         <h2 class="text-xl font-bold text-white mb-1 drop-shadow-md truncate px-2" id="ticket-guest-name">Invitado</h2>
-                        <p class="text-sm text-white/90 font-medium drop-shadow-md mb-4" id="ticket-guest-passes">0 Pases</p>
+                        <p class="text-sm text-white/90 font-medium drop-shadow-md mb-2" id="ticket-guest-passes">0 Pases</p>
                     </div>
                 </div>
             </div>
 
-            <div class="p-4 bg-slate-50 rounded-b-3xl z-20">
+            <div class="p-4 bg-slate-50 rounded-b-3xl z-20 shrink-0">
                  <div class="grid grid-cols-2 gap-3 mb-3">
                      <button onclick="window.downloadNativeTicket()" class="bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-2xl font-bold shadow-md transition flex flex-col items-center justify-center gap-1">
                          <i class="fa-solid fa-file-pdf text-2xl mb-1"></i> <span class="text-[10px] uppercase tracking-wider">Descargar PDF</span>
@@ -968,7 +963,6 @@
             }
         };
 
-        // ====== LÓGICA DE INICIO DE SESIÓN REPARADA AL 100% ======
         window.appLogin = async function() {
             const userRaw = document.getElementById('login-user').value.trim().toLowerCase();
             const pass = document.getElementById('login-pass').value.trim();
@@ -980,19 +974,19 @@
             let usedEmail = userRaw;
 
             try {
-                // Si el usuario escribe su correo completo (ej. admin@tpd.online) lo manda directo
                 if (userRaw.includes('@')) {
                     await signInWithEmailAndPassword(auth, userRaw, pass);
                     usedEmail = userRaw;
                     loginSuccess = true;
                 } else {
-                    // DOBLE INTENTO BLINDADO: Para soportar cuentas de Agencia y cuentas de Cliente Antiguas
+                    // INTENTO 1: Formato antiguo (josecarlosyvanessaadmin@tpd.online)
                     try {
-                        usedEmail = `${userRaw}@tpd.online`;
+                        usedEmail = `${userRaw}admin@tpd.online`;
                         await signInWithEmailAndPassword(auth, usedEmail, pass);
                         loginSuccess = true;
                     } catch (e1) {
-                        usedEmail = `${userRaw}admin@tpd.online`;
+                        // INTENTO 2: Formato limpio (admin@tpd.online)
+                        usedEmail = `${userRaw}@tpd.online`;
                         await signInWithEmailAndPassword(auth, usedEmail, pass);
                         loginSuccess = true;
                     }
@@ -1120,7 +1114,6 @@
                 const tbody = document.getElementById('admin-users-tbody');
                 tbody.innerHTML = '';
                 
-                // NOTA: SE QUITÓ EL FILTRO QUE OCULTABA A "ADMIN" PARA QUE VEAS TODOS TUS DATOS
                 snaps.forEach(docSnap => {
                     const d = docSnap.data();
                     
@@ -1191,7 +1184,6 @@
 
                 if(!user || !pass) return Swal.fire('Atención', 'Rellena el ID de usuario y la contraseña.', 'warning');
                 
-                // FORMATO ORIGINAL RESTAURADO PARA CREAR CLIENTES
                 const pseudoEmail = `${user}admin@tpd.online`;
 
                 await createUserWithEmailAndPassword(secondaryAuth, pseudoEmail, pass);
@@ -1304,7 +1296,6 @@
                 window.subscribeToUser(userToLoad);
             }
             
-            // FORZAMOS LA VISUALIZACIÓN DE LA PESTAÑA PRINCIPAL PARA EVITAR FONDOS BLANCOS
             window.crmSwitchTab('guests');
             Swal.close();
         };
@@ -1383,7 +1374,6 @@
                         else iconEl.classList.add('fa-calendar-check');
                     }
                     
-                    // LEER PERMISO PREMIUM Y AJUSTAR VISTA USANDO STYLE PARA NO CHOCAR CON TAILWIND
                     let isPremium = data.hasPremiumLink === true;
                     
                     const premiumDesign = document.getElementById('crm-premium-design');
@@ -1393,8 +1383,8 @@
                     const waCheckbox = document.getElementById('wa-include-link');
                     if (waPremiumContainer && waCheckbox) {
                         waPremiumContainer.style.display = isPremium ? 'flex' : 'none';
-                        waCheckbox.checked = isPremium; // Se activa solo si es Premium
-                        waCheckbox.disabled = !isPremium; // Se bloquea si no es Premium
+                        waCheckbox.checked = isPremium;
+                        waCheckbox.disabled = !isPremium;
                     }
 
                     const pdfPremiumUploader = document.getElementById('premium-pdf-bg-uploader');
@@ -1561,7 +1551,6 @@
             .then((r) => { if (r.isConfirmed) { state.invitados = []; window.crmSave(); window.crmRenderAll(); Toast.fire({ icon: 'success', title: 'Vaciada' }); } });
         };
 
-        // FUNCIÓN NUEVA: Manejar la subida de la imagen de fondo Premium para el ticket
         window.handleTicketLogo = function(e) {
             const file = e.target.files[0];
             if(!file) return;
@@ -1605,10 +1594,10 @@
             
             if (currentTicketLogo) {
                 pdf.addImage(currentTicketLogo, 'PNG', 0, 0, 80, 135);
-                pdf.setFillColor(15, 23, 42); // Color slate-900
-                pdf.setGState(new pdf.GState({opacity: 0.65})); // 65% de oscuridad
+                pdf.setFillColor(15, 23, 42); 
+                pdf.setGState(new pdf.GState({opacity: 0.65})); 
                 pdf.rect(0, 0, 80, 135, 'F');
-                pdf.setGState(new pdf.GState({opacity: 1.0})); // Restaurar
+                pdf.setGState(new pdf.GState({opacity: 1.0})); 
                 pdf.setFillColor(activeColor);
                 pdf.rect(0, 135, 80, 15, 'F');
             } else {
