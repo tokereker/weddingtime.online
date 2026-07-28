@@ -112,7 +112,7 @@
     </div>
 
     <!-- PANEL ADMIN SAAS -->
-    <div id="view-admin" class="hidden h-full flex flex-col bg-slate-50 relative">
+    <div id="view-admin" class="hidden flex-1 flex-col bg-slate-50 min-h-0">
         <header class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center shadow-lg shrink-0">
             <div class="flex items-center gap-3">
                 <div class="bg-blue-500/20 p-2 rounded-lg"><i class="fa-solid fa-shield-halved text-blue-400 text-xl"></i></div>
@@ -121,7 +121,7 @@
             <button onclick="window.appLogout()" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2 border border-red-500/20"><i class="fa-solid fa-sign-out-alt"></i> Salir</button>
         </header>
         
-        <main class="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-6 absolute inset-0 top-[72px]">
+        <main class="flex-1 overflow-y-auto p-4 md:p-6 custom-scrollbar absolute inset-0 top-[72px]">
             <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Crear Usuarios -->
                 <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 lg:col-span-1 h-fit" id="admin-creator-panel">
@@ -178,7 +178,7 @@
     </div>
 
     <!-- WORKSPACE CRM COMPLETO (CLIENTE) -->
-    <div id="view-crm" class="hidden h-full flex flex-col bg-transparent relative">
+    <div id="view-crm" class="hidden flex-1 flex-col bg-transparent min-h-0 relative">
         <!-- Barra de Impersonation -->
         <div id="crm-impersonation-bar" class="hidden bg-amber-400 text-amber-900 px-6 py-2 flex justify-between items-center font-bold text-sm shadow-inner shrink-0 z-20">
             <span><i class="fa-solid fa-user-secret mr-2"></i> Estás supervisando la base de datos de: <span id="crm-imp-name" class="underline uppercase"></span></span>
@@ -223,11 +223,11 @@
             </div>
         </nav>
 
-        <!-- CONTENEDOR MAESTRO DE VISTAS CRM (Se maneja con absolute para Scroll perfecto por tab) -->
-        <main class="flex-1 relative bg-slate-50/90 backdrop-blur-md rounded-b-lg w-full h-full z-0 overflow-hidden">
+        <!-- ESTRUCTURA BLINDADA PARA SCROLL -->
+        <main class="flex-1 flex flex-col min-h-0 bg-slate-50/90 backdrop-blur-md rounded-b-lg p-4 md:p-6 overflow-hidden">
             
             <!-- SECCIÓN INVITADOS -->
-            <section id="crm-sec-guests" class="absolute inset-0 p-4 md:p-6 flex-col overflow-y-auto custom-scrollbar flex">
+            <section id="crm-sec-guests" class="flex-1 flex flex-col min-h-0 w-full overflow-hidden flex">
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-4 shrink-0 flex flex-col gap-4">
                     <div class="flex flex-col xl:flex-row items-center gap-4 justify-between">
                         <!-- Buscador -->
@@ -291,7 +291,7 @@
             </section>
 
             <!-- SECCIÓN MESAS -->
-            <section id="crm-sec-tables" class="absolute inset-0 p-4 md:p-6 flex-col overflow-y-auto custom-scrollbar hidden">
+            <section id="crm-sec-tables" class="hidden flex-col flex-1 min-h-0 w-full overflow-hidden">
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-4 shrink-0 flex flex-col gap-4">
                     <div class="flex flex-wrap justify-between items-center gap-4">
                         <h2 class="font-bold text-lg text-slate-800 flex items-center gap-2"><i class="fa-solid fa-chair text-blue-500"></i> Acomodo de Mesas</h2>
@@ -543,7 +543,7 @@
     </div>
 
     <!-- WORKSPACE HOSTESS (Lector, Croquis y Lista) -->
-    <div id="view-hostess" class="hidden h-full flex flex-col bg-slate-900 text-white relative">
+    <div id="view-hostess" class="hidden flex-1 flex-col bg-slate-900 text-white relative min-h-0">
         <header class="bg-slate-800 px-4 py-3 flex flex-col shadow-lg border-b border-slate-700 z-10 shrink-0">
             <div class="flex justify-between items-center mb-2">
                 <div class="flex items-center gap-3">
@@ -745,6 +745,122 @@
         </div>
     </div>
 
+    <!-- Modal Visual TICKET QR Rediseñado -->
+    <div id="ticket-modal" class="fixed inset-0 bg-slate-900/90 items-center justify-center z-50 hidden glass p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm flex flex-col border border-slate-200 overflow-hidden">
+            
+            <!-- HEADER DEL PASE REDISEÑADO -->
+            <div id="ticket-header-bg" class="p-8 pb-4 text-center relative text-white rounded-t-3xl overflow-hidden transition-colors duration-300 flex flex-col justify-between" style="min-height: 400px; background-color: #0f172a;">
+                
+                <!-- CAPA DE IMAGEN DE FONDO (Premium) al 95% -->
+                <img id="ticket-bg-image" src="" class="absolute top-0 left-0 w-full h-[95%] object-cover opacity-0 transition-opacity duration-500 z-0 pointer-events-none">
+                
+                <!-- FILTRO OSCURO -->
+                <div id="ticket-dark-overlay" class="absolute top-0 left-0 w-full h-[95%] bg-slate-900/60 z-0 pointer-events-none hidden"></div>
+
+                <!-- CONTENIDO DEL TICKET -->
+                <div class="relative z-10 flex flex-col h-full justify-between flex-1">
+                    <div>
+                        <div id="premium-pdf-bg-uploader" class="mb-4" style="display: none;">
+                            <label class="text-[9px] text-white font-bold uppercase tracking-widest cursor-pointer hover:bg-white/20 transition flex items-center justify-center gap-1 border border-white/50 py-1.5 px-3 rounded-full mx-auto w-fit backdrop-blur-sm shadow-lg">
+                                <i class="fa-solid fa-image"></i> Fondo Premium (Opcional)
+                                <input type="file" id="ticket-logo-upload" class="hidden" accept="image/*" onchange="window.handleTicketLogo(event)">
+                            </label>
+                            <button onclick="window.clearTicketLogo()" id="btn-clear-logo" class="hidden text-[10px] text-red-300 font-bold uppercase mt-2 mx-auto underline hover:text-red-200">Quitar Fondo</button>
+                        </div>
+
+                        <h3 class="text-2xl font-black mb-1 drop-shadow-lg" id="ticket-event-name">Cargando...</h3>
+                        <p class="text-[10px] text-white/80 font-bold uppercase tracking-widest mb-4">Pase de Acceso Oficial</p>
+                        
+                        <div class="bg-white p-3 rounded-2xl inline-block mb-4 shadow-2xl"><div id="ticket-qrcode"></div></div>
+                        
+                        <h2 class="text-xl font-bold text-white mb-1 drop-shadow-md truncate px-2" id="ticket-guest-name">Invitado</h2>
+                        <p class="text-sm text-white/90 font-medium drop-shadow-md mb-2" id="ticket-guest-passes">0 Pases</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-4 bg-slate-50 rounded-b-3xl z-20 shrink-0">
+                 <div class="grid grid-cols-2 gap-3 mb-3">
+                     <button onclick="window.downloadNativeTicket()" class="bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-2xl font-bold shadow-md transition flex flex-col items-center justify-center gap-1">
+                         <i class="fa-solid fa-file-pdf text-2xl mb-1"></i> <span class="text-[10px] uppercase tracking-wider">Descargar PDF</span>
+                     </button>
+                     <button onclick="window.sendTicketWAAntiBlock()" class="bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-2xl font-bold shadow-md transition flex flex-col items-center justify-center gap-1">
+                         <i class="fa-brands fa-whatsapp text-2xl mb-1"></i> <span class="text-[10px] uppercase tracking-wider">Enviar por WA</span>
+                     </button>
+                 </div>
+                 <button onclick="document.getElementById('ticket-modal').classList.replace('flex','hidden')" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3.5 rounded-xl transition text-sm">Cerrar Visualizador</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal WhatsApp Standard (Asistente de Redacción) -->
+    <div id="wa-standard-modal" class="fixed inset-0 bg-slate-900/80 items-center justify-center z-50 hidden glass p-4">
+        <div class="bg-white p-6 rounded-3xl shadow-2xl w-full max-w-lg border-t-4 border-emerald-500 flex flex-col max-h-[90vh]">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-black text-slate-800 flex items-center gap-2"><i class="fa-brands fa-whatsapp text-emerald-500 text-xl"></i> Notificación WhatsApp</h3>
+                <button onclick="document.getElementById('wa-standard-modal').classList.replace('flex', 'hidden')" class="text-slate-400 hover:text-slate-600 transition"><i class="fa-solid fa-times text-xl"></i></button>
+            </div>
+            
+            <div class="mb-4 bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100">
+                <label class="block text-xs font-bold text-emerald-800 uppercase tracking-wider mb-2">Asistente de Redacción</label>
+                <div class="flex gap-2">
+                    <select id="local-tone-select" onchange="window.applyLocalTemplate()" class="flex-1 border-2 border-emerald-100 p-2.5 rounded-xl text-sm outline-none bg-white text-slate-700 font-bold cursor-pointer">
+                        <option value="emotivo">Emotivo y Lleno de Energía 🎉</option>
+                        <option value="formal">Elegante y Formal 🎩</option>
+                        <option value="casual">Casual y Directo 👋</option>
+                    </select>
+                    <button type="button" onclick="window.applyLocalTemplate()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl shadow-md transition flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
+                </div>
+                
+                <div id="wa-premium-link-container" style="display: none;" class="items-center gap-2 mt-4 pt-4 border-t border-emerald-100 cursor-pointer">
+                    <input type="checkbox" id="wa-include-link" class="w-4 h-4 text-emerald-600 rounded border-emerald-300 focus:ring-emerald-500" onchange="window.applyLocalTemplate()">
+                    <span class="text-xs font-bold text-slate-600 flex items-center gap-1">
+                        Adjuntar Link Mágico (Pase Digital y RSVP)
+                        <div class="relative group inline-block ml-1">
+                            <i class="fa-solid fa-circle-info text-blue-500 hover:text-blue-700 transition text-sm"></i>
+                            <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block w-64 bg-slate-800 text-white text-[10px] p-2.5 rounded-lg shadow-xl z-50 text-center font-medium leading-relaxed cursor-default pointer-events-none">
+                                El enlace apuntará a tu repositorio web. Ej: https://boda.tupasedigital.online/index2.html?u={userId}&id={guestId}
+                                <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-800"></div>
+                            </div>
+                        </div>
+                    </span>
+                </div>
+            </div>
+            
+            <div class="relative w-full mb-2">
+                <div class="flex justify-end mb-1">
+                    <button type="button" onclick="document.getElementById('emoji-picker-container').classList.toggle('hidden')" class="text-slate-500 hover:text-emerald-600 transition text-xs font-bold bg-slate-100 px-3 py-1.5 rounded-lg flex items-center gap-1"><i class="fa-regular fa-face-smile"></i> Emojis</button>
+                </div>
+                <div id="emoji-picker-container" class="absolute z-10 hidden shadow-2xl border rounded-2xl bg-white mt-1 right-0 overflow-hidden">
+                    <emoji-picker class="light"></emoji-picker>
+                </div>
+            </div>
+            
+            <textarea id="wa-standard-msg" class="w-full border-2 border-slate-100 p-4 rounded-2xl text-sm outline-none flex-1 resize-none bg-slate-50 focus:bg-white focus:border-emerald-300 transition font-medium min-h-[160px]" placeholder="Mensaje..."></textarea>
+            
+            <button type="button" id="wa-standard-send-btn" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 rounded-xl shadow-lg mt-4 transition flex items-center justify-center gap-2 text-lg"><i class="fa-solid fa-paper-plane"></i> Enviar Mensaje por WhatsApp</button>
+        </div>
+    </div>
+
+    <!-- Asistente TPD Chat -->
+    <div id="tpd-fab" onclick="window.toggleTPDChat()" title="Asistente de Eventos">
+        <i class="fa-solid fa-headset"></i>
+    </div>
+    <div id="tpd-chat-widget">
+        <div id="tpd-chat-header" onclick="window.toggleTPDChat()">
+            <span><i class="fa-solid fa-robot mr-2"></i> Asistente IA TPD</span>
+            <i class="fa-solid fa-chevron-down"></i>
+        </div>
+        <div id="tpd-chat-messages" class="custom-scrollbar">
+            <div class="tpd-msg bot">¡Hola! Soy tu asistente de logística. Escribe palabras como <b>mesas</b>, <b>bebidas</b>, <b>dulces</b>, <b>niños</b> o <b>resumen</b> y haré los cálculos por ti basados en tu lista actual.</div>
+        </div>
+        <div class="flex border-t border-slate-200 p-3 bg-white gap-2">
+            <input type="text" id="tpd-chat-input" placeholder="Ej. Calcula el alcohol..." onkeypress="if(event.key === 'Enter') window.sendTPDChat()" class="flex-1 border-2 border-slate-100 rounded-xl px-4 py-2 text-sm outline-none focus:border-blue-400 transition bg-slate-50">
+            <button onclick="window.sendTPDChat()" class="bg-blue-600 text-white rounded-xl w-10 h-10 flex items-center justify-center hover:bg-blue-700 shadow-md transition"><i class="fa-solid fa-paper-plane text-xs"></i></button>
+        </div>
+    </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updatePassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -765,7 +881,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // APP SECUNDARIA
+        // APP SECUNDARIA PARA CREAR USUARIOS SIN CERRAR LA SESIÓN DEL ADMINISTRADOR
         const secondaryApp = initializeApp(firebaseConfig, "SecondaryApp");
         const secondaryAuth = getAuth(secondaryApp);
         
@@ -776,6 +892,7 @@
         let impersonatingId = null;
         let currentTargetGuestId = null; 
         
+        // VARIABLE PARA LA IMAGEN DE FONDO PREMIUM
         let currentTicketLogo = null;
         
         let hCurrentGuest = null;
@@ -1085,7 +1202,11 @@
             } catch(e) {
                 console.error(e);
                 Swal.close();
-                Swal.fire('Error de Permisos', 'Asegúrate de que tus reglas de Firestore estén en true.', 'error');
+                Swal.fire({
+                    title: 'Mensaje de Firebase',
+                    html: `El servidor nos devolvió este mensaje exacto:<br><br><b style="color:#ef4444;">${e.message}</b><br><br>Si dice <i>'Missing or insufficient permissions'</i>, las reglas aún no se propagan o no están bien guardadas.`,
+                    icon: 'error'
+                });
             }
         };
 
