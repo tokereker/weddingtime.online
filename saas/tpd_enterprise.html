@@ -223,10 +223,11 @@
             </div>
         </nav>
 
-        <main class="flex-1 min-h-0 overflow-hidden p-4 md:p-6 flex flex-col relative bg-slate-50/90 backdrop-blur-md rounded-b-lg">
+        <!-- ESTRUCTURA BLINDADA PARA SCROLL -->
+        <main class="flex-1 min-h-0 p-4 md:p-6 flex flex-col relative bg-slate-50/90 backdrop-blur-md rounded-b-lg overflow-hidden">
             
             <!-- SECCIÓN INVITADOS -->
-            <section id="crm-sec-guests" class="flex-1 min-h-0 w-full flex flex-col">
+            <section id="crm-sec-guests" class="flex-1 min-h-0 flex flex-col h-full overflow-hidden">
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-4 shrink-0 flex flex-col gap-4">
                     <div class="flex flex-col xl:flex-row items-center gap-4 justify-between">
                         <!-- Buscador -->
@@ -236,7 +237,7 @@
                                 <input type="text" id="crm-search" onkeyup="window.crmRenderGuests()" placeholder="Buscar familia o invitado..." class="w-full border-2 border-slate-100 p-2 pl-9 text-sm rounded-xl outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition font-medium">
                             </div>
                             <button onclick="document.getElementById('crm-search').value=''; window.crmRenderGuests()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-2.5 rounded-xl text-sm font-bold transition shadow-sm" title="Limpiar Búsqueda"><i class="fa-solid fa-eraser"></i></button>
-                            <button onclick="window.crmLoadData()" class="bg-slate-100 hover:bg-slate-200 text-blue-600 px-3 py-2.5 rounded-xl text-sm font-bold transition shadow-sm" title="Sincronizar Datos"><i class="fa-solid fa-sync"></i></button>
+                            <button onclick="window.crmLoadData()" class="bg-slate-100 hover:bg-slate-200 text-blue-600 px-3 py-2.5 rounded-xl text-sm font-bold transition shadow-sm" title="Sincronizar Nube"><i class="fa-solid fa-sync"></i></button>
                         </div>
                         
                         <!-- Botones de Acción Clásicos -->
@@ -268,8 +269,8 @@
                     </div>
                 </div>
 
-                <div class="bg-white border border-slate-200 rounded-2xl shadow-sm flex-1 table-container relative custom-scrollbar overflow-hidden flex flex-col">
-                    <div class="overflow-x-auto flex-1 custom-scrollbar min-h-0">
+                <div class="bg-white border border-slate-200 rounded-2xl shadow-sm flex-1 relative overflow-hidden flex flex-col">
+                    <div class="overflow-y-auto overflow-x-auto flex-1 custom-scrollbar">
                         <table class="w-full text-left text-sm whitespace-nowrap" id="main-guests-table">
                             <thead class="bg-slate-50 text-slate-500 border-b border-slate-200 sticky top-0 z-10 text-xs uppercase tracking-wider font-bold shadow-sm">
                                 <tr>
@@ -291,7 +292,7 @@
             </section>
 
             <!-- SECCIÓN MESAS -->
-            <section id="crm-sec-tables" class="flex-1 h-full min-h-0 w-full flex flex-col hidden relative">
+            <section id="crm-sec-tables" class="flex-1 min-h-0 flex flex-col h-full overflow-hidden hidden">
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-4 shrink-0 flex flex-col gap-4">
                     <div class="flex flex-wrap justify-between items-center gap-4">
                         <h2 class="font-bold text-lg text-slate-800 flex items-center gap-2"><i class="fa-solid fa-chair text-blue-500"></i> Acomodo de Mesas</h2>
@@ -320,11 +321,16 @@
                             </div>
                         </div>
                         <div class="h-8 w-px bg-slate-200 hidden md:block"></div>
+                        
                         <div class="flex items-center gap-3">
                             <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Crear Mesas:</span>
                             <div class="flex items-center gap-2">
-                                <input type="number" id="num-tables-add" value="1" min="1" class="border-2 border-slate-200 p-1.5 w-16 text-center rounded-lg text-sm outline-none font-bold bg-white focus:border-blue-500 transition">
-                                <button onclick="window.addMultipleTables()" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm font-bold shadow-md transition flex items-center gap-1"><i class="fa-solid fa-plus"></i> Añadir</button>
+                                <div class="inline-flex items-center bg-white rounded-lg border border-slate-200 shadow-sm p-1">
+                                    <button type="button" onclick="document.getElementById('num-tables-add').stepDown()" class="w-7 h-7 rounded-md hover:bg-blue-50 hover:text-blue-600 font-bold flex items-center justify-center text-slate-500 transition"><i class="fa-solid fa-minus text-[10px]"></i></button>
+                                    <input type="number" id="num-tables-add" value="1" min="1" class="w-8 text-center bg-transparent text-sm font-bold outline-none m-0 p-0 pointer-events-none">
+                                    <button type="button" onclick="document.getElementById('num-tables-add').stepUp()" class="w-7 h-7 rounded-md hover:bg-blue-50 hover:text-blue-600 font-bold flex items-center justify-center text-slate-500 transition"><i class="fa-solid fa-plus text-[10px]"></i></button>
+                                </div>
+                                <button onclick="window.addMultipleTables()" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-sm font-bold shadow-md transition flex items-center gap-1"><i class="fa-solid fa-plus"></i> Añadir</button>
                             </div>
                         </div>
                         
@@ -336,8 +342,7 @@
                     </div>
                 </div>
                 
-                <!-- CORRECCIÓN DE BARRAS DE SCROLL (overflow-hidden en parent, overflow-y-auto en hijos) -->
-                <div class="flex-1 h-full min-h-0 flex flex-col md:flex-row gap-6 overflow-hidden">
+                <div class="flex-1 flex flex-col md:flex-row gap-6 min-h-0 overflow-hidden">
                     <div class="w-full md:w-1/4 lg:w-1/5 bg-white border border-slate-200 rounded-2xl shadow-sm flex flex-col h-64 md:h-full shrink-0 min-h-0 overflow-hidden">
                         <div class="p-4 border-b border-slate-100 bg-slate-50 font-bold text-slate-700 flex justify-between items-center shrink-0">
                             <span class="text-sm"><i class="fa-solid fa-users-slash text-slate-400 mr-2"></i> Sin Asignar</span>
@@ -351,8 +356,7 @@
             </section>
 
             <!-- SECCIÓN ESTADÍSTICAS & DASHBOARD LOGÍSTICO -->
-            <!-- CORRECCIÓN SCROLL: Asegurado overflow-y-auto y boundaries correctos -->
-            <section id="crm-sec-stats" class="flex-1 h-full min-h-0 w-full overflow-y-auto hidden custom-scrollbar pb-32 pr-2 relative">
+            <section id="crm-sec-stats" class="flex-1 min-h-0 flex flex-col h-full overflow-y-auto hidden custom-scrollbar pb-32">
                 <div class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col gap-2 sm:gap-3">
                     <button onclick="window.exportStatsExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl shadow-xl font-bold flex items-center gap-2 transform transition hover:scale-105 text-xs sm:text-sm" title="Exportar Logística a Excel">
                         <i class="fa-solid fa-file-excel text-lg"></i> Excel
@@ -737,28 +741,42 @@
         </div>
     </div>
 
-    <!-- Modal Visual TICKET QR Rediseñado Horizontal y Nativo -->
+    <!-- Modal Visual TICKET QR Rediseñado -->
     <div id="ticket-modal" class="fixed inset-0 bg-slate-900/90 items-center justify-center z-50 hidden glass p-4">
-        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm flex flex-col border border-slate-200">
-            <div class="p-8 text-center relative bg-[#0f172a] text-white rounded-t-3xl border-b-4 border-blue-500">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm flex flex-col border border-slate-200 overflow-hidden">
+            
+            <!-- HEADER DEL PASE REDISEÑADO (Fondo dinámico 90%) -->
+            <div id="ticket-header-bg" class="p-8 pb-4 text-center relative text-white rounded-t-3xl overflow-hidden transition-colors duration-300 flex flex-col justify-between" style="min-height: 400px; background-color: #0f172a;">
                 
-                <!-- NUEVO: MÓDULO PARA SUBIR FONDO (SOLO PREMIUM) -->
-                <div id="premium-pdf-bg-uploader" class="mb-4" style="display: none;">
-                    <label class="text-[10px] text-blue-300 font-bold uppercase tracking-widest cursor-pointer hover:text-white transition flex items-center justify-center gap-1 border border-blue-500/50 hover:border-blue-400 py-1.5 px-3 rounded-lg mx-auto w-fit">
-                        <i class="fa-solid fa-image"></i> Subir Fondo Premium para PDF
-                        <input type="file" id="ticket-logo-upload" class="hidden" accept="image/*" onchange="window.handleTicketLogo(event)">
-                    </label>
-                    <img id="ticket-logo-preview" src="" class="h-24 w-auto mx-auto mt-2 hidden rounded shadow-sm bg-white/10 p-1 object-contain">
-                    <button onclick="window.clearTicketLogo()" id="btn-clear-logo" class="hidden text-[10px] text-red-400 font-bold uppercase mt-2 mx-auto underline hover:text-red-300">Quitar Fondo</button>
-                </div>
+                <!-- CAPA DE IMAGEN DE FONDO (Premium) al 90% -->
+                <img id="ticket-bg-image" src="" class="absolute top-0 left-0 w-full h-[90%] object-cover opacity-0 transition-opacity duration-500 z-0 pointer-events-none">
+                
+                <!-- FILTRO OSCURO -->
+                <div id="ticket-dark-overlay" class="absolute top-0 left-0 w-full h-[90%] bg-slate-900/60 z-0 pointer-events-none hidden"></div>
 
-                <h3 class="text-2xl font-black mb-1" id="ticket-event-name">Cargando...</h3>
-                <p class="text-xs text-blue-300 font-bold uppercase tracking-widest mb-6">Pase de Acceso Oficial</p>
-                <div class="bg-white p-4 rounded-2xl inline-block mb-6 shadow-xl"><div id="ticket-qrcode"></div></div>
-                <h2 class="text-xl font-bold text-white mb-1" id="ticket-guest-name">Invitado</h2>
-                <p class="text-sm text-slate-300 font-medium" id="ticket-guest-passes">0 Pases</p>
+                <!-- CONTENIDO DEL TICKET -->
+                <div class="relative z-10 flex flex-col h-full justify-between flex-1">
+                    <div>
+                        <div id="premium-pdf-bg-uploader" class="mb-4" style="display: none;">
+                            <label class="text-[9px] text-white font-bold uppercase tracking-widest cursor-pointer hover:bg-white/20 transition flex items-center justify-center gap-1 border border-white/50 py-1.5 px-3 rounded-full mx-auto w-fit backdrop-blur-sm shadow-lg">
+                                <i class="fa-solid fa-image"></i> Fondo Premium (Opcional)
+                                <input type="file" id="ticket-logo-upload" class="hidden" accept="image/*" onchange="window.handleTicketLogo(event)">
+                            </label>
+                            <button onclick="window.clearTicketLogo()" id="btn-clear-logo" class="hidden text-[10px] text-red-300 font-bold uppercase mt-2 mx-auto underline hover:text-red-200">Quitar Fondo</button>
+                        </div>
+
+                        <h3 class="text-2xl font-black mb-1 drop-shadow-lg" id="ticket-event-name">Cargando...</h3>
+                        <p class="text-[10px] text-white/80 font-bold uppercase tracking-widest mb-4">Pase de Acceso Oficial</p>
+                        
+                        <div class="bg-white p-3 rounded-2xl inline-block mb-4 shadow-2xl"><div id="ticket-qrcode"></div></div>
+                        
+                        <h2 class="text-xl font-bold text-white mb-1 drop-shadow-md truncate px-2" id="ticket-guest-name">Invitado</h2>
+                        <p class="text-sm text-white/90 font-medium drop-shadow-md mb-2" id="ticket-guest-passes">0 Pases</p>
+                    </div>
+                </div>
             </div>
-            <div class="p-4 bg-slate-50 rounded-b-3xl">
+
+            <div class="p-4 bg-slate-50 rounded-b-3xl z-20 shrink-0">
                  <div class="grid grid-cols-2 gap-3 mb-3">
                      <button onclick="window.downloadNativeTicket()" class="bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-2xl font-bold shadow-md transition flex flex-col items-center justify-center gap-1">
                          <i class="fa-solid fa-file-pdf text-2xl mb-1"></i> <span class="text-[10px] uppercase tracking-wider">Descargar PDF</span>
@@ -870,7 +888,7 @@
         let impersonatingId = null;
         let currentTargetGuestId = null; 
         
-        // VARIABLE PARA EL LOGO DEL PDF
+        // VARIABLE PARA LA IMAGEN DE FONDO PREMIUM
         let currentTicketLogo = null;
         
         let hCurrentGuest = null;
@@ -946,28 +964,58 @@
         };
 
         window.appLogin = async function() {
-            const user = document.getElementById('login-user').value.trim().toLowerCase();
+            const userRaw = document.getElementById('login-user').value.trim().toLowerCase();
             const pass = document.getElementById('login-pass').value.trim();
 
-            if (!user || !pass) return Swal.fire('Error', 'Ingresa ID y contraseña.', 'error');
+            if (!userRaw || !pass) return Swal.fire('Error', 'Ingresa ID y contraseña.', 'error');
             Swal.fire({ title: 'Autenticando...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
 
-            let pseudoEmail = user;
-            if (!user.includes('@')) {
-                pseudoEmail = `${user}@tpd.online`;
+            let emailsToTry = [];
+            if (userRaw.includes('@')) {
+                emailsToTry.push(userRaw);
+            } else {
+                if (userRaw === 'admin') {
+                    emailsToTry.push('admin@tpd.online');
+                    emailsToTry.push('adminadmin@tpd.online');
+                } else {
+                    emailsToTry.push(`${userRaw}admin@tpd.online`); 
+                    emailsToTry.push(`${userRaw}@tpd.online`);      
+                }
+            }
+
+            let loginSuccess = false;
+            let usedEmail = '';
+
+            for (let email of emailsToTry) {
+                try {
+                    await signInWithEmailAndPassword(auth, email, pass);
+                    loginSuccess = true;
+                    usedEmail = email;
+                    break;
+                } catch (e) {
+                    console.warn("Fallo intento con:", email);
+                }
+            }
+
+            if (!loginSuccess) {
+                return Swal.fire({
+                    title: 'Acceso Rechazado',
+                    text: 'Las credenciales son incorrectas. Verifica que el ID y contraseña sean correctos.',
+                    icon: 'error'
+                });
+            }
+
+            let dbUserId = userRaw;
+            if (userRaw === 'admin' || usedEmail.startsWith('admin')) {
+                dbUserId = 'admin';
             }
 
             try {
-                // AUTENTICACIÓN REAL ENCRIPTADA
-                await signInWithEmailAndPassword(auth, pseudoEmail, pass);
-
-                const dbUserId = user.includes('@') ? user.split('@')[0] : user;
                 const docRef = doc(db, 'artifacts', 'weddingflow', 'users', dbUserId);
                 const snap = await getDoc(docRef);
 
                 if (snap.exists()) {
                     const data = snap.data();
-                    
                     if (data.status === 'Suspendido') {
                         await signOut(auth);
                         return Swal.fire('Acceso Suspendido', 'Tu cuenta se encuentra suspendida.', 'warning');
@@ -989,20 +1037,16 @@
                         window.setupClientEnvironment(dbUserId, data); 
                     }
                 } else {
-                    if (dbUserId === 'admin') {
+                    if (dbUserId === 'admin' || dbUserId === 'root') {
                         currentRole = 'Administrador';
                         await window.loadAdminPanel();
                         return;
                     }
-                    Swal.fire('Error', 'Inquilino/Usuario no encontrado en la base de datos.', 'error');
+                    Swal.fire('Error', 'Usuario no encontrado en la base de datos.', 'error');
                 }
             } catch (error) {
                 console.error(error);
-                Swal.fire({
-                    title: 'Acceso Rechazado por Firebase',
-                    html: `El sistema intentó entrar a la bóveda con este correo exacto:<br><br><b>${pseudoEmail}</b><br><br>Verifica en tu consola de Firebase > Authentication que ese correo y la contraseña coincidan letra por letra.`,
-                    icon: 'error'
-                });
+                Swal.fire('Error', 'Fallo al leer la base de datos.', 'error');
             }
         };
 
@@ -1030,10 +1074,20 @@
         };
 
         window.changeOwnPassword = function() {
+            // NUEVO: Bloqueo de seguridad si estás en modo supervisar
+            if (impersonatingId) {
+                return Swal.fire({
+                    title: 'Acción protegida',
+                    text: 'Estás supervisando a un cliente. Si cambias la contraseña aquí, cambiarás TU propia contraseña de administrador. Para cambiar la clave del cliente, hazlo desde tu consola de Firebase Authentication.',
+                    icon: 'warning',
+                    confirmButtonColor: '#2563eb'
+                });
+            }
+
             Swal.fire({
-                title: 'Cambiar Contraseña',
+                title: 'Cambiar Mi Contraseña',
                 input: 'password',
-                inputPlaceholder: 'Ingresa la nueva contraseña (mínimo 6 caracteres)...',
+                inputPlaceholder: 'Ingresa tu nueva contraseña (mínimo 6 caracteres)...',
                 showCancelButton: true,
                 confirmButtonColor: '#2563eb',
                 confirmButtonText: 'Actualizar'
@@ -1078,13 +1132,13 @@
                 
                 snaps.forEach(docSnap => {
                     const d = docSnap.data();
-                    if(docSnap.id === 'admin') return; 
                     
                     let tipoDisplay = '';
-                    if (d.role === 'Administrador' || d.role === 'Staff' || d.role === 'Soporte') tipoDisplay = '<span class="text-slate-400 italic">Agencia</span>';
+                    if (d.role === 'Administrador') tipoDisplay = '<span class="text-indigo-600 font-black">Administrador Global</span>';
+                    else if (d.role === 'Staff' || d.role === 'Soporte') tipoDisplay = `<span class="text-slate-500 font-bold">${d.role}</span>`;
                     else if (d.role === 'Cliente Web') tipoDisplay = '<span class="text-purple-500 font-bold">Diseño Web</span>';
                     else if (d.role === 'Hostess') tipoDisplay = '<span class="text-blue-500 font-bold">Staff Evento</span>';
-                    else tipoDisplay = d.eventType ? `<span class="font-bold">${d.eventType}</span>` : '<span class="text-amber-500 font-bold">Por configurar</span>';
+                    else tipoDisplay = d.eventType ? `<span class="font-bold text-slate-800">${d.eventType}</span>` : '<span class="text-amber-500 font-bold">Por configurar</span>';
 
                     let bdg = d.status === 'Suspendido' ? '<span class="bg-red-100 text-red-700 px-2 py-1 rounded text-[10px] font-bold">Suspendido</span>' : '<span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-[10px] font-bold">Activo</span>';
                     
@@ -1099,25 +1153,17 @@
                     let infoAdminBtn = '';
                     
                     if (d.role === 'Cliente' || d.role === 'Cliente Web' || d.role === 'Hostess') {
-                         impBtn = `<button onclick="window.impStart('${docSnap.id}', '${d.role}')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-100 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1"><i class="fa-solid fa-eye"></i> Supervisar</button>`;
+                         impBtn = `<button onclick="window.impStart('${docSnap.id}', '${d.role}')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-100 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1" title="Entrar al panel de este cliente"><i class="fa-solid fa-eye"></i> Supervisar</button>`;
                          
-                         // Modulito Premium (Estrella) - SOLO APARECE SI ES "Cliente" completo
                          if (d.role === 'Cliente') {
                              let isPremium = d.hasPremiumLink === true;
                              premiumBtn = `
-                             <div class="relative group flex items-center">
-                                 <button onclick="window.adminTogglePremium('${docSnap.id}', ${isPremium})" class="${isPremium ? 'text-amber-500 hover:text-amber-600' : 'text-slate-300 hover:text-slate-400'} transition p-2 text-xl" title="Activar/Desactivar Módulo Premium">
-                                     <i class="fa-solid fa-star"></i>
-                                 </button>
-                                 <div class="absolute bottom-full right-0 mb-2 hidden group-hover:block w-56 bg-slate-800 text-white text-[10px] p-2 rounded-xl shadow-xl z-50 text-center font-medium pointer-events-none leading-tight border border-slate-700">
-                                     💡 Activa Módulo Premium: Diseño Web, Link WhatsApp y Fondo de PDF Personalizado.
-                                     <div class="absolute top-full right-4 border-4 border-transparent border-t-slate-800"></div>
-                                 </div>
-                             </div>`;
+                             <button onclick="window.adminTogglePremium('${docSnap.id}', ${isPremium})" class="${isPremium ? 'text-amber-500 hover:text-amber-600' : 'text-slate-300 hover:text-slate-400'} transition p-2 text-xl" title="💡 Premium: Web + WA + PDF">
+                                 <i class="fa-solid fa-star"></i>
+                             </button>`;
                          }
                     }
 
-                    // Boton 'i' de información solo para roles de agencia
                     if (d.role === 'Administrador' || d.role === 'Staff' || d.role === 'Soporte') {
                         infoAdminBtn = `<button onclick="window.adminResetPassword('${docSnap.id}')" class="text-blue-400 hover:text-blue-600 transition p-2" title="Información de Contraseña"><i class="fa-solid fa-circle-info text-lg"></i></button>`;
                     }
@@ -1155,13 +1201,11 @@
 
                 if(!user || !pass) return Swal.fire('Atención', 'Rellena el ID de usuario y la contraseña.', 'warning');
                 
-                const pseudoEmail = `${user}@tpd.online`;
+                const pseudoEmail = `${user}admin@tpd.online`;
 
-                // 1. Crear usuario en la bóveda segura de Firebase Auth usando la app secundaria
                 await createUserWithEmailAndPassword(secondaryAuth, pseudoEmail, pass);
-                await signOut(secondaryAuth); // Limpiamos la app secundaria
+                await signOut(secondaryAuth);
 
-                // 2. Guardar datos en Firestore (¡SIN la contraseña por seguridad!)
                 const docRef = doc(db, 'artifacts', 'weddingflow', 'users', user);
                 await setDoc(docRef, { role, status: 'Activo', eventType: "", invitados: [], mesas: [{id:1,nombre:"Mesa VIP"}], config: {capacidadMesa:10, themeColor: '#C3A343', extras: 0, totalExtrasCost: 0, fontFamily: 'Playfair Display'}, croquis: null, hasPremiumLink: false });
                 
@@ -1187,9 +1231,9 @@
 
         window.adminResetPassword = function(userId) {
             Swal.fire({
-                title: 'Aviso de Seguridad',
+                title: 'Restablecer Contraseña (Modo Gratis)',
                 icon: 'info',
-                text: 'Debido a la nueva encriptación, las contraseñas ahora deben reiniciarse directamente desde la pestaña "Authentication" en tu consola de Firebase.',
+                html: 'Como usamos correos encriptados de sistema, Firebase no puede enviar un correo de recuperación.<br><br><b>La solución gratis:</b><br>1. Ve a tu consola de Firebase > Authentication.<br>2. Borra el correo de este usuario.<br>3. Vuelve a crear al usuario desde este panel con el <b>mismo ID</b> y la nueva contraseña.<br><br>¡Toda su información en Firestore seguirá intacta!',
                 confirmButtonColor: '#2563eb'
             });
         };
@@ -1268,6 +1312,8 @@
             } else {
                 window.subscribeToUser(userToLoad);
             }
+            
+            window.crmSwitchTab('guests');
             Swal.close();
         };
 
@@ -1345,7 +1391,6 @@
                         else iconEl.classList.add('fa-calendar-check');
                     }
                     
-                    // LEER PERMISO PREMIUM Y AJUSTAR VISTA USANDO STYLE PARA NO CHOCAR CON TAILWIND
                     let isPremium = data.hasPremiumLink === true;
                     
                     const premiumDesign = document.getElementById('crm-premium-design');
@@ -1355,8 +1400,8 @@
                     const waCheckbox = document.getElementById('wa-include-link');
                     if (waPremiumContainer && waCheckbox) {
                         waPremiumContainer.style.display = isPremium ? 'flex' : 'none';
-                        waCheckbox.checked = isPremium; // Se activa solo si es Premium
-                        waCheckbox.disabled = !isPremium; // Se bloquea si no es Premium
+                        waCheckbox.checked = isPremium;
+                        waCheckbox.disabled = !isPremium;
                     }
 
                     const pdfPremiumUploader = document.getElementById('premium-pdf-bg-uploader');
@@ -1380,7 +1425,27 @@
         };
         
         window.crmRenderAll = function() { window.crmRenderGuests(); window.crmRenderTables(); window.crmRenderStats(); };
-        window.crmLoadData = function() { window.crmRenderAll(); Toast.fire({icon:'success', title:'Datos sincronizados'}); };
+        
+        window.crmLoadData = async function() { 
+            document.getElementById('crm-search').value = ''; 
+            Swal.fire({ title: 'Sincronizando...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+            try {
+                const act = impersonatingId || currentUser;
+                const snap = await getDoc(doc(db, 'artifacts', 'weddingflow', 'users', act));
+                if(snap.exists()) {
+                    const data = snap.data();
+                    state.invitados = data.invitados || [];
+                    state.mesas = data.mesas || state.mesas;
+                    state.config = data.config || state.config;
+                    state.croquis = data.croquis || null;
+                    window.crmRenderAll();
+                    Swal.close();
+                    Toast.fire({icon:'success', title:'Nube Sincronizada y Actualizada'});
+                }
+            } catch(e) {
+                Swal.fire('Error', 'Fallo al sincronizar', 'error');
+            }
+        };
 
         window.crmUpdateConfig = function(k, v) { 
             if(['capacidadMesa', 'capacity', 'eventDuration', 'flowersPerTable'].includes(k)) {
@@ -1486,7 +1551,6 @@
                 if (field === 'adultos') guest.pases = value; if (field === 'pases') guest.adultos = value;
             } else { guest[field] = value; }
             
-            // Actualización visual instantánea y luego guardado en la nube
             window.crmRenderGuests(); 
             window.crmSave();
         };
@@ -1504,15 +1568,21 @@
             .then((r) => { if (r.isConfirmed) { state.invitados = []; window.crmSave(); window.crmRenderAll(); Toast.fire({ icon: 'success', title: 'Vaciada' }); } });
         };
 
-        // FUNCIÓN NUEVA: Manejar la subida del fondo del ticket Premium
         window.handleTicketLogo = function(e) {
             const file = e.target.files[0];
             if(!file) return;
             const reader = new FileReader();
             reader.onload = function(ev) {
                 currentTicketLogo = ev.target.result;
-                document.getElementById('ticket-logo-preview').src = currentTicketLogo;
-                document.getElementById('ticket-logo-preview').classList.remove('hidden');
+                
+                const bgImageLayer = document.getElementById('ticket-bg-image');
+                const overlayLayer = document.getElementById('ticket-dark-overlay');
+                
+                bgImageLayer.src = currentTicketLogo;
+                bgImageLayer.classList.remove('opacity-0');
+                bgImageLayer.classList.add('opacity-100');
+                overlayLayer.classList.remove('hidden');
+                
                 document.getElementById('btn-clear-logo').classList.remove('hidden');
             };
             reader.readAsDataURL(file);
@@ -1520,8 +1590,15 @@
 
         window.clearTicketLogo = function() {
             currentTicketLogo = null;
-            document.getElementById('ticket-logo-preview').src = '';
-            document.getElementById('ticket-logo-preview').classList.add('hidden');
+            
+            const bgImageLayer = document.getElementById('ticket-bg-image');
+            const overlayLayer = document.getElementById('ticket-dark-overlay');
+            
+            bgImageLayer.src = '';
+            bgImageLayer.classList.remove('opacity-100');
+            bgImageLayer.classList.add('opacity-0');
+            overlayLayer.classList.add('hidden');
+            
             document.getElementById('btn-clear-logo').classList.add('hidden');
             document.getElementById('ticket-logo-upload').value = '';
         };
@@ -1530,11 +1607,17 @@
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: [80, 150] });
             
-            // Si el cliente subió un fondo premium, lo estiramos sobre todo el PDF
+            const activeColor = state.config.themeColor || '#0f172a';
+            
             if (currentTicketLogo) {
-                pdf.addImage(currentTicketLogo, 'PNG', 0, 0, 80, 150);
+                pdf.addImage(currentTicketLogo, 'PNG', 0, 0, 80, 135);
+                pdf.setFillColor(15, 23, 42); 
+                pdf.setGState(new pdf.GState({opacity: 0.65})); 
+                pdf.rect(0, 0, 80, 135, 'F');
+                pdf.setGState(new pdf.GState({opacity: 1.0})); 
+                pdf.setFillColor(activeColor);
+                pdf.rect(0, 135, 80, 15, 'F');
             } else {
-                const activeColor = state.config.themeColor || '#0f172a';
                 pdf.setFillColor(activeColor);
                 pdf.rect(0, 0, 80, 150, 'F');
             }
@@ -1584,8 +1667,8 @@
             const guest = state.invitados.find(g => g.id === id);
             if(!guest) return;
             
-            // Limpiar la imagen subida temporalmente del ticket anterior
             window.clearTicketLogo();
+            document.getElementById('ticket-header-bg').style.backgroundColor = state.config.themeColor || '#1e293b';
 
             document.getElementById('ticket-event-name').innerText = currentEventType === 'Otro' ? 'Evento Especial' : currentEventType;
             document.getElementById('ticket-guest-name').innerText = guest.nombre;
