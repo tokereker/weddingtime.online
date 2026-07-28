@@ -209,7 +209,7 @@
             <button onclick="window.crmSwitchTab('stats')" id="tab-stats" class="py-4 text-slate-500 hover:text-slate-800 border-b-2 border-transparent whitespace-nowrap transition-colors"><i class="fa-solid fa-chart-pie mr-2"></i>Logística & Proveedores</button>
             
             <!-- Selectores Dinámicos de Diseño a la vista (PREMIUM) -->
-            <div id="crm-premium-design" class="ml-auto flex items-center border-l border-slate-200 pl-4 gap-3 py-2 shrink-0 hidden">
+            <div id="crm-premium-design" style="display: none;" class="ml-auto items-center border-l border-slate-200 pl-4 gap-3 py-2 shrink-0">
                 <label class="text-[10px] text-slate-400 font-bold uppercase tracking-wider text-right leading-tight hidden md:block">Tipografía</label>
                 <select id="crm-font-family" onchange="window.crmUpdateConfig('fontFamily', this.value)" class="text-xs border border-slate-200 rounded-lg p-1.5 outline-none font-bold text-slate-700 bg-slate-50 cursor-pointer shadow-sm">
                     <option value="Playfair Display">Playfair (Elegante)</option>
@@ -291,7 +291,7 @@
             </section>
 
             <!-- SECCIÓN MESAS -->
-            <section id="crm-sec-tables" class="flex-1 min-h-0 w-full flex flex-col hidden relative">
+            <section id="crm-sec-tables" class="flex-1 h-full min-h-0 w-full flex flex-col hidden relative">
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-4 shrink-0 flex flex-col gap-4">
                     <div class="flex flex-wrap justify-between items-center gap-4">
                         <h2 class="font-bold text-lg text-slate-800 flex items-center gap-2"><i class="fa-solid fa-chair text-blue-500"></i> Acomodo de Mesas</h2>
@@ -336,7 +336,8 @@
                     </div>
                 </div>
                 
-                <div class="flex-1 flex flex-col md:flex-row gap-6 min-h-0">
+                <!-- CORRECCIÓN DE BARRAS DE SCROLL (overflow-hidden en parent, overflow-y-auto en hijos) -->
+                <div class="flex-1 h-full min-h-0 flex flex-col md:flex-row gap-6 overflow-hidden">
                     <div class="w-full md:w-1/4 lg:w-1/5 bg-white border border-slate-200 rounded-2xl shadow-sm flex flex-col h-64 md:h-full shrink-0 min-h-0 overflow-hidden">
                         <div class="p-4 border-b border-slate-100 bg-slate-50 font-bold text-slate-700 flex justify-between items-center shrink-0">
                             <span class="text-sm"><i class="fa-solid fa-users-slash text-slate-400 mr-2"></i> Sin Asignar</span>
@@ -344,15 +345,14 @@
                         </div>
                         <div id="crm-unassigned-list" class="flex-1 p-3 overflow-y-auto space-y-2 bg-slate-50/50 table-dropzone custom-scrollbar min-h-0" ondragover="window.allowDrop(event)" ondragleave="window.leaveDrop(event)" ondrop="window.dropGuest(event, 0)"></div>
                     </div>
-                    <!-- Agregado overflow-y-scroll para forzar visibilidad de barra -->
-                    <div id="crm-tables-grid" class="flex-1 overflow-y-scroll min-h-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 content-start pb-6 custom-scrollbar pr-2">
+                    <div id="crm-tables-grid" class="flex-1 overflow-y-auto min-h-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 content-start pb-6 custom-scrollbar pr-2">
                     </div>
                 </div>
             </section>
 
-            <!-- SECCIÓN ESTADÍSTICAS & DASHBOARD LOGÍSTICO (VERSIÓN 2.6 BENTO GRID) -->
-            <!-- Agregado overflow-y-scroll para forzar visibilidad de barra -->
-            <section id="crm-sec-stats" class="flex-1 min-h-0 w-full overflow-y-scroll hidden custom-scrollbar pb-32 pr-2">
+            <!-- SECCIÓN ESTADÍSTICAS & DASHBOARD LOGÍSTICO -->
+            <!-- CORRECCIÓN SCROLL: Asegurado overflow-y-auto y boundaries correctos -->
+            <section id="crm-sec-stats" class="flex-1 h-full min-h-0 w-full overflow-y-auto hidden custom-scrollbar pb-32 pr-2 relative">
                 <div class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col gap-2 sm:gap-3">
                     <button onclick="window.exportStatsExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl shadow-xl font-bold flex items-center gap-2 transform transition hover:scale-105 text-xs sm:text-sm" title="Exportar Logística a Excel">
                         <i class="fa-solid fa-file-excel text-lg"></i> Excel
@@ -742,13 +742,14 @@
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm flex flex-col border border-slate-200">
             <div class="p-8 text-center relative bg-[#0f172a] text-white rounded-t-3xl border-b-4 border-blue-500">
                 
-                <!-- NUEVO: MÓDULO PARA SUBIR LOGO DEL EVENTO -->
-                <div class="mb-4">
+                <!-- NUEVO: MÓDULO PARA SUBIR FONDO (SOLO PREMIUM) -->
+                <div id="premium-pdf-bg-uploader" class="mb-4" style="display: none;">
                     <label class="text-[10px] text-blue-300 font-bold uppercase tracking-widest cursor-pointer hover:text-white transition flex items-center justify-center gap-1 border border-blue-500/50 hover:border-blue-400 py-1.5 px-3 rounded-lg mx-auto w-fit">
-                        <i class="fa-solid fa-image"></i> Subir Logo del Evento
+                        <i class="fa-solid fa-image"></i> Subir Fondo Premium para PDF
                         <input type="file" id="ticket-logo-upload" class="hidden" accept="image/*" onchange="window.handleTicketLogo(event)">
                     </label>
-                    <img id="ticket-logo-preview" src="" class="h-12 w-auto mx-auto mt-2 hidden rounded shadow-sm bg-white/10 p-1">
+                    <img id="ticket-logo-preview" src="" class="h-24 w-auto mx-auto mt-2 hidden rounded shadow-sm bg-white/10 p-1 object-contain">
+                    <button onclick="window.clearTicketLogo()" id="btn-clear-logo" class="hidden text-[10px] text-red-400 font-bold uppercase mt-2 mx-auto underline hover:text-red-300">Quitar Fondo</button>
                 </div>
 
                 <h3 class="text-2xl font-black mb-1" id="ticket-event-name">Cargando...</h3>
@@ -790,19 +791,19 @@
                     <button type="button" onclick="window.applyLocalTemplate()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl shadow-md transition flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
                 </div>
                 
-                <label id="wa-premium-link-container" class="flex items-center gap-2 mt-4 pt-4 border-t border-emerald-100 cursor-pointer hidden">
+                <div id="wa-premium-link-container" style="display: none;" class="items-center gap-2 mt-4 pt-4 border-t border-emerald-100 cursor-pointer">
                     <input type="checkbox" id="wa-include-link" class="w-4 h-4 text-emerald-600 rounded border-emerald-300 focus:ring-emerald-500" onchange="window.applyLocalTemplate()">
                     <span class="text-xs font-bold text-slate-600 flex items-center gap-1">
                         Adjuntar Link Mágico (Pase Digital y RSVP)
                         <div class="relative group inline-block ml-1">
                             <i class="fa-solid fa-circle-info text-blue-500 hover:text-blue-700 transition text-sm"></i>
                             <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block w-64 bg-slate-800 text-white text-[10px] p-2.5 rounded-lg shadow-xl z-50 text-center font-medium leading-relaxed cursor-default pointer-events-none">
-                                El enlace apuntará a tu repositorio web. Ej: https://{userId}.tupasedigital.online/index2.html?u={userId}&id={guestId}
+                                El enlace apuntará a tu repositorio web. Ej: https://boda.tupasedigital.online/index2.html?u={userId}&id={guestId}
                                 <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-800"></div>
                             </div>
                         </div>
                     </span>
-                </label>
+                </div>
             </div>
             
             <div class="relative w-full mb-2">
@@ -1104,9 +1105,15 @@
                          if (d.role === 'Cliente') {
                              let isPremium = d.hasPremiumLink === true;
                              premiumBtn = `
-                             <button onclick="window.adminTogglePremium('${docSnap.id}', ${isPremium})" class="${isPremium ? 'text-amber-500 hover:text-amber-600' : 'text-slate-300 hover:text-slate-400'} transition p-2 text-lg" title="💡 Click para activar/desactivar Módulo Premium (Link Mágico y Diseño).">
-                                 <i class="fa-solid fa-star"></i>
-                             </button>`;
+                             <div class="relative group flex items-center">
+                                 <button onclick="window.adminTogglePremium('${docSnap.id}', ${isPremium})" class="${isPremium ? 'text-amber-500 hover:text-amber-600' : 'text-slate-300 hover:text-slate-400'} transition p-2 text-xl" title="Activar/Desactivar Módulo Premium">
+                                     <i class="fa-solid fa-star"></i>
+                                 </button>
+                                 <div class="absolute bottom-full right-0 mb-2 hidden group-hover:block w-56 bg-slate-800 text-white text-[10px] p-2 rounded-xl shadow-xl z-50 text-center font-medium pointer-events-none leading-tight border border-slate-700">
+                                     💡 Activa Módulo Premium: Diseño Web, Link WhatsApp y Fondo de PDF Personalizado.
+                                     <div class="absolute top-full right-4 border-4 border-transparent border-t-slate-800"></div>
+                                 </div>
+                             </div>`;
                          }
                     }
 
@@ -1338,28 +1345,22 @@
                         else iconEl.classList.add('fa-calendar-check');
                     }
                     
-                    // Leer permiso Premium y ajustar vista
+                    // LEER PERMISO PREMIUM Y AJUSTAR VISTA USANDO STYLE PARA NO CHOCAR CON TAILWIND
                     let isPremium = data.hasPremiumLink === true;
                     
                     const premiumDesign = document.getElementById('crm-premium-design');
-                    if (premiumDesign) {
-                        if (isPremium) premiumDesign.classList.remove('hidden');
-                        else premiumDesign.classList.add('hidden');
-                    }
+                    if (premiumDesign) premiumDesign.style.display = isPremium ? 'flex' : 'none';
                     
                     const waPremiumContainer = document.getElementById('wa-premium-link-container');
                     const waCheckbox = document.getElementById('wa-include-link');
                     if (waPremiumContainer && waCheckbox) {
-                        if (isPremium) {
-                            waPremiumContainer.classList.remove('hidden');
-                            waPremiumContainer.classList.add('flex');
-                            waCheckbox.checked = true; // Por defecto activado si tiene premium
-                        } else {
-                            waPremiumContainer.classList.remove('flex');
-                            waPremiumContainer.classList.add('hidden');
-                            waCheckbox.checked = false; // Forzar apagado si no tiene premium
-                        }
+                        waPremiumContainer.style.display = isPremium ? 'flex' : 'none';
+                        waCheckbox.checked = isPremium; // Se activa solo si es Premium
+                        waCheckbox.disabled = !isPremium; // Se bloquea si no es Premium
                     }
+
+                    const pdfPremiumUploader = document.getElementById('premium-pdf-bg-uploader');
+                    if (pdfPremiumUploader) pdfPremiumUploader.style.display = isPremium ? 'block' : 'none';
 
                     window.crmRenderAll();
                     
@@ -1484,6 +1485,9 @@
                 value = parseInt(value) || 0; if(value < 0) value = 0; guest[field] = value;
                 if (field === 'adultos') guest.pases = value; if (field === 'pases') guest.adultos = value;
             } else { guest[field] = value; }
+            
+            // Actualización visual instantánea y luego guardado en la nube
+            window.crmRenderGuests(); 
             window.crmSave();
         };
 
@@ -1500,55 +1504,59 @@
             .then((r) => { if (r.isConfirmed) { state.invitados = []; window.crmSave(); window.crmRenderAll(); Toast.fire({ icon: 'success', title: 'Vaciada' }); } });
         };
 
-        // FUNCIÓN NUEVA: Manejar la subida del logo para el ticket
+        // FUNCIÓN NUEVA: Manejar la subida del fondo del ticket Premium
         window.handleTicketLogo = function(e) {
             const file = e.target.files[0];
             if(!file) return;
             const reader = new FileReader();
             reader.onload = function(ev) {
                 currentTicketLogo = ev.target.result;
-                const preview = document.getElementById('ticket-logo-preview');
-                preview.src = currentTicketLogo;
-                preview.classList.remove('hidden');
+                document.getElementById('ticket-logo-preview').src = currentTicketLogo;
+                document.getElementById('ticket-logo-preview').classList.remove('hidden');
+                document.getElementById('btn-clear-logo').classList.remove('hidden');
             };
             reader.readAsDataURL(file);
+        };
+
+        window.clearTicketLogo = function() {
+            currentTicketLogo = null;
+            document.getElementById('ticket-logo-preview').src = '';
+            document.getElementById('ticket-logo-preview').classList.add('hidden');
+            document.getElementById('btn-clear-logo').classList.add('hidden');
+            document.getElementById('ticket-logo-upload').value = '';
         };
 
         window.downloadNativeTicket = function() {
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: [80, 150] });
             
-            const activeColor = state.config.themeColor || '#0f172a';
-            pdf.setFillColor(activeColor);
-            pdf.rect(0, 0, 80, 150, 'F');
+            // Si el cliente subió un fondo premium, lo estiramos sobre todo el PDF
+            if (currentTicketLogo) {
+                pdf.addImage(currentTicketLogo, 'PNG', 0, 0, 80, 150);
+            } else {
+                const activeColor = state.config.themeColor || '#0f172a';
+                pdf.setFillColor(activeColor);
+                pdf.rect(0, 0, 80, 150, 'F');
+            }
             
             pdf.setTextColor(255, 255, 255);
-            let currentY = 20;
-
-            // Si subieron un logo, lo ponemos arriba y empujamos todo hacia abajo
-            if (currentTicketLogo) {
-                // Centrado: ancho 20mm. (80-20)/2 = 30
-                pdf.addImage(currentTicketLogo, 'PNG', 30, 8, 20, 20); 
-                currentY = 38; // Empujamos el texto hacia abajo
-            }
-
             pdf.setFontSize(16);
-            pdf.text(document.getElementById('ticket-event-name').innerText, 40, currentY, { align: 'center' });
+            pdf.text(document.getElementById('ticket-event-name').innerText, 40, 20, { align: 'center' });
             pdf.setFontSize(10);
-            pdf.text("Pase de Acceso Oficial", 40, currentY + 10, { align: 'center' });
+            pdf.text("Pase de Acceso Oficial", 40, 30, { align: 'center' });
             
             const qrCanvas = document.querySelector('#ticket-qrcode canvas');
             if (qrCanvas) {
                 const qrData = qrCanvas.toDataURL("image/png");
                 pdf.setFillColor(255, 255, 255);
-                pdf.rect(19, currentY + 19, 42, 42, 'F');
-                pdf.addImage(qrData, 'PNG', 20, currentY + 20, 40, 40);
+                pdf.rect(19, 39, 42, 42, 'F');
+                pdf.addImage(qrData, 'PNG', 20, 40, 40, 40);
             }
             
             pdf.setFontSize(14);
-            pdf.text(document.getElementById('ticket-guest-name').innerText, 40, currentY + 75, { align: 'center' });
+            pdf.text(document.getElementById('ticket-guest-name').innerText, 40, 95, { align: 'center' });
             pdf.setFontSize(10);
-            pdf.text(document.getElementById('ticket-guest-passes').innerText, 40, currentY + 85, { align: 'center' });
+            pdf.text(document.getElementById('ticket-guest-passes').innerText, 40, 105, { align: 'center' });
             
             pdf.save(`Pase_${document.getElementById('ticket-guest-name').innerText}.pdf`);
         };
@@ -1576,11 +1584,8 @@
             const guest = state.invitados.find(g => g.id === id);
             if(!guest) return;
             
-            // Reiniciar el logo anterior
-            currentTicketLogo = null;
-            document.getElementById('ticket-logo-preview').classList.add('hidden');
-            document.getElementById('ticket-logo-preview').src = '';
-            document.getElementById('ticket-logo-upload').value = '';
+            // Limpiar la imagen subida temporalmente del ticket anterior
+            window.clearTicketLogo();
 
             document.getElementById('ticket-event-name').innerText = currentEventType === 'Otro' ? 'Evento Especial' : currentEventType;
             document.getElementById('ticket-guest-name').innerText = guest.nombre;
@@ -1654,7 +1659,6 @@
 
                 if (includeLink && guest.status !== 'Declinado') {
                     const activeTarget = impersonatingId || currentUser;
-                    // Corrección para subdominio exacto solicitado
                     msg += `\n\n👉 *Consulta tu Pase Digital y Ubicaciones aquí:*\nhttps://boda.tupasedigital.online/index2.html?u=${activeTarget}&id=${guest.id}`;
                 }
 
