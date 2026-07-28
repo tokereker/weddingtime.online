@@ -124,7 +124,7 @@
             <button onclick="window.appLogout()" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2 border border-red-500/20"><i class="fa-solid fa-sign-out-alt"></i> Salir</button>
         </header>
         
-        <main class="flex-1 overflow-y-auto p-4 md:p-6 custom-scrollbar">
+        <main class="flex-1 overflow-y-auto p-4 md:p-6 custom-scrollbar absolute inset-0 top-[72px]">
             <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Crear Usuarios -->
                 <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 lg:col-span-1 h-fit" id="admin-creator-panel">
@@ -220,9 +220,18 @@
                     <option value="Cinzel">Cinzel (Clásica)</option>
                     <option value="Montserrat">Montserrat (Moderna)</option>
                 </select>
-                <div class="h-6 w-px bg-slate-200 mx-1"></div>
+                <div class="h-6 w-px bg-slate-200 mx-1 hidden md:block"></div>
                 <label for="crm-theme-color" class="text-[10px] text-slate-400 font-bold uppercase tracking-wider cursor-pointer text-right leading-tight hidden md:block">Color</label>
                 <input type="color" id="crm-theme-color" onchange="window.crmUpdateConfig('themeColor', this.value)" class="w-8 h-8 rounded cursor-pointer border-0 p-0 bg-transparent shadow-sm" title="Elegir color para RSVP">
+                
+                <div class="h-6 w-px bg-slate-200 mx-1 hidden md:block"></div>
+                
+                <!-- NUEVO: UPLOADER GLOBAL DE FONDO PREMIUM -->
+                <label class="text-[10px] bg-gradient-to-r from-amber-400 to-amber-500 text-white font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg cursor-pointer shadow-sm hover:from-amber-500 hover:to-amber-600 transition flex items-center gap-1 whitespace-nowrap">
+                    <i class="fa-solid fa-image"></i> Fondo Pase
+                    <input type="file" accept="image/*" class="hidden" onchange="window.uploadTicketBg(event)">
+                </label>
+                <button onclick="window.removeTicketBg()" class="text-slate-400 hover:text-red-500 transition px-1" title="Quitar Fondo"><i class="fa-solid fa-trash-can"></i></button>
             </div>
         </nav>
 
@@ -766,15 +775,7 @@
                 <!-- CONTENIDO DEL TICKET -->
                 <div class="relative z-10 flex flex-col h-full justify-between flex-1">
                     <div>
-                        <div id="premium-pdf-bg-uploader" class="mb-4" style="display: none;">
-                            <label class="text-[9px] text-white font-bold uppercase tracking-widest cursor-pointer hover:bg-white/20 transition flex items-center justify-center gap-1 border border-white/50 py-1.5 px-3 rounded-full mx-auto w-fit backdrop-blur-sm shadow-lg">
-                                <i class="fa-solid fa-image"></i> Fondo Premium (Opcional)
-                                <input type="file" id="ticket-logo-upload" class="hidden" accept="image/*" onchange="window.handleTicketLogo(event)">
-                            </label>
-                            <button onclick="window.clearTicketLogo()" id="btn-clear-logo" class="hidden text-[10px] text-red-300 font-bold uppercase mt-2 mx-auto underline hover:text-red-200">Quitar Fondo</button>
-                        </div>
-
-                        <h3 class="text-2xl font-black mb-1 drop-shadow-lg" id="ticket-event-name">Cargando...</h3>
+                        <h3 class="text-2xl font-black mb-1 drop-shadow-lg mt-4" id="ticket-event-name">Cargando...</h3>
                         <p class="text-[10px] text-white/80 font-bold uppercase tracking-widest mb-4">Pase de Acceso Oficial</p>
                         
                         <div class="bg-white p-3 rounded-2xl inline-block mb-4 shadow-2xl"><div id="ticket-qrcode"></div></div>
@@ -897,8 +898,8 @@
         let impersonatingId = null;
         let currentTargetGuestId = null; 
         
-        // VARIABLE PARA LA IMAGEN DE FONDO PREMIUM
-        let currentTicketLogo = null;
+        // FLAG GLOBAL DE PREMIUM
+        let isPremiumUser = false;
         
         let hCurrentGuest = null;
         let hAduToEnter = 0;
@@ -910,7 +911,8 @@
             invitados: [], 
             mesas: [{ id: 1, nombre: "Mesa VIP" }], 
             config: { capacidadMesa: 10, themeColor: '#C3A343', extras: 0, totalExtrasCost: 0, fontFamily: 'Playfair Display' },
-            croquis: null
+            croquis: null,
+            ticketBg: null // Nuevo estado global para el fondo del pase
         };
         
         const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, timerProgressBar: true });
@@ -972,7 +974,6 @@
             }
         };
 
-        // LÓGICA DE INICIO DE SESIÓN INFALIBLE
         window.appLogin = async function() {
             const userRaw = document.getElementById('login-user').value.trim().toLowerCase();
             const pass = document.getElementById('login-pass').value.trim();
@@ -1237,7 +1238,7 @@
                 await signOut(secondaryAuth);
 
                 const docRef = doc(db, 'artifacts', 'weddingflow', 'users', user);
-                await setDoc(docRef, { role, status: 'Activo', eventType: "", invitados: [], mesas: [{id:1,nombre:"Mesa VIP"}], config: {capacidadMesa:10, themeColor: '#C3A343', extras: 0, totalExtrasCost: 0, fontFamily: 'Playfair Display'}, croquis: null, hasPremiumLink: false });
+                await setDoc(docRef, { role, status: 'Activo', eventType: "", invitados: [], mesas: [{id:1,nombre:"Mesa VIP"}], config: {capacidadMesa:10, themeColor: '#C3A343', extras: 0, totalExtrasCost: 0, fontFamily: 'Playfair Display'}, croquis: null, hasPremiumLink: false, ticketBg: null });
                 
                 document.getElementById('new-user').value = ''; document.getElementById('new-pass').value = '';
                 Toast.fire({icon: 'success', title: 'Usuario Registrado de forma Segura'});
@@ -1389,16 +1390,11 @@
                     if(!state.config.extras) state.config.extras = 0;
                     if(state.config.totalExtrasCost === undefined) state.config.totalExtrasCost = 0;
                     if(!state.config.fontFamily) state.config.fontFamily = 'Playfair Display';
-                    
-                    // Defaults para Cronograma
-                    if(!state.config.eventStartTime) state.config.eventStartTime = "20:00";
-                    if(!state.config.eventDuration) state.config.eventDuration = 5;
-                    if(!state.config.musicMain) state.config.musicMain = "DJ";
-                    if(!state.config.musicDinner) state.config.musicDinner = "Playlist";
-                    if(!state.config.musicTorna) state.config.musicTorna = "Ninguno";
-                    if(!state.config.flowersPerTable) state.config.flowersPerTable = 15;
 
                     state.croquis = data.croquis || null;
+                    state.ticketBg = data.ticketBg || null;
+                    
+                    isPremiumUser = data.hasPremiumLink === true;
                     currentEventType = data.eventType || currentEventType;
                     
                     const tipo = currentEventType || 'Evento';
@@ -1426,21 +1422,16 @@
                         else iconEl.classList.add('fa-calendar-check');
                     }
                     
-                    let isPremium = data.hasPremiumLink === true;
-                    
                     const premiumDesign = document.getElementById('crm-premium-design');
-                    if (premiumDesign) premiumDesign.style.display = isPremium ? 'flex' : 'none';
+                    if (premiumDesign) premiumDesign.style.display = isPremiumUser ? 'flex' : 'none';
                     
                     const waPremiumContainer = document.getElementById('wa-premium-link-container');
                     const waCheckbox = document.getElementById('wa-include-link');
                     if (waPremiumContainer && waCheckbox) {
-                        waPremiumContainer.style.display = isPremium ? 'flex' : 'none';
-                        waCheckbox.checked = isPremium;
-                        waCheckbox.disabled = !isPremium;
+                        waPremiumContainer.style.display = isPremiumUser ? 'flex' : 'none';
+                        waCheckbox.checked = isPremiumUser;
+                        waCheckbox.disabled = !isPremiumUser;
                     }
-
-                    const pdfPremiumUploader = document.getElementById('premium-pdf-bg-uploader');
-                    if (pdfPremiumUploader) pdfPremiumUploader.style.display = isPremium ? 'block' : 'none';
 
                     window.crmRenderAll();
                     
@@ -1455,7 +1446,7 @@
             try {
                 const act = impersonatingId || currentUser;
                 const docRef = doc(db, 'artifacts', 'weddingflow', 'users', act);
-                await setDoc(docRef, { invitados: state.invitados, mesas: state.mesas, config: state.config, croquis: state.croquis }, { merge: true });
+                await setDoc(docRef, { invitados: state.invitados, mesas: state.mesas, config: state.config, croquis: state.croquis, ticketBg: state.ticketBg || null }, { merge: true });
             } catch(e) { console.error('Fallo crmSave', e); Toast.fire({icon: 'error', title: 'Error de guardado'}); }
         };
         
@@ -1476,6 +1467,9 @@
                     state.mesas = data.mesas || state.mesas;
                     state.config = data.config || state.config;
                     state.croquis = data.croquis || null;
+                    state.ticketBg = data.ticketBg || null;
+                    isPremiumUser = data.hasPremiumLink === true;
+                    
                     window.crmRenderAll();
                     Swal.close();
                     Toast.fire({icon:'success', title:'Base de datos sincronizada'});
@@ -1614,50 +1608,48 @@
             .then((r) => { if (r.isConfirmed) { state.invitados = []; window.crmSave(); window.crmRenderAll(); Toast.fire({ icon: 'success', title: 'Vaciada' }); } });
         };
 
-        window.handleTicketLogo = function(e) {
+        // LÓGICA DE FONDO PREMIUM GLOBAL
+        window.uploadTicketBg = function(e) {
             const file = e.target.files[0];
             if(!file) return;
             const reader = new FileReader();
             reader.onload = function(ev) {
-                currentTicketLogo = ev.target.result;
-                
-                const bgImageLayer = document.getElementById('ticket-bg-image');
-                const overlayLayer = document.getElementById('ticket-dark-overlay');
-                
-                bgImageLayer.src = currentTicketLogo;
-                bgImageLayer.classList.remove('opacity-0');
-                bgImageLayer.classList.add('opacity-100');
-                overlayLayer.classList.remove('hidden');
-                
-                document.getElementById('btn-clear-logo').classList.remove('hidden');
+                const img = new Image();
+                img.onload = function() {
+                    const MAX_WIDTH = 600; // Auto-compresión para cuidar BD
+                    const scale = img.width > MAX_WIDTH ? MAX_WIDTH / img.width : 1;
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width * scale;
+                    canvas.height = img.height * scale;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    
+                    state.ticketBg = canvas.toDataURL('image/jpeg', 0.85);
+                    window.crmSave();
+                    Toast.fire({icon:'success', title:'Fondo del Pase guardado globalmente'});
+                };
+                img.src = ev.target.result;
             };
             reader.readAsDataURL(file);
+            e.target.value = '';
         };
 
-        window.clearTicketLogo = function() {
-            currentTicketLogo = null;
-            
-            const bgImageLayer = document.getElementById('ticket-bg-image');
-            const overlayLayer = document.getElementById('ticket-dark-overlay');
-            
-            bgImageLayer.src = '';
-            bgImageLayer.classList.remove('opacity-100');
-            bgImageLayer.classList.add('opacity-0');
-            overlayLayer.classList.add('hidden');
-            
-            document.getElementById('btn-clear-logo').classList.add('hidden');
-            document.getElementById('ticket-logo-upload').value = '';
+        window.removeTicketBg = function() {
+            if(!state.ticketBg) return Toast.fire({icon:'info', title:'No hay fondo asignado'});
+            state.ticketBg = null;
+            window.crmSave();
+            Toast.fire({icon:'success', title:'Fondo removido. Se usará el color base.'});
         };
 
         window.downloadNativeTicket = function() {
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: [80, 110] });
             
-            const activeColor = state.config.themeColor || '#0f172a';
+            const activeColor = state.config.themeColor || '#2563eb';
             
-            if (currentTicketLogo) {
+            if (isPremiumUser && state.ticketBg) {
                 // 95% del pase = 104.5mm
-                pdf.addImage(currentTicketLogo, 'PNG', 0, 0, 80, 104.5);
+                pdf.addImage(state.ticketBg, 'JPEG', 0, 0, 80, 104.5);
                 pdf.setFillColor(15, 23, 42); 
                 pdf.setGState(new pdf.GState({opacity: 0.65})); 
                 pdf.rect(0, 0, 80, 104.5, 'F');
@@ -1722,8 +1714,24 @@
             const guest = state.invitados.find(g => g.id === id);
             if(!guest) return;
             
-            window.clearTicketLogo();
-            document.getElementById('ticket-header-bg').style.backgroundColor = state.config.themeColor || '#1e293b';
+            const bgImageLayer = document.getElementById('ticket-bg-image');
+            const overlayLayer = document.getElementById('ticket-dark-overlay');
+            const headerBg = document.getElementById('ticket-header-bg');
+            
+            // Default color (Blue or user's chosen theme)
+            headerBg.style.backgroundColor = state.config.themeColor || '#2563eb';
+
+            if (isPremiumUser && state.ticketBg) {
+                bgImageLayer.src = state.ticketBg;
+                bgImageLayer.classList.remove('opacity-0');
+                bgImageLayer.classList.add('opacity-100');
+                overlayLayer.classList.remove('hidden');
+            } else {
+                bgImageLayer.src = '';
+                bgImageLayer.classList.remove('opacity-100');
+                bgImageLayer.classList.add('opacity-0');
+                overlayLayer.classList.add('hidden');
+            }
 
             document.getElementById('ticket-event-name').innerText = currentEventType === 'Otro' ? 'Evento Especial' : currentEventType;
             document.getElementById('ticket-guest-name').innerText = guest.nombre;
