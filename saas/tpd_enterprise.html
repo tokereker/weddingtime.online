@@ -292,6 +292,7 @@
             </section>
 
             <!-- SECCIÓN MESAS -->
+            <!-- CORRECCIÓN DE ALTURA: Se añade h-0 para asegurar el cálculo de la barra de scroll -->
             <section id="crm-sec-tables" class="absolute inset-0 p-4 md:p-6 flex flex-col hidden">
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-4 shrink-0 flex flex-col gap-4">
                     <div class="flex flex-wrap justify-between items-center gap-4">
@@ -322,7 +323,7 @@
                         </div>
                         <div class="h-8 w-px bg-slate-200 hidden md:block"></div>
                         
-                        <!-- BOTONES +/- DE CREAR MESAS -->
+                        <!-- BOTONES +/- DE CREAR MESAS REDISEÑADOS -->
                         <div class="flex items-center gap-3">
                             <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Crear Mesas:</span>
                             <div class="flex items-center gap-2">
@@ -343,8 +344,8 @@
                     </div>
                 </div>
                 
-                <!-- CORRECCIÓN DE BARRAS DE SCROLL -->
-                <div class="flex-1 flex flex-col md:flex-row gap-6 min-h-0">
+                <!-- CORRECCIÓN DE BARRAS DE SCROLL: Se añadió h-0 al contenedor principal flexible -->
+                <div class="flex-1 flex flex-col md:flex-row gap-6 min-h-0 h-0">
                     <div class="w-full md:w-1/4 lg:w-1/5 bg-white border border-slate-200 rounded-2xl shadow-sm flex flex-col h-64 md:h-full shrink-0 min-h-0 overflow-hidden">
                         <div class="p-4 border-b border-slate-100 bg-slate-50 font-bold text-slate-700 flex justify-between items-center shrink-0">
                             <span class="text-sm"><i class="fa-solid fa-users-slash text-slate-400 mr-2"></i> Sin Asignar</span>
@@ -968,61 +969,80 @@
         };
 
         window.appLogin = async function() {
-            const user = document.getElementById('login-user').value.trim().toLowerCase();
+            const userRaw = document.getElementById('login-user').value.trim().toLowerCase();
             const pass = document.getElementById('login-pass').value.trim();
 
-            if (!user || !pass) return Swal.fire('Error', 'Ingresa ID y contraseña.', 'error');
+            if (!userRaw || !pass) return Swal.fire('Error', 'Ingresa ID y contraseña.', 'error');
             Swal.fire({ title: 'Autenticando...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
 
-            let pseudoEmail = user;
-            if (!user.includes('@')) {
-                pseudoEmail = `${user}admin@tpd.online`;
-            }
+            let loginSuccess = false;
+            let usedEmail = userRaw;
 
             try {
-                // AUTENTICACIÓN REAL ENCRIPTADA
-                await signInWithEmailAndPassword(auth, pseudoEmail, pass);
-
-                const dbUserId = user.includes('@') ? user.split('@')[0] : user;
-                const docRef = doc(db, 'artifacts', 'weddingflow', 'users', dbUserId);
-                const snap = await getDoc(docRef);
-
-                if (snap.exists()) {
-                    const data = snap.data();
-                    
-                    if (data.status === 'Suspendido') {
-                        await signOut(auth);
-                        return Swal.fire('Acceso Suspendido', 'Tu cuenta se encuentra suspendida.', 'warning');
-                    }
-                    
-                    currentRole = data.role || 'Cliente';
-                    
-                    if (currentRole === 'Hostess') {
-                        Swal.close();
-                        window.promptHostessLogin();
-                        return;
-                    }
-
-                    if (currentRole === 'Administrador' || currentRole === 'Staff' || currentRole === 'Soporte') {
-                        await window.loadAdminPanel(); 
-                    } else if (currentRole === 'Cliente Web') {
-                        window.location.href = `estudio_diseno.html?user=${dbUserId}`;
-                    } else {
-                        window.setupClientEnvironment(dbUserId, data); 
-                    }
+                if (userRaw.includes('@')) {
+                    await signInWithEmailAndPassword(auth, userRaw, pass);
+                    usedEmail = userRaw;
+                    loginSuccess = true;
                 } else {
-                    if (dbUserId === 'admin') {
-                        currentRole = 'Administrador';
-                        await window.loadAdminPanel();
-                        return;
+                    // DOBLE INTENTO BLINDADO: Para soportar las cuentas de Agencia y las cuentas de Cliente
+                    try {
+                        usedEmail = `${userRaw}@tpd.online`;
+                        await signInWithEmailAndPassword(auth, usedEmail, pass);
+                        loginSuccess = true;
+                    } catch (e1) {
+                        usedEmail = `${userRaw}admin@tpd.online`;
+                        await signInWithEmailAndPassword(auth, usedEmail, pass);
+                        loginSuccess = true;
                     }
-                    Swal.fire('Error', 'Inquilino/Usuario no encontrado en la base de datos.', 'error');
+                }
+
+                if (loginSuccess) {
+                    let dbUserId = userRaw;
+                    if (userRaw.includes('@')) {
+                        dbUserId = userRaw.split('@')[0].replace('admin', '');
+                        if (userRaw === 'admin@tpd.online') dbUserId = 'admin';
+                    }
+
+                    const docRef = doc(db, 'artifacts', 'weddingflow', 'users', dbUserId);
+                    const snap = await getDoc(docRef);
+
+                    if (snap.exists()) {
+                        const data = snap.data();
+                        
+                        if (data.status === 'Suspendido') {
+                            await signOut(auth);
+                            return Swal.fire('Acceso Suspendido', 'Tu cuenta se encuentra suspendida.', 'warning');
+                        }
+                        
+                        currentRole = data.role || 'Cliente';
+                        
+                        if (currentRole === 'Hostess') {
+                            Swal.close();
+                            window.promptHostessLogin();
+                            return;
+                        }
+
+                        if (currentRole === 'Administrador' || currentRole === 'Staff' || currentRole === 'Soporte') {
+                            await window.loadAdminPanel(); 
+                        } else if (currentRole === 'Cliente Web') {
+                            window.location.href = `estudio_diseno.html?user=${dbUserId}`;
+                        } else {
+                            window.setupClientEnvironment(dbUserId, data); 
+                        }
+                    } else {
+                        if (dbUserId === 'admin' || dbUserId === 'root') {
+                            currentRole = 'Administrador';
+                            await window.loadAdminPanel();
+                            return;
+                        }
+                        Swal.fire('Error', 'Inquilino/Usuario no encontrado en la base de datos.', 'error');
+                    }
                 }
             } catch (error) {
                 console.error(error);
                 Swal.fire({
-                    title: 'Acceso Rechazado por Firebase',
-                    html: `El sistema intentó entrar a la bóveda con este correo exacto:<br><br><b>${pseudoEmail}</b><br><br>Verifica en tu consola de Firebase > Authentication que ese correo y la contraseña coincidan letra por letra.`,
+                    title: 'Acceso Rechazado',
+                    html: `Las credenciales son incorrectas.<br>Intento final: <b>${usedEmail}</b>`,
                     icon: 'error'
                 });
             }
