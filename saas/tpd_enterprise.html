@@ -51,10 +51,13 @@
         .table-dropzone { transition: background-color 0.2s; border: 2px dashed transparent; }
         .table-dropzone.dragover { background-color: #eff6ff; border: 2px dashed var(--primary-color); border-radius: 0.5rem; }
         
-        /* Scrollbar personalizada universal */
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        /* Scrollbar Visual Universal */
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 8px; border: 2px solid #e2e8f0; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #64748b; }
         
+        /* Ocultar el marcador nativo del details en navegadores webkit */
         details > summary::-webkit-details-marker { display: none; }
     </style>
 </head>
@@ -121,7 +124,7 @@
             <button onclick="window.appLogout()" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2 border border-red-500/20"><i class="fa-solid fa-sign-out-alt"></i> Salir</button>
         </header>
         
-        <main class="flex-1 overflow-y-auto p-4 md:p-6 custom-scrollbar absolute inset-0 top-[72px]">
+        <main class="flex-1 overflow-y-auto p-4 md:p-6 custom-scrollbar">
             <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Crear Usuarios -->
                 <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 lg:col-span-1 h-fit" id="admin-creator-panel">
@@ -142,7 +145,7 @@
                         <div>
                             <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Nivel de Acceso (Plan)</label>
                             <select id="new-role" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 text-sm font-bold mt-1 bg-slate-50 cursor-pointer transition">
-                                <option value="Cliente">Organizador Pro</option>
+                                <option value="Cliente">Organizador Pro (CRM)</option>
                                 <option value="Cliente Web">Cliente Web (Estudio IA Diseño)</option>
                                 <option value="Hostess">Hostess (Lector QR y Croquis)</option>
                                 <option value="Staff">Staff de Agencia (Soporte)</option>
@@ -270,28 +273,30 @@
                 </div>
 
                 <!-- Contenedor Tabla -->
-                <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-x-auto custom-scrollbar w-full shrink-0 h-fit">
-                    <table class="w-full text-left text-sm whitespace-nowrap min-w-max" id="main-guests-table">
-                        <thead class="bg-slate-50 text-slate-500 border-b border-slate-200 sticky top-0 z-10 text-xs uppercase tracking-wider font-bold shadow-sm">
-                            <tr>
-                                <th class="p-4 text-center w-12"><input type="checkbox" onclick="document.querySelectorAll('.g-cb').forEach(cb=>cb.checked=this.checked)" class="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"></th>
-                                <th class="p-4">Familia / Invitado</th>
-                                <th class="p-4">Grupo</th>
-                                <th class="p-4"><i class="fa-brands fa-whatsapp text-emerald-500"></i> WhatsApp</th>
-                                <th class="p-4 text-center">Adultos</th>
-                                <th class="p-4 text-center">Niños</th>
-                                <th class="p-4 text-center">Estado RSVP</th>
-                                <th class="p-4">Observaciones</th>
-                                <th class="p-4 text-center">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="crm-guests-tbody" class="divide-y divide-slate-100"></tbody>
-                    </table>
+                <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden flex-1 flex flex-col min-h-0">
+                    <div class="overflow-auto flex-1 custom-scrollbar">
+                        <table class="w-full text-left text-sm whitespace-nowrap min-w-max" id="main-guests-table">
+                            <thead class="bg-slate-50 text-slate-500 border-b border-slate-200 sticky top-0 z-10 text-xs uppercase tracking-wider font-bold shadow-sm">
+                                <tr>
+                                    <th class="p-4 text-center w-12"><input type="checkbox" onclick="document.querySelectorAll('.g-cb').forEach(cb=>cb.checked=this.checked)" class="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"></th>
+                                    <th class="p-4">Familia / Invitado</th>
+                                    <th class="p-4">Grupo</th>
+                                    <th class="p-4"><i class="fa-brands fa-whatsapp text-emerald-500"></i> WhatsApp</th>
+                                    <th class="p-4 text-center">Adultos</th>
+                                    <th class="p-4 text-center">Niños</th>
+                                    <th class="p-4 text-center">Estado RSVP</th>
+                                    <th class="p-4">Observaciones</th>
+                                    <th class="p-4 text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="crm-guests-tbody" class="divide-y divide-slate-100"></tbody>
+                        </table>
+                    </div>
                 </div>
             </section>
 
             <!-- SECCIÓN MESAS -->
-            <section id="crm-sec-tables" class="hidden flex-col flex-1 min-h-0 w-full overflow-hidden">
+            <section id="crm-sec-tables" class="hidden flex-1 flex-col min-h-0 w-full overflow-hidden">
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-4 shrink-0 flex flex-col gap-4">
                     <div class="flex flex-wrap justify-between items-center gap-4">
                         <h2 class="font-bold text-lg text-slate-800 flex items-center gap-2"><i class="fa-solid fa-chair text-blue-500"></i> Acomodo de Mesas</h2>
@@ -341,21 +346,21 @@
                     </div>
                 </div>
                 
-                <div class="flex flex-col md:flex-row gap-6 items-start h-fit pb-6">
-                    <div class="w-full md:w-1/4 lg:w-1/5 bg-white border border-slate-200 rounded-2xl shadow-sm flex flex-col h-[30vh] md:h-[calc(100vh-220px)] md:sticky md:top-0 shrink-0 overflow-hidden">
+                <div class="flex-1 flex flex-col md:flex-row gap-6 min-h-0 overflow-hidden">
+                    <div class="w-full md:w-1/4 lg:w-1/5 bg-white border border-slate-200 rounded-2xl shadow-sm flex flex-col shrink-0 overflow-hidden h-64 md:h-full">
                         <div class="p-4 border-b border-slate-100 bg-slate-50 font-bold text-slate-700 flex justify-between items-center shrink-0">
                             <span class="text-sm"><i class="fa-solid fa-users-slash text-slate-400 mr-2"></i> Sin Asignar</span>
                             <span id="crm-unassigned-badge" class="bg-red-100 text-red-700 px-2.5 py-0.5 rounded-full text-xs font-black shadow-sm">0 pases</span>
                         </div>
-                        <div id="crm-unassigned-list" class="flex-1 p-3 overflow-y-auto space-y-2 bg-slate-50/50 table-dropzone custom-scrollbar" ondragover="window.allowDrop(event)" ondragleave="window.leaveDrop(event)" ondrop="window.dropGuest(event, 0)"></div>
+                        <div id="crm-unassigned-list" class="flex-1 p-3 overflow-y-auto space-y-2 bg-slate-50/50 table-dropzone custom-scrollbar min-h-0" ondragover="window.allowDrop(event)" ondragleave="window.leaveDrop(event)" ondrop="window.dropGuest(event, 0)"></div>
                     </div>
-                    <div id="crm-tables-grid" class="flex-1 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 content-start">
+                    <div id="crm-tables-grid" class="flex-1 min-h-0 h-full overflow-y-auto custom-scrollbar grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 content-start pr-2 pb-6">
                     </div>
                 </div>
             </section>
 
             <!-- SECCIÓN ESTADÍSTICAS & DASHBOARD LOGÍSTICO -->
-            <section id="crm-sec-stats" class="absolute inset-0 p-4 md:p-6 flex-col overflow-y-auto custom-scrollbar hidden pb-32">
+            <section id="crm-sec-stats" class="hidden flex-1 flex-col min-h-0 w-full overflow-y-auto custom-scrollbar pb-32 pr-2">
                 <div class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col gap-2 sm:gap-3">
                     <button onclick="window.exportStatsExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl shadow-xl font-bold flex items-center gap-2 transform transition hover:scale-105 text-xs sm:text-sm" title="Exportar Logística a Excel">
                         <i class="fa-solid fa-file-excel text-lg"></i> Excel
@@ -967,6 +972,7 @@
             }
         };
 
+        // LÓGICA DE INICIO DE SESIÓN INFALIBLE
         window.appLogin = async function() {
             const userRaw = document.getElementById('login-user').value.trim().toLowerCase();
             const pass = document.getElementById('login-pass').value.trim();
@@ -1148,10 +1154,11 @@
                     else if (rol === 'Staff') tipoDisplay = '<span class="text-slate-500 font-bold">Staff Agencia</span>';
                     else if (rol === 'Soporte') tipoDisplay = '<span class="text-slate-500 font-bold">Soporte Técnico</span>';
                     else if (rol === 'Hostess') tipoDisplay = '<span class="text-blue-500 font-bold">Staff Evento</span>';
+                    else if (rol === 'Cliente Web') tipoDisplay = '<span class="text-purple-600 font-black">CLIENTE WEB</span>';
                     else tipoDisplay = d.eventType ? `<span class="font-bold text-slate-800">${d.eventType}</span>` : '<span class="text-amber-500 font-bold">Sin evento</span>';
 
                     let roleCol = rol;
-                    if (rol === 'Cliente') roleCol = 'Organizador Pro';
+                    if (rol === 'Cliente') roleCol = 'Organizador Pro (CRM)';
 
                     let bdg = d.status === 'Suspendido' ? '<span class="bg-red-100 text-red-700 px-2 py-1 rounded text-[10px] font-bold">Suspendido</span>' : '<span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-[10px] font-bold">Activo</span>';
                     
@@ -1332,7 +1339,7 @@
             document.getElementById('view-crm').classList.add('flex');
             
             document.getElementById('tpd-fab').style.display = 'flex';
-            document.getElementById('user-display').innerText = currentRole === 'Cliente' ? 'Organizador Pro' : currentRole;
+            document.getElementById('user-display').innerText = currentRole === 'Cliente' ? 'Organizador Pro (CRM)' : currentRole;
             
             if (dataSnapshot && !dataSnapshot.eventType && (!impersonatingId)) {
                 document.getElementById('welcome-modal').classList.remove('hidden');
