@@ -112,7 +112,7 @@
     </div>
 
     <!-- PANEL ADMIN SAAS -->
-    <div id="view-admin" class="hidden h-full flex flex-col bg-slate-50">
+    <div id="view-admin" class="hidden flex-1 flex-col bg-slate-50 min-h-0">
         <header class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center shadow-lg shrink-0">
             <div class="flex items-center gap-3">
                 <div class="bg-blue-500/20 p-2 rounded-lg"><i class="fa-solid fa-shield-halved text-blue-400 text-xl"></i></div>
@@ -142,7 +142,7 @@
                         <div>
                             <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Nivel de Acceso (Plan)</label>
                             <select id="new-role" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 text-sm font-bold mt-1 bg-slate-50 cursor-pointer transition">
-                                <option value="Cliente">Cliente Festejado (CRM Completo)</option>
+                                <option value="Cliente">Organizador Pro</option>
                                 <option value="Cliente Web">Cliente Web (Estudio IA Diseño)</option>
                                 <option value="Hostess">Hostess (Lector QR y Croquis)</option>
                                 <option value="Staff">Staff de Agencia (Soporte)</option>
@@ -178,7 +178,7 @@
     </div>
 
     <!-- WORKSPACE CRM COMPLETO (CLIENTE) -->
-    <div id="view-crm" class="hidden h-full flex flex-col bg-transparent">
+    <div id="view-crm" class="hidden flex-1 flex-col bg-transparent min-h-0">
         <!-- Barra de Impersonation -->
         <div id="crm-impersonation-bar" class="hidden bg-amber-400 text-amber-900 px-6 py-2 flex justify-between items-center font-bold text-sm shadow-inner shrink-0 z-20">
             <span><i class="fa-solid fa-user-secret mr-2"></i> Estás supervisando la base de datos de: <span id="crm-imp-name" class="underline uppercase"></span></span>
@@ -292,7 +292,7 @@
             </section>
 
             <!-- SECCIÓN MESAS -->
-            <section id="crm-sec-tables" class="flex-1 flex-col min-h-0 w-full overflow-hidden hidden">
+            <section id="crm-sec-tables" class="hidden flex-col flex-1 min-h-0 w-full overflow-hidden">
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-4 shrink-0 flex flex-col gap-4">
                     <div class="flex flex-wrap justify-between items-center gap-4">
                         <h2 class="font-bold text-lg text-slate-800 flex items-center gap-2"><i class="fa-solid fa-chair text-blue-500"></i> Acomodo de Mesas</h2>
@@ -356,7 +356,7 @@
             </section>
 
             <!-- SECCIÓN ESTADÍSTICAS & DASHBOARD LOGÍSTICO -->
-            <section id="crm-sec-stats" class="flex-1 flex-col min-h-0 w-full overflow-y-auto hidden custom-scrollbar pb-32 pr-2">
+            <section id="crm-sec-stats" class="hidden flex-col flex-1 min-h-0 w-full overflow-y-auto custom-scrollbar pb-32 pr-2">
                 <div class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col gap-2 sm:gap-3">
                     <button onclick="window.exportStatsExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl shadow-xl font-bold flex items-center gap-2 transform transition hover:scale-105 text-xs sm:text-sm" title="Exportar Logística a Excel">
                         <i class="fa-solid fa-file-excel text-lg"></i> Excel
@@ -539,7 +539,7 @@
     </div>
 
     <!-- WORKSPACE HOSTESS (Lector, Croquis y Lista) -->
-    <div id="view-hostess" class="hidden h-full flex flex-col bg-slate-900 text-white relative">
+    <div id="view-hostess" class="hidden flex-1 flex-col bg-slate-900 text-white relative min-h-0">
         <header class="bg-slate-800 px-4 py-3 flex flex-col shadow-lg border-b border-slate-700 z-10 shrink-0">
             <div class="flex justify-between items-center mb-2">
                 <div class="flex items-center gap-3">
@@ -745,7 +745,7 @@
     <div id="ticket-modal" class="fixed inset-0 bg-slate-900/90 items-center justify-center z-50 hidden glass p-4">
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm flex flex-col border border-slate-200 overflow-hidden">
             
-            <!-- HEADER DEL PASE REDISEÑADO (Fondo dinámico 95%) -->
+            <!-- HEADER DEL PASE REDISEÑADO -->
             <div id="ticket-header-bg" class="p-8 pb-4 text-center relative text-white rounded-t-3xl overflow-hidden transition-colors duration-300 flex flex-col justify-between" style="min-height: 400px; background-color: #0f172a;">
                 
                 <!-- CAPA DE IMAGEN DE FONDO (Premium) al 95% -->
@@ -963,7 +963,6 @@
             }
         };
 
-        // LÓGICA DE INICIO DE SESIÓN INFALIBLE
         window.appLogin = async function() {
             const userRaw = document.getElementById('login-user').value.trim().toLowerCase();
             const pass = document.getElementById('login-pass').value.trim();
@@ -1079,37 +1078,12 @@
         };
 
         window.changeOwnPassword = function() {
-            if (impersonatingId) {
-                return Swal.fire({
-                    title: 'Acción protegida',
-                    text: 'Estás supervisando a un cliente. Si cambias la contraseña aquí, cambiarás TU propia contraseña de administrador. Para cambiar la clave del cliente, hazlo desde tu consola de Firebase Authentication.',
-                    icon: 'warning',
-                    confirmButtonColor: '#2563eb'
-                });
-            }
-
             Swal.fire({
-                title: 'Cambiar Mi Contraseña',
-                input: 'password',
-                inputPlaceholder: 'Ingresa tu nueva contraseña (mínimo 6 caracteres)...',
-                showCancelButton: true,
+                title: 'Cambio de Contraseña',
+                text: 'Para proteger la seguridad de tu evento, si deseas cambiar tu contraseña deberás contactar directamente con tu Agente asignado.',
+                icon: 'info',
                 confirmButtonColor: '#2563eb',
-                confirmButtonText: 'Actualizar'
-            }).then(async (result) => {
-                if (result.isConfirmed && result.value) {
-                    try {
-                        const user = auth.currentUser;
-                        if(user) {
-                            await updatePassword(user, result.value.trim());
-                            Toast.fire({ icon: 'success', title: 'Contraseña actualizada en la bóveda de seguridad' });
-                        } else {
-                            throw new Error("No estás autenticado");
-                        }
-                    } catch(e) {
-                        console.error(e);
-                        Swal.fire('Error', 'Por seguridad, debes cerrar sesión, volver a iniciar e intentarlo de nuevo.', 'error');
-                    }
-                }
+                confirmButtonText: 'Entendido'
             });
         };
 
@@ -1145,7 +1119,7 @@
                     else tipoDisplay = d.eventType ? `<span class="font-bold text-slate-800">${d.eventType}</span>` : '<span class="text-amber-500 font-bold">Sin evento</span>';
 
                     let roleCol = rol;
-                    if (rol === 'Cliente') roleCol = 'Cliente Festejado (CRM Completo)';
+                    if (rol === 'Cliente') roleCol = 'Organizador Pro';
 
                     let bdg = d.status === 'Suspendido' ? '<span class="bg-red-100 text-red-700 px-2 py-1 rounded text-[10px] font-bold">Suspendido</span>' : '<span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-[10px] font-bold">Activo</span>';
                     
@@ -1543,14 +1517,14 @@
                     <td class="p-4 text-center">
                         <div class="inline-flex items-center bg-slate-50 border border-slate-200 rounded-lg overflow-hidden">
                             <button onclick="window.crmUpdateGuest(${g.id}, 'adultos', ${ads - 1})" class="px-2 py-1 text-slate-500 hover:text-blue-600 hover:bg-slate-200 font-bold transition">-</button>
-                            <input type="number" min="0" value="${ads}" onchange="window.crmUpdateGuest(${g.id}, 'adultos', this.value)" class="w-8 text-center font-bold bg-transparent outline-none p-0 m-0 text-xs text-slate-700">
+                            <input type="number" min="0" value="${ads}" onchange="window.crmUpdateGuest(${g.id}, 'adultos', this.value)" class="w-10 text-center font-bold bg-transparent outline-none p-0 m-0 text-xs text-slate-700">
                             <button onclick="window.crmUpdateGuest(${g.id}, 'adultos', ${ads + 1})" class="px-2 py-1 text-slate-500 hover:text-blue-600 hover:bg-slate-200 font-bold transition">+</button>
                         </div>
                     </td>
                     <td class="p-4 text-center">
                         <div class="inline-flex items-center bg-slate-50 border border-slate-200 rounded-lg overflow-hidden">
                             <button onclick="window.crmUpdateGuest(${g.id}, 'ninos', ${nns - 1})" class="px-2 py-1 text-slate-500 hover:text-blue-600 hover:bg-slate-200 font-bold transition">-</button>
-                            <input type="number" min="0" value="${nns}" onchange="window.crmUpdateGuest(${g.id}, 'ninos', this.value)" class="w-8 text-center font-bold bg-transparent outline-none p-0 m-0 text-xs text-slate-700">
+                            <input type="number" min="0" value="${nns}" onchange="window.crmUpdateGuest(${g.id}, 'ninos', this.value)" class="w-10 text-center font-bold bg-transparent outline-none p-0 m-0 text-xs text-slate-700">
                             <button onclick="window.crmUpdateGuest(${g.id}, 'ninos', ${nns + 1})" class="px-2 py-1 text-slate-500 hover:text-blue-600 hover:bg-slate-200 font-bold transition">+</button>
                         </div>
                     </td>
@@ -1629,49 +1603,51 @@
 
         window.downloadNativeTicket = function() {
             const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: [80, 150] });
+            const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: [80, 110] });
             
             const activeColor = state.config.themeColor || '#0f172a';
             
             if (currentTicketLogo) {
-                // 95% del pase = 142.5mm
-                pdf.addImage(currentTicketLogo, 'PNG', 0, 0, 80, 142.5);
+                // 95% del pase = 104.5mm
+                pdf.addImage(currentTicketLogo, 'PNG', 0, 0, 80, 104.5);
                 pdf.setFillColor(15, 23, 42); 
                 pdf.setGState(new pdf.GState({opacity: 0.65})); 
-                pdf.rect(0, 0, 80, 142.5, 'F');
+                pdf.rect(0, 0, 80, 104.5, 'F');
                 pdf.setGState(new pdf.GState({opacity: 1.0})); 
                 
-                // 5% restante = 7.5mm
+                // 5% restante = 5.5mm
                 pdf.setFillColor(activeColor);
-                pdf.rect(0, 142.5, 80, 7.5, 'F');
+                pdf.rect(0, 104.5, 80, 5.5, 'F');
             } else {
                 pdf.setFillColor(activeColor);
-                pdf.rect(0, 0, 80, 150, 'F');
+                pdf.rect(0, 0, 80, 110, 'F');
             }
             
             pdf.setTextColor(255, 255, 255);
-            pdf.setFont(undefined, 'bold'); // LETRA MÁS FUERTE (NEGRITA)
+            pdf.setFont(undefined, 'bold');
             pdf.setFontSize(16);
-            pdf.text(document.getElementById('ticket-event-name').innerText, 40, 20, { align: 'center' });
+            pdf.text(document.getElementById('ticket-event-name').innerText, 40, 18, { align: 'center' });
             
             pdf.setFontSize(10);
-            pdf.text("Pase de Acceso Oficial", 40, 30, { align: 'center' });
+            pdf.text("Pase de Acceso Oficial", 40, 26, { align: 'center' });
             
             const qrCanvas = document.querySelector('#ticket-qrcode canvas');
             if (qrCanvas) {
                 const qrData = qrCanvas.toDataURL("image/png");
                 pdf.setFillColor(255, 255, 255);
-                pdf.rect(19, 39, 42, 42, 'F');
-                pdf.addImage(qrData, 'PNG', 20, 40, 40, 40);
+                pdf.rect(22, 33, 36, 36, 'F');
+                pdf.addImage(qrData, 'PNG', 23, 34, 34, 34);
             }
             
             pdf.setFontSize(14);
-            pdf.text(document.getElementById('ticket-guest-name').innerText, 40, 95, { align: 'center' });
+            pdf.text(document.getElementById('ticket-guest-name').innerText, 40, 78, { align: 'center' });
             pdf.setFontSize(10);
-            pdf.text(document.getElementById('ticket-guest-passes').innerText, 40, 105, { align: 'center' });
+            pdf.text(document.getElementById('ticket-guest-passes').innerText, 40, 85, { align: 'center' });
             
-            // AGREGA MARCA DE AGUA EN EL PDF
-            window.addPDFFooter(pdf);
+            // Marca de agua en la base
+            pdf.setFontSize(7);
+            pdf.setTextColor(255, 255, 255);
+            pdf.text("tupasedigital.online", 40, 108.5, { align: 'center' });
             
             pdf.save(`Pase_${document.getElementById('ticket-guest-name').innerText}.pdf`);
         };
@@ -1680,8 +1656,7 @@
             const newTab = window.open('about:blank', '_blank');
             window.downloadNativeTicket();
             
-            const guestName = document.getElementById('ticket-guest-name').innerText;
-            const guest = state.invitados.find(g => g.nombre === guestName);
+            const guest = state.invitados.find(g => g.id === currentTargetGuestId);
             
             if (!guest || !guest.telefono) {
                 newTab.close();
@@ -2289,9 +2264,8 @@
                 let tot = ads + nns; 
                 let ingTot = ingA + ingN;
 
-                if (g.status === 'Confirmado' || g.status === 'Pendiente') { 
-                    totalEsperados += tot; 
-                }
+                // Ahora suma TODOS los invitados a "Esperados" para que cuadre exacto con el CRM
+                totalEsperados += tot; 
                 
                 totalIngresados += ingTot;
 
