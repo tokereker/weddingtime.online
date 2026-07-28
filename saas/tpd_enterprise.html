@@ -322,7 +322,7 @@
                         </div>
                         <div class="h-8 w-px bg-slate-200 hidden md:block"></div>
                         
-                        <!-- BOTONES +/- DE CREAR MESAS REDISEÑADOS -->
+                        <!-- BOTONES +/- DE CREAR MESAS -->
                         <div class="flex items-center gap-3">
                             <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Crear Mesas:</span>
                             <div class="flex items-center gap-2">
@@ -976,7 +976,7 @@
 
             let pseudoEmail = user;
             if (!user.includes('@')) {
-                pseudoEmail = `${user}@tpd.online`;
+                pseudoEmail = `${user}admin@tpd.online`;
             }
 
             try {
@@ -1171,7 +1171,7 @@
 
                 if(!user || !pass) return Swal.fire('Atención', 'Rellena el ID de usuario y la contraseña.', 'warning');
                 
-                const pseudoEmail = `${user}@tpd.online`;
+                const pseudoEmail = `${user}admin@tpd.online`;
 
                 // 1. Crear usuario en la bóveda segura de Firebase Auth usando la app secundaria
                 await createUserWithEmailAndPassword(secondaryAuth, pseudoEmail, pass);
