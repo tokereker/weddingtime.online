@@ -223,10 +223,11 @@
             </div>
         </nav>
 
-        <main class="flex-1 min-h-0 overflow-hidden p-4 md:p-6 flex flex-col relative bg-slate-50/90 backdrop-blur-md rounded-b-lg">
+        <!-- ESTRUCTURA BLINDADA PARA SCROLL -->
+        <main class="flex-1 relative overflow-hidden bg-slate-50/90 backdrop-blur-md rounded-b-lg">
             
             <!-- SECCIÓN INVITADOS -->
-            <section id="crm-sec-guests" class="flex-1 min-h-0 w-full flex flex-col">
+            <section id="crm-sec-guests" class="absolute inset-0 p-4 md:p-6 flex flex-col hidden">
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-4 shrink-0 flex flex-col gap-4">
                     <div class="flex flex-col xl:flex-row items-center gap-4 justify-between">
                         <!-- Buscador -->
@@ -236,7 +237,7 @@
                                 <input type="text" id="crm-search" onkeyup="window.crmRenderGuests()" placeholder="Buscar familia o invitado..." class="w-full border-2 border-slate-100 p-2 pl-9 text-sm rounded-xl outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition font-medium">
                             </div>
                             <button onclick="document.getElementById('crm-search').value=''; window.crmRenderGuests()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-2.5 rounded-xl text-sm font-bold transition shadow-sm" title="Limpiar Búsqueda"><i class="fa-solid fa-eraser"></i></button>
-                            <button onclick="window.crmLoadData()" class="bg-slate-100 hover:bg-slate-200 text-blue-600 px-3 py-2.5 rounded-xl text-sm font-bold transition shadow-sm" title="Sincronizar Datos"><i class="fa-solid fa-sync"></i></button>
+                            <button onclick="window.crmLoadData()" class="bg-slate-100 hover:bg-slate-200 text-blue-600 px-3 py-2.5 rounded-xl text-sm font-bold transition shadow-sm" title="Sincronizar Nube"><i class="fa-solid fa-sync"></i></button>
                         </div>
                         
                         <!-- Botones de Acción Clásicos -->
@@ -268,8 +269,8 @@
                     </div>
                 </div>
 
-                <div class="bg-white border border-slate-200 rounded-2xl shadow-sm flex-1 table-container relative custom-scrollbar overflow-hidden flex flex-col">
-                    <div class="overflow-x-auto flex-1 custom-scrollbar min-h-0">
+                <div class="bg-white border border-slate-200 rounded-2xl shadow-sm flex-1 relative overflow-hidden flex flex-col">
+                    <div class="overflow-y-auto overflow-x-auto flex-1 custom-scrollbar">
                         <table class="w-full text-left text-sm whitespace-nowrap" id="main-guests-table">
                             <thead class="bg-slate-50 text-slate-500 border-b border-slate-200 sticky top-0 z-10 text-xs uppercase tracking-wider font-bold shadow-sm">
                                 <tr>
@@ -291,8 +292,7 @@
             </section>
 
             <!-- SECCIÓN MESAS -->
-            <!-- CORRECCIÓN DE ALTURA: Se añade h-0 para asegurar el cálculo de la barra de scroll -->
-            <section id="crm-sec-tables" class="flex-1 min-h-0 h-0 w-full flex flex-col hidden relative">
+            <section id="crm-sec-tables" class="absolute inset-0 p-4 md:p-6 flex flex-col hidden">
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-4 shrink-0 flex flex-col gap-4">
                     <div class="flex flex-wrap justify-between items-center gap-4">
                         <h2 class="font-bold text-lg text-slate-800 flex items-center gap-2"><i class="fa-solid fa-chair text-blue-500"></i> Acomodo de Mesas</h2>
@@ -322,7 +322,7 @@
                         </div>
                         <div class="h-8 w-px bg-slate-200 hidden md:block"></div>
                         
-                        <!-- BOTONES +/- DE CREAR MESAS REDISEÑADOS -->
+                        <!-- BOTONES +/- DE CREAR MESAS -->
                         <div class="flex items-center gap-3">
                             <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Crear Mesas:</span>
                             <div class="flex items-center gap-2">
@@ -343,24 +343,21 @@
                     </div>
                 </div>
                 
-                <!-- CORRECCIÓN DE BARRAS DE SCROLL: Se añadió h-0 al contenedor principal flexible -->
-                <div class="flex-1 flex flex-col md:flex-row gap-6 min-h-0 h-0">
-                    <div class="w-full md:w-1/4 lg:w-1/5 bg-white border border-slate-200 rounded-2xl shadow-sm flex flex-col h-64 md:h-full shrink-0 min-h-0 overflow-hidden">
+                <div class="flex-1 flex flex-col md:flex-row gap-6 min-h-0 overflow-hidden">
+                    <div class="w-full md:w-1/4 lg:w-1/5 bg-white border border-slate-200 rounded-2xl shadow-sm flex flex-col h-64 md:h-full shrink-0 overflow-hidden">
                         <div class="p-4 border-b border-slate-100 bg-slate-50 font-bold text-slate-700 flex justify-between items-center shrink-0">
                             <span class="text-sm"><i class="fa-solid fa-users-slash text-slate-400 mr-2"></i> Sin Asignar</span>
                             <span id="crm-unassigned-badge" class="bg-red-100 text-red-700 px-2.5 py-0.5 rounded-full text-xs font-black shadow-sm">0 pases</span>
                         </div>
-                        <div id="crm-unassigned-list" class="flex-1 p-3 overflow-y-auto space-y-2 bg-slate-50/50 table-dropzone custom-scrollbar min-h-0" ondragover="window.allowDrop(event)" ondragleave="window.leaveDrop(event)" ondrop="window.dropGuest(event, 0)"></div>
+                        <div id="crm-unassigned-list" class="flex-1 p-3 overflow-y-auto space-y-2 bg-slate-50/50 table-dropzone custom-scrollbar"></div>
                     </div>
-                    <!-- Se asegura overflow-y-auto para el grid de mesas -->
-                    <div id="crm-tables-grid" class="flex-1 overflow-y-auto h-full min-h-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 content-start pb-6 custom-scrollbar pr-2">
+                    <div id="crm-tables-grid" class="flex-1 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 content-start pb-6 custom-scrollbar pr-2">
                     </div>
                 </div>
             </section>
 
             <!-- SECCIÓN ESTADÍSTICAS & DASHBOARD LOGÍSTICO (VERSIÓN 2.6 BENTO GRID) -->
-            <!-- CORRECCIÓN SCROLL: h-0 añadido para evitar que el contenedor desborde su límite flex -->
-            <section id="crm-sec-stats" class="flex-1 min-h-0 h-0 w-full overflow-y-auto hidden custom-scrollbar pb-32 pr-2 relative">
+            <section id="crm-sec-stats" class="absolute inset-0 p-4 md:p-6 overflow-y-auto hidden custom-scrollbar pb-32">
                 <div class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col gap-2 sm:gap-3">
                     <button onclick="window.exportStatsExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl shadow-xl font-bold flex items-center gap-2 transform transition hover:scale-105 text-xs sm:text-sm" title="Exportar Logística a Excel">
                         <i class="fa-solid fa-file-excel text-lg"></i> Excel
@@ -749,34 +746,38 @@
     <div id="ticket-modal" class="fixed inset-0 bg-slate-900/90 items-center justify-center z-50 hidden glass p-4">
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm flex flex-col border border-slate-200 overflow-hidden">
             
-            <!-- HEADER DEL PASE REDISEÑADO -->
-            <div id="ticket-header-bg" class="p-8 text-center relative bg-slate-900 text-white rounded-t-3xl border-b-4 border-blue-500 overflow-hidden">
+            <!-- HEADER DEL PASE REDISEÑADO (Fondo dinámico 90%) -->
+            <div id="ticket-header-bg" class="p-8 pb-4 text-center relative text-white rounded-t-3xl overflow-hidden transition-colors duration-300" style="min-height: 400px;">
                 
-                <!-- CAPA DE IMAGEN DE FONDO (Premium) -->
-                <img id="ticket-bg-image" src="" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 z-0 pointer-events-none">
+                <!-- CAPA DE IMAGEN DE FONDO (Premium) al 90% -->
+                <img id="ticket-bg-image" src="" class="absolute top-0 left-0 w-full h-[90%] object-cover opacity-0 transition-opacity duration-500 z-0 pointer-events-none">
                 
-                <!-- FILTRO OSCURO PARA QUE SE LEA EL TEXTO -->
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/70 to-slate-900/40 z-0 pointer-events-none"></div>
+                <!-- FILTRO OSCURO PARA QUE SE LEA EL TEXTO (Ajustado al 90%) -->
+                <div id="ticket-dark-overlay" class="absolute top-0 left-0 w-full h-[90%] bg-slate-900/60 z-0 pointer-events-none hidden"></div>
 
                 <!-- CONTENIDO DEL TICKET -->
-                <div class="relative z-10">
-                    <div id="premium-pdf-bg-uploader" class="mb-6" style="display: none;">
-                        <label class="text-[9px] text-white font-bold uppercase tracking-widest cursor-pointer hover:bg-white/20 transition flex items-center justify-center gap-1 border border-white/50 py-1.5 px-3 rounded-full mx-auto w-fit backdrop-blur-sm shadow-lg">
-                            <i class="fa-solid fa-image"></i> Subir Fondo Premium para PDF
-                            <input type="file" id="ticket-logo-upload" class="hidden" accept="image/*" onchange="window.handleTicketLogo(event)">
-                        </label>
-                        <button onclick="window.clearTicketLogo()" id="btn-clear-logo" class="hidden text-[10px] text-red-300 font-bold uppercase mt-2 mx-auto underline hover:text-red-200">Quitar Fondo</button>
-                    </div>
+                <div class="relative z-10 flex flex-col h-full justify-between">
+                    <div>
+                        <div id="premium-pdf-bg-uploader" class="mb-4" style="display: none;">
+                            <label class="text-[9px] text-white font-bold uppercase tracking-widest cursor-pointer hover:bg-white/20 transition flex items-center justify-center gap-1 border border-white/50 py-1.5 px-3 rounded-full mx-auto w-fit backdrop-blur-sm shadow-lg">
+                                <i class="fa-solid fa-image"></i> Subir Fondo Premium para PDF
+                                <input type="file" id="ticket-logo-upload" class="hidden" accept="image/*" onchange="window.handleTicketLogo(event)">
+                            </label>
+                            <button onclick="window.clearTicketLogo()" id="btn-clear-logo" class="hidden text-[10px] text-red-300 font-bold uppercase mt-2 mx-auto underline hover:text-red-200">Quitar Fondo</button>
+                        </div>
 
-                    <h3 class="text-2xl font-black mb-1" id="ticket-event-name">Cargando...</h3>
-                    <p class="text-[10px] text-blue-200 font-bold uppercase tracking-widest mb-6">Pase de Acceso Oficial</p>
-                    <div class="bg-white p-3 rounded-2xl inline-block mb-4 shadow-2xl"><div id="ticket-qrcode"></div></div>
-                    <h2 class="text-xl font-bold text-white mb-1 drop-shadow-md" id="ticket-guest-name">Invitado</h2>
-                    <p class="text-sm text-slate-300 font-medium drop-shadow-md" id="ticket-guest-passes">0 Pases</p>
+                        <h3 class="text-2xl font-black mb-1 drop-shadow-lg" id="ticket-event-name">Cargando...</h3>
+                        <p class="text-[10px] text-white/80 font-bold uppercase tracking-widest mb-4">Pase de Acceso Oficial</p>
+                        
+                        <div class="bg-white p-3 rounded-2xl inline-block mb-4 shadow-2xl"><div id="ticket-qrcode"></div></div>
+                        
+                        <h2 class="text-xl font-bold text-white mb-1 drop-shadow-md truncate px-2" id="ticket-guest-name">Invitado</h2>
+                        <p class="text-sm text-white/90 font-medium drop-shadow-md mb-4" id="ticket-guest-passes">0 Pases</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="p-4 bg-slate-50 rounded-b-3xl">
+            <div class="p-4 bg-slate-50 rounded-b-3xl z-20">
                  <div class="grid grid-cols-2 gap-3 mb-3">
                      <button onclick="window.downloadNativeTicket()" class="bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-2xl font-bold shadow-md transition flex flex-col items-center justify-center gap-1">
                          <i class="fa-solid fa-file-pdf text-2xl mb-1"></i> <span class="text-[10px] uppercase tracking-wider">Descargar PDF</span>
@@ -1117,13 +1118,13 @@
                     let infoAdminBtn = '';
                     
                     if (d.role === 'Cliente' || d.role === 'Cliente Web' || d.role === 'Hostess') {
-                         impBtn = `<button onclick="window.impStart('${docSnap.id}', '${d.role}')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-100 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1"><i class="fa-solid fa-eye"></i> Supervisar</button>`;
+                         impBtn = `<button onclick="window.impStart('${docSnap.id}', '${d.role}')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-100 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1" title="Entrar al panel de este cliente"><i class="fa-solid fa-eye"></i> Supervisar</button>`;
                          
                          // Modulito Premium (Estrella) - CÓDIGO NATIVO SIN GLOBOS QUE SE CORTEN
                          if (d.role === 'Cliente') {
                              let isPremium = d.hasPremiumLink === true;
                              premiumBtn = `
-                             <button onclick="window.adminTogglePremium('${docSnap.id}', ${isPremium})" class="${isPremium ? 'text-amber-500 hover:text-amber-600' : 'text-slate-300 hover:text-slate-400'} transition p-2 text-xl" title="💡 Módulo Premium: Diseño Web, Link WhatsApp y PDF Personalizado.">
+                             <button onclick="window.adminTogglePremium('${docSnap.id}', ${isPremium})" class="${isPremium ? 'text-amber-500 hover:text-amber-600' : 'text-slate-300 hover:text-slate-400'} transition p-2 text-xl" title="💡 Premium: Web + WA + PDF">
                                  <i class="fa-solid fa-star"></i>
                              </button>`;
                          }
@@ -1393,11 +1394,26 @@
         
         window.crmRenderAll = function() { window.crmRenderGuests(); window.crmRenderTables(); window.crmRenderStats(); };
         
-        // Función mejorada del botón de Refrescar
-        window.crmLoadData = function() { 
-            document.getElementById('crm-search').value = ''; // Limpia el buscador si se atoró
-            window.crmRenderAll(); 
-            Toast.fire({icon:'success', title:'Datos y vistas sincronizados'}); 
+        // Función mejorada del botón de Refrescar (Realiza una consulta a la DB real)
+        window.crmLoadData = async function() { 
+            document.getElementById('crm-search').value = ''; // Limpia el buscador
+            Swal.fire({ title: 'Sincronizando...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+            try {
+                const act = impersonatingId || currentUser;
+                const snap = await getDoc(doc(db, 'artifacts', 'weddingflow', 'users', act));
+                if(snap.exists()) {
+                    const data = snap.data();
+                    state.invitados = data.invitados || [];
+                    state.mesas = data.mesas || state.mesas;
+                    state.config = data.config || state.config;
+                    state.croquis = data.croquis || null;
+                    window.crmRenderAll();
+                    Swal.close();
+                    Toast.fire({icon:'success', title:'Nube Sincronizada y Actualizada'});
+                }
+            } catch(e) {
+                Swal.fire('Error', 'Fallo al sincronizar', 'error');
+            }
         };
 
         window.crmUpdateConfig = function(k, v) { 
@@ -1530,11 +1546,14 @@
             reader.onload = function(ev) {
                 currentTicketLogo = ev.target.result;
                 
-                // Mostrar en la pantalla HTML
+                // Mostrar en la pantalla HTML al 90%
                 const bgImageLayer = document.getElementById('ticket-bg-image');
+                const overlayLayer = document.getElementById('ticket-dark-overlay');
+                
                 bgImageLayer.src = currentTicketLogo;
                 bgImageLayer.classList.remove('opacity-0');
                 bgImageLayer.classList.add('opacity-100');
+                overlayLayer.classList.remove('hidden');
                 
                 document.getElementById('btn-clear-logo').classList.remove('hidden');
             };
@@ -1546,9 +1565,12 @@
             
             // Ocultar de la pantalla HTML
             const bgImageLayer = document.getElementById('ticket-bg-image');
+            const overlayLayer = document.getElementById('ticket-dark-overlay');
+            
             bgImageLayer.src = '';
             bgImageLayer.classList.remove('opacity-100');
             bgImageLayer.classList.add('opacity-0');
+            overlayLayer.classList.add('hidden');
             
             document.getElementById('btn-clear-logo').classList.add('hidden');
             document.getElementById('ticket-logo-upload').value = '';
@@ -1558,45 +1580,45 @@
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: [80, 150] });
             
-            // Fondo Base del PDF
             const activeColor = state.config.themeColor || '#0f172a';
-            pdf.setFillColor(activeColor);
-            pdf.rect(0, 0, 80, 150, 'F');
             
-            let currentY = 20;
-
-            // Si subieron un fondo premium, lo estiramos sobre la mitad superior del pase de forma elegante
             if (currentTicketLogo) {
-                // Dibujamos la imagen como cabecera (top)
-                pdf.addImage(currentTicketLogo, 'PNG', 0, 0, 80, 75);
+                // Imagen cubre el 90% (135mm de altura)
+                pdf.addImage(currentTicketLogo, 'PNG', 0, 0, 80, 135);
                 
-                // Dibujamos un filtro oscuro encima de la foto para que las letras se lean perfecto
-                pdf.setFillColor(15, 23, 42); // slate-900
-                pdf.setGState(new pdf.GState({opacity: 0.65}));
-                pdf.rect(0, 0, 80, 75, 'F');
-                pdf.setGState(new pdf.GState({opacity: 1.0})); // Restablecemos la opacidad normal
+                // Filtro oscuro sobre la imagen para legibilidad
+                pdf.setFillColor(15, 23, 42); // Color slate-900
+                pdf.setGState(new pdf.GState({opacity: 0.65})); // 65% de oscuridad
+                pdf.rect(0, 0, 80, 135, 'F');
+                pdf.setGState(new pdf.GState({opacity: 1.0})); // Restaurar
                 
-                currentY = 25; // Empujamos un poco el texto
+                // Franja inferior del 10% (15mm) con el color exacto del Tema
+                pdf.setFillColor(activeColor);
+                pdf.rect(0, 135, 80, 15, 'F');
+            } else {
+                // Sin imagen premium, el color del tema cubre el 100%
+                pdf.setFillColor(activeColor);
+                pdf.rect(0, 0, 80, 150, 'F');
             }
             
             pdf.setTextColor(255, 255, 255);
             pdf.setFontSize(16);
-            pdf.text(document.getElementById('ticket-event-name').innerText, 40, currentY, { align: 'center' });
+            pdf.text(document.getElementById('ticket-event-name').innerText, 40, 20, { align: 'center' });
             pdf.setFontSize(10);
-            pdf.text("Pase de Acceso Oficial", 40, currentY + 10, { align: 'center' });
+            pdf.text("Pase de Acceso Oficial", 40, 30, { align: 'center' });
             
             const qrCanvas = document.querySelector('#ticket-qrcode canvas');
             if (qrCanvas) {
                 const qrData = qrCanvas.toDataURL("image/png");
                 pdf.setFillColor(255, 255, 255);
-                pdf.rect(19, currentY + 19, 42, 42, 'F');
-                pdf.addImage(qrData, 'PNG', 20, currentY + 20, 40, 40);
+                pdf.rect(19, 39, 42, 42, 'F');
+                pdf.addImage(qrData, 'PNG', 20, 40, 40, 40);
             }
             
             pdf.setFontSize(14);
-            pdf.text(document.getElementById('ticket-guest-name').innerText, 40, currentY + 75, { align: 'center' });
+            pdf.text(document.getElementById('ticket-guest-name').innerText, 40, 95, { align: 'center' });
             pdf.setFontSize(10);
-            pdf.text(document.getElementById('ticket-guest-passes').innerText, 40, currentY + 85, { align: 'center' });
+            pdf.text(document.getElementById('ticket-guest-passes').innerText, 40, 105, { align: 'center' });
             
             pdf.save(`Pase_${document.getElementById('ticket-guest-name').innerText}.pdf`);
         };
@@ -1626,6 +1648,9 @@
             
             // Limpiar la imagen subida temporalmente del ticket anterior
             window.clearTicketLogo();
+            
+            // PINTAR EL COLOR DEL TEMA EN EL MODAL VISUAL HTML
+            document.getElementById('ticket-header-bg').style.backgroundColor = state.config.themeColor || '#1e293b';
 
             document.getElementById('ticket-event-name').innerText = currentEventType === 'Otro' ? 'Evento Especial' : currentEventType;
             document.getElementById('ticket-guest-name').innerText = guest.nombre;
