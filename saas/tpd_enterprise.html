@@ -1101,14 +1101,21 @@
                     if (d.role === 'Cliente' || d.role === 'Cliente Web' || d.role === 'Hostess') {
                          impBtn = `<button onclick="window.impStart('${docSnap.id}', '${d.role}')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-100 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1"><i class="fa-solid fa-eye"></i> Supervisar</button>`;
                          
-              // Modulito Premium (Estrella) - SOLO APARECE SI ES "Cliente" completo
+                         // Modulito Premium (Estrella) - SOLO APARECE SI ES "Cliente" completo
                          if (d.role === 'Cliente') {
                              let isPremium = d.hasPremiumLink === true;
                              premiumBtn = `
-                             <button onclick="window.adminTogglePremium('${docSnap.id}', ${isPremium})" class="${isPremium ? 'text-amber-500 hover:text-amber-600' : 'text-slate-300 hover:text-slate-400'} transition p-2 text-xl" title="💡 Clic para activar/desactivar el Módulo Premium (Link Mágico RSVP, Diseño y Fondo de PDF).">
-                                 <i class="fa-solid fa-star"></i>
-                             </button>`;
+                             <div class="relative group flex items-center">
+                                 <button onclick="window.adminTogglePremium('${docSnap.id}', ${isPremium})" class="${isPremium ? 'text-amber-500 hover:text-amber-600' : 'text-slate-300 hover:text-slate-400'} transition p-2 text-xl" title="Activar/Desactivar Módulo Premium">
+                                     <i class="fa-solid fa-star"></i>
+                                 </button>
+                                 <div class="absolute bottom-full right-0 mb-2 hidden group-hover:block w-56 bg-slate-800 text-white text-[10px] p-2 rounded-xl shadow-xl z-50 text-center font-medium pointer-events-none leading-tight border border-slate-700">
+                                     💡 Activa Módulo Premium: Diseño Web, Link WhatsApp y Fondo de PDF Personalizado.
+                                     <div class="absolute top-full right-4 border-4 border-transparent border-t-slate-800"></div>
+                                 </div>
+                             </div>`;
                          }
+                    }
 
                     // Boton 'i' de información solo para roles de agencia
                     if (d.role === 'Administrador' || d.role === 'Staff' || d.role === 'Soporte') {
