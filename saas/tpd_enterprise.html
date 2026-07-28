@@ -69,7 +69,7 @@
             <h1 class="text-3xl font-black mb-1 text-slate-900 tracking-tight">TPD Enterprise</h1>
             <p class="text-slate-500 text-sm mb-8 font-medium">Plataforma SaaS de Gestión</p>
             
-            <input type="text" id="login-user" placeholder="ID de Usuario o Agencia" class="w-full border-2 border-slate-100 p-4 rounded-xl mb-4 outline-none focus:border-blue-600 transition font-medium text-sm bg-slate-50 focus:bg-white">
+            <input type="text" id="login-user" placeholder="ID de Usuario o Email Completo" class="w-full border-2 border-slate-100 p-4 rounded-xl mb-4 outline-none focus:border-blue-600 transition font-medium text-sm bg-slate-50 focus:bg-white">
             <div class="relative w-full mb-8">
                 <input type="password" id="login-pass" onkeypress="if(event.key === 'Enter') window.appLogin()" placeholder="Contraseña" class="w-full border-2 border-slate-100 p-4 rounded-xl outline-none focus:border-blue-600 transition font-medium text-sm pr-12 bg-slate-50 focus:bg-white">
                 <button onclick="window.togglePassword('login-pass')" class="absolute right-4 top-4 text-slate-400 hover:text-blue-600 transition">
@@ -968,6 +968,7 @@
             }
         };
 
+        // ====== LÓGICA DE INICIO DE SESIÓN REPARADA AL 100% ======
         window.appLogin = async function() {
             const userRaw = document.getElementById('login-user').value.trim().toLowerCase();
             const pass = document.getElementById('login-pass').value.trim();
@@ -975,83 +976,77 @@
             if (!userRaw || !pass) return Swal.fire('Error', 'Ingresa ID y contraseña.', 'error');
             Swal.fire({ title: 'Autenticando...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
 
-            let emailsToTry = [];
-            if (userRaw.includes('@')) {
-                emailsToTry.push(userRaw);
-            } else {
-                if (userRaw === 'admin') {
-                    emailsToTry.push('admin@tpd.online');
-                    emailsToTry.push('adminadmin@tpd.online');
-                } else {
-                    emailsToTry.push(`${userRaw}admin@tpd.online`); 
-                    emailsToTry.push(`${userRaw}@tpd.online`);      
-                }
-            }
-
             let loginSuccess = false;
-            let usedEmail = '';
-
-            for (let email of emailsToTry) {
-                try {
-                    await signInWithEmailAndPassword(auth, email, pass);
-                    loginSuccess = true;
-                    usedEmail = email;
-                    break;
-                } catch (e) {
-                    console.warn("Fallo intento con:", email);
-                }
-            }
-
-            if (!loginSuccess) {
-                return Swal.fire({
-                    title: 'Acceso Rechazado',
-                    text: 'Las credenciales son incorrectas. Verifica que el ID y contraseña sean correctos.',
-                    icon: 'error'
-                });
-            }
-
-            let dbUserId = userRaw;
-            if (userRaw === 'admin' || usedEmail.startsWith('admin')) {
-                dbUserId = 'admin';
-            }
+            let usedEmail = userRaw;
 
             try {
-                const docRef = doc(db, 'artifacts', 'weddingflow', 'users', dbUserId);
-                const snap = await getDoc(docRef);
-
-                if (snap.exists()) {
-                    const data = snap.data();
-                    if (data.status === 'Suspendido') {
-                        await signOut(auth);
-                        return Swal.fire('Acceso Suspendido', 'Tu cuenta se encuentra suspendida.', 'warning');
-                    }
-                    
-                    currentRole = data.role || 'Cliente';
-                    
-                    if (currentRole === 'Hostess') {
-                        Swal.close();
-                        window.promptHostessLogin();
-                        return;
-                    }
-
-                    if (currentRole === 'Administrador' || currentRole === 'Staff' || currentRole === 'Soporte') {
-                        await window.loadAdminPanel(); 
-                    } else if (currentRole === 'Cliente Web') {
-                        window.location.href = `estudio_diseno.html?user=${dbUserId}`;
-                    } else {
-                        window.setupClientEnvironment(dbUserId, data); 
-                    }
+                // Si el usuario escribe su correo completo (ej. admin@tpd.online) lo manda directo
+                if (userRaw.includes('@')) {
+                    await signInWithEmailAndPassword(auth, userRaw, pass);
+                    usedEmail = userRaw;
+                    loginSuccess = true;
                 } else {
-                    if (dbUserId === 'admin') {
-                        currentRole = 'Administrador';
-                        await window.loadAdminPanel();
-                        return;
+                    // DOBLE INTENTO BLINDADO: Para soportar cuentas de Agencia y cuentas de Cliente Antiguas
+                    try {
+                        usedEmail = `${userRaw}@tpd.online`;
+                        await signInWithEmailAndPassword(auth, usedEmail, pass);
+                        loginSuccess = true;
+                    } catch (e1) {
+                        usedEmail = `${userRaw}admin@tpd.online`;
+                        await signInWithEmailAndPassword(auth, usedEmail, pass);
+                        loginSuccess = true;
                     }
-                    Swal.fire('Error', 'Usuario no encontrado en la base de datos.', 'error');
+                }
+
+                if (loginSuccess) {
+                    let dbUserId = userRaw;
+                    if (userRaw.includes('@')) {
+                        dbUserId = userRaw.split('@')[0].replace('admin', '');
+                        if (userRaw === 'admin@tpd.online') dbUserId = 'admin';
+                    }
+
+                    const docRef = doc(db, 'artifacts', 'weddingflow', 'users', dbUserId);
+                    const snap = await getDoc(docRef);
+
+                    if (snap.exists()) {
+                        const data = snap.data();
+                        
+                        if (data.status === 'Suspendido') {
+                            await signOut(auth);
+                            return Swal.fire('Acceso Suspendido', 'Tu cuenta se encuentra suspendida.', 'warning');
+                        }
+                        
+                        currentRole = data.role || 'Cliente';
+                        
+                        if (currentRole === 'Hostess') {
+                            Swal.close();
+                            window.promptHostessLogin();
+                            return;
+                        }
+
+                        if (currentRole === 'Administrador' || currentRole === 'Staff' || currentRole === 'Soporte') {
+                            await window.loadAdminPanel(); 
+                        } else if (currentRole === 'Cliente Web') {
+                            window.location.href = `estudio_diseno.html?user=${dbUserId}`;
+                        } else {
+                            window.setupClientEnvironment(dbUserId, data); 
+                        }
+                    } else {
+                        if (dbUserId === 'admin' || dbUserId === 'root') {
+                            currentRole = 'Administrador';
+                            await window.loadAdminPanel();
+                            return;
+                        }
+                        Swal.fire('Error', 'Inquilino/Usuario no encontrado en la base de datos.', 'error');
+                    }
                 }
             } catch (error) {
                 console.error(error);
-                Swal.fire('Error', 'Fallo al leer la base de datos.', 'error');
+                Swal.fire({
+                    title: 'Acceso Rechazado',
+                    html: `Las credenciales son incorrectas.<br>Intento final: <b>${usedEmail}</b>`,
+                    icon: 'error'
+                });
             }
         };
 
@@ -1125,9 +1120,9 @@
                 const tbody = document.getElementById('admin-users-tbody');
                 tbody.innerHTML = '';
                 
+                // NOTA: SE QUITÓ EL FILTRO QUE OCULTABA A "ADMIN" PARA QUE VEAS TODOS TUS DATOS
                 snaps.forEach(docSnap => {
                     const d = docSnap.data();
-                    if(docSnap.id === 'admin') return; 
                     
                     let tipoDisplay = '';
                     if (d.role === 'Administrador' || d.role === 'Staff' || d.role === 'Soporte') tipoDisplay = '<span class="text-slate-400 italic">Agencia</span>';
@@ -1150,7 +1145,6 @@
                     if (d.role === 'Cliente' || d.role === 'Cliente Web' || d.role === 'Hostess') {
                          impBtn = `<button onclick="window.impStart('${docSnap.id}', '${d.role}')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-100 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1" title="Entrar al panel de este cliente"><i class="fa-solid fa-eye"></i> Supervisar</button>`;
                          
-                         // Modulito Premium (Estrella) - CÓDIGO NATIVO SIN GLOBOS QUE SE CORTEN
                          if (d.role === 'Cliente') {
                              let isPremium = d.hasPremiumLink === true;
                              premiumBtn = `
@@ -1160,7 +1154,6 @@
                          }
                     }
 
-                    // Boton 'i' de información
                     if (d.role === 'Administrador' || d.role === 'Staff' || d.role === 'Soporte') {
                         infoAdminBtn = `<button onclick="window.adminResetPassword('${docSnap.id}')" class="text-blue-400 hover:text-blue-600 transition p-2" title="Información de Contraseña"><i class="fa-solid fa-circle-info text-lg"></i></button>`;
                     }
@@ -1198,7 +1191,7 @@
 
                 if(!user || !pass) return Swal.fire('Atención', 'Rellena el ID de usuario y la contraseña.', 'warning');
                 
-                // RESTAURADO EL FORMATO ORIGINAL
+                // FORMATO ORIGINAL RESTAURADO PARA CREAR CLIENTES
                 const pseudoEmail = `${user}admin@tpd.online`;
 
                 await createUserWithEmailAndPassword(secondaryAuth, pseudoEmail, pass);
@@ -1426,7 +1419,6 @@
         
         window.crmRenderAll = function() { window.crmRenderGuests(); window.crmRenderTables(); window.crmRenderStats(); };
         
-        // Función mejorada del botón de Refrescar (Realiza una consulta a la DB real y limpia el buscador)
         window.crmLoadData = async function() { 
             document.getElementById('crm-search').value = ''; 
             Swal.fire({ title: 'Sincronizando...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
@@ -1552,7 +1544,6 @@
                 if (field === 'adultos') guest.pases = value; if (field === 'pases') guest.adultos = value;
             } else { guest[field] = value; }
             
-            // Actualización visual instantánea y luego guardado en la nube
             window.crmRenderGuests(); 
             window.crmSave();
         };
@@ -1578,7 +1569,6 @@
             reader.onload = function(ev) {
                 currentTicketLogo = ev.target.result;
                 
-                // Mostrar en la pantalla HTML al 90%
                 const bgImageLayer = document.getElementById('ticket-bg-image');
                 const overlayLayer = document.getElementById('ticket-dark-overlay');
                 
@@ -1595,7 +1585,6 @@
         window.clearTicketLogo = function() {
             currentTicketLogo = null;
             
-            // Ocultar de la pantalla HTML
             const bgImageLayer = document.getElementById('ticket-bg-image');
             const overlayLayer = document.getElementById('ticket-dark-overlay');
             
@@ -1615,20 +1604,14 @@
             const activeColor = state.config.themeColor || '#0f172a';
             
             if (currentTicketLogo) {
-                // Imagen cubre el 90% (135mm de altura)
                 pdf.addImage(currentTicketLogo, 'PNG', 0, 0, 80, 135);
-                
-                // Filtro oscuro sobre la imagen para legibilidad
                 pdf.setFillColor(15, 23, 42); // Color slate-900
                 pdf.setGState(new pdf.GState({opacity: 0.65})); // 65% de oscuridad
                 pdf.rect(0, 0, 80, 135, 'F');
                 pdf.setGState(new pdf.GState({opacity: 1.0})); // Restaurar
-                
-                // Franja inferior del 10% (15mm) con el color exacto del Tema
                 pdf.setFillColor(activeColor);
                 pdf.rect(0, 135, 80, 15, 'F');
             } else {
-                // Sin imagen premium, el color del tema cubre el 100%
                 pdf.setFillColor(activeColor);
                 pdf.rect(0, 0, 80, 150, 'F');
             }
@@ -1678,10 +1661,7 @@
             const guest = state.invitados.find(g => g.id === id);
             if(!guest) return;
             
-            // Limpiar la imagen subida temporalmente del ticket anterior
             window.clearTicketLogo();
-            
-            // PINTAR EL COLOR DEL TEMA EN EL MODAL VISUAL HTML
             document.getElementById('ticket-header-bg').style.backgroundColor = state.config.themeColor || '#1e293b';
 
             document.getElementById('ticket-event-name').innerText = currentEventType === 'Otro' ? 'Evento Especial' : currentEventType;
@@ -1756,7 +1736,6 @@
 
                 if (includeLink && guest.status !== 'Declinado') {
                     const activeTarget = impersonatingId || currentUser;
-                    // Corrección para subdominio exacto solicitado
                     msg += `\n\n👉 *Consulta tu Pase Digital y Ubicaciones aquí:*\nhttps://boda.tupasedigital.online/index2.html?u=${activeTarget}&id=${guest.id}`;
                 }
 
