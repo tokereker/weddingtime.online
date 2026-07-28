@@ -975,76 +975,83 @@
             if (!userRaw || !pass) return Swal.fire('Error', 'Ingresa ID y contraseña.', 'error');
             Swal.fire({ title: 'Autenticando...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
 
+            let emailsToTry = [];
+            if (userRaw.includes('@')) {
+                emailsToTry.push(userRaw);
+            } else {
+                if (userRaw === 'admin') {
+                    emailsToTry.push('admin@tpd.online');
+                    emailsToTry.push('adminadmin@tpd.online');
+                } else {
+                    emailsToTry.push(`${userRaw}admin@tpd.online`); 
+                    emailsToTry.push(`${userRaw}@tpd.online`);      
+                }
+            }
+
             let loginSuccess = false;
-            let usedEmail = userRaw;
+            let usedEmail = '';
+
+            for (let email of emailsToTry) {
+                try {
+                    await signInWithEmailAndPassword(auth, email, pass);
+                    loginSuccess = true;
+                    usedEmail = email;
+                    break;
+                } catch (e) {
+                    console.warn("Fallo intento con:", email);
+                }
+            }
+
+            if (!loginSuccess) {
+                return Swal.fire({
+                    title: 'Acceso Rechazado',
+                    text: 'Las credenciales son incorrectas. Verifica que el ID y contraseña sean correctos.',
+                    icon: 'error'
+                });
+            }
+
+            let dbUserId = userRaw;
+            if (userRaw === 'admin' || usedEmail.startsWith('admin')) {
+                dbUserId = 'admin';
+            }
 
             try {
-                if (userRaw.includes('@')) {
-                    await signInWithEmailAndPassword(auth, userRaw, pass);
-                    usedEmail = userRaw;
-                    loginSuccess = true;
-                } else {
-                    // DOBLE INTENTO BLINDADO: Para soportar las cuentas de Agencia y las cuentas de Cliente
-                    try {
-                        usedEmail = `${userRaw}@tpd.online`;
-                        await signInWithEmailAndPassword(auth, usedEmail, pass);
-                        loginSuccess = true;
-                    } catch (e1) {
-                        usedEmail = `${userRaw}admin@tpd.online`;
-                        await signInWithEmailAndPassword(auth, usedEmail, pass);
-                        loginSuccess = true;
-                    }
-                }
+                const docRef = doc(db, 'artifacts', 'weddingflow', 'users', dbUserId);
+                const snap = await getDoc(docRef);
 
-                if (loginSuccess) {
-                    let dbUserId = userRaw;
-                    if (userRaw.includes('@')) {
-                        dbUserId = userRaw.split('@')[0].replace('admin', '');
-                        if (userRaw === 'admin@tpd.online') dbUserId = 'admin';
+                if (snap.exists()) {
+                    const data = snap.data();
+                    if (data.status === 'Suspendido') {
+                        await signOut(auth);
+                        return Swal.fire('Acceso Suspendido', 'Tu cuenta se encuentra suspendida.', 'warning');
+                    }
+                    
+                    currentRole = data.role || 'Cliente';
+                    
+                    if (currentRole === 'Hostess') {
+                        Swal.close();
+                        window.promptHostessLogin();
+                        return;
                     }
 
-                    const docRef = doc(db, 'artifacts', 'weddingflow', 'users', dbUserId);
-                    const snap = await getDoc(docRef);
-
-                    if (snap.exists()) {
-                        const data = snap.data();
-                        
-                        if (data.status === 'Suspendido') {
-                            await signOut(auth);
-                            return Swal.fire('Acceso Suspendido', 'Tu cuenta se encuentra suspendida.', 'warning');
-                        }
-                        
-                        currentRole = data.role || 'Cliente';
-                        
-                        if (currentRole === 'Hostess') {
-                            Swal.close();
-                            window.promptHostessLogin();
-                            return;
-                        }
-
-                        if (currentRole === 'Administrador' || currentRole === 'Staff' || currentRole === 'Soporte') {
-                            await window.loadAdminPanel(); 
-                        } else if (currentRole === 'Cliente Web') {
-                            window.location.href = `estudio_diseno.html?user=${dbUserId}`;
-                        } else {
-                            window.setupClientEnvironment(dbUserId, data); 
-                        }
+                    if (currentRole === 'Administrador' || currentRole === 'Staff' || currentRole === 'Soporte') {
+                        await window.loadAdminPanel(); 
+                    } else if (currentRole === 'Cliente Web') {
+                        window.location.href = `estudio_diseno.html?user=${dbUserId}`;
                     } else {
-                        if (dbUserId === 'admin' || dbUserId === 'root') {
-                            currentRole = 'Administrador';
-                            await window.loadAdminPanel();
-                            return;
-                        }
-                        Swal.fire('Error', 'Inquilino/Usuario no encontrado en la base de datos.', 'error');
+                        window.setupClientEnvironment(dbUserId, data); 
                     }
+                } else {
+                    if (dbUserId === 'admin') {
+                        currentRole = 'Administrador';
+                        await window.loadAdminPanel();
+                        return;
+                    }
+                    Swal.fire('Error', 'Usuario no encontrado en la base de datos.', 'error');
                 }
             } catch (error) {
                 console.error(error);
-                Swal.fire({
-                    title: 'Acceso Rechazado',
-                    html: `Las credenciales son incorrectas.<br>Intento final: <b>${usedEmail}</b>`,
-                    icon: 'error'
-                });
+                Swal.fire('Error', 'Fallo al leer la base de datos.', 'error');
             }
         };
 
@@ -1191,13 +1198,12 @@
 
                 if(!user || !pass) return Swal.fire('Atención', 'Rellena el ID de usuario y la contraseña.', 'warning');
                 
+                // RESTAURADO EL FORMATO ORIGINAL
                 const pseudoEmail = `${user}admin@tpd.online`;
 
-                // 1. Crear usuario en la bóveda segura de Firebase Auth usando la app secundaria
                 await createUserWithEmailAndPassword(secondaryAuth, pseudoEmail, pass);
-                await signOut(secondaryAuth); // Limpiamos la app secundaria
+                await signOut(secondaryAuth);
 
-                // 2. Guardar datos en Firestore (¡SIN la contraseña por seguridad!)
                 const docRef = doc(db, 'artifacts', 'weddingflow', 'users', user);
                 await setDoc(docRef, { role, status: 'Activo', eventType: "", invitados: [], mesas: [{id:1,nombre:"Mesa VIP"}], config: {capacidadMesa:10, themeColor: '#C3A343', extras: 0, totalExtrasCost: 0, fontFamily: 'Playfair Display'}, croquis: null, hasPremiumLink: false });
                 
