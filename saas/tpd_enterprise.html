@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TPD Enterprise - SaaS CRM & Hub</title>
+    <title>TPD Enterprise - SaaS CRM & Hub V.3.0</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome -->
@@ -832,7 +832,7 @@
                         <div class="relative group inline-block ml-1">
                             <i class="fa-solid fa-circle-info text-blue-500 hover:text-blue-700 transition text-sm"></i>
                             <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block w-64 bg-slate-800 text-white text-[10px] p-2.5 rounded-lg shadow-xl z-50 text-center font-medium leading-relaxed cursor-default pointer-events-none">
-                                El enlace apuntará a tu repositorio web. Ej: https://boda.tupasedigital.online/index2.html?u={userId}&id={guestId}
+                                El enlace apuntará al repositorio web correspondiente. <br>Ej: https://subdominio.tupasedigital.online/index2.html...
                                 <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-800"></div>
                             </div>
                         </div>
@@ -906,6 +906,20 @@
         
         // FLAG GLOBAL DE PREMIUM
         let isPremiumUser = false;
+        
+        // UTILIDAD PARA SUBDOMINIOS DINÁMICOS
+        function getSubdomain(eventType) {
+            const map = {
+                "XV Años": "xvana",
+                "Bautizo": "bautizo",
+                "Primera Comunión": "comunion",
+                "Confirmación": "confirmacion",
+                "Primera Comunión y Confirmación": "comunion",
+                "Cumpleaños": "cumple",
+                "Boda": "boda"
+            };
+            return map[eventType] || "boda";
+        }
         
         let hCurrentGuest = null;
         let hAduToEnter = 0;
@@ -1024,10 +1038,13 @@
             }
 
             let dbUserId = userRaw;
-            if (userRaw === 'admin' || usedEmail.startsWith('admin')) {
+            if (userRaw === 'admin' || usedEmail === 'admin@tpd.online' || usedEmail === 'adminadmin@tpd.online') {
                 dbUserId = 'admin';
-            } else if (usedEmail.includes('@')) {
-                dbUserId = usedEmail.split('@')[0].replace('admin', '');
+            } else if (userRaw.includes('@')) {
+                let emailPrefix = usedEmail.split('@')[0];
+                dbUserId = emailPrefix.replace(/admin$/, '');
+            } else {
+                dbUserId = userRaw;
             }
 
             try {
@@ -1203,7 +1220,7 @@
 
                 if(!user || !pass) return Swal.fire('Atención', 'Rellena el ID de usuario y la contraseña.', 'warning');
                 
-                const pseudoEmail = `${user}admin@tpd.online`;
+                const pseudoEmail = `${user}@tpd.online`;
 
                 await createUserWithEmailAndPassword(secondaryAuth, pseudoEmail, pass);
                 await signOut(secondaryAuth);
@@ -1507,7 +1524,7 @@
             window.crmSave(); window.crmRenderAll(); Toast.fire({ icon: 'success', title: 'Invitado Guardado' });
         };
 
-        window.crmRenderGuests = function() {
+		window.crmRenderGuests = function() {
             const tbody = document.getElementById('crm-guests-tbody');
             if(!tbody) return;
             const term = document.getElementById('crm-search').value.toLowerCase();
@@ -1524,7 +1541,12 @@
 
                 tr.innerHTML = `
                     <td class="p-4 text-center w-12"><input type="checkbox" class="g-cb w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer" value="${g.id}"></td>
-                    <td class="p-4 font-bold text-slate-800">${g.nombre}</td>
+                    <td class="p-4">
+                        <div class="flex items-center gap-2 font-bold text-slate-800">
+                            ${g.nombre}
+                            <button onclick="window.editGuestName(${g.id})" class="text-slate-400 hover:text-blue-600 transition" title="Editar Nombre"><i class="fa-solid fa-pencil text-xs"></i></button>
+                        </div>
+                    </td>
                     <td class="p-4"><select onchange="window.crmUpdateGuest(${g.id}, 'grupo', this.value)" class="border border-slate-200 p-1.5 text-xs rounded-lg w-28 outline-none text-slate-700 bg-white cursor-pointer font-bold focus:border-blue-500 transition">${optionsGrupo.map(opt => `<option value="${opt}" ${g.grupo===opt?'selected':''}>${opt}</option>`).join('')}</select></td>
                     <td class="p-4"><input type="text" value="${g.telefono || ''}" onchange="window.crmUpdateGuest(${g.id}, 'telefono', this.value)" placeholder="10 Digitos" class="border border-slate-200 p-1.5 text-xs rounded-lg w-28 outline-none focus:border-blue-500 transition"></td>
                     <td class="p-4 text-center">
@@ -1553,6 +1575,7 @@
                 tbody.appendChild(tr);
             });
         };
+		
 
         window.crmUpdateGuest = function(id, field, value) {
             const guest = state.invitados.find(g => g.id === id);
@@ -1565,6 +1588,28 @@
             window.crmRenderGuests(); 
             window.crmSave();
         };
+	window.editGuestName = function(id) {
+            const guest = state.invitados.find(g => g.id === id);
+            if (!guest) return;
+            
+            Swal.fire({
+                title: 'Editar Nombre',
+                input: 'text',
+                inputValue: guest.nombre,
+                showCancelButton: true,
+                confirmButtonColor: '#2563eb',
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Actualizar'
+            }).then((result) => {
+                if (result.isConfirmed && result.value.trim() !== '') {
+                    guest.nombre = result.value.trim();
+                    window.crmRenderGuests(); // Refresca la tabla
+                    window.crmSave(); // Guarda en Firebase
+                    Toast.fire({ icon: 'success', title: 'Nombre actualizado en la base de datos' });
+                }
+            });
+        };
+
 
         window.crmDeleteSelected = function() {
             const selected = Array.from(document.querySelectorAll('.g-cb:checked')).map(cb => parseInt(cb.value));
@@ -1715,7 +1760,8 @@
             qrContainer.innerHTML = '';
             
             const activeTarget = impersonatingId || currentUser;
-            const rsvpUrl = `https://boda.tupasedigital.online/index2.html?u=${activeTarget}&id=${guest.id}`;
+            const subdominio = getSubdomain(currentEventType);
+            const rsvpUrl = `https://${subdominio}.tupasedigital.online/index2.html?u=${activeTarget}&id=${guest.id}`;
             
             new QRCode(qrContainer, { text: rsvpUrl, width: 140, height: 140, colorDark : "#1e293b", colorLight : "#ffffff", correctLevel : QRCode.CorrectLevel.H });
             
@@ -1776,7 +1822,8 @@
 
                 if (includeLink && guest.status !== 'Declinado') {
                     const activeTarget = impersonatingId || currentUser;
-                    msg += `\n\n👉 *Consulta tu Pase Digital y Ubicaciones aquí:*\nhttps://boda.tupasedigital.online/index2.html?u=${activeTarget}&id=${guest.id}`;
+                    const subdominio = getSubdomain(currentEventType);
+                    msg += `\n\n👉 *Consulta tu Pase Digital y Ubicaciones aquí:*\nhttps://${subdominio}.tupasedigital.online/index2.html?u=${activeTarget}&id=${guest.id}`;
                 }
 
                 const msgEl = document.getElementById('wa-standard-msg');
