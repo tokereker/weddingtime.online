@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TPD Enterprise - SaaS CRM & Hub v 4.0 </title>
+    <title>TPD Enterprise - SaaS CRM & Hub</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome -->
@@ -435,18 +435,6 @@
                                 <input type="number" id="cfg-duracion" min="1" max="12" onchange="window.crmUpdateConfig('eventDuration', this.value)" class="w-full border-2 border-teal-100 rounded-lg p-2 text-xs font-bold outline-none focus:border-teal-500 text-center">
                             </div>
                             <div>
-                                <label class="text-[9px] sm:text-[10px] font-bold text-teal-800 uppercase tracking-wider block mb-1">Límite RSVP (Confirmación)</label>
-                                <input type="date" id="cfg-limite-rsvp" onchange="window.crmUpdateConfig('fechaLimiteRSVP', this.value)" class="w-full border-2 border-teal-100 rounded-lg p-2 text-xs font-bold outline-none focus:border-teal-500 bg-white">
-                            </div>
-                            <div>
-                                <label class="text-[9px] sm:text-[10px] font-bold text-teal-800 uppercase tracking-wider block mb-1">Baile Principal</label>
-                                <select id="cfg-musica-baile" onchange="window.crmUpdateConfig('musicMain', this.value)" class="w-full border-2 border-teal-100 rounded-lg p-2 text-[10px] sm:text-xs font-bold outline-none focus:border-teal-500 bg-white">
-                                    <option value="DJ">DJ Solo</option>
-                                    <option value="Grupo Versátil">Grupo Versátil</option>
-                                    <option value="Ambos">DJ + Grupo</option>
-                                </select>
-                            </div>
-                            <div>
                                 <label class="text-[9px] sm:text-[10px] font-bold text-teal-800 uppercase tracking-wider block mb-1">Música Cena</label>
                                 <select id="cfg-musica-cena" onchange="window.crmUpdateConfig('musicDinner', this.value)" class="w-full border-2 border-teal-100 rounded-lg p-2 text-[10px] sm:text-xs font-bold outline-none focus:border-teal-500 bg-white">
                                     <option value="Playlist">Playlist/Audio</option>
@@ -457,6 +445,14 @@
                                 </select>
                             </div>
                             <div>
+                                <label class="text-[9px] sm:text-[10px] font-bold text-teal-800 uppercase tracking-wider block mb-1">Baile Principal</label>
+                                <select id="cfg-musica-baile" onchange="window.crmUpdateConfig('musicMain', this.value)" class="w-full border-2 border-teal-100 rounded-lg p-2 text-[10px] sm:text-xs font-bold outline-none focus:border-teal-500 bg-white">
+                                    <option value="DJ">DJ Solo</option>
+                                    <option value="Grupo Versátil">Grupo Versátil</option>
+                                    <option value="Ambos">DJ + Grupo</option>
+                                </select>
+                            </div>
+                            <div class="col-span-2">
                                 <label class="text-[9px] sm:text-[10px] font-bold text-teal-800 uppercase tracking-wider block mb-1">Tornaboda (Cierre)</label>
                                 <select id="cfg-musica-torna" onchange="window.crmUpdateConfig('musicTorna', this.value)" class="w-full border-2 border-teal-100 rounded-lg p-2 text-[10px] sm:text-xs font-bold outline-none focus:border-teal-500 bg-white">
                                     <option value="Ninguno">Ninguno</option>
@@ -1482,7 +1478,7 @@
             }
             window.crmSave(); 
             if(k === 'capacity' || k === 'capacidadMesa') window.crmRenderTables(); 
-            if(['eventStartTime', 'eventDuration', 'musicMain', 'musicDinner', 'musicTorna', 'flowersPerTable', 'fechaLimiteRSVP'].includes(k)) window.crmRenderStats(); 
+            if(['eventStartTime', 'eventDuration', 'musicMain', 'musicDinner', 'musicTorna', 'flowersPerTable'].includes(k)) window.crmRenderStats(); 
         };
 
         window.crmSwitchTab = function(tab) {
@@ -1886,7 +1882,6 @@
             document.getElementById('cfg-musica-baile').value = state.config.musicMain || "DJ";
             document.getElementById('cfg-musica-torna').value = state.config.musicTorna || "Ninguno";
             document.getElementById('cfg-flores').value = state.config.flowersPerTable || 15;
-            document.getElementById('cfg-limite-rsvp').value = state.config.fechaLimiteRSVP || "";
 
             document.getElementById('st-tot').innerText = totalGeneral; 
             document.getElementById('st-conf').innerText = conf; 
