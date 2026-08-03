@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo de Plantilla Dinámica (SaaS)</title>
+    <!-- Tailwind solo para que se vea bonito rápido -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-100 min-h-screen flex items-center justify-center font-sans">
+
+    <!-- PANTALLA 1: EL LOADER (Mientras va a buscar a Firebase) -->
+    <div id="pantalla-carga" class="text-center flex flex-col items-center">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+        <p class="text-slate-500 font-bold">Buscando información del evento...</p>
+    </div>
+
+    <!-- PANTALLA 2: TU DISEÑO (Oculto al principio) -->
+    <div id="mi-diseno" class="hidden bg-white p-10 rounded-2xl shadow-xl text-center max-w-lg w-full border-t-8 border-gray-300 transition-colors duration-500" id="tarjeta-principal">
+        
+        <p class="text-sm text-gray-400 uppercase tracking-widest mb-2">Estás invitado a</p>
+        
+        <!-- ETIQUETA 1: El título del evento -->
+        <h1 id="titulo-evento" class="text-4xl font-black text-slate-800 mb-6">Cargando Título...</h1>
+        
+        <div class="bg-slate-50 p-4 rounded-lg mb-6">
+            <h3 class="font-bold text-slate-700 mb-2">Detalles del Evento:</h3>
+            <!-- ETIQUETA 2: La Hora -->
+            <p class="text-slate-600">🕔 <span id="hora-evento">Cargando hora...</span></p>
+            <!-- ETIQUETA 3: El Color Elegido (Para mostrar que lee configuraciones) -->
+            <p class="text-slate-600 mt-2">🎨 Color elegido: <span id="color-evento" class="font-bold">Ninguno</span></p>
+        </div>
+
+        <button class="bg-slate-800 text-white font-bold py-3 px-6 rounded-lg shadow hover:bg-slate-700 w-full transition">
+            Confirmar Asistencia
+        </button>
+    </div>
+
+    <!-- PANTALLA 3: ERROR (Si escriben mal el subdominio) -->
+    <div id="pantalla-error" class="hidden text-center">
+        <p class="text-6xl mb-4">😢</p>
+        <h2 class="text-2xl font-bold text-slate-800">Evento no encontrado</h2>
+        <p class="text-slate-500">Revisa que la URL esté escrita correctamente.</p>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- AQUÍ EMPIEZA EL CEREBRO DE LA PÁGINA -->
+    <!-- ================================================================= -->
+    <script type="module">
+        // 1. Importamos las herramientas de Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // 2. Tu llave secreta de la base de datos
+        const firebaseConfig = {
+            apiKey: "AIzaSyCaRKtx54HYM5jXB2DgtZeLciUNB7Inqjw",
+            authDomain: "wedding-crm-6853f.firebaseapp.com",
+            databaseURL: "https://wedding-crm-6853f-default-rtdb.firebaseio.com",
+            projectId: "wedding-crm-6853f",
+            storageBucket: "wedding-crm-6853f.firebasestorage.app",
+            messagingSenderId: "956437103756",
+            appId: "1:956437103756:web:b2d27aad4e6bfded7327a9"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // 3. Función principal que arranca al abrir la página
+        window.onload = async function() {
+            
+            // PASO A: Extraer el Subdominio (Ej. "bodapacoypati")
+            let subdominio = window.location.hostname.split('.')[0]; 
+            
+            // (Truco de prueba: Si abres la página en tu compu local y pones ?u=carlos, simula ser el subdominio)
+            const params = new URLSearchParams(window.location.search);
+            if (params.has('u')) subdominio = params.get('u');
+
+            // Si no hay subdominio (están en la página principal tuya)
+            if (!subdominio || subdominio === 'localhost') {
+                mostrarPantalla('pantalla-error');
+                return;
+            }
+
+            try {
+                // PASO B: Tocarle la puerta a Firebase y pedir el documento
+                const docRef = doc(db, 'artifacts', 'weddingflow', 'users', subdominio);
+                const documento = await getDoc(docRef);
+
+                // PASO C: Si el cliente existe, inyectar los datos en el HTML
+                if (documento.exists()) {
+                    const datosDelCliente = documento.data();
+
+                    // -- Inyectamos el Título --
+                    // Si en Firebase "eventType" dice "Boda", escribirá "Nuestra Boda"
+                    const tipoEvento = datosDelCliente.eventType || "Nuestra Celebración";
+                    document.getElementById('titulo-evento').innerText = tipoEvento;
+
+                    // -- Inyectamos la Hora --
+                    // Busca en la configuración si hay una hora guardada
+                    if (datosDelCliente.config && datosDelCliente.config.eventStartTime) {
+                        document.getElementById('hora-evento').innerText = datosDelCliente.config.eventStartTime + " hrs";
+                    }
+
+                    // -- Inyectamos el Color --
+                    if (datosDelCliente.config && datosDelCliente.config.themeColor) {
+                        const colorGuardado = datosDelCliente.config.themeColor;
+                        document.getElementById('color-evento').innerText = colorGuardado;
+                        document.getElementById('color-evento').style.color = colorGuardado;
+                        
+                        // Incluso podemos cambiar el borde de la tarjeta con ese color:
+                        document.getElementById('mi-diseno').style.borderColor = colorGuardado;
+                    }
+
+                    // Quitamos el loader y mostramos tu diseño
+                    mostrarPantalla('mi-diseno');
+
+                } else {
+                    // Si buscaron un subdominio que no existe en Firebase (Ej. bodafalsa)
+                    mostrarPantalla('pantalla-error');
+                }
+            } catch (error) {
+                console.error("Hubo un fallo: ", error);
+                mostrarPantalla('pantalla-error');
+            }
+        };
+
+        // Utilidad rápida para cambiar de pantallas
+        function mostrarPantalla(idAMostrar) {
+            document.getElementById('pantalla-carga').classList.add('hidden');
+            document.getElementById('mi-diseno').classList.add('hidden');
+            document.getElementById('pantalla-error').classList.add('hidden');
+            
+            document.getElementById(idAMostrar).classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
