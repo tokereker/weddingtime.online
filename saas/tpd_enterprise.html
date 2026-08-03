@@ -832,7 +832,7 @@
                         <div class="relative group inline-block ml-1">
                             <i class="fa-solid fa-circle-info text-blue-500 hover:text-blue-700 transition text-sm"></i>
                             <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block w-64 bg-slate-800 text-white text-[10px] p-2.5 rounded-lg shadow-xl z-50 text-center font-medium leading-relaxed cursor-default pointer-events-none">
-                                El enlace apuntará al repositorio web correspondiente. <br>Ej: https://subdominio.tupasedigital.online/index2.html...
+                                El enlace apuntará al repositorio web correspondiente. <br>Ej: https://bodacarlos.tupasedigital.online/index2.html?u=carlos...
                                 <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-800"></div>
                             </div>
                         </div>
@@ -1761,7 +1761,10 @@
             
             const activeTarget = impersonatingId || currentUser;
             const subdominio = getSubdomain(currentEventType);
-            const rsvpUrl = `https://${subdominio}.tupasedigital.online/index2.html?u=${activeTarget}&id=${guest.id}`;
+            
+            // Generación de Link Dinámico [EVENTO] + [ID]
+            const enlaceDinamico = `${subdominio}${activeTarget}`.replace(/\s+/g, '').toLowerCase();
+            const rsvpUrl = `https://${enlaceDinamico}.tupasedigital.online/index2.html?u=${activeTarget}&id=${guest.id}`;
             
             new QRCode(qrContainer, { text: rsvpUrl, width: 140, height: 140, colorDark : "#1e293b", colorLight : "#ffffff", correctLevel : QRCode.CorrectLevel.H });
             
@@ -1823,7 +1826,10 @@
                 if (includeLink && guest.status !== 'Declinado') {
                     const activeTarget = impersonatingId || currentUser;
                     const subdominio = getSubdomain(currentEventType);
-                    msg += `\n\n👉 *Consulta tu Pase Digital y Ubicaciones aquí:*\nhttps://${subdominio}.tupasedigital.online/index2.html?u=${activeTarget}&id=${guest.id}`;
+                    
+                    // Generación de Link Dinámico [EVENTO] + [ID]
+                    const enlaceDinamico = `${subdominio}${activeTarget}`.replace(/\s+/g, '').toLowerCase();
+                    msg += `\n\n👉 *Consulta tu Pase Digital y Ubicaciones aquí:*\nhttps://${enlaceDinamico}.tupasedigital.online/index2.html?u=${activeTarget}&id=${guest.id}`;
                 }
 
                 const msgEl = document.getElementById('wa-standard-msg');
