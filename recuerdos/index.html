@@ -71,7 +71,7 @@
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
         /* ======================================================== */
-        /* ESTILOS DEL PDF COMPACTO (Cero recortes)                 */
+        /* ESTILOS DEL PDF COMPACTO Y PROPORCIONAL                   */
         /* ======================================================== */
         #print-container {
             position: absolute; left: -9999px; top: 0; 
@@ -90,7 +90,11 @@
         .pdf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         
         .pdf-card { background: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.04); border: 1px solid #f2e8e5; }
-        .pdf-img { width: 100%; height: 110px; object-fit: cover; }
+        
+        /* Uso de object-contain para mantener la proporción de la imagen sin estirarla */
+        .pdf-img-container { width: 100%; height: 120px; background-color: #1a1a1a; display: flex; items-center; justify-content: center; }
+        .pdf-img { width: 100%; height: 100%; object-fit: contain; }
+        
         .pdf-content { padding: 10px 12px; border-top: 3px solid #d4af37; }
         .pdf-content h2 { font-family: 'Playfair Display', serif; font-size: 15px; color: #1a1a1a; margin-top: 0; margin-bottom: 4px; }
         
@@ -111,7 +115,7 @@
                     <div class="w-10 h-10 bg-brand-900 rounded-full flex items-center justify-center text-brand-500 shadow-md">
                         <i class="fa-solid fa-ring text-xl"></i>
                     </div>
-                    <span class="font-serif font-bold text-xl tracking-widest text-brand-900 uppercase">VIP Wedding</span>
+                    <span class="font-serif font-bold text-xl tracking-widest text-brand-900 uppercase">Recuerdos VIP</span>
                 </div>
                 <div>
                     <a href="https://wa.me/522202662703?text=Hola!%20Me%20encantaron%20sus%20opciones%20de%20recuerdos.%20Me%20gustar%C3%ADa%20recibir%20una%20cotizaci%C3%B3n%20para%20mi%20evento.%20%F0%9F%92%8D%E2%9C%A8" target="_blank" class="bg-brand-900 hover:bg-brand-600 text-white font-semibold py-2.5 px-6 rounded-full transition-all duration-300 flex items-center gap-2 shadow-[0_4px_15px_rgba(212,175,55,0.3)] text-sm md:text-base hover:scale-105">
@@ -170,15 +174,15 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
                 
-                <!-- 1. KITS Y ABANICOS (CARRUSEL 1) -->
+                <!-- 1. KITS Y ABANICOS -->
                 <article class="bg-white rounded-[2rem] p-3 hover-lift border border-slate-100 relative group fade-in-up shadow-xl">
                     <div class="absolute top-6 right-6 bg-brand-500 text-white text-[10px] font-bold uppercase tracking-wider py-1.5 px-4 rounded-full z-10 shadow-lg">El Favorito</div>
                     
                     <div class="relative h-64 md:h-80 w-full rounded-[1.5rem] overflow-hidden mb-6 group/carousel">
                         <div id="slider-1" data-current="0" data-total="3" class="flex w-full h-full transition-transform duration-700 ease-in-out">
                             <img src="DETALLE PERFECTO.png" alt="Abanicos" class="w-full h-full object-cover flex-shrink-0">
-                            <img src="image_06f13d.png" alt="Bolsas Anticruda" class="w-full h-full object-cover flex-shrink-0">
-                            <img src="especiales2.png" alt="Kits Especiales" class="w-full h-full object-cover flex-shrink-0">
+                            <img src="especiales2.png" alt="Bolsas Anticruda" class="w-full h-full object-cover flex-shrink-0">
+                            <img src="especiales1" alt="Kits Especiales" class="w-full h-full object-cover flex-shrink-0">
                         </div>
                         
                         <button onclick="moveSlide('slider-1', -1)" class="absolute left-3 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white w-10 h-10 rounded-full opacity-0 group-hover/carousel:opacity-100 transition-all flex items-center justify-center backdrop-blur-sm z-20"><i class="fa-solid fa-chevron-left"></i></button>
@@ -223,14 +227,14 @@
                     </div>
                 </article>
 
-                <!-- 2. LICORES PREMIUM (CARRUSEL 2) -->
+                <!-- 2. LICORES PREMIUM -->
                 <article class="bg-white rounded-[2rem] p-3 hover-lift border border-slate-100 relative group fade-in-up shadow-xl" style="transition-delay: 100ms;">
                     <div class="absolute top-6 right-6 bg-brand-900 text-white text-[10px] font-bold uppercase tracking-wider py-1.5 px-4 rounded-full z-10 shadow-lg border border-brand-500">Premium</div>
                     
                     <div class="relative h-64 md:h-80 w-full rounded-[1.5rem] overflow-hidden mb-6 group/carousel bg-neutral-900 flex items-center">
                         <div id="slider-2" data-current="0" data-total="2" class="flex w-full h-full transition-transform duration-700 ease-in-out">
                             <img src="PREMIUM-2.png" alt="Licores Premium" class="w-full h-full object-contain flex-shrink-0">
-                            <img src="image_06f176.png" alt="Kits Cervezas Temáticos" class="w-full h-full object-contain flex-shrink-0">
+                            <img src="PREMIUM.png" alt="Licores Premium" class="w-full h-full object-contain flex-shrink-0">
                         </div>
                         
                         <button onclick="moveSlide('slider-2', -1)" class="absolute left-3 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-white w-10 h-10 rounded-full opacity-0 group-hover/carousel:opacity-100 transition-all flex items-center justify-center backdrop-blur-sm z-20"><i class="fa-solid fa-chevron-left"></i></button>
@@ -374,13 +378,13 @@
     </footer>
 
     <!-- ========================================================================= -->
-    <!-- CONTENEDOR OCULTO PARA GENERAR EL PDF COMPACTO (Ajustado para Hoja Carta) -->
+    <!-- CONTENEDOR OCULTO PARA GENERAR EL PDF PROPORCIONAL                        -->
     <!-- ========================================================================= -->
     <div id="print-wrapper" style="overflow: hidden; height: 0;">
         <div id="print-container">
             
             <div class="pdf-header">
-                <h1>CATÁLOGO VIP</h1>
+                <h1>RECUERDOS VIP</h1>
                 <p>Haz que tu boda sea inolvidable</p>
             </div>
 
@@ -389,7 +393,9 @@
                     
                     <!-- Tarjeta 1 -->
                     <div class="pdf-card">
-                        <img src="DETALLE PERFECTO.png" class="pdf-img">
+                        <div class="pdf-img-container">
+                            <img src="DETALLE PERFECTO.png" class="pdf-img">
+                        </div>
                         <div class="pdf-content">
                             <h2>🪭 Abanicos Personalizados</h2>
                             <ul style="font-size: 11px; line-height: 1.5; color: #4b5563; margin-bottom: 0; padding-left: 15px;">
@@ -401,7 +407,9 @@
 
                     <!-- Tarjeta 2: especiales2.png -->
                     <div class="pdf-card">
-                        <img src="especiales2.png" class="pdf-img">
+                        <div class="pdf-img-container">
+                            <img src="especiales2.png" class="pdf-img">
+                        </div>
                         <div class="pdf-content">
                             <h2>🥳 Kits Anticruda</h2>
                             <p style="font-size: 10px; color: #6b7280; margin-bottom: 6px;">Alka-Seltzer, Trident, Cafiaspirina, Pica Fresa.</p>
@@ -414,7 +422,9 @@
 
                     <!-- Tarjeta 3 -->
                     <div class="pdf-card">
-                        <img src="DETALLE ELEGANTE.png" class="pdf-img">
+                        <div class="pdf-img-container">
+                            <img src="DETALLE ELEGANTE.png" class="pdf-img">
+                        </div>
                         <div class="pdf-content">
                             <h2>🏛️ Detalles en Ónix</h2>
                             <ul style="font-size: 11px; line-height: 1.5; color: #4b5563; margin-bottom: 0; padding-left: 15px;">
@@ -427,7 +437,9 @@
 
                     <!-- Tarjeta 4 -->
                     <div class="pdf-card">
-                        <img src="AROMA EN RECUERDO.png" class="pdf-img">
+                        <div class="pdf-img-container">
+                            <img src="AROMA EN RECUERDO.png" class="pdf-img">
+                        </div>
                         <div class="pdf-content">
                             <h2>🕯️ Velas Aromáticas</h2>
                             <p style="font-size: 11px; color: #4b5563; margin-bottom: 4px;">Vainilla y Frutos Rojos.</p>
@@ -440,7 +452,9 @@
 
                     <!-- Tarjeta 5 -->
                     <div class="pdf-card">
-                        <img src="PREMIUM-2.png" class="pdf-img">
+                        <div class="pdf-img-container">
+                            <img src="PREMIUM-2.png" class="pdf-img">
+                        </div>
                         <div class="pdf-content">
                             <h2>🍾 Licores Premium</h2>
                             <p style="font-size: 10px; margin-bottom: 4px; color: #4b5563;"><strong>Anís Criollo (500ml)</strong>: <span style="color: #1a1a1a; font-weight: bold;">$200 c/u</span></p>
@@ -452,9 +466,11 @@
                         </div>
                     </div>
 
-                    <!-- Tarjeta 6 -->
+                    <!-- Tarjeta 6: especiales1.png -->
                     <div class="pdf-card">
-                        <img src="image_06f176.png" class="pdf-img">
+                        <div class="pdf-img-container">
+                            <img src="especiales1.png" class="pdf-img">
+                        </div>
                         <div class="pdf-content">
                             <h2 style="color: #1e40af;">🍻 Kits Cerveza</h2>
                             <p style="font-size: 10px; color: #4b5563; margin-bottom: 6px; line-height: 1.3;">Kits temáticos especiales (Lucha Libre y más). Diseños 100% personalizables.</p>
@@ -525,7 +541,7 @@
             moveSlide('slider-2', 1);
         }, 4000);
 
-        // Lógica de Generación de PDF Adaptativo
+        // Lógica de Generación de PDF Proporcional sin recortes
         function generarPDF() {
             window.scrollTo(0, 0);
 
@@ -558,11 +574,9 @@
                     const imgData = canvas.toDataURL('image/jpeg', 1.0);
                     const { jsPDF } = window.jspdf;
                     
-                    // Calculamos el alto exacto para crear un documento PDF proporcional sin recortes
-                    const pdfWidth = 215.9; // Ancho carta estándar en mm
+                    const pdfWidth = 215.9; // Ancho mm tamaño carta
                     const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
                     
-                    // Creamos el PDF con la altura exacta requerida
                     const pdf = new jsPDF('p', 'mm', [pdfWidth, pdfHeight]);
                     
                     pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
