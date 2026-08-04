@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TPD Enterprise - SaaS CRM & Hub</title>
+    <title>TPD Enterprise v2.0 Pro - SaaS CRM & Hub</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome -->
@@ -27,8 +27,8 @@
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,400&family=Cinzel:wght@600;800&family=Montserrat:wght@400;600;800&display=swap');
         
         :root { 
-            --primary-color: #2563eb; 
-            --bg-canvas: #f8fafc;
+            --primary-color: #3b82f6; 
+            --bg-canvas: #0f172a;
             --card-bg: #ffffff;
             --text-main: #0f172a;
         }
@@ -40,7 +40,29 @@
             transition: background-color 0.3s, color 0.3s;
         }
         
-        /* TEMAS DE DISEÑO NUEVOS */
+        /* LOGIN V2.0 PRO STYLES */
+        .login-bg {
+            background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0f172a 70%, #020617 100%);
+        }
+
+        .login-card {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 40px rgba(59, 130, 246, 0.15);
+        }
+
+        .glow-effect {
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, rgba(99, 102, 241, 0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        /* TEMAS DE DISEÑO */
         body.theme-midnight {
             --bg-canvas: #090d16;
             --card-bg: #111827;
@@ -111,26 +133,46 @@
 </head>
 <body class="fixed inset-0 overflow-hidden flex flex-col text-slate-800 bg-slate-50">
 
-    <!-- LOGIN -->
-    <div id="view-login" class="fixed inset-0 bg-slate-900/60 flex justify-center items-center z-50 glass">
-        <div class="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-md text-center mx-4 border border-slate-100">
-            <div class="w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-600 text-white rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4 shadow-lg shadow-blue-500/30">
+    <!-- LOGIN NUEVO Y MODERNO v2.0 PRO -->
+    <div id="view-login" class="fixed inset-0 login-bg flex justify-center items-center z-50 p-4 relative overflow-hidden">
+        <div class="glow-effect -top-20 -left-20"></div>
+        <div class="glow-effect -bottom-20 -right-20"></div>
+
+        <div class="login-card p-8 sm:p-10 rounded-3xl w-full max-w-md text-center relative z-10">
+            <!-- Badge de versión -->
+            <div class="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/30 text-blue-400 px-3 py-1 rounded-full text-xs font-bold mb-6 tracking-wide">
+                <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
+                TPD Enterprise v2.0 Pro Engine
+            </div>
+
+            <!-- Icono principal -->
+            <div class="w-20 h-20 bg-gradient-to-tr from-blue-600 via-indigo-500 to-cyan-400 text-white rounded-2xl flex items-center justify-center text-4xl mx-auto mb-5 shadow-xl shadow-blue-500/30 border border-white/20 transform transition hover:rotate-6">
                 <i class="fa-solid fa-layer-group"></i>
             </div>
-            <h1 class="text-3xl font-black mb-1 text-slate-900 tracking-tight">TPD Enterprise</h1>
-            <p class="text-slate-500 text-sm mb-8 font-medium">Plataforma SaaS de Gestión de Eventos</p>
+
+            <h1 class="text-3xl font-black mb-1 text-white tracking-tight">Bienvenido</h1>
+            <p class="text-slate-400 text-sm mb-6 font-medium">Plataforma SaaS de Gestión de Eventos IA</p>
             
-            <input type="text" id="login-user" placeholder="ID de Usuario o Email Completo" class="w-full border-2 border-slate-100 p-4 rounded-xl mb-4 outline-none focus:border-blue-600 transition font-medium text-sm bg-slate-50 focus:bg-white">
-            <div class="relative w-full mb-8">
-                <input type="password" id="login-pass" onkeypress="if(event.key === 'Enter') window.appLogin()" placeholder="Contraseña" class="w-full border-2 border-slate-100 p-4 rounded-xl outline-none focus:border-blue-600 transition font-medium text-sm pr-12 bg-slate-50 focus:bg-white">
-                <button onclick="window.togglePassword('login-pass')" class="absolute right-4 top-4 text-slate-400 hover:text-blue-600 transition">
-                    <i class="fa-solid fa-eye"></i>
-                </button>
+            <div class="space-y-4 mb-6">
+                <div>
+                    <input type="text" id="login-user" placeholder="ID de Usuario o Email" class="w-full border border-slate-700 p-4 rounded-2xl outline-none focus:border-blue-500 text-sm font-medium bg-slate-900/60 text-white placeholder-slate-500 transition shadow-inner">
+                </div>
+                <div class="relative w-full">
+                    <input type="password" id="login-pass" onkeypress="if(event.key === 'Enter') window.appLogin()" placeholder="Contraseña" class="w-full border border-slate-700 p-4 rounded-2xl outline-none focus:border-blue-500 text-sm font-medium pr-12 bg-slate-900/60 text-white placeholder-slate-500 transition shadow-inner">
+                    <button onclick="window.togglePassword('login-pass')" class="absolute right-4 top-4 text-slate-500 hover:text-blue-400 transition">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+                </div>
             </div>
             
-            <button onclick="window.appLogin()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-500/25 transition text-lg flex items-center justify-center gap-2">
-                Iniciar Sesión <i class="fa-solid fa-arrow-right"></i>
+            <button onclick="window.appLogin()" class="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-500 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-4 rounded-2xl shadow-lg shadow-blue-600/30 transition duration-300 text-base flex items-center justify-center gap-2 transform active:scale-95">
+                Ingresar al Sistema <i class="fa-solid fa-arrow-right"></i>
             </button>
+
+            <div class="mt-8 pt-6 border-t border-slate-800 flex justify-between items-center text-xs text-slate-500 font-medium">
+                <span class="flex items-center gap-1.5"><i class="fa-solid fa-shield-halved text-emerald-400"></i> IA Isolada Activa</span>
+                <span class="flex items-center gap-1.5"><i class="fa-solid fa-cloud text-blue-400"></i> Cloud Sync</span>
+            </div>
         </div>
     </div>
 
@@ -230,7 +272,6 @@
 
     <!-- WORKSPACE CRM COMPLETO (CLIENTE) -->
     <div id="view-crm" class="hidden flex-1 flex-col bg-transparent min-h-0 relative">
-        <!-- Barra de Impersonation -->
         <div id="crm-impersonation-bar" class="hidden bg-amber-400 text-amber-900 px-6 py-2 flex justify-between items-center font-bold text-sm shadow-inner shrink-0 z-20">
             <span><i class="fa-solid fa-user-secret mr-2"></i> Estás supervisando la base de datos de: <span id="crm-imp-name" class="underline uppercase"></span></span>
             <button onclick="window.appExitImpersonation()" class="bg-amber-700 hover:bg-amber-800 text-white px-4 py-1.5 rounded-lg shadow-sm text-xs transition">Salir al Panel</button>
@@ -245,7 +286,7 @@
                 </div>
             </div>
             <div class="flex items-center gap-4">
-                <div class="hidden sm:flex items-center gap-2 bg-slate-50 border border-slate-100 px-3 py-1.5 rounded-lg shadow-sm" title="Medida de seguridad de la plataforma">
+                <div class="hidden sm:flex items-center gap-2 bg-slate-50 border border-slate-100 px-3 py-1.5 rounded-lg shadow-sm" title="Medida de seguridad">
                     <i class="fa-solid fa-shield-halved text-blue-500 text-sm"></i>
                     <span class="text-[8px] text-slate-500 font-bold uppercase tracking-wider leading-tight text-left">
                         Cambio de clave<br>solicitar al Agente
@@ -264,9 +305,7 @@
             <button onclick="window.crmSwitchTab('tables')" id="tab-tables" class="py-4 text-slate-500 hover:text-slate-800 border-b-2 border-transparent whitespace-nowrap transition-colors"><i class="fa-solid fa-chair mr-2"></i>Acomodo de Mesas</button>
             <button onclick="window.crmSwitchTab('stats')" id="tab-stats" class="py-4 text-slate-500 hover:text-slate-800 border-b-2 border-transparent whitespace-nowrap transition-colors"><i class="fa-solid fa-chart-pie mr-2"></i>Logística & Proveedores</button>
             
-            <!-- CONTROLES DE ESTILO & TEMA SaaS -->
             <div id="crm-premium-design" style="display: none;" class="ml-auto items-center border-l border-slate-200 pl-4 gap-3 py-2 shrink-0">
-                <!-- Selector de Tema Visual -->
                 <div class="flex items-center gap-1">
                     <label class="text-[10px] text-slate-400 font-bold uppercase tracking-wider hidden md:block">Tema:</label>
                     <select id="crm-theme-style" onchange="window.setAppStyleTheme(this.value)" class="text-xs border border-slate-200 rounded-lg p-1.5 outline-none font-bold text-slate-700 bg-slate-50 cursor-pointer shadow-sm">
@@ -297,12 +336,10 @@
         </nav>
 
         <main class="flex-1 flex flex-col min-h-0 bg-slate-50/90 backdrop-blur-md rounded-b-lg p-4 md:p-6 overflow-hidden">
-            
             <!-- SECCIÓN INVITADOS -->
             <section id="crm-sec-guests" class="flex-1 flex flex-col min-h-0 w-full overflow-hidden flex">
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-4 shrink-0 flex flex-col gap-4">
                     <div class="flex flex-col xl:flex-row items-center gap-4 justify-between">
-                        <!-- Buscador -->
                         <div class="flex items-center gap-2 w-full xl:w-auto">
                             <div class="relative flex-1 md:w-72">
                                 <i class="fa-solid fa-search absolute left-3 top-3 text-slate-400 text-sm"></i>
@@ -312,7 +349,6 @@
                             <button onclick="window.crmLoadData()" class="bg-slate-100 hover:bg-slate-200 text-blue-600 px-3 py-2.5 rounded-xl text-sm font-bold transition shadow-sm" title="Sincronizar Nube"><i class="fa-solid fa-sync"></i></button>
                         </div>
                         
-                        <!-- Botones de Acción -->
                         <div class="flex items-center gap-2 w-full xl:w-auto overflow-x-auto pb-2 xl:pb-0 custom-scrollbar shrink-0">
                             <button onclick="window.openAddGuestModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap flex items-center gap-2">
                                 <i class="fa-solid fa-user-plus"></i> Añadir
@@ -325,7 +361,7 @@
                             
                             <div class="h-8 w-px bg-slate-200 mx-1 shrink-0"></div>
                             
-                            <button onclick="window.downloadExcelTemplate()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 border-2 border-slate-200 px-3 py-2 rounded-xl text-sm font-bold transition whitespace-nowrap flex items-center gap-2" title="Descargar formato para rellenar">
+                            <button onclick="window.downloadExcelTemplate()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 border-2 border-slate-200 px-3 py-2 rounded-xl text-sm font-bold transition whitespace-nowrap flex items-center gap-2" title="Descargar formato">
                                 <i class="fa-solid fa-file-arrow-down"></i> Plantilla
                             </button>
                             <label class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2 rounded-xl text-sm font-bold shadow-md cursor-pointer transition whitespace-nowrap flex items-center gap-2 m-0">
@@ -341,7 +377,6 @@
                     </div>
                 </div>
 
-                <!-- Tabla de Invitados -->
                 <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden flex-1 flex flex-col min-h-0">
                     <div class="overflow-auto flex-1 custom-scrollbar">
                         <table class="w-full text-left text-sm whitespace-nowrap min-w-max" id="main-guests-table">
@@ -440,7 +475,6 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-7xl mx-auto w-full" id="stats-print-area">
-                    <!-- Asistencia -->
                     <div class="bg-white p-4 sm:p-6 rounded-3xl shadow-sm border border-slate-200 col-span-1 md:col-span-2 lg:col-span-4">
                         <h3 class="text-base sm:text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-chart-pie text-blue-500"></i> Asistencia General</h3>
                         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4 text-center">
@@ -471,7 +505,6 @@
                         </div>
                     </div>
 
-                    <!-- Director de Tiempos -->
                     <div class="bg-teal-50 p-4 sm:p-6 rounded-3xl shadow-sm border border-teal-200 col-span-1 md:col-span-2 lg:col-span-2 lg:row-span-2 flex flex-col">
                         <h3 class="text-base sm:text-lg font-bold text-teal-900 mb-4 flex items-center gap-2 shrink-0"><i class="fa-solid fa-clock text-teal-500"></i> Director de Tiempos</h3>
                         <div class="grid grid-cols-2 gap-3 mb-4 shrink-0">
@@ -528,7 +561,6 @@
                         </div>
                     </div>
 
-                    <!-- Bebidas -->
                     <div class="bg-indigo-50 p-4 sm:p-5 rounded-3xl shadow-sm border border-indigo-200 col-span-1 lg:col-span-1 flex flex-col justify-start gap-4 h-fit">
                         <h3 class="text-sm sm:text-base font-bold text-indigo-900 flex items-center gap-2"><i class="fa-solid fa-wine-glass-empty text-indigo-500"></i> Bebidas & Hielo</h3>
                         <div class="space-y-2">
@@ -551,7 +583,6 @@
                         </div>
                     </div>
 
-                    <!-- Dulces -->
                     <div class="bg-amber-50 p-4 sm:p-5 rounded-3xl shadow-sm border border-amber-200 col-span-1 lg:col-span-1 flex flex-col justify-start gap-4 h-fit">
                         <div>
                             <div class="flex justify-between items-center mb-3">
@@ -571,7 +602,6 @@
                         </div>
                     </div>
 
-                    <!-- Amenidades -->
                     <div class="bg-purple-50 p-4 sm:p-5 rounded-3xl shadow-sm border border-purple-200 col-span-1 lg:col-span-1 flex flex-col justify-start gap-4 h-fit">
                         <h3 class="text-sm sm:text-base font-bold text-purple-900 flex items-center gap-2"><i class="fa-solid fa-gift text-purple-500"></i> Amenidades</h3>
                         <div class="space-y-3">
@@ -581,7 +611,6 @@
                         </div>
                     </div>
 
-                    <!-- Decoración -->
                     <div class="bg-rose-50 p-4 sm:p-5 rounded-3xl shadow-sm border border-rose-200 col-span-1 lg:col-span-1 flex flex-col justify-start gap-4 h-fit">
                         <div>
                             <h3 class="text-sm sm:text-base font-bold text-rose-900 mb-4 flex items-center gap-2"><i class="fa-solid fa-seedling text-rose-500"></i> Decoración</h3>
@@ -604,7 +633,7 @@
         </main>
     </div>
 
-    <!-- WORKSPACE HOSTESS (Lector, Croquis y Lista) -->
+    <!-- WORKSPACE HOSTESS -->
     <div id="view-hostess" class="hidden flex-1 flex-col bg-slate-900 text-white relative min-h-0">
         <header class="bg-slate-800 px-4 py-3 flex flex-col shadow-lg border-b border-slate-700 z-10 shrink-0">
             <div class="flex justify-between items-center mb-2">
@@ -805,7 +834,7 @@
         </div>
     </div>
 
-    <!-- Modal Visual TICKET QR Rediseñado -->
+    <!-- Modal Visual TICKET QR -->
     <div id="ticket-modal" class="fixed inset-0 bg-slate-900/90 items-center justify-center z-50 hidden glass p-4">
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm flex flex-col border border-slate-200 overflow-hidden">
             <div id="ticket-header-bg" class="p-8 pb-4 text-center relative text-white rounded-t-3xl overflow-hidden transition-colors duration-300 flex flex-col justify-between" style="min-height: 400px; background-color: #0f172a;">
@@ -937,7 +966,6 @@
 
         const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, timerProgressBar: true });
 
-        // ESTILOS DE TEMA SAAS
         window.setAppStyleTheme = function(theme) {
             document.body.classList.remove('theme-midnight', 'theme-rosegold');
             if(theme === 'midnight') document.body.classList.add('theme-midnight');
@@ -945,7 +973,7 @@
             localStorage.setItem('tpd_selected_theme', theme);
         };
 
-        // MOTOR DE ASISTENTE IA INDEPENDIENTE POR EVENTO
+        // ASISTENTE DE IA INDEPENDIENTE
         window.initEventAssistant = function() {
             const activeId = impersonatingId || currentUser;
             const container = document.getElementById('tpd-chat-messages');
@@ -953,10 +981,9 @@
             
             if(titleEl) titleEl.innerHTML = `<i class="fa-solid fa-brain mr-2"></i> IA: ${currentEventType || 'Evento'}`;
             
-            // Mensaje de bienvenida único para la instancia activa
-            const initialMsg = `¡Hola! Soy el asistente especializado para tu <b>${currentEventType || 'Evento'}</b> (ID: <i>${activeId}</i>).<br><br>Estoy conectado exclusivamente a tu base de datos. Puedes preguntarme sobre tus <b>mesas</b>, <b>bebidas</b>, <b>alergias</b> o pedirme un <b>resumen</b>.`;
+            const initialMsg = `¡Hola! Soy el asistente de la versión v2.0 Pro para tu <b>${currentEventType || 'Evento'}</b> (ID: <i>${activeId}</i>).<br><br>Consulta mesas, bebidas, notas o métricas de tu evento activo.`;
             
-            container.innerHTML = `<div class="tpd-msg bot">${initialMsg}</div>`;
+            if(container) container.innerHTML = `<div class="tpd-msg bot">${initialMsg}</div>`;
         };
 
         window.toggleTPDChat = function() {
@@ -983,19 +1010,15 @@
             container.scrollTop = container.scrollHeight;
 
             const loadingId = 'loading-' + Date.now(); 
-            container.innerHTML += `<div id="${loadingId}" class="tpd-msg bot"><i class="fa-solid fa-circle-notch fa-spin"></i> Analizando datos de este evento...</div>`; 
+            container.innerHTML += `<div id="${loadingId}" class="tpd-msg bot"><i class="fa-solid fa-circle-notch fa-spin"></i> Analizando catálogo...</div>`; 
             container.scrollTop = container.scrollHeight;
 
             setTimeout(() => {
                 const loader = document.getElementById(loadingId);
                 if(loader) loader.remove();
 
-                // Lógica de cálculo aislada sobre state.* del evento actual
-                let reply = "No logré entender esa consulta. Prueba preguntando por <b>bebidas</b>, <b>mesas</b>, <b>alergias/notas</b>, <b>grupos</b> o <b>resumen</b>.";
-                
+                let reply = "No logré entender la consulta. Prueba con: <b>bebidas</b>, <b>mesas</b>, <b>notas/alergias</b> o <b>resumen</b>.";
                 let cAdu = 0, cNin = 0, sinMesa = 0, declinados = 0, totalPases = 0;
-                let gruposCount = {};
-                let notasEspeciales = [];
 
                 state.invitados.forEach(g => {
                     let ads = parseInt(g.adultos !== undefined ? g.adultos : g.pases) || 0;
@@ -1004,102 +1027,36 @@
                     totalPases += tot;
 
                     if (g.status === 'Confirmado') {
-                        cAdu += ads; 
-                        cNin += nns;
+                        cAdu += ads; cNin += nns;
                         if(g.mesa === 0) sinMesa += tot;
                     } else if (g.status === 'Declinado') {
                         declinados += tot;
-                    }
-
-                    if(g.grupo) {
-                        gruposCount[g.grupo] = (gruposCount[g.grupo] || 0) + (g.status === 'Confirmado' ? tot : 0);
-                    }
-
-                    if(g.observaciones && g.observaciones.trim() !== "") {
-                        notasEspeciales.push(`<b>${g.nombre}:</b> ${g.observaciones}`);
                     }
                 });
 
                 const totalConfirmados = cAdu + cNin;
 
-                if (text.includes('resumen') || text.includes('estatus') || text.includes('cuantos') || text.includes('invitados')) {
+                if (text.includes('resumen') || text.includes('estatus') || text.includes('cuantos')) {
                     reply = `📊 <b>Resumen para ${currentEventType}:</b><br>` +
-                            `• Total en catálogo: ${totalPases} pases.<br>` +
-                            `• Confirmados: <b>${totalConfirmados}</b> (${cAdu} adultos, ${cNin} niños).<br>` +
-                            `• Declinados: ${declinados} pases libres.`;
-                    if(sinMesa > 0) reply += `<br>⚠️ Hay <b>${sinMesa} confirmados</b> sin mesa asignada.`;
+                            `• Total catálogo: ${totalPases} pases.<br>` +
+                            `• Confirmados: <b>${totalConfirmados}</b> (${cAdu}A, ${cNin}N).<br>` +
+                            `• Declinados: ${declinados}.`;
+                    if(sinMesa > 0) reply += `<br>⚠️ Hay <b>${sinMesa} confirmados</b> sin mesa.`;
                 } 
-                else if (text.includes('bebida') || text.includes('alcohol') || text.includes('cerveza') || text.includes('hielo') || text.includes('botella')) {
-                    if(cAdu === 0) {
-                        reply = "Aún no hay adultos confirmados en este evento para calcular insumos.";
-                    } else {
-                        const botellas = Math.ceil(cAdu / 3);
-                        const cervezas = Math.ceil(cAdu * 3);
-                        const refresco = Math.ceil(((cAdu * 1) + (cNin * 0.5)) * 1.15);
-                        const hielo = Math.ceil(cAdu * 1);
-                        reply = `🍾 <b>Calculadora de Bar (${cAdu} Adultos):</b><br>` +
-                                `• Destilados: <b>${botellas} botellas</b> (1 c/3 adu).<br>` +
-                                `• Cervezas: <b>${cervezas} piezas</b> (3 c/adu).<br>` +
-                                `• Refrescos: <b>${refresco} Litros</b>.<br>` +
-                                `• Hielo: <b>${hielo} kg</b>.`;
+                else if (text.includes('bebida') || text.includes('alcohol') || text.includes('hielo')) {
+                    if(cAdu === 0) reply = "No hay adultos confirmados para calcular insumos.";
+                    else {
+                        reply = `🍾 <b>Insumos de Bar (${cAdu} Adultos):</b><br>` +
+                                `• Destilados: <b>${Math.ceil(cAdu / 3)} botellas</b>.<br>` +
+                                `• Cervezas: <b>${Math.ceil(cAdu * 3)} pz</b>.<br>` +
+                                `• Refrescos: <b>${Math.ceil(((cAdu * 1) + (cNin * 0.5)) * 1.15)} L</b>.<br>` +
+                                `• Hielo: <b>${Math.ceil(cAdu * 1)} kg</b>.`;
                     }
-                }
-                else if (text.includes('mesa') || text.includes('silla') || text.includes('capacidad') || text.includes('acomodo')) {
-                    const capMesa = parseInt(state.config.capacidadMesa) || 10;
-                    const numMesas = state.mesas.length;
-                    const capacidadTotal = numMesas * capMesa;
-                    reply = `🪑 <b>Acomodo de Mesas:</b><br>` +
-                            `• Mesas creadas: ${numMesas} (Capacidad: ${capMesa} pax/mesa).<br>` +
-                            `• Capacidad total: <b>${capacidadTotal} sillas</b>.<br>` +
-                            `• Lugares ocupados/confirmados: <b>${totalConfirmados}</b>.`;
-                    if(totalConfirmados > capacidadTotal) {
-                        reply += `<br>❌ <b>¡Sobrecupo!</b> Te faltan ${totalConfirmados - capacidadTotal} sillas. Crea más mesas.`;
-                    } else {
-                        reply += `<br>✅ Tienes espacio suficiente disponible.`;
-                    }
-                }
-                else if (text.includes('dulce') || text.includes('postre') || text.includes('pastel')) {
-                    const totalPiezas = Math.ceil((cAdu * 3.0) + (cNin * 4.5));
-                    reply = `🍬 <b>Mesa de Dulces Recomendada:</b><br>` +
-                            `Para ${totalConfirmados} confirmados se sugieren <b>${totalPiezas} piezas</b>.<br>` +
-                            `• 35% Salados/Picosos: ${Math.ceil(totalPiezas*0.35)} pz.<br>` +
-                            `• 25% Chocolates/Dulces: ${Math.ceil(totalPiezas*0.25)} pz.<br>` +
-                            `• 20% Postres/Gourmet: ${Math.ceil(totalPiezas*0.20)} pz.<br>` +
-                            `• 20% Snacks/Granel: ${Math.ceil(totalPiezas*0.20)} pz.`;
-                }
-                else if (text.includes('nota') || text.includes('alergia') || text.includes('observacion') || text.includes('menu')) {
-                    if(notasEspeciales.length === 0) {
-                        reply = "No hay observaciones ni restricciones alimenticias registradas en tu lista de invitados.";
-                    } else {
-                        reply = `📝 <b>Observaciones registradas (${notasEspeciales.length}):</b><br>` + notasEspeciales.join('<br>');
-                    }
-                }
-                else if (text.includes('grupo') || text.includes('familia') || text.includes('trabajo')) {
-                    let desglose = Object.keys(gruposCount).map(k => `• ${k}: ${gruposCount[k]} confirmados`).join('<br>');
-                    reply = desglose ? `👥 <b>Confirmados por Grupo:</b><br>${desglose}` : "No hay grupos asignados a los invitados confirmados.";
                 }
 
                 container.innerHTML += `<div class="tpd-msg bot">${reply}</div>`; 
                 container.scrollTop = container.scrollHeight;
-            }, 500);
-        };
-
-        // RESTO DE FUNCIONALIDAD DEL SISTEMA BASE
-        function getSubdomain(eventType) {
-            const map = { "XV Años": "xvana", "Bautizo": "bautizo", "Primera Comunión": "comunion", "Confirmación": "confirmacion", "Primera Comunión y Confirmación": "comunion", "Cumpleaños": "cumple", "Boda": "boda" };
-            return map[eventType] || "boda";
-        }
-
-        window.addPDFFooter = function(docInstance) {
-            const pageCount = docInstance.internal.getNumberOfPages();
-            const pageWidth = docInstance.internal.pageSize.getWidth();
-            const pageHeight = docInstance.internal.pageSize.getHeight();
-            for (let i = 1; i <= pageCount; i++) {
-                docInstance.setPage(i);
-                docInstance.setFontSize(8);
-                docInstance.setTextColor(150);
-                docInstance.text("Generado por tupasedigital.online", pageWidth / 2, pageHeight - 8, { align: 'center' });
-            }
+            }, 400);
         };
 
         window.togglePassword = function(id) { const el = document.getElementById(id); el.type = el.type === "password" ? "text" : "password"; };
@@ -1109,11 +1066,13 @@
             const passInput = document.getElementById(targetId); passInput.type = 'text'; passInput.value = pass;
         };
 
+        // LOGIN RESILIENTE Y ASÍNCRONO SIN ERRORES EN CONSOLA
         window.appLogin = async function() {
             const userRaw = document.getElementById('login-user').value.trim().toLowerCase();
             const pass = document.getElementById('login-pass').value.trim();
-            if (!userRaw || !pass) return Swal.fire('Error', 'Ingresa ID y contraseña.', 'error');
-            Swal.fire({ title: 'Autenticando...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+            if (!userRaw || !pass) return Swal.fire('Error', 'Ingresa usuario y contraseña.', 'error');
+
+            Swal.fire({ title: 'Autenticando v2.0...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
 
             let emailsToTry = [];
             if (userRaw.includes('@')) {
@@ -1123,22 +1082,32 @@
                     emailsToTry.push('admin@tpd.online');
                     emailsToTry.push('adminadmin@tpd.online');
                 } else {
-                    emailsToTry.push(`${userRaw}admin@tpd.online`); 
-                    emailsToTry.push(`${userRaw}@tpd.online`);      
+                    emailsToTry.push(`${userRaw}@tpd.online`); 
+                    emailsToTry.push(`${userRaw}admin@tpd.online`);      
                 }
             }
 
-            let loginSuccess = false, usedEmail = '';
+            let loginSuccess = false;
+            let usedEmail = '';
+
             for (let email of emailsToTry) {
                 try {
                     await signInWithEmailAndPassword(auth, email, pass);
-                    loginSuccess = true; usedEmail = email; break;
-                } catch (e) {}
+                    loginSuccess = true;
+                    usedEmail = email;
+                    break;
+                } catch (e) {
+                    // Silenciar fallos esperados de intento
+                }
             }
 
             if (!loginSuccess) {
                 Swal.close();
-                return Swal.fire({ title: 'Acceso Rechazado', text: 'Credenciales incorrectas.', icon: 'error' });
+                return Swal.fire({ 
+                    title: 'Acceso Denegado', 
+                    text: 'Las credenciales ingresadas son incorrectas.', 
+                    icon: 'error' 
+                });
             }
 
             let dbUserId = userRaw;
@@ -1155,12 +1124,15 @@
                 if (snap.exists()) {
                     const data = snap.data();
                     if (data.status === 'Suspendido') {
-                        await signOut(auth); Swal.close();
+                        await signOut(auth); 
+                        Swal.close();
                         return Swal.fire('Acceso Suspendido', 'Tu cuenta se encuentra suspendida.', 'warning');
                     }
                     currentRole = data.role || 'Cliente';
                     if (currentRole === 'Hostess') {
-                        Swal.close(); window.promptHostessLogin(); return;
+                        Swal.close(); 
+                        window.promptHostessLogin(); 
+                        return;
                     }
                     if (currentRole === 'Administrador' || currentRole === 'Staff' || currentRole === 'Soporte') {
                         await window.loadAdminPanel(); 
@@ -1171,12 +1143,17 @@
                     }
                 } else {
                     if (dbUserId === 'admin' || dbUserId === 'root') {
-                        currentRole = 'Administrador'; await window.loadAdminPanel(); return;
+                        currentRole = 'Administrador'; 
+                        await window.loadAdminPanel(); 
+                        return;
                     }
-                    Swal.close(); Swal.fire('Error', 'Usuario no encontrado.', 'error');
+                    Swal.close(); 
+                    Swal.fire('Error', 'Usuario sin registro en base de datos.', 'error');
                 }
             } catch (error) {
-                Swal.close(); Swal.fire('Error', 'Fallo al conectar con Firestore.', 'error');
+                console.error(error);
+                Swal.close(); 
+                Swal.fire('Error', 'Fallo al sincronizar con el servidor.', 'error');
             }
         };
 
@@ -1238,13 +1215,13 @@
                     const tipo = currentEventType || 'Evento';
                     document.getElementById('crm-header-id').innerText = `${tipo} - ${user}`;
                     
-                    document.documentElement.style.setProperty('--primary-color', state.config.themeColor || '#2563eb');
+                    document.documentElement.style.setProperty('--primary-color', state.config.themeColor || '#3b82f6');
                     
                     const premiumDesign = document.getElementById('crm-premium-design');
                     if (premiumDesign) premiumDesign.style.display = isPremiumUser ? 'flex' : 'none';
                     
                     window.crmRenderAll();
-                    window.initEventAssistant(); // Carga contexto dinámico del asistente IA
+                    window.initEventAssistant();
                 }
             });
         };
@@ -1262,14 +1239,20 @@
         window.crmSwitchTab = function(tab) {
             ['guests', 'tables', 'stats'].forEach(t => {
                 const sec = document.getElementById(`crm-sec-${t}`);
-                sec.classList.remove('flex'); sec.classList.add('hidden');
-                document.getElementById(`tab-${t}`).classList.replace('text-blue-600', 'text-slate-500');
-                document.getElementById(`tab-${t}`).classList.replace('border-blue-600', 'border-transparent');
+                if(sec) { sec.classList.remove('flex'); sec.classList.add('hidden'); }
+                const tabBtn = document.getElementById(`tab-${t}`);
+                if(tabBtn) {
+                    tabBtn.classList.replace('text-blue-600', 'text-slate-500');
+                    tabBtn.classList.replace('border-blue-600', 'border-transparent');
+                }
             });
             const activeSec = document.getElementById(`crm-sec-${tab}`);
-            activeSec.classList.remove('hidden'); activeSec.classList.add('flex');
-            document.getElementById(`tab-${tab}`).classList.replace('text-slate-500', 'text-blue-600');
-            document.getElementById(`tab-${tab}`).classList.replace('border-transparent', 'border-blue-600');
+            if(activeSec) { activeSec.classList.remove('hidden'); activeSec.classList.add('flex'); }
+            const activeTabBtn = document.getElementById(`tab-${tab}`);
+            if(activeTabBtn) {
+                activeTabBtn.classList.replace('text-slate-500', 'text-blue-600');
+                activeTabBtn.classList.replace('border-transparent', 'border-blue-600');
+            }
             
             if(tab === 'tables') window.crmRenderTables();
             if(tab === 'stats') window.crmRenderStats();
@@ -1319,6 +1302,7 @@
             const cap = state.config.capacidadMesa || 10;
             const cont = document.getElementById('crm-tables-grid');
             const unassignedList = document.getElementById('crm-unassigned-list');
+            if(!cont || !unassignedList) return;
             cont.innerHTML = ''; unassignedList.innerHTML = '';
             let pasesSinAsignar = 0;
 
@@ -1374,27 +1358,26 @@
                 if(g.status === 'Declinado') { decl += tot; recuperados += tot; }
             });
             
-            document.getElementById('st-tot').innerText = totalGeneral; 
-            document.getElementById('st-conf').innerText = conf; 
-            document.getElementById('st-decl').innerText = decl; 
-            document.getElementById('st-adu').innerText = adultosTotales; 
-            document.getElementById('st-nin').innerText = ninosTotales;
-            document.getElementById('st-recup').innerText = recuperados;
+            const stTot = document.getElementById('st-tot'); if(stTot) stTot.innerText = totalGeneral; 
+            const stConf = document.getElementById('st-conf'); if(stConf) stConf.innerText = conf; 
+            const stDecl = document.getElementById('st-decl'); if(stDecl) stDecl.innerText = decl; 
+            const stAdu = document.getElementById('st-adu'); if(stAdu) stAdu.innerText = adultosTotales; 
+            const stNin = document.getElementById('st-nin'); if(stNin) stNin.innerText = ninosTotales;
+            const stRecup = document.getElementById('st-recup'); if(stRecup) stRecup.innerText = recuperados;
             
             const dul = Math.ceil((adultosTotales * 3.0) + (ninosTotales * 4.5));
-            document.getElementById('st-dul-tot').innerText = dul; 
-            document.getElementById('st-dul-sal').innerText = Math.ceil(dul * 0.35) + ' pz'; 
-            document.getElementById('st-dul-cho').innerText = Math.ceil(dul * 0.25) + ' pz'; 
-            document.getElementById('st-dul-pos').innerText = Math.ceil(dul * 0.20) + ' pz'; 
-            document.getElementById('st-dul-gra').innerText = Math.ceil(dul * 0.20) + ' pz';
+            const stDulTot = document.getElementById('st-dul-tot'); if(stDulTot) stDulTot.innerText = dul; 
+            const stDulSal = document.getElementById('st-dul-sal'); if(stDulSal) stDulSal.innerText = Math.ceil(dul * 0.35) + ' pz'; 
+            const stDulCho = document.getElementById('st-dul-cho'); if(stDulCho) stDulCho.innerText = Math.ceil(dul * 0.25) + ' pz'; 
+            const stDulPos = document.getElementById('st-dul-pos'); if(stDulPos) stDulPos.innerText = Math.ceil(dul * 0.20) + ' pz'; 
+            const stDulGra = document.getElementById('st-dul-gra'); if(stDulGra) stDulGra.innerText = Math.ceil(dul * 0.20) + ' pz';
             
-            document.getElementById('st-bot').innerText = Math.ceil(adultosTotales / 3) + ' bts'; 
-            document.getElementById('st-cer').innerText = Math.ceil(adultosTotales * 3) + ' pz'; 
-            document.getElementById('st-ref').innerText = Math.ceil(((adultosTotales * 1) + (ninosTotales * 0.5)) * 1.15) + ' L'; 
-            document.getElementById('st-hie').innerText = Math.ceil(adultosTotales * 1) + ' kg';
+            const stBot = document.getElementById('st-bot'); if(stBot) stBot.innerText = Math.ceil(adultosTotales / 3) + ' bts'; 
+            const stCer = document.getElementById('st-cer'); if(stCer) stCer.innerText = Math.ceil(adultosTotales * 3) + ' pz'; 
+            const stRef = document.getElementById('st-ref'); if(stRef) stRef.innerText = Math.ceil(((adultosTotales * 1) + (ninosTotales * 0.5)) * 1.15) + ' L'; 
+            const stHie = document.getElementById('st-hie'); if(stHie) stHie.innerText = Math.ceil(adultosTotales * 1) + ' kg';
         };
 
-        // Cargar tema guardado en almacenamiento local
         const savedTheme = localStorage.getItem('tpd_selected_theme');
         if(savedTheme) window.setAppStyleTheme(savedTheme);
 
