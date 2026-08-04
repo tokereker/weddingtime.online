@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recuerdos Inolvidables | Tu Boda Perfecta</title>
+    <title>Recuerdos VIP | Tu Pase Digital</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -45,32 +45,62 @@
         
         .glass-nav {
             background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(212, 175, 55, 0.2);
         }
 
-        .hover-lift { transition: transform 0.3s ease, box-shadow 0.3s ease; }
-        .hover-lift:hover { transform: translateY(-8px); box-shadow: 0 20px 40px -5px rgba(212, 175, 55, 0.15); }
+        .hover-lift { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease; }
+        .hover-lift:hover { transform: translateY(-10px); box-shadow: 0 25px 50px -12px rgba(212, 175, 55, 0.25); }
 
         .text-gradient {
-            background: linear-gradient(to right, #d4af37, #f3e5ab);
+            background: linear-gradient(135deg, #d4af37 0%, #f3e5ab 50%, #d4af37 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shine 3s linear infinite;
         }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        /* Animaciones de entrada (Scroll) */
+        .fade-in-up { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        .fade-in-up.visible { opacity: 1; transform: translateY(0); }
 
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* Contenedor del PDF (Oculto en web, estructurado para hoja carta) */
+        /* ======================================================== */
+        /* ESTILOS EDITORIALES PARA EL PDF (Oculto en la web)       */
+        /* ======================================================== */
         #print-container {
-            position: absolute; left: -9999px; top: 0; width: 850px;
-            background: white; padding: 40px; color: #1a1a1a; font-family: 'Montserrat', sans-serif;
+            position: absolute; left: -9999px; top: 0; 
+            width: 816px; /* Proporción ideal para tamaño Carta */
+            background: #ffffff; color: #1a1a1a; 
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
         }
         
-        .pdf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
-        .pdf-card { border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; background: #fafafa; }
-        .pdf-img { width: 100%; height: 180px; object-fit: cover; border-bottom: 3px solid #d4af37; }
-        .pdf-content { padding: 15px; }
+        .pdf-header { background: #1a1a1a; padding: 40px; text-align: center; border-bottom: 8px solid #d4af37; }
+        .pdf-header h1 { font-family: 'Playfair Display', serif; font-size: 52px; color: #d4af37; margin: 0; letter-spacing: 2px; }
+        .pdf-header p { color: #ffffff; font-size: 16px; letter-spacing: 5px; text-transform: uppercase; margin-top: 10px; font-weight: 300; }
+        
+        .pdf-body { padding: 40px; background-color: #fdf8f6; }
+        .pdf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        
+        .pdf-card { background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #f2e8e5; }
+        .pdf-img { width: 100%; height: 200px; object-fit: cover; }
+        .pdf-content { padding: 20px; border-top: 3px solid #d4af37; }
+        .pdf-content h2 { font-family: 'Playfair Display', serif; font-size: 24px; color: #1a1a1a; margin-top: 0; margin-bottom: 10px; }
+        
+        .pdf-footer { background: #1a1a1a; color: white; padding: 30px 40px; text-align: center; display: flex; justify-content: space-between; items-center; }
+        .pdf-footer-text { text-align: left; }
+        .pdf-footer-text h3 { color: #d4af37; margin: 0 0 5px 0; font-family: 'Playfair Display', serif; font-size: 24px; }
+        .pdf-footer-text p { margin: 0; font-size: 12px; color: #a1a1aa; }
+        .pdf-footer-contact { text-align: right; }
+        .pdf-footer-contact p { margin: 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: #d4af37; }
+        .pdf-footer-contact h4 { margin: 5px 0 0 0; font-size: 28px; color: #ffffff; font-weight: 800; }
     </style>
 </head>
 <body class="text-slate-800 antialiased overflow-x-hidden">
@@ -79,13 +109,15 @@
     <nav class="fixed w-full z-50 glass-nav transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
-                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer">
-                    <i class="fa-solid fa-ring text-brand-500 text-2xl"></i>
-                    <span class="font-serif font-bold text-xl tracking-wider text-brand-900 uppercase">Recuerdos VIP</span>
+                <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer">
+                    <div class="w-10 h-10 bg-brand-900 rounded-full flex items-center justify-center text-brand-500 shadow-md">
+                        <i class="fa-solid fa-ring text-xl"></i>
+                    </div>
+                    <span class="font-serif font-bold text-xl tracking-widest text-brand-900 uppercase">VIP Wedding</span>
                 </div>
                 <div>
-                    <a href="https://wa.me/522202662703?text=Hola!%20Me%20encantaron%20sus%20opciones%20de%20recuerdos.%20Me%20gustar%C3%ADa%20recibir%20una%20cotizaci%C3%B3n%20para%20mi%20evento.%20%F0%9F%92%8D%E2%9C%A8" target="_blank" class="bg-brand-900 hover:bg-brand-500 text-white font-semibold py-2.5 px-6 rounded-full transition-colors duration-300 flex items-center gap-2 shadow-lg text-sm md:text-base">
-                        <i class="fa-brands fa-whatsapp text-lg"></i> <span class="hidden md:inline">Cotizar Ahora</span>
+                    <a href="https://wa.me/522202662703?text=Hola!%20Me%20encantaron%20sus%20opciones%20de%20recuerdos.%20Me%20gustar%C3%ADa%20recibir%20una%20cotizaci%C3%B3n%20para%20mi%20evento.%20%F0%9F%92%8D%E2%9C%A8" target="_blank" class="bg-brand-900 hover:bg-brand-600 text-white font-semibold py-2.5 px-6 rounded-full transition-all duration-300 flex items-center gap-2 shadow-[0_4px_15px_rgba(212,175,55,0.3)] text-sm md:text-base hover:scale-105">
+                        <i class="fa-brands fa-whatsapp text-lg text-green-400"></i> <span class="hidden md:inline">Cotizar Ahora</span>
                     </a>
                 </div>
             </div>
@@ -99,9 +131,9 @@
             <div class="absolute -bottom-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-white blur-[120px]"></div>
         </div>
 
-        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
-            <span class="inline-block py-1 px-3 rounded-full bg-brand-500/20 text-brand-500 text-xs md:text-sm font-bold tracking-[0.2em] uppercase mb-6 border border-brand-500/30">
-                Detalles de Lujo
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10 fade-in-up">
+            <span class="inline-block py-1 px-4 rounded-full bg-brand-500/10 text-brand-500 text-xs md:text-sm font-bold tracking-[0.2em] uppercase mb-6 border border-brand-500/30 backdrop-blur-sm">
+                Colección Exclusiva
             </span>
             <h1 class="font-serif text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
                 Haz que tu boda sea <br><span class="text-gradient">Inolvidable</span>
@@ -111,10 +143,10 @@
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <a href="#coleccion" class="bg-brand-500 hover:bg-brand-600 text-white font-bold py-4 px-8 rounded-full transition-transform transform hover:scale-105 shadow-[0_0_20px_rgba(212,175,55,0.4)] w-full sm:w-auto">
-                    Ver Colección
+                    Explorar Catálogo
                 </a>
                 <button onclick="generarPDF()" class="bg-transparent hover:bg-white/10 text-white border border-white/30 font-bold py-4 px-8 rounded-full transition-colors flex items-center justify-center gap-2 w-full sm:w-auto">
-                    <i class="fa-solid fa-file-pdf"></i> Descargar Catálogo
+                    <i class="fa-solid fa-download"></i> Descargar en PDF
                 </button>
             </div>
         </div>
@@ -123,29 +155,33 @@
     <!-- BANDA DE CONFIANZA -->
     <div class="bg-brand-500 py-4 shadow-inner">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap justify-center md:justify-between items-center gap-4 md:gap-8 text-brand-900 font-bold text-xs md:text-sm uppercase tracking-wider">
-            <span class="flex items-center gap-2"><i class="fa-solid fa-star"></i> Calidad Premium</span>
-            <span class="flex items-center gap-2"><i class="fa-solid fa-palette"></i> Personalización Total</span>
-            <span class="flex items-center gap-2"><i class="fa-solid fa-truck-fast"></i> Entregas Puntuales</span>
+            <span class="flex items-center gap-2 fade-in-up"><i class="fa-solid fa-crown"></i> Calidad Premium</span>
+            <span class="flex items-center gap-2 fade-in-up" style="transition-delay: 100ms;"><i class="fa-solid fa-pen-nib"></i> Personalización Total</span>
+            <span class="flex items-center gap-2 fade-in-up" style="transition-delay: 200ms;"><i class="fa-solid fa-box-open"></i> Entregas Seguras</span>
         </div>
     </div>
 
     <!-- SECCIÓN DE PRODUCTOS -->
-    <section id="coleccion" class="py-20 md:py-32">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="coleccion" class="py-20 md:py-32 relative">
+        <!-- Decoración de fondo sutil -->
+        <div class="absolute top-0 right-0 w-64 h-64 bg-brand-500 opacity-5 rounded-full blur-[80px] pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 w-64 h-64 bg-brand-500 opacity-5 rounded-full blur-[80px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             
-            <div class="text-center mb-16">
-                <h2 class="font-serif text-4xl md:text-5xl font-bold text-brand-900 mb-4">Nuestra Colección</h2>
+            <div class="text-center mb-16 fade-in-up">
+                <h2 class="font-serif text-4xl md:text-5xl font-bold text-brand-900 mb-4">La Colección</h2>
                 <div class="w-24 h-1 bg-brand-500 mx-auto rounded-full"></div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
                 
                 <!-- 1. KITS Y ABANICOS (CARRUSEL 1) -->
-                <article class="bg-white rounded-[2rem] p-2 hover-lift border border-slate-100 relative group">
-                    <div class="absolute top-6 right-6 bg-brand-500 text-white text-[10px] font-bold uppercase tracking-wider py-1 px-3 rounded-full z-10 shadow-lg">Más Vendido</div>
+                <article class="bg-white rounded-[2rem] p-3 hover-lift border border-slate-100 relative group fade-in-up shadow-xl">
+                    <div class="absolute top-6 right-6 bg-brand-500 text-white text-[10px] font-bold uppercase tracking-wider py-1.5 px-4 rounded-full z-10 shadow-lg">El Favorito</div>
                     
                     <div class="relative h-64 md:h-80 w-full rounded-[1.5rem] overflow-hidden mb-6 group/carousel">
-                        <div id="slider-1" data-current="0" data-total="3" class="flex w-full h-full transition-transform duration-500 ease-in-out">
+                        <div id="slider-1" data-current="0" data-total="3" class="flex w-full h-full transition-transform duration-700 ease-in-out">
                             <img src="DETALLE PERFECTO.png" alt="Abanicos" class="w-full h-full object-cover flex-shrink-0">
                             <img src="especiales2.png" alt="Bolsas Anticruda" class="w-full h-full object-cover flex-shrink-0">
 							<img src="especiales1.png" alt="Bolsas Anticruda" class="w-full h-full object-cover flex-shrink-0">
@@ -155,36 +191,38 @@
                         <button onclick="moveSlide('slider-1', -1)" class="absolute left-3 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white w-10 h-10 rounded-full opacity-0 group-hover/carousel:opacity-100 transition-all flex items-center justify-center backdrop-blur-sm z-20"><i class="fa-solid fa-chevron-left"></i></button>
                         <button onclick="moveSlide('slider-1', 1)" class="absolute right-3 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white w-10 h-10 rounded-full opacity-0 group-hover/carousel:opacity-100 transition-all flex items-center justify-center backdrop-blur-sm z-20"><i class="fa-solid fa-chevron-right"></i></button>
                         
-                        <!-- Puntos -->
-                        <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-20">
-                            <div class="slider-1-dot w-2 h-2 rounded-full bg-white transition-all"></div>
-                            <div class="slider-1-dot w-2 h-2 rounded-full bg-white/50 transition-all"></div>
+                        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+                            <div class="slider-1-dot w-2 h-2 rounded-full bg-white transition-all shadow-md"></div>
+                            <div class="slider-1-dot w-2 h-2 rounded-full bg-white/50 transition-all shadow-md"></div>
                         </div>
                     </div>
 
-                    <div class="px-6 pb-8">
+                    <div class="px-5 pb-6">
                         <h3 class="font-serif text-2xl font-bold text-brand-900 mb-2">🪭 Abanicos & 🥳 Kits Anticruda</h3>
                         <p class="text-slate-500 text-sm mb-6">El detalle perfecto para la ceremonia y el salvavidas para el final de la fiesta.</p>
                         
                         <div class="space-y-4">
-                            <div class="bg-brand-50 p-4 rounded-xl border border-brand-100">
-                                <h4 class="font-bold text-brand-900 text-sm mb-2">Abanicos Personalizados</h4>
-                                <div class="flex justify-between items-center text-sm border-b border-brand-100/50 pb-2 mb-2">
-                                    <span class="text-slate-600">Bambú Blanco</span> <span class="font-bold text-brand-600">$20 c/u</span>
+                            <div class="bg-brand-50 p-4 rounded-2xl border border-brand-100/50">
+                                <h4 class="font-bold text-brand-900 text-sm mb-3">Abanicos Personalizados</h4>
+                                <div class="flex justify-between items-center text-sm mb-2">
+                                    <span class="text-slate-600"><i class="fa-solid fa-check text-brand-500 text-xs mr-1"></i> Bambú Blanco</span> <span class="font-bold text-brand-900 bg-white px-3 py-1 rounded-lg border border-brand-100">$20 c/u</span>
                                 </div>
                                 <div class="flex justify-between items-center text-sm">
-                                    <span class="text-slate-600">En caja de regalo</span> <span class="font-bold text-brand-600">$150 c/u</span>
+                                    <span class="text-slate-600"><i class="fa-solid fa-check text-brand-500 text-xs mr-1"></i> En caja de regalo</span> <span class="font-bold text-brand-900 bg-white px-3 py-1 rounded-lg border border-brand-100">$150 c/u</span>
                                 </div>
                             </div>
                             
-                            <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
-                                <h4 class="font-bold text-blue-900 text-sm mb-1">Kits Anticruda (Paq. 50 pz)</h4>
-                                <p class="text-[10px] text-blue-700 mb-2">Incluye: Alka-Seltzer, Trident, Cafiaspirina, Pica Fresa.</p>
-                                <div class="flex justify-between items-center text-sm border-b border-blue-100 pb-2 mb-2">
-                                    <span class="text-slate-700">Con Agua</span> <span class="font-bold text-blue-700">$2,000</span>
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                                <h4 class="font-bold text-slate-800 text-sm mb-1">Kits Anticruda (Paq. 50 pz)</h4>
+                                <p class="text-[10px] text-slate-500 mb-3 uppercase tracking-wider font-bold">Incluye: Alka-Seltzer, Trident, Cafiaspirina, Pica Fresa.</p>
+                                <div class="flex justify-between items-center text-sm border-b border-slate-200 pb-2 mb-2">
+                                    <span class="text-slate-700">Con Agua</span> <span class="font-bold text-brand-600">$2,000</span>
                                 </div>
-                                <div class="flex justify-between items-center text-sm">
-                                    <span class="text-slate-700">Con Electrolit</span> <span class="font-bold text-blue-700">$3,000</span>
+                                <div class="flex justify-between items-center text-sm border-b border-slate-200 pb-2 mb-2">
+                                    <span class="text-slate-700">Con Electrolit</span> <span class="font-bold text-brand-600">$3,000</span>
+                                </div>
+                                <div class="flex justify-between items-center text-sm pt-1">
+                                    <span class="text-slate-800 font-bold">Kits Especiales (Temáticos)</span> <span class="text-[10px] text-white bg-brand-900 px-3 py-1 rounded-full font-bold">Cotizar</span>
                                 </div>
                             </div>
                         </div>
@@ -192,54 +230,52 @@
                 </article>
 
                 <!-- 2. LICORES PREMIUM (CARRUSEL 2) -->
-                <article class="bg-white rounded-[2rem] p-2 hover-lift border border-slate-100 relative group">
-                    <div class="absolute top-6 right-6 bg-brand-900 text-white text-[10px] font-bold uppercase tracking-wider py-1 px-3 rounded-full z-10 shadow-lg border border-brand-500">Premium</div>
+                <article class="bg-white rounded-[2rem] p-3 hover-lift border border-slate-100 relative group fade-in-up shadow-xl" style="transition-delay: 100ms;">
+                    <div class="absolute top-6 right-6 bg-brand-900 text-white text-[10px] font-bold uppercase tracking-wider py-1.5 px-4 rounded-full z-10 shadow-lg border border-brand-500">Premium</div>
                     
                     <div class="relative h-64 md:h-80 w-full rounded-[1.5rem] overflow-hidden mb-6 group/carousel bg-black">
-                        <div id="slider-2" data-current="0" data-total="2" class="flex w-full h-full transition-transform duration-500 ease-in-out">
+                        <div id="slider-2" data-current="0" data-total="2" class="flex w-full h-full transition-transform duration-700 ease-in-out">
                             <img src="PREMIUM.png" alt="Licores Premium" class="w-full h-full object-cover opacity-90 flex-shrink-0">
                             <img src="PREMIUM-2.png" alt="Kits Cervezas Temáticos" class="w-full h-full object-cover flex-shrink-0">
                         </div>
                         
-                        <!-- Controles Manuales -->
                         <button onclick="moveSlide('slider-2', -1)" class="absolute left-3 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white w-10 h-10 rounded-full opacity-0 group-hover/carousel:opacity-100 transition-all flex items-center justify-center backdrop-blur-sm z-20"><i class="fa-solid fa-chevron-left"></i></button>
                         <button onclick="moveSlide('slider-2', 1)" class="absolute right-3 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white w-10 h-10 rounded-full opacity-0 group-hover/carousel:opacity-100 transition-all flex items-center justify-center backdrop-blur-sm z-20"><i class="fa-solid fa-chevron-right"></i></button>
                         
-                        <!-- Puntos -->
-                        <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-20">
-                            <div class="slider-2-dot w-2 h-2 rounded-full bg-brand-500 transition-all"></div>
-                            <div class="slider-2-dot w-2 h-2 rounded-full bg-white/50 transition-all"></div>
+                        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+                            <div class="slider-2-dot w-2 h-2 rounded-full bg-brand-500 transition-all shadow-md"></div>
+                            <div class="slider-2-dot w-2 h-2 rounded-full bg-white/50 transition-all shadow-md"></div>
                         </div>
                     </div>
 
-                    <div class="px-6 pb-8">
+                    <div class="px-5 pb-6">
                         <h3 class="font-serif text-2xl font-bold text-brand-900 mb-2">🍾 Licores & Kits Temáticos</h3>
                         <p class="text-slate-500 text-sm mb-6">El regalo perfecto y divertido para los paladares más exigentes.</p>
                         
                         <div class="space-y-4">
-                            <div class="bg-slate-900 text-white p-4 rounded-xl relative overflow-hidden">
-                                <div class="absolute right-0 top-0 h-full w-24 bg-brand-500 blur-[30px] opacity-30"></div>
-                                <h4 class="font-bold text-sm mb-1 text-brand-500">Bebida Artesanal (500ml)</h4>
-                                <div class="flex justify-between items-end">
+                            <div class="bg-brand-900 text-white p-4 rounded-2xl relative overflow-hidden border border-brand-500/20">
+                                <div class="absolute right-0 top-0 h-full w-32 bg-brand-500 blur-[40px] opacity-20"></div>
+                                <h4 class="font-bold text-sm mb-2 text-brand-500">Bebida Artesanal (500ml)</h4>
+                                <div class="flex justify-between items-end relative z-10">
                                     <p class="text-xs text-slate-300">Anís Criollo c/ etiqueta personalizada</p>
-                                    <span class="font-bold text-white text-lg">$200 c/u</span>
+                                    <span class="font-bold text-white text-lg bg-black/50 px-3 py-1 rounded-lg border border-white/10">$200 c/u</span>
                                 </div>
                             </div>
                             
-                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
                                 <h4 class="font-bold text-brand-900 text-sm mb-3">Tablas de Madera + Licor + Copa</h4>
-                                <ul class="space-y-2 text-sm">
+                                <ul class="space-y-3 text-sm">
                                     <li class="flex justify-between border-b border-slate-200 pb-2">
                                         <span class="text-slate-600 font-medium">Con Torres 5</span> <span class="font-bold text-brand-600">$950 c/u</span>
                                     </li>
                                     <li class="flex justify-between border-b border-slate-200 pb-2">
                                         <span class="text-slate-600 font-medium">Con Torres 10</span> <span class="font-bold text-brand-600">$1,100 c/u</span>
                                     </li>
-                                    <li class="flex justify-between border-b border-slate-200 pb-2 pt-1">
-                                        <span class="text-slate-600 font-medium">Etiqueta Roja (Johnnie Walker)</span> <span class="font-bold text-brand-600">$1,500 c/u</span>
+                                    <li class="flex justify-between border-b border-slate-200 pb-2">
+                                        <span class="text-slate-600 font-medium">Etiqueta Roja (Johnnie W.)</span> <span class="font-bold text-brand-600">$1,500 c/u</span>
                                     </li>
                                     <li class="flex justify-between items-center pt-1">
-                                        <span class="text-slate-800 font-bold">Kits Especiales Lucha Libre</span> <span class="text-[10px] text-brand-600 bg-brand-100 px-2 py-1 rounded font-bold">Cotizar</span>
+                                        <span class="text-slate-800 font-bold">Kits Cerveza Lucha Libre</span> <span class="text-[10px] text-white bg-brand-900 px-3 py-1 rounded-full font-bold">Cotizar en whatsapp</span>
                                     </li>
                                 </ul>
                             </div>
@@ -248,52 +284,55 @@
                 </article>
 
                 <!-- 3. PIEDRA ÓNIX -->
-                <article class="bg-white rounded-[2rem] p-2 hover-lift border border-slate-100">
+                <article class="bg-white rounded-[2rem] p-3 hover-lift border border-slate-100 fade-in-up shadow-xl">
                     <div class="h-64 md:h-80 w-full rounded-[1.5rem] overflow-hidden mb-6 relative">
                         <img src="DETALLE ELEGANTE.png" alt="Detalles en Ónix" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
                     </div>
-                    <div class="px-6 pb-8">
+                    <div class="px-5 pb-6">
                         <h3 class="font-serif text-2xl font-bold text-brand-900 mb-2">🏛️ Elegancia en Piedra Ónix</h3>
                         <p class="text-slate-500 text-sm mb-6">Regala lujo, durabilidad y artesanía única en piedra natural.</p>
                         
                         <div class="space-y-3">
-                            <div class="flex items-center justify-between p-4 bg-slate-50 rounded-xl hover:bg-brand-50 transition-colors border border-slate-100">
+                            <div class="flex items-center justify-between p-4 bg-slate-50 rounded-2xl hover:bg-brand-50 transition-colors border border-slate-100">
                                 <div>
                                     <h4 class="font-bold text-slate-800 text-sm">Mini Joyero de Ónix</h4>
                                     <p class="text-[10px] text-slate-400">Sujeto a disponibilidad</p>
                                 </div>
-                                <span class="text-brand-600 font-bold">$60 c/u</span>
+                                <span class="text-brand-600 font-bold bg-white px-3 py-1 rounded-lg shadow-sm border border-slate-100">$60 c/u</span>
                             </div>
-                            <div class="flex items-center justify-between p-4 bg-slate-50 rounded-xl hover:bg-brand-50 transition-colors border border-slate-100">
+                            <div class="flex items-center justify-between p-4 bg-slate-50 rounded-2xl hover:bg-brand-50 transition-colors border border-slate-100">
                                 <h4 class="font-bold text-slate-800 text-sm">Broche para cabello</h4>
-                                <span class="text-brand-600 font-bold">$50 c/u</span>
+                                <span class="text-brand-600 font-bold bg-white px-3 py-1 rounded-lg shadow-sm border border-slate-100">$50 c/u</span>
                             </div>
-                            <div class="flex items-center justify-between p-4 bg-brand-50 rounded-xl hover:bg-brand-100 transition-colors border border-brand-200 shadow-sm">
-                                <div>
+                            <div class="flex items-center justify-between p-4 bg-brand-50 rounded-2xl hover:bg-brand-100 transition-colors border border-brand-200 shadow-sm relative overflow-hidden">
+                                <div class="absolute -right-4 -top-4 w-16 h-16 bg-brand-500 opacity-10 rounded-full blur-xl"></div>
+                                <div class="relative z-10">
                                     <h4 class="font-bold text-brand-900 text-sm">Dominó con estuche</h4>
-                                    <p class="text-[10px] text-brand-700">Artesanía premium ideal</p>
+                                    <p class="text-[10px] text-brand-700 font-medium uppercase tracking-wider">Artesanía premium</p>
                                 </div>
-                                <span class="text-brand-600 font-black text-lg">$160 c/u</span>
+                                <span class="text-brand-600 font-black text-xl relative z-10">$160 c/u</span>
                             </div>
                         </div>
                     </div>
                 </article>
 
                 <!-- 4. VELAS AROMÁTICAS -->
-                <article class="bg-white rounded-[2rem] p-2 hover-lift border border-slate-100">
+                <article class="bg-white rounded-[2rem] p-3 hover-lift border border-slate-100 fade-in-up shadow-xl" style="transition-delay: 100ms;">
                     <div class="h-64 md:h-80 w-full rounded-[1.5rem] overflow-hidden mb-6 relative">
                         <img src="AROMA EN RECUERDO.png" alt="Velas Aromáticas" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
                     </div>
-                    <div class="px-6 pb-8 flex flex-col justify-center h-[calc(100%-18rem)] md:h-[calc(100%-22rem)]">
+                    <div class="px-5 pb-6 flex flex-col justify-center h-[calc(100%-18rem)] md:h-[calc(100%-22rem)]">
                         <h3 class="font-serif text-2xl font-bold text-brand-900 mb-2 text-center">🕯️ Velas Aromáticas</h3>
                         <p class="text-slate-500 text-sm text-center mb-6">Aroma y calidez para recordar tu gran día.</p>
                         
-                        <div class="bg-rose-50 p-6 rounded-2xl border border-rose-100 text-center">
-                            <i class="fa-solid fa-wind text-2xl text-rose-300 mb-2"></i>
-                            <p class="text-sm text-slate-700 mb-4">Deliciosos aromas a <br><strong class="text-rose-600 text-lg">Vainilla y Frutos Rojos</strong></p>
-                            <div class="inline-block bg-white px-6 py-3 rounded-xl shadow-sm border border-rose-100 hover:shadow-md transition">
-                                <p class="text-xs text-slate-500 uppercase tracking-wider font-bold mb-1">Paquete 50 piezas</p>
-                                <p class="text-2xl font-black text-brand-600">$1,000</p>
+                        <div class="bg-[#fff4f5] p-8 rounded-2xl border border-[#ffe4e6] text-center shadow-inner relative overflow-hidden">
+                            <div class="absolute -top-10 -right-10 text-rose-200 opacity-50"><i class="fa-solid fa-wind text-8xl"></i></div>
+                            <div class="relative z-10">
+                                <p class="text-sm text-slate-700 mb-5 font-medium">Deliciosos aromas a <br><strong class="text-rose-600 text-xl font-serif mt-1 block">Vainilla y Frutos Rojos</strong></p>
+                                <div class="inline-block bg-white px-8 py-4 rounded-2xl shadow-md border border-rose-100 hover:shadow-lg transition transform hover:-translate-y-1">
+                                    <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mb-1">Paquete 50 piezas</p>
+                                    <p class="text-3xl font-black text-brand-600">$1,000</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -304,26 +343,28 @@
     </section>
 
     <!-- CÓMO FUNCIONA & CTA FINAL -->
-    <section class="bg-brand-900 text-white py-20 relative overflow-hidden">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <h2 class="font-serif text-3xl md:text-5xl font-bold mb-8 text-gradient">Asegura los recuerdos perfectos</h2>
-            <p class="text-slate-300 mb-12 text-lg font-light">Diseñamos y personalizamos cada detalle para que encaje a la perfección con la temática de tu evento. ¡No dejes esto para el último momento!</p>
+    <section class="bg-brand-900 text-white py-24 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#d4af37 1px, transparent 1px); background-size: 30px 30px;"></div>
+        
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 fade-in-up">
+            <h2 class="font-serif text-4xl md:text-5xl font-bold mb-8 text-gradient">Asegura los recuerdos perfectos</h2>
+            <p class="text-slate-300 mb-12 text-lg font-light leading-relaxed">Diseñamos y personalizamos cada detalle para que encaje a la perfección con la temática de tu evento. ¡No dejes esto para el último momento!</p>
             
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12 text-left">
-                <div class="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20">
-                    <div class="w-12 h-12 rounded-full bg-brand-500 text-white flex items-center justify-center text-xl mb-4 shadow-lg"><i class="fa-regular fa-calendar-check"></i></div>
-                    <h3 class="font-bold text-lg mb-2 text-brand-100">Anticipación Requerida</h3>
-                    <p class="text-sm text-slate-300 leading-relaxed">Para garantizar disponibilidad y perfección en los detalles, agendamos pedidos con un <strong>mínimo de 30 días</strong> de anticipación.</p>
+                <div class="bg-white/5 backdrop-blur-md p-8 rounded-3xl border border-white/10 hover:bg-white/10 transition-colors">
+                    <div class="w-14 h-14 rounded-2xl bg-brand-500/20 text-brand-500 flex items-center justify-center text-2xl mb-5 border border-brand-500/30"><i class="fa-regular fa-calendar-check"></i></div>
+                    <h3 class="font-bold text-xl mb-3 text-white">Anticipación Requerida</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Para garantizar disponibilidad y perfección en los detalles, agendamos pedidos con un <strong>mínimo de 30 días</strong> de anticipación.</p>
                 </div>
-                <div class="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20">
-                    <div class="w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xl mb-4 shadow-lg"><i class="fa-solid fa-hand-holding-dollar"></i></div>
-                    <h3 class="font-bold text-lg mb-2 text-brand-100">Condiciones de Pago Seguras</h3>
-                    <p class="text-sm text-slate-300 leading-relaxed">Tu inversión está protegida. Requerimos solo el <strong>50% de anticipo</strong> para iniciar producción, y el <strong>50% restante a contra entrega</strong>.</p>
+                <div class="bg-white/5 backdrop-blur-md p-8 rounded-3xl border border-white/10 hover:bg-white/10 transition-colors">
+                    <div class="w-14 h-14 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl mb-5 border border-emerald-500/30"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                    <h3 class="font-bold text-xl mb-3 text-white">Pagos Seguros</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Tu inversión está protegida. Requerimos solo el <strong>50% de anticipo</strong> para iniciar producción, y el <strong>50% restante contra entrega</strong>.</p>
                 </div>
             </div>
 
-            <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
-                <a href="https://wa.me/522202662703?text=Hola!%20Me%20encantaron%20sus%20opciones%20de%20recuerdos.%20Me%20gustar%C3%ADa%20recibir%20una%20cotizaci%C3%B3n%20para%20mi%20evento.%20%F0%9F%92%8D%E2%9C%A8" target="_blank" class="w-full sm:w-auto bg-[#25D366] hover:bg-[#1ebe57] text-white font-bold py-4 px-10 rounded-full shadow-[0_0_20px_rgba(37,211,102,0.4)] transition-transform transform hover:scale-105 flex items-center justify-center gap-3 text-lg">
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-6">
+                <a href="https://wa.me/522202662703?text=Hola!%20Me%20encantaron%20sus%20opciones%20de%20recuerdos.%20Me%20gustar%C3%ADa%20recibir%20una%20cotizaci%C3%B3n%20para%20mi%20evento.%20%F0%9F%92%8D%E2%9C%A8" target="_blank" class="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-10 rounded-full shadow-[0_10px_25px_rgba(34,197,94,0.4)] transition-transform transform hover:-translate-y-1 flex items-center justify-center gap-3 text-lg">
                     <i class="fa-brands fa-whatsapp text-2xl"></i> Enviar WhatsApp
                 </a>
             </div>
@@ -331,111 +372,140 @@
     </section>
 
     <!-- FOOTER -->
-    <footer class="bg-black py-8 text-center text-slate-500 text-sm">
-        <p class="mb-3">
-            <a href="https://wa.me/522202662703?text=Hola!%20Me%20encantaron%20sus%20opciones%20de%20recuerdos.%20Me%20gustar%C3%ADa%20recibir%20una%20cotizaci%C3%B3n%20para%20mi%20evento.%20%F0%9F%92%8D%E2%9C%A8" target="_blank" class="hover:text-white transition">
-                <i class="fa-brands fa-whatsapp text-emerald-500 mr-1"></i> WhatsApp: <strong>220 266 2703</strong>
+    <footer class="bg-black py-10 text-center text-slate-500 text-sm border-t border-white/10">
+        <p class="mb-4">
+            <a href="https://wa.me/522202662703?text=Hola!%20Me%20encantaron%20sus%20opciones%20de%20recuerdos.%20Me%20gustar%C3%ADa%20recibir%20una%20cotizaci%C3%B3n%20para%20mi%20evento.%20%F0%9F%92%8D%E2%9C%A8" target="_blank" class="hover:text-white transition flex items-center justify-center gap-2">
+                <i class="fa-brands fa-whatsapp text-emerald-500 text-xl"></i> <span class="text-lg">WhatsApp: <strong class="text-white">220 266 2703</strong></span>
             </a>
         </p>
-        <p>© 2026 Detalles & Recuerdos. Todos los derechos reservados.</p>
+        <p>© 2026 Recuerdos VIP. Todos los derechos reservados.</p>
     </footer>
 
     <!-- ========================================================================= -->
-    <!-- CONTENEDOR OCULTO PARA GENERAR EL PDF CON TODAS LAS IMÁGENES -->
+    <!-- CONTENEDOR OCULTO PARA GENERAR EL PDF EDITORIAL                           -->
     <!-- ========================================================================= -->
     <div id="print-wrapper" style="overflow: hidden; height: 0;">
         <div id="print-container">
-            <!-- Portada PDF -->
-            <div style="text-align: center; border-bottom: 4px solid #d4af37; padding-bottom: 25px; margin-bottom: 30px; background: #fafafa; padding-top: 25px; border-radius: 20px;">
-                <h1 style="font-family: 'Playfair Display', serif; font-size: 42px; color: #1a1a1a; margin: 0;">Catálogo de Recuerdos</h1>
-                <p style="font-size: 18px; color: #d4af37; font-weight: bold; margin-top: 10px; text-transform: uppercase; letter-spacing: 2px;">¡Haz que tu boda sea inolvidable!</p>
+            
+            <!-- Encabezado Editorial -->
+            <div class="pdf-header">
+                <h1>CATÁLOGO VIP</h1>
+                <p>Haz que tu boda sea inolvidable</p>
             </div>
 
-            <!-- Grid de PDF (3 filas, 2 columnas) usando todas las fotos -->
-            <div class="pdf-grid">
-                
-                <!-- Fila 1: Abanicos y Resaca -->
-                <div class="pdf-card">
-                    <img src="DETALLE PERFECTO.png" class="pdf-img">
-                    <div class="pdf-content">
-                        <h2 style="font-family: 'Playfair Display'; font-size: 20px; color: #b5952f; margin-top:0;">🪭 Abanicos & Especiales</h2>
-                        <ul style="font-size: 13px; line-height: 1.6; color: #333; margin-bottom: 0;">
-                            <li>Abanico Bambú Blanco: <strong style="color: #b5952f;">$20 c/u</strong></li>
-                            <li>En caja listo para entregar: <strong style="color: #b5952f;">$150 c/u</strong></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="pdf-card">
-                    <img src="image_06f13d.png" class="pdf-img">
-                    <div class="pdf-content">
-                        <h2 style="font-family: 'Playfair Display'; font-size: 20px; color: #1e3a8a; margin-top:0;">🥳 Bolsas Anticruda</h2>
-                        <p style="font-size: 11px; color: #475569; margin-bottom: 10px;">Alka-Seltzer, Chicles Trident, Cafiaspirina, Pica Fresa, y Bebida.</p>
-                        <div style="background: #f0f4f8; padding: 10px; border-radius: 8px; font-size: 13px;">
-                            <div>Paquete 50 pz (con Agua): <strong style="color: #1e3a8a; float: right;">$2,000</strong></div>
-                            <div style="margin-top: 5px;">Paquete 50 pz (con Electrolit): <strong style="color: #1e3a8a; float: right;">$3,000</strong></div>
+            <div class="pdf-body">
+                <!-- Grid de PDF (2 columnas) -->
+                <div class="pdf-grid">
+                    
+                    <!-- Tarjeta 1 -->
+                    <div class="pdf-card">
+                        <img src="DETALLE PERFECTO.png" class="pdf-img">
+                        <div class="pdf-content">
+                            <h2>🪭 Abanicos & Especiales</h2>
+                            <ul style="font-size: 14px; line-height: 1.8; color: #4b5563; margin-bottom: 0; padding-left: 15px;">
+                                <li>Abanico Bambú Blanco: <strong style="color: #1a1a1a;">$20 c/u</strong></li>
+                                <li>En caja listo para entregar: <strong style="color: #1a1a1a;">$150 c/u</strong></li>
+                            </ul>
                         </div>
                     </div>
-                </div>
 
-                <!-- Fila 2: Ónix y Velas -->
-                <div class="pdf-card">
-                    <img src="DETALLE ELEGANTE.png" class="pdf-img">
-                    <div class="pdf-content">
-                        <h2 style="font-family: 'Playfair Display'; font-size: 20px; color: #b5952f; margin-top:0;">🏛️ Detalles en Ónix</h2>
-                        <ul style="font-size: 13px; line-height: 1.6; color: #333; margin-bottom: 0;">
-                            <li>Mini Joyero: <strong style="color: #b5952f;">$60 c/u</strong></li>
-                            <li>Broche para cabello: <strong style="color: #b5952f;">$50 c/u</strong></li>
-                            <li>Dominó con estuche: <strong style="color: #b5952f;">$160 c/u</strong></li>
-                        </ul>
+                    <!-- Tarjeta 2 -->
+                    <div class="pdf-card">
+                        <img src="image_06f13d.png" class="pdf-img">
+                        <div class="pdf-content">
+                            <h2>🥳 Bolsas Anticruda</h2>
+                            <p style="font-size: 12px; color: #6b7280; margin-bottom: 12px; line-height: 1.5;">Incluye: Alka-Seltzer, Chicles Trident, Cafiaspirina, Pica Fresa, y Bebida.</p>
+                            <div style="background: #f8fafc; padding: 12px; border-radius: 8px; font-size: 14px; border: 1px solid #e2e8f0;">
+                                <div style="margin-bottom: 8px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">Con Agua: <strong style="color: #1a1a1a; float: right;">$2,000 / 50pz</strong></div>
+                                <div>Con Electrolit: <strong style="color: #1a1a1a; float: right;">$3,000 / 50pz</strong></div>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="pdf-card">
-                    <img src="AROMA EN RECUERDO.png" class="pdf-img">
-                    <div class="pdf-content">
-                        <h2 style="font-family: 'Playfair Display'; font-size: 20px; color: #be123c; margin-top:0;">🕯️ Velas Aromáticas</h2>
-                        <p style="font-size: 13px; color: #333; margin-bottom: 10px;">Vainilla y Frutos Rojos.</p>
-                        <p style="font-size: 14px; font-weight: bold;">Paquete de 50 piezas: <strong style="color: #be123c;">$1,000</strong></p>
+                    <!-- Tarjeta 3 -->
+                    <div class="pdf-card">
+                        <img src="DETALLE ELEGANTE.png" class="pdf-img">
+                        <div class="pdf-content">
+                            <h2>🏛️ Detalles en Ónix</h2>
+                            <ul style="font-size: 14px; line-height: 1.8; color: #4b5563; margin-bottom: 0; padding-left: 15px;">
+                                <li>Mini Joyero: <strong style="color: #1a1a1a;">$60 c/u</strong></li>
+                                <li>Broche para cabello: <strong style="color: #1a1a1a;">$50 c/u</strong></li>
+                                <li>Dominó con estuche: <strong style="color: #1a1a1a;">$160 c/u</strong></li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Fila 3: Licores y Temáticos -->
-                <div class="pdf-card">
-                    <img src="PREMIUM.png" class="pdf-img">
-                    <div class="pdf-content">
-                        <h2 style="font-family: 'Playfair Display'; font-size: 20px; color: #b5952f; margin-top:0;">🍾 Licores Premium</h2>
-                        <p style="font-size: 12px; margin-bottom: 8px;"><strong>Anís Criollo (500ml)</strong>: <span style="color: #b5952f; font-weight: bold;">$200 c/u</span></p>
-                        <p style="font-size: 13px; font-weight: bold; margin-bottom: 5px;">Tablas de Madera + Copa:</p>
-                        <ul style="font-size: 12px; line-height: 1.5; color: #333; margin-top:0;">
-                            <li>Torres 5: <strong style="color: #b5952f;">$950 c/u</strong> | Torres 10: <strong style="color: #b5952f;">$1,100 c/u</strong></li>
-                            <li>Etiqueta Roja: <strong style="color: #b5952f;">$1,500 c/u</strong></li>
-                        </ul>
+                    <!-- Tarjeta 4 -->
+                    <div class="pdf-card">
+                        <img src="AROMA EN RECUERDO.png" class="pdf-img">
+                        <div class="pdf-content">
+                            <h2>🕯️ Velas Aromáticas</h2>
+                            <p style="font-size: 14px; color: #4b5563; margin-bottom: 10px;">Aromas a Vainilla y Frutos Rojos.</p>
+                            <div style="background: #fff4f5; padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #ffe4e6;">
+                                <p style="font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 5px 0; color: #be123c; font-weight: bold;">Paquete de 50 piezas</p>
+                                <p style="font-size: 24px; font-weight: 800; color: #1a1a1a; margin: 0;">$1,000</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="pdf-card">
-                    <img src="image_06f176.png" class="pdf-img" style="border-color: #3b82f6;">
-                    <div class="pdf-content">
-                        <h2 style="font-family: 'Playfair Display'; font-size: 20px; color: #1e40af; margin-top:0;">🍻 Kits Temáticos Cerveza</h2>
-                        <p style="font-size: 13px; color: #333; margin-bottom: 10px;">Sorprende a tus invitados con divertidos kits como el diseño de Lucha Libre y otras temáticas 100% personalizables.</p>
-                        <p style="font-size: 14px; font-weight: bold; color: #1e40af; text-align: center; background: #eff6ff; padding: 8px; border-radius: 8px;">¡Cotiza tu diseño ideal!</p>
+                    <!-- Tarjeta 5 -->
+                    <div class="pdf-card">
+                        <img src="PREMIUM.png" class="pdf-img">
+                        <div class="pdf-content">
+                            <h2>🍾 Licores Premium</h2>
+                            <p style="font-size: 13px; margin-bottom: 12px; color: #4b5563;"><strong>Anís Criollo (500ml)</strong>: <span style="color: #1a1a1a; font-weight: bold;">$200 c/u</span></p>
+                            <p style="font-size: 14px; font-weight: bold; margin-bottom: 8px; color: #1a1a1a;">Tablas de Madera + Copa:</p>
+                            <ul style="font-size: 13px; line-height: 1.8; color: #4b5563; margin-top:0; padding-left: 15px;">
+                                <li>Torres 5: <strong style="color: #1a1a1a;">$950 c/u</strong></li>
+                                <li>Torres 10: <strong style="color: #1a1a1a;">$1,100 c/u</strong></li>
+                                <li>Etiqueta Roja: <strong style="color: #1a1a1a;">$1,500 c/u</strong></li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
 
+                    <!-- Tarjeta 6 -->
+                    <div class="pdf-card">
+                        <img src="image_06f176.png" class="pdf-img" style="border-bottom-color: #3b82f6;">
+                        <div class="pdf-content">
+                            <h2 style="color: #1e40af;">🍻 Kits Cerveza</h2>
+                            <p style="font-size: 13px; color: #4b5563; margin-bottom: 15px; line-height: 1.6;">Sorprende a tus invitados con divertidos kits temáticos (Ej. Lucha Libre). Diseños 100% personalizables.</p>
+                            <div style="background: #eff6ff; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid #bfdbfe;">
+                                <p style="font-size: 14px; font-weight: bold; color: #1e40af; margin: 0;">¡Contáctanos para cotizar!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
 
-            <!-- Footer PDF -->
-            <div style="background: #1a1a1a; color: white; padding: 20px; border-radius: 15px; text-align: center;">
-                <p style="font-size: 16px; font-weight: bold; margin: 0 0 5px 0; color: #d4af37;">¡Asegura los recuerdos perfectos!</p>
-                <p style="font-size: 13px; margin: 0 0 10px 0;">Pedidos con 30 días de anticipación. Pago: 50% anticipo y 50% a la entrega.</p>
-                <p style="font-size: 20px; font-weight: bold; margin: 0;">Contáctanos al WhatsApp: <span style="color: #25D366;">220 266 2703</span></p>
+            <!-- Footer Editorial PDF -->
+            <div class="pdf-footer">
+                <div class="pdf-footer-text">
+                    <h3>Asegura la perfección</h3>
+                    <p>Mínimo 30 días de anticipación.<br>50% anticipo | 50% contra entrega.</p>
+                </div>
+                <div class="pdf-footer-contact">
+                    <p>Atención Personalizada</p>
+                    <h4>WA: 220 266 2703</h4>
+                </div>
             </div>
+
         </div>
     </div>
 
     <!-- SCRIPTS -->
     <script>
+        // Animación de entrada al hacer Scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in-up').forEach((el) => observer.observe(el));
+
         // Lógica de Carruseles Generales
         function moveSlide(sliderId, direction) {
             const slider = document.getElementById(sliderId);
@@ -466,42 +536,72 @@
         setInterval(() => {
             moveSlide('slider-1', 1);
             moveSlide('slider-2', 1);
-        }, 3500);
+        }, 4000);
 
-        // Lógica del PDF
+        // Lógica del PDF Mejorada (Editorial)
         function generarPDF() {
-            const btn = document.querySelector('button[onclick="generarPDF()"]');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generando...';
-            btn.disabled = true;
+            // Prevenir errores subiendo la vista al inicio (Truco esencial para html2canvas)
+            window.scrollTo(0, 0);
 
+            const btns = document.querySelectorAll('button[onclick="generarPDF()"]');
+            const originalTexts = [];
+            
+            btns.forEach((btn, index) => {
+                originalTexts[index] = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generando PDF...';
+                btn.disabled = true;
+            });
+
+            const printWrapper = document.getElementById('print-wrapper');
             const printContainer = document.getElementById('print-container');
             
-            html2canvas(printContainer, {
-                scale: 2, 
-                useCORS: true,
-                logging: false,
-                backgroundColor: "#ffffff"
-            }).then(canvas => {
-                const imgData = canvas.toDataURL('image/jpeg', 1.0);
-                const { jsPDF } = window.jspdf;
-                
-                // Formato carta
-                const pdf = new jsPDF('p', 'mm', 'letter');
-                const pdfWidth = pdf.internal.pageSize.getWidth();
-                const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-                
-                pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
-                pdf.save('Catalogo_Recuerdos_VIP.pdf');
-                
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            }).catch(error => {
-                console.error("Error generando PDF: ", error);
-                alert("Hubo un problema al generar el PDF.");
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            });
+            // Hacemos el PDF "visible" en código temporalmente
+            printWrapper.style.height = 'auto';
+            printWrapper.style.overflow = 'visible';
+            
+            // Un pequeño timeout asegura que el navegador renderice el contenedor antes de tomar la foto
+            setTimeout(() => {
+                html2canvas(printContainer, {
+                    scale: 2, // Alta resolución
+                    useCORS: true, 
+                    allowTaint: true,
+                    logging: false,
+                    backgroundColor: "#ffffff"
+                }).then(canvas => {
+                    // Ocultamos de nuevo el wrapper
+                    printWrapper.style.height = '0';
+                    printWrapper.style.overflow = 'hidden';
+
+                    const imgData = canvas.toDataURL('image/jpeg', 1.0);
+                    const { jsPDF } = window.jspdf;
+                    
+                    // Formato carta (Portrait)
+                    const pdf = new jsPDF('p', 'mm', 'letter');
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+                    
+                    pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+                    pdf.save('Catalogo_Recuerdos_VIP.pdf');
+                    
+                    // Restaurar botones
+                    btns.forEach((btn, index) => {
+                        btn.innerHTML = originalTexts[index];
+                        btn.disabled = false;
+                    });
+                }).catch(error => {
+                    console.error("Error generando PDF: ", error);
+                    
+                    printWrapper.style.height = '0';
+                    printWrapper.style.overflow = 'hidden';
+                    
+                    alert("Error. Si ves esto en modo local, recuerda que el navegador bloquea las imágenes por seguridad. Funciona perfecto al subirlo a un hosting.");
+                    
+                    btns.forEach((btn, index) => {
+                        btn.innerHTML = originalTexts[index];
+                        btn.disabled = false;
+                    });
+                });
+            }, 300); // 300ms de espera para el renderizado
         }
     </script>
 </body>
