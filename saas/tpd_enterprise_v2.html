@@ -40,7 +40,7 @@
             transition: background-color 0.3s, color 0.3s;
         }
         
-        /* LOGIN V2.0 PRO STYLES */
+        /* LOGIN STYLES */
         .login-bg {
             background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0f172a 70%, #020617 100%);
         }
@@ -133,19 +133,17 @@
 </head>
 <body class="fixed inset-0 overflow-hidden flex flex-col text-slate-800 bg-slate-50">
 
-    <!-- LOGIN NUEVO Y MODERNO v2.0 PRO -->
+    <!-- LOGIN V2.0 PRO -->
     <div id="view-login" class="fixed inset-0 login-bg flex justify-center items-center z-50 p-4 relative overflow-hidden">
         <div class="glow-effect -top-20 -left-20"></div>
         <div class="glow-effect -bottom-20 -right-20"></div>
 
         <div class="login-card p-8 sm:p-10 rounded-3xl w-full max-w-md text-center relative z-10">
-            <!-- Badge de versión -->
             <div class="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/30 text-blue-400 px-3 py-1 rounded-full text-xs font-bold mb-6 tracking-wide">
                 <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
                 TPD Enterprise v2.0 Pro Engine
             </div>
 
-            <!-- Icono principal -->
             <div class="w-20 h-20 bg-gradient-to-tr from-blue-600 via-indigo-500 to-cyan-400 text-white rounded-2xl flex items-center justify-center text-4xl mx-auto mb-5 shadow-xl shadow-blue-500/30 border border-white/20 transform transition hover:rotate-6">
                 <i class="fa-solid fa-layer-group"></i>
             </div>
@@ -158,14 +156,14 @@
                     <input type="text" id="login-user" placeholder="ID de Usuario o Email" class="w-full border border-slate-700 p-4 rounded-2xl outline-none focus:border-blue-500 text-sm font-medium bg-slate-900/60 text-white placeholder-slate-500 transition shadow-inner">
                 </div>
                 <div class="relative w-full">
-                    <input type="password" id="login-pass" onkeypress="if(event.key === 'Enter') window.appLogin()" placeholder="Contraseña" class="w-full border border-slate-700 p-4 rounded-2xl outline-none focus:border-blue-500 text-sm font-medium pr-12 bg-slate-900/60 text-white placeholder-slate-500 transition shadow-inner">
+                    <input type="password" id="login-pass" placeholder="Contraseña" class="w-full border border-slate-700 p-4 rounded-2xl outline-none focus:border-blue-500 text-sm font-medium pr-12 bg-slate-900/60 text-white placeholder-slate-500 transition shadow-inner">
                     <button onclick="window.togglePassword('login-pass')" class="absolute right-4 top-4 text-slate-500 hover:text-blue-400 transition">
                         <i class="fa-solid fa-eye"></i>
                     </button>
                 </div>
             </div>
             
-            <button onclick="window.appLogin()" class="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-500 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-4 rounded-2xl shadow-lg shadow-blue-600/30 transition duration-300 text-base flex items-center justify-center gap-2 transform active:scale-95">
+            <button id="login-submit-btn" onclick="window.appLogin()" class="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-500 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-4 rounded-2xl shadow-lg shadow-blue-600/30 transition duration-300 text-base flex items-center justify-center gap-2 transform active:scale-95">
                 Ingresar al Sistema <i class="fa-solid fa-arrow-right"></i>
             </button>
 
@@ -921,7 +919,7 @@
             <div class="tpd-msg bot" id="tpd-chat-welcome">Cargando contexto del evento...</div>
         </div>
         <div class="flex border-t border-slate-200 p-3 bg-white gap-2">
-            <input type="text" id="tpd-chat-input" placeholder="Pregúntame sobre tus listas..." onkeypress="if(event.key === 'Enter') window.sendTPDChat()" class="flex-1 border-2 border-slate-100 rounded-xl px-4 py-2 text-sm outline-none focus:border-blue-400 transition bg-slate-50">
+            <input type="text" id="tpd-chat-input" placeholder="Pregúntame sobre tus listas..." class="flex-1 border-2 border-slate-100 rounded-xl px-4 py-2 text-sm outline-none focus:border-blue-400 transition bg-slate-50">
             <button onclick="window.sendTPDChat()" class="bg-blue-600 text-white rounded-xl w-10 h-10 flex items-center justify-center hover:bg-blue-700 shadow-md transition"><i class="fa-solid fa-paper-plane text-xs"></i></button>
         </div>
     </div>
@@ -956,15 +954,38 @@
         let currentTargetGuestId = null; 
         let isPremiumUser = false;
 
+        let hCurrentGuest = null;
+        let hAduToEnter = 0;
+        let hNinToEnter = 0;
+        let hMaxAdu = 0;
+        let hMaxNin = 0;
+
         let state = { 
             invitados: [], 
             mesas: [{ id: 1, nombre: "Mesa VIP" }], 
-            config: { capacidadMesa: 10, themeColor: '#C3A343', extras: 0, totalExtrasCost: 0, fontFamily: 'Playfair Display' },
+            config: { capacidadMesa: 10, themeColor: '#3b82f6', extras: 0, totalExtrasCost: 0, fontFamily: 'Playfair Display' },
             croquis: null,
             ticketBg: null
         };
 
         const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, timerProgressBar: true });
+
+        function getSubdomain(eventType) {
+            const map = { "XV Años": "xvana", "Bautizo": "bautizo", "Primera Comunión": "comunion", "Confirmación": "confirmacion", "Primera Comunión y Confirmación": "comunion", "Cumpleaños": "cumple", "Boda": "boda" };
+            return map[eventType] || "boda";
+        }
+
+        window.addPDFFooter = function(docInstance) {
+            const pageCount = docInstance.internal.getNumberOfPages();
+            const pageWidth = docInstance.internal.pageSize.getWidth();
+            const pageHeight = docInstance.internal.pageSize.getHeight();
+            for (let i = 1; i <= pageCount; i++) {
+                docInstance.setPage(i);
+                docInstance.setFontSize(8);
+                docInstance.setTextColor(150);
+                docInstance.text("Generado por tupasedigital.online", pageWidth / 2, pageHeight - 8, { align: 'center' });
+            }
+        };
 
         window.setAppStyleTheme = function(theme) {
             document.body.classList.remove('theme-midnight', 'theme-rosegold');
@@ -973,7 +994,197 @@
             localStorage.setItem('tpd_selected_theme', theme);
         };
 
-        // ASISTENTE DE IA INDEPENDIENTE
+        // WELCOME MODAL
+        window.toggleCustomEventInput = function(selectId, inputId) {
+            const select = document.getElementById(selectId);
+            const input = document.getElementById(inputId);
+            if(select.value === 'Otro') { input.classList.remove('hidden'); input.focus(); } else { input.classList.add('hidden'); input.value = ''; }
+        };
+
+        window.saveWelcomeEventType = async function() {
+            try {
+                const selectVal = document.getElementById('welcome-event-type').value;
+                let type = selectVal;
+                if(selectVal === 'Otro') {
+                    type = document.getElementById('welcome-event-custom').value.trim();
+                    if(!type) return Toast.fire({icon:'warning', title:'Escribe el tipo de evento'});
+                }
+                const activeTarget = impersonatingId || currentUser;
+                const docRef = doc(db, 'artifacts', 'weddingflow', 'users', activeTarget);
+                await setDoc(docRef, { eventType: type }, { merge: true });
+                document.getElementById('welcome-modal').classList.replace('flex', 'hidden');
+                window.subscribeToUser(activeTarget);
+            } catch(e) { Swal.fire('Error', 'Fallo al guardar evento', 'error'); }
+        };
+
+        // ADMIN PANEL
+        window.loadAdminPanel = async function() {
+            try {
+                document.getElementById('view-login').classList.add('hidden');
+                document.getElementById('view-crm').classList.add('hidden');
+                document.getElementById('view-admin').classList.remove('hidden');
+                document.getElementById('view-admin').classList.add('flex');
+                
+                document.getElementById('tpd-fab').style.display = 'none';
+                document.getElementById('tpd-chat-widget').style.display = 'none';
+                
+                if(currentRole === 'Staff' || currentRole === 'Soporte') {
+                    document.getElementById('admin-creator-panel').classList.add('hidden');
+                } else {
+                    document.getElementById('admin-creator-panel').classList.remove('hidden');
+                }
+                
+                const colRef = collection(db, 'artifacts', 'weddingflow', 'users');
+                const snaps = await getDocs(colRef);
+                const tbody = document.getElementById('admin-users-tbody');
+                tbody.innerHTML = '';
+                
+                snaps.forEach(docSnap => {
+                    const d = docSnap.data();
+                    let rol = d.role || 'Cliente';
+                    let tipoDisplay = '';
+
+                    if (rol === 'Administrador') tipoDisplay = '<span class="text-indigo-600 font-black">Admin Global</span>';
+                    else if (rol === 'Staff') tipoDisplay = '<span class="text-slate-500 font-bold">Staff Agencia</span>';
+                    else if (rol === 'Soporte') tipoDisplay = '<span class="text-slate-500 font-bold">Soporte Técnico</span>';
+                    else if (rol === 'Hostess') tipoDisplay = '<span class="text-blue-500 font-bold">Staff Evento</span>';
+                    else if (rol === 'Cliente Web') tipoDisplay = '<span class="text-purple-600 font-black">CLIENTE WEB</span>';
+                    else tipoDisplay = d.eventType ? `<span class="font-bold text-slate-800">${d.eventType}</span>` : '<span class="text-amber-500 font-bold">Sin evento</span>';
+
+                    let roleCol = rol === 'Cliente' ? 'Organizador Pro (CRM)' : rol;
+                    let bdg = d.status === 'Suspendido' ? '<span class="bg-red-100 text-red-700 px-2 py-1 rounded text-[10px] font-bold">Suspendido</span>' : '<span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-[10px] font-bold">Activo</span>';
+                    
+                    let btnSt = d.status === 'Suspendido' 
+                        ? `<button onclick="window.adminToggleStatus('${docSnap.id}','Activo')" class="text-emerald-500 hover:text-emerald-700 px-2 text-sm transition" title="Reactivar"><i class="fa-solid fa-play"></i></button>` 
+                        : `<button onclick="window.adminToggleStatus('${docSnap.id}','Suspendido')" class="text-amber-500 hover:text-amber-700 px-2 text-sm transition" title="Suspender"><i class="fa-solid fa-pause"></i></button>`;
+                    
+                    let deleteBtn = currentRole === 'Administrador' ? `<button onclick="window.deleteClient('${docSnap.id}')" class="text-red-400 hover:text-red-600 px-2 text-sm transition" title="Borrar DB"><i class="fa-solid fa-trash-can"></i></button>` : '';
+
+                    let impBtn = '';
+                    let premiumBtn = '';
+                    let infoAdminBtn = '';
+                    
+                    if (d.role === 'Cliente' || d.role === 'Cliente Web' || d.role === 'Hostess') {
+                        impBtn = `<button onclick="window.impStart('${docSnap.id}', '${d.role}')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-100 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1" title="Supervisar"><i class="fa-solid fa-eye"></i> Supervisar</button>`;
+                        if (d.role === 'Cliente') {
+                            let isPremium = d.hasPremiumLink === true;
+                            premiumBtn = `<button onclick="window.adminTogglePremium('${docSnap.id}', ${isPremium})" class="${isPremium ? 'text-amber-500 hover:text-amber-600' : 'text-slate-300 hover:text-slate-400'} transition p-2 text-xl" title="Premium"><i class="fa-solid fa-star"></i></button>`;
+                        }
+                    }
+
+                    if (d.role === 'Administrador' || d.role === 'Staff' || d.role === 'Soporte') {
+                        infoAdminBtn = `<button onclick="window.adminResetPassword('${docSnap.id}')" class="text-blue-400 hover:text-blue-600 transition p-2" title="Información"><i class="fa-solid fa-circle-info text-lg"></i></button>`;
+                    }
+
+                    const tr = document.createElement('tr');
+                    tr.className = 'hover:bg-slate-50 transition border-b border-slate-50';
+                    tr.innerHTML = `
+                        <td class="p-4 font-bold text-slate-800">${docSnap.id} <br><span class="text-[10px] text-slate-500 font-medium">${tipoDisplay}</span></td>
+                        <td class="p-4 font-bold text-xs text-slate-500 uppercase">${roleCol}</td>
+                        <td class="p-4 text-center">${bdg}</td>
+                        <td class="p-4 flex items-center justify-end gap-2">
+                            ${impBtn} ${premiumBtn} ${infoAdminBtn} ${btnSt} ${deleteBtn}
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+                Swal.close();
+            } catch(e) {
+                console.error(e);
+                Swal.close();
+            }
+        };
+
+        window.adminLoadUsers = async function() {
+            Swal.fire({ title: 'Actualizando...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+            await window.loadAdminPanel();
+            Toast.fire({ icon: 'success', title: 'Panel actualizado' });
+        };
+
+        window.adminCreateUser = async function() {
+            try {
+                const user = document.getElementById('new-user').value.trim().toLowerCase();
+                const pass = document.getElementById('new-pass').value.trim();
+                const role = document.getElementById('new-role').value;
+
+                if(!user || !pass) return Swal.fire('Atención', 'Rellena ID de usuario y contraseña.', 'warning');
+                const pseudoEmail = `${user}@tpd.online`;
+
+                await createUserWithEmailAndPassword(secondaryAuth, pseudoEmail, pass);
+                await signOut(secondaryAuth);
+
+                const docRef = doc(db, 'artifacts', 'weddingflow', 'users', user);
+                await setDoc(docRef, { role, status: 'Activo', eventType: "", invitados: [], mesas: [{id:1,nombre:"Mesa VIP"}], config: {capacidadMesa:10, themeColor: '#3b82f6', extras: 0, totalExtrasCost: 0, fontFamily: 'Playfair Display'}, croquis: null, hasPremiumLink: false, ticketBg: null });
+                
+                document.getElementById('new-user').value = ''; document.getElementById('new-pass').value = '';
+                Toast.fire({icon: 'success', title: 'Usuario Registrado'});
+                window.loadAdminPanel();
+            } catch(e) { 
+                Swal.fire('Error', 'Fallo al crear usuario.', 'error'); 
+            }
+        };
+
+        window.adminTogglePremium = async function(userId, currentStatus) {
+            try {
+                await setDoc(doc(db, 'artifacts', 'weddingflow', 'users', userId), { hasPremiumLink: !currentStatus }, { merge: true });
+                window.loadAdminPanel();
+                Toast.fire({icon: 'success', title: !currentStatus ? '✨ Premium Activado' : 'Premium Desactivado'});
+            } catch(e) { Toast.fire({icon: 'error', title: 'Error de BD'}); }
+        };
+
+        window.adminResetPassword = function(userId) {
+            Swal.fire({ title: 'Restablecer Contraseña', icon: 'info', html: 'Para restablecer la clave, borra el usuario en Firebase Auth y vuélvelo a crear con el mismo ID.', confirmButtonColor: '#2563eb' });
+        };
+
+        window.adminToggleStatus = async function(userId, newStatus) {
+            try {
+                await setDoc(doc(db, 'artifacts', 'weddingflow', 'users', userId), { status: newStatus }, { merge: true });
+                window.loadAdminPanel();
+            } catch(e) { Toast.fire({icon: 'error', title: 'Error de BD'}); }
+        };
+
+        window.deleteClient = function(user) {
+            Swal.fire({ title: `¿Borrar ${user}?`, icon: 'error', showCancelButton: true, confirmButtonColor: '#ef4444' }).then(async (res) => {
+                if(res.isConfirmed) { await deleteDoc(doc(db, 'artifacts', 'weddingflow', 'users', user)); Toast.fire({icon:'success', title:'Instancia Borrada'}); window.loadAdminPanel(); }
+            });
+        };
+
+        window.impStart = async function(user, userRole) {
+            try {
+                if (userRole === 'Hostess') {
+                    const { value: eventId } = await Swal.fire({ title: 'Supervisar Hostess', input: 'text', inputPlaceholder: 'ID Evento', showCancelButton: true });
+                    if (eventId) { window.loadHostessView(eventId.toLowerCase().trim()); }
+                    return;
+                }
+                const docRef = doc(db, 'artifacts', 'weddingflow', 'users', user);
+                const snap = await getDoc(docRef);
+                if (snap.exists()) {
+                    const data = snap.data();
+                    impersonatingId = user;
+                    document.getElementById('view-admin').classList.add('hidden');
+                    document.getElementById('crm-impersonation-bar').classList.remove('hidden'); 
+                    document.getElementById('crm-imp-name').innerText = user; 
+                    window.setupClientEnvironment(user, data);
+                }
+            } catch(e) { Swal.fire('Error', 'Fallo al suplantar', 'error'); }
+        };
+
+        window.appExitImpersonation = function() {
+            impersonatingId = null;
+            document.getElementById('crm-impersonation-bar').classList.add('hidden');
+            document.getElementById('view-crm').classList.add('hidden');
+            document.getElementById('view-hostess').classList.add('hidden');
+            if (unsubscribe) unsubscribe();
+            window.loadAdminPanel();
+        };
+
+        window.promptHostessLogin = async function() {
+            const { value: eventId } = await Swal.fire({ title: 'Recepción Hostess', input: 'text', inputLabel: 'ID del Evento', showCancelButton: true });
+            if (eventId) { window.loadHostessView(eventId.toLowerCase().trim()); } 
+            else { window.appLogout(); }
+        };
+
+        // ASISTENTE DE IA INDEPENDIENTE POR EVENTO
         window.initEventAssistant = function() {
             const activeId = impersonatingId || currentUser;
             const container = document.getElementById('tpd-chat-messages');
@@ -1066,10 +1277,14 @@
             const passInput = document.getElementById(targetId); passInput.type = 'text'; passInput.value = pass;
         };
 
-        // LOGIN RESILIENTE Y ASÍNCRONO SIN ERRORES EN CONSOLA
+        // LOGIN ATÓMICO Y RESILIENTE
         window.appLogin = async function() {
-            const userRaw = document.getElementById('login-user').value.trim().toLowerCase();
-            const pass = document.getElementById('login-pass').value.trim();
+            const userInput = document.getElementById('login-user');
+            const passInput = document.getElementById('login-pass');
+            if(!userInput || !passInput) return;
+
+            const userRaw = userInput.value.trim().toLowerCase();
+            const pass = passInput.value.trim();
             if (!userRaw || !pass) return Swal.fire('Error', 'Ingresa usuario y contraseña.', 'error');
 
             Swal.fire({ title: 'Autenticando v2.0...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
@@ -1097,7 +1312,7 @@
                     usedEmail = email;
                     break;
                 } catch (e) {
-                    // Silenciar fallos esperados de intento
+                    // Ignorar fallos de intento progresivo
                 }
             }
 
@@ -1233,6 +1448,36 @@
                 await setDoc(docRef, { invitados: state.invitados, mesas: state.mesas, config: state.config, croquis: state.croquis, ticketBg: state.ticketBg || null }, { merge: true });
             } catch(e) { console.error('Fallo crmSave', e); }
         };
+
+        window.crmLoadData = async function() {
+            Swal.fire({ title: 'Sincronizando...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+            try {
+                const act = impersonatingId || currentUser;
+                const snap = await getDoc(doc(db, 'artifacts', 'weddingflow', 'users', act));
+                if(snap.exists()) {
+                    const data = snap.data();
+                    state.invitados = data.invitados || [];
+                    state.mesas = data.mesas || state.mesas;
+                    state.config = data.config || state.config;
+                    state.croquis = data.croquis || null;
+                    state.ticketBg = data.ticketBg || null;
+                    window.crmRenderAll();
+                    Swal.close();
+                    Toast.fire({icon:'success', title:'Datos sincronizados'});
+                }
+            } catch(e) { Swal.fire('Error', 'Fallo al sincronizar', 'error'); }
+        };
+
+        window.crmUpdateConfig = function(k, v) {
+            if(['capacidadMesa', 'eventDuration', 'flowersPerTable'].includes(k)) {
+                state.config[k] = parseInt(v) || 0;
+            } else {
+                state.config[k] = v;
+            }
+            window.crmSave();
+            if(k === 'capacidadMesa') window.crmRenderTables();
+            window.crmRenderStats();
+        };
         
         window.crmRenderAll = function() { window.crmRenderGuests(); window.crmRenderTables(); window.crmRenderStats(); };
         
@@ -1258,6 +1503,33 @@
             if(tab === 'stats') window.crmRenderStats();
         };
 
+        window.openAddGuestModal = function() {
+            const mesaSelect = document.getElementById('modal-guest-mesa');
+            mesaSelect.innerHTML = '<option value="0">Sin Asignar</option>' + state.mesas.map(m => `<option value="${m.id}">${m.nombre}</option>`).join('');
+            document.getElementById('modal-guest-name').value = ''; document.getElementById('modal-guest-phone').value = '';
+            document.getElementById('modal-guest-ads').value = '1'; document.getElementById('modal-guest-kids').value = '0';
+            document.getElementById('modal-guest-obs').value = '';
+            document.getElementById('add-guest-modal').classList.remove('hidden'); 
+            document.getElementById('add-guest-modal').classList.add('flex');
+        };
+
+        window.saveModalGuest = function() {
+            const name = document.getElementById('modal-guest-name').value.trim(); 
+            const group = document.getElementById('modal-guest-group').value;
+            const phone = document.getElementById('modal-guest-phone').value.trim(); 
+            const pasesA = parseInt(document.getElementById('modal-guest-ads').value) || 1;
+            const pasesN = parseInt(document.getElementById('modal-guest-kids').value) || 0; 
+            const status = document.getElementById('modal-guest-status').value;
+            const mesa = parseInt(document.getElementById('modal-guest-mesa').value) || 0; 
+            const obs = document.getElementById('modal-guest-obs').value.trim();
+
+            if (!name) return Toast.fire({icon: 'warning', title: 'El nombre es obligatorio'});
+            state.invitados.push({ id: Date.now(), nombre: name, grupo: group, telefono: phone, adultos: pasesA, pases: pasesA, ninos: pasesN, status: status, mesa: mesa, observaciones: obs });
+
+            document.getElementById('add-guest-modal').classList.replace('flex', 'hidden');
+            window.crmSave(); window.crmRenderAll(); Toast.fire({ icon: 'success', title: 'Invitado Guardado' });
+        };
+
         window.crmRenderGuests = function() {
             const tbody = document.getElementById('crm-guests-tbody');
             if(!tbody) return;
@@ -1281,8 +1553,9 @@
                     <td class="p-4 text-center"><input type="number" min="0" value="${nns}" onchange="window.crmUpdateGuest(${g.id}, 'ninos', this.value)" class="w-12 text-center font-bold border rounded p-1 text-xs"></td>
                     <td class="p-4 text-center"><select onchange="window.crmUpdateGuest(${g.id}, 'status', this.value)" class="border p-1.5 text-xs rounded-lg ${stColor} font-bold"><option value="Pendiente" ${g.status==='Pendiente'?'selected':''}>⏳ Pendiente</option><option value="Confirmado" ${g.status==='Confirmado'?'selected':''}>✅ Confirmado</option><option value="Declinado" ${g.status==='Declinado'?'selected':''}>❌ Declinado</option></select></td>
                     <td class="p-4"><input type="text" value="${g.observaciones || ''}" onchange="window.crmUpdateGuest(${g.id}, 'observaciones', this.value)" placeholder="Notas..." class="border border-slate-200 p-1.5 text-xs rounded-lg w-40 outline-none"></td>
-                    <td class="p-4 text-center">
+                    <td class="p-4 text-center flex justify-center gap-1">
                         <button onclick="window.showTicketVisual(${g.id})" class="bg-blue-50 text-blue-600 border border-blue-200 w-8 h-8 rounded-lg shadow-sm text-sm font-bold"><i class="fa-solid fa-qrcode"></i></button>
+                        <button onclick="window.openLocalGeneratorModal(${g.id})" class="bg-emerald-50 text-emerald-600 border border-emerald-200 w-8 h-8 rounded-lg shadow-sm text-sm font-bold"><i class="fa-brands fa-whatsapp"></i></button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -1297,6 +1570,80 @@
             window.crmRenderGuests();
             window.crmSave();
         };
+
+        window.crmDeleteSelected = function() {
+            const selected = Array.from(document.querySelectorAll('.g-cb:checked')).map(cb => parseInt(cb.value));
+            if (selected.length === 0) return Toast.fire({ icon: 'info', title: 'Selecciona invitados' });
+            state.invitados = state.invitados.filter(g => !selected.includes(g.id));
+            window.crmSave(); window.crmRenderAll(); Toast.fire({ icon: 'success', title: 'Borrados' });
+        };
+
+        window.crmDeleteAllGuests = function() {
+            if (state.invitados.length === 0) return;
+            Swal.fire({ title: '¿Vaciar toda la lista?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444' }).then((r) => {
+                if (r.isConfirmed) { state.invitados = []; window.crmSave(); window.crmRenderAll(); Toast.fire({ icon: 'success', title: 'Vaciada' }); }
+            });
+        };
+
+        window.crmExportExcel = function() {
+            if(!state.invitados.length) return Toast.fire({icon:'warning', title:'Lista vacía'});
+            const data = state.invitados.map(g => ({ "Nombre": g.nombre, "WhatsApp": g.telefono||"", "Grupo": g.grupo, "Adultos": g.adultos, "Niños": g.ninos, "Status": g.status, "Mesa": g.mesa }));
+            const ws = XLSX.utils.json_to_sheet(data); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Invitados"); XLSX.writeFile(wb, `Invitados_${impersonatingId||currentUser}.xlsx`);
+        };
+
+        window.crmExportPDF = function() {
+            if(!state.invitados.length) return Toast.fire({icon:'warning', title:'Lista vacía'});
+            const { jsPDF } = window.jspdf; const doc = new jsPDF(); doc.text(`Lista de Acceso - ${impersonatingId||currentUser}`, 14, 15);
+            const body = state.invitados.map(g => [g.nombre, `${g.adultos}A, ${g.ninos}N`, g.status, g.mesa===0?'-':g.mesa]);
+            doc.autoTable({ startY: 20, head: [['Nombre', 'Pases', 'Status', 'Mesa']], body: body }); 
+            window.addPDFFooter(doc); doc.save(`Lista_${impersonatingId||currentUser}.pdf`);
+        };
+
+        window.downloadExcelTemplate = function() {
+            const ws = XLSX.utils.json_to_sheet([{"Nombre": "Familia Ejemplo", "Adultos": 2, "Niños": 1, "WhatsApp": "1234567890", "Grupo": "Familia"}]); 
+            const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Plantilla"); XLSX.writeFile(wb, `Plantilla_Invitados.xlsx`);
+        };
+
+        window.crmImportExcel = function(e) {
+            const f = e.target.files[0]; if(!f) return; const reader = new FileReader();
+            reader.onload = (ev) => {
+                try {
+                    const data = new Uint8Array(ev.target.result); const wb = XLSX.read(data, {type: 'array'});
+                    const json = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], {defval: ""});
+                    let count = 0;
+                    json.forEach((r, i) => {
+                        let nom = r.Nombre || r.Familia || r.Invitado;
+                        if(nom && nom.trim() !== '') {
+                            state.invitados.push({ id: Date.now()+i, nombre: nom, adultos: parseInt(r.Adultos)||1, ninos: parseInt(r.Niños)||0, mesa: 0, status: 'Pendiente', telefono: String(r.WhatsApp||''), grupo: r.Grupo||'Otros' });
+                            count++;
+                        }
+                    });
+                    window.crmSave(); window.crmRenderAll(); Toast.fire({icon:'success', title:`Importados ${count} registros`});
+                } catch(err) { Swal.fire('Error', 'Archivo no válido.', 'error'); }
+            }; reader.readAsArrayBuffer(f); e.target.value = '';
+        };
+
+        // TABLES & CROQUIS
+        window.uploadCroquis = function(e) {
+            const file = e.target.files[0]; if(!file) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                state.croquis = ev.target.result; window.crmSave(); window.renderCroquisThumbnail();
+                Toast.fire({icon:'success', title:'Croquis Guardado'});
+            };
+            reader.readAsDataURL(file);
+        };
+
+        window.renderCroquisThumbnail = function() {
+            const container = document.getElementById('croquis-preview-container');
+            const thumb = document.getElementById('croquis-thumbnail');
+            if (state.croquis && container && thumb) {
+                thumb.src = state.croquis; container.classList.remove('hidden'); container.classList.add('flex');
+            } else if(container) { container.classList.add('hidden'); }
+        };
+
+        window.deleteCroquis = function() { state.croquis = null; window.crmSave(); window.renderCroquisThumbnail(); };
+        window.viewCroquisFull = function() { if(state.croquis) Swal.fire({ imageUrl: state.croquis, showConfirmButton: true }); };
 
         window.crmRenderTables = function() {
             const cap = state.config.capacidadMesa || 10;
@@ -1331,6 +1678,7 @@
                 guestsInTable.forEach(g => listContainer.appendChild(createGuestCard(g, false)));
                 cont.appendChild(mesaDiv);
             });
+            window.renderCroquisThumbnail();
         };
 
         function createGuestCard(g, isUnassigned) {
@@ -1347,6 +1695,46 @@
             return card;
         }
 
+        window.addMultipleTables = function() {
+            let qty = parseInt(document.getElementById('num-tables-add').value) || 1;
+            for(let i=0; i<qty; i++) state.mesas.push({ id: Date.now() + i, nombre: `Mesa ${state.mesas.length + 1}` });
+            window.crmSave(); window.crmRenderTables(); Toast.fire({icon: 'success', title: `${qty} mesas creadas`});
+        };
+
+        window.deleteAllTables = function() {
+            if(!state.mesas.length) return;
+            Swal.fire({ title: '¿Borrar mesas?', icon: 'warning', showCancelButton: true }).then((r) => {
+                if(r.isConfirmed) { state.mesas = []; state.invitados.forEach(g => g.mesa = 0); window.crmSave(); window.crmRenderTables(); }
+            });
+        };
+
+        window.randomizeTables = function() {
+            if (!state.mesas.length) return Swal.fire('Info', 'Crea mesas primero.', 'info');
+            const cap = parseInt(state.config.capacidadMesa) || 10;
+            state.invitados.filter(g => g.mesa === 0).forEach(g => {
+                let pases = (parseInt(g.adultos)||0) + (parseInt(g.ninos)||0);
+                let target = state.mesas.find(m => {
+                    let cur = state.invitados.filter(i => i.mesa === m.id).reduce((s,i) => s + (parseInt(i.adultos)||0) + (parseInt(i.ninos)||0), 0);
+                    return (cur + pases) <= cap;
+                });
+                if (target) g.mesa = target.id;
+            });
+            window.crmSave(); window.crmRenderTables(); Toast.fire({icon:'success', title:'Auto-llenado completado'});
+        };
+
+        window.crmExportTablesPDF = function() {
+            const { jsPDF } = window.jspdf; const doc = new jsPDF(); doc.text(`Mesas - ${impersonatingId||currentUser}`, 14, 15);
+            let y = 25;
+            state.mesas.forEach(t => {
+                const gt = state.invitados.filter(g => g.mesa === t.id); if(!gt.length) return;
+                doc.setFontSize(12); doc.text(`${t.nombre}`, 14, y); y += 5;
+                doc.autoTable({ startY: y, head: [['Invitado', 'Pases']], body: gt.map(g=>[g.nombre, `${g.adultos||1}A, ${g.ninos||0}N`]) });
+                y = doc.lastAutoTable.finalY + 10;
+            });
+            window.addPDFFooter(doc); doc.save(`Mesas_${impersonatingId||currentUser}.pdf`);
+        };
+
+        // STATS & LOGISTICS
         window.crmRenderStats = function() {
             let totalGeneral = 0, conf = 0, decl = 0, ninosTotales = 0, adultosTotales = 0, recuperados = 0;
             state.invitados.forEach(g => {
@@ -1377,6 +1765,226 @@
             const stRef = document.getElementById('st-ref'); if(stRef) stRef.innerText = Math.ceil(((adultosTotales * 1) + (ninosTotales * 0.5)) * 1.15) + ' L'; 
             const stHie = document.getElementById('st-hie'); if(stHie) stHie.innerText = Math.ceil(adultosTotales * 1) + ' kg';
         };
+
+        window.exportStatsExcel = function() {
+            const stats = [
+                { Categoria: "Asistencia", Item: "Lugares Totales", Valor: document.getElementById('st-tot').innerText },
+                { Categoria: "Asistencia", Item: "Confirmados", Valor: document.getElementById('st-conf').innerText },
+                { Categoria: "Bebidas", Item: "Botellas Destilado", Valor: document.getElementById('st-bot').innerText },
+                { Categoria: "Bebidas", Item: "Cervezas", Valor: document.getElementById('st-cer').innerText }
+            ];
+            const ws = XLSX.utils.json_to_sheet(stats); const wb = XLSX.utils.book_new(); 
+            XLSX.utils.book_append_sheet(wb, ws, "Logistica"); XLSX.writeFile(wb, `Logistica_${impersonatingId||currentUser}.xlsx`);
+        };
+
+        window.exportStatsPDF = function() {
+            const { jsPDF } = window.jspdf; const doc = new jsPDF(); 
+            doc.text(`Reporte Logistica - ${impersonatingId||currentUser}`, 14, 15);
+            window.addPDFFooter(doc); doc.save(`Logistica_${impersonatingId||currentUser}.pdf`);
+        };
+
+        // VISUALIZADOR DE PASE QR Y NOTIFICACIÓN
+        window.showTicketVisual = function(id) {
+            currentTargetGuestId = id;
+            const guest = state.invitados.find(g => g.id === id);
+            if(!guest) return;
+            
+            document.getElementById('ticket-event-name').innerText = currentEventType || 'Evento';
+            document.getElementById('ticket-guest-name').innerText = guest.nombre;
+            document.getElementById('ticket-guest-passes').innerText = `${(guest.adultos||0) + (guest.ninos||0)} Pases`;
+            
+            const qrContainer = document.getElementById('ticket-qrcode');
+            qrContainer.innerHTML = '';
+            
+            const activeTarget = impersonatingId || currentUser;
+            const subdominio = getSubdomain(currentEventType);
+            const rsvpUrl = `https://${subdominio}${activeTarget}.tupasedigital.online/index2.html?u=${activeTarget}&id=${guest.id}`;
+            
+            new QRCode(qrContainer, { text: rsvpUrl, width: 140, height: 140 });
+            document.getElementById('ticket-modal').classList.remove('hidden'); 
+            document.getElementById('ticket-modal').classList.add('flex');
+        };
+
+        window.downloadNativeTicket = function() {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: [80, 110] });
+            pdf.setFillColor(59, 130, 246); pdf.rect(0, 0, 80, 110, 'F');
+            pdf.setTextColor(255, 255, 255); pdf.setFontSize(14);
+            pdf.text(document.getElementById('ticket-guest-name').innerText, 40, 20, { align: 'center' });
+            pdf.save(`Pase_${document.getElementById('ticket-guest-name').innerText}.pdf`);
+        };
+
+        window.sendTicketWAAntiBlock = function() {
+            const guest = state.invitados.find(g => g.id === currentTargetGuestId);
+            if (!guest || !guest.telefono) return Toast.fire({icon:'warning', title:'Sin WhatsApp'});
+            const msg = encodeURIComponent(`¡Hola ${guest.nombre}! Aquí tienes tu Pase de Acceso Oficial.`);
+            window.open(`https://api.whatsapp.com/send?phone=${guest.telefono}&text=${msg}`, '_blank');
+        };
+
+        window.openLocalGeneratorModal = function(id) {
+            currentTargetGuestId = id;
+            document.getElementById('wa-standard-modal').classList.remove('hidden');
+            document.getElementById('wa-standard-modal').classList.add('flex');
+            window.applyLocalTemplate();
+        };
+
+        window.applyLocalTemplate = function() {
+            const guest = state.invitados.find(g => g.id === currentTargetGuestId);
+            if(!guest) return;
+            const msgEl = document.getElementById('wa-standard-msg');
+            msgEl.value = `¡Hola ${guest.nombre}! Te confirmamos tus pases para ${currentEventType || 'nuestro evento'}.`;
+        };
+
+        window.uploadTicketBg = function(e) {
+            const file = e.target.files[0]; if(!file) return;
+            const reader = new FileReader(); reader.onload = (ev) => { state.ticketBg = ev.target.result; window.crmSave(); Toast.fire({icon:'success', title:'Fondo guardado'}); };
+            reader.readAsDataURL(file);
+        };
+
+        window.removeTicketBg = function() { state.ticketBg = null; window.crmSave(); Toast.fire({icon:'info', title:'Fondo removido'}); };
+
+        // HOSTESS MODULE
+        window.loadHostessView = async function(eventId) {
+            Swal.fire({ title: 'Buscando evento...', didOpen: () => Swal.showLoading() });
+            try {
+                const docRef = doc(db, 'artifacts', 'weddingflow', 'users', eventId);
+                const snap = await getDoc(docRef);
+                if (snap.exists()) {
+                    impersonatingId = eventId;
+                    document.getElementById('view-login').classList.add('hidden');
+                    document.getElementById('view-admin').classList.add('hidden');
+                    document.getElementById('view-crm').classList.add('hidden');
+                    document.getElementById('view-hostess').classList.remove('hidden');
+                    document.getElementById('view-hostess').classList.add('flex');
+                    
+                    const data = snap.data();
+                    document.getElementById('hostess-event-id').innerText = `${data.eventType || 'Evento'} - ${eventId}`;
+                    state.invitados = data.invitados || [];
+                    state.mesas = data.mesas || [];
+                    window.hostessSwitchTab('scanner');
+                    window.subscribeToUser(eventId);
+                    Swal.close();
+                } else { Swal.fire('Error', 'El evento no existe.', 'error'); }
+            } catch(e) { Swal.fire('Error', 'Fallo de conexión.', 'error'); }
+        };
+
+        window.hostessSmartExit = function() {
+            document.getElementById('view-hostess').classList.add('hidden');
+            window.appLogout();
+        };
+
+        window.startScanner = function() {
+            document.getElementById('btn-start-scanner').classList.add('hidden');
+            window.html5QrcodeScanner = new Html5Qrcode("reader");
+            window.html5QrcodeScanner.start(
+                { facingMode: "environment" }, { fps: 10, qrbox: { width: 250, height: 250 } },
+                (decodedText) => {
+                    try {
+                        const url = new URL(decodedText);
+                        const gId = parseInt(url.searchParams.get("id"));
+                        if(gId) { window.html5QrcodeScanner.stop(); window.processHostessAccess(gId); }
+                    } catch(e) {}
+                }, () => {}
+            );
+        };
+
+        window.hostessManualSearch = function() {
+            const query = document.getElementById('hostess-search').value.toLowerCase();
+            const res = document.getElementById('hostess-search-results'); res.innerHTML = '';
+            if(query.length < 2) return;
+            state.invitados.filter(g => g.nombre.toLowerCase().includes(query)).forEach(g => {
+                const btn = document.createElement('button'); 
+                btn.className = 'w-full bg-slate-700 text-white p-3 rounded-lg text-left text-sm font-bold flex justify-between';
+                btn.innerHTML = `<span>${g.nombre}</span> <i class="fa-solid fa-arrow-right"></i>`;
+                btn.onclick = () => window.processHostessAccess(g.id);
+                res.appendChild(btn);
+            });
+        };
+
+        window.processHostessAccess = function(gId) {
+            const g = state.invitados.find(x => x.id === gId);
+            if(!g) return Swal.fire('Error', 'Invitado no encontrado.', 'error');
+            hCurrentGuest = g; hAduToEnter = (parseInt(g.adultos)||1); hNinToEnter = (parseInt(g.ninos)||0);
+            document.getElementById('hr-name').innerText = g.nombre;
+            window.updateEntryUI();
+            const modal = document.getElementById('hostess-result-modal'); const box = document.getElementById('hostess-result-box');
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            setTimeout(() => { box.classList.remove('scale-95', 'opacity-0'); box.classList.add('scale-100', 'opacity-100'); }, 10);
+        };
+
+        window.adjEntry = function(tipo, val) {
+            if (tipo === 'adu') { hAduToEnter = Math.max(0, hAduToEnter + val); } 
+            else { hNinToEnter = Math.max(0, hNinToEnter + val); }
+            window.updateEntryUI();
+        };
+
+        window.updateEntryUI = function() {
+            document.getElementById('hr-adu-entering').innerText = hAduToEnter; 
+            document.getElementById('hr-nin-entering').innerText = hNinToEnter;
+        };
+
+        window.confirmHostessEntry = function() {
+            if(!hCurrentGuest) return;
+            hCurrentGuest.ingresadosA = (parseInt(hCurrentGuest.ingresadosA) || 0) + hAduToEnter; 
+            hCurrentGuest.ingresadosN = (parseInt(hCurrentGuest.ingresadosN) || 0) + hNinToEnter;
+            window.crmSave(); window.closeHostessResult(); 
+            Toast.fire({icon: 'success', title: 'Ingreso Registrado'}); 
+            window.hostessRenderLiveStats();
+        };
+
+        window.closeHostessResult = function() {
+            const modal = document.getElementById('hostess-result-modal'); const box = document.getElementById('hostess-result-box');
+            box.classList.remove('scale-100', 'opacity-100'); box.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => { modal.classList.replace('flex', 'hidden'); }, 200);
+        };
+
+        window.hostessRenderLiveStats = function() {
+            let totalEsperados = 0, totalIngresados = 0;
+            state.invitados.forEach(g => {
+                let ads = parseInt(g.adultos||1); let nns = parseInt(g.ninos||0);
+                totalEsperados += (ads + nns);
+                totalIngresados += ((parseInt(g.ingresadosA)||0) + (parseInt(g.ingresadosN)||0));
+            });
+            document.getElementById('h-total-esperados').innerText = totalEsperados;
+            document.getElementById('h-total-ingresados').innerText = totalIngresados;
+            document.getElementById('h-total-general').innerText = totalIngresados + (state.config.extras||0);
+        };
+
+        window.hostessAddExtra = function() {
+            Swal.fire({ title: 'Añadir Extra', input: 'number', inputValue: 1 }).then(r => {
+                if(r.isConfirmed) { state.config.extras = (state.config.extras||0) + (parseInt(r.value)||1); window.crmSave(); window.hostessRenderLiveStats(); }
+            });
+        };
+
+        window.hostessSwitchTab = function(tab) {
+            ['scanner', 'list', 'croquis'].forEach(t => {
+                document.getElementById(`hview-${t}`).classList.replace('flex', 'hidden');
+            });
+            document.getElementById(`hview-${tab}`).classList.replace('hidden', 'flex');
+            if(tab === 'list') window.hostessRenderLiveStats();
+        };
+
+        window.hostessExportReportPDF = function() {
+            const { jsPDF } = window.jspdf; const doc = new jsPDF();
+            doc.text(`Corte Hostess - ${impersonatingId||currentUser}`, 14, 15);
+            window.addPDFFooter(doc); doc.save(`Corte_Hostess_${impersonatingId||currentUser}.pdf`);
+        };
+
+        // DOM ATÓMICO CON MANEJO DE ENTER Y LISTENERS
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginUserEl = document.getElementById('login-user');
+            const loginPassEl = document.getElementById('login-pass');
+            
+            const triggerEnterLogin = (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    window.appLogin();
+                }
+            };
+
+            if (loginUserEl) loginUserEl.addEventListener('keyup', triggerEnterLogin);
+            if (loginPassEl) loginPassEl.addEventListener('keyup', triggerEnterLogin);
+        });
 
         const savedTheme = localStorage.getItem('tpd_selected_theme');
         if(savedTheme) window.setAppStyleTheme(savedTheme);
