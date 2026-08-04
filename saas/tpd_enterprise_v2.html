@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TPD Enterprise v2.0 Pro - SaaS CRM & Hub</title>
+    <title>TPD Enterprise v2.0 Pro - SaaS CRM & Hub México</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome -->
+    <!-- FontAwesome 6 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <!-- SheetJS (Excel Export/Import) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -40,29 +40,29 @@
             transition: background-color 0.3s, color 0.3s;
         }
         
-        /* LOGIN STYLES */
+        /* LOGIN V2.0 PRO ULTRA GLASS visual style */
         .login-bg {
             background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0f172a 70%, #020617 100%);
         }
 
         .login-card {
-            background: rgba(15, 23, 42, 0.75);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 40px rgba(59, 130, 246, 0.15);
+            background: rgba(15, 23, 42, 0.82);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 50px rgba(59, 130, 246, 0.25);
         }
 
         .glow-effect {
             position: absolute;
-            width: 250px;
-            height: 250px;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, rgba(99, 102, 241, 0) 70%);
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.35) 0%, rgba(99, 102, 241, 0) 70%);
             border-radius: 50%;
             pointer-events: none;
         }
 
-        /* TEMAS DE DISEÑO */
+        /* TEMAS DINÁMICOS */
         body.theme-midnight {
             --bg-canvas: #090d16;
             --card-bg: #111827;
@@ -84,38 +84,38 @@
         body.theme-rosegold .border-blue-600 { border-color: #e11d48 !important; }
         body.theme-rosegold .text-blue-600 { color: #e11d48 !important; }
 
-        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); }
-        .glass-dark { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); }
+        .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(16px); }
+        .glass-dark { background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(16px); }
         
         input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
         input[type=number] { -moz-appearance: textfield; }
 
         /* Widget Asistente TPD Chat */
         #tpd-chat-widget { 
-            position: fixed; bottom: 85px; right: 20px; z-index: 9998; width: 92%; max-width: 360px; 
-            display: none; flex-direction: column; background: var(--card-bg); border-radius: 20px; 
-            box-shadow: 0 20px 35px -10px rgba(0,0,0,0.3); overflow: hidden; border: 1px solid rgba(226, 232, 240, 0.8);
+            position: fixed; bottom: 85px; right: 20px; z-index: 9998; width: 92%; max-width: 380px; 
+            display: none; flex-direction: column; background: var(--card-bg); border-radius: 24px; 
+            box-shadow: 0 25px 45px -10px rgba(0,0,0,0.35); overflow: hidden; border: 1px solid rgba(226, 232, 240, 0.9);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         #tpd-chat-header { 
             background: linear-gradient(135deg, var(--primary-color), #3b82f6); color: white; 
-            padding: 14px 16px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; cursor: pointer; 
+            padding: 16px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; cursor: pointer; 
         }
         #tpd-chat-messages { 
-            flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; 
-            background: rgba(248, 250, 252, 0.5); min-height: 260px; max-height: 360px;
+            flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; 
+            background: rgba(248, 250, 252, 0.6); min-height: 280px; max-height: 380px;
         }
-        .tpd-msg { padding: 10px 14px; border-radius: 14px; font-size: 13px; max-width: 88%; word-wrap: break-word; line-height: 1.4; }
+        .tpd-msg { padding: 12px 16px; border-radius: 16px; font-size: 13px; max-width: 88%; word-wrap: break-word; line-height: 1.5; }
         .tpd-msg.user { background: var(--primary-color); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
-        .tpd-msg.bot { background: #ffffff; color: #1e293b; align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid #e2e8f0; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .tpd-msg.bot { background: #ffffff; color: #1e293b; align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03); }
         
         #tpd-fab { 
-            position: fixed; bottom: 20px; right: 20px; z-index: 9997; width: 56px; height: 56px; 
-            background: linear-gradient(135deg, var(--primary-color), #3b82f6); color: white; border-radius: 18px; 
-            display: none; justify-content: center; align-items: center; font-size: 22px; cursor: pointer; 
-            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.5); transition: all 0.2s ease; 
+            position: fixed; bottom: 20px; right: 20px; z-index: 9997; width: 60px; height: 60px; 
+            background: linear-gradient(135deg, var(--primary-color), #3b82f6); color: white; border-radius: 20px; 
+            display: none; justify-content: center; align-items: center; font-size: 24px; cursor: pointer; 
+            box-shadow: 0 12px 28px -5px rgba(37, 99, 235, 0.5); transition: all 0.2s ease; 
         }
-        #tpd-fab:hover { transform: scale(1.08) rotate(-5deg); }
+        #tpd-fab:hover { transform: scale(1.08) rotate(-6deg); }
 
         .guest-card { cursor: grab; transition: transform 0.2s, box-shadow 0.2s; }
         .guest-card:active { cursor: grabbing; transform: scale(0.98); }
@@ -133,7 +133,7 @@
 </head>
 <body class="fixed inset-0 overflow-hidden flex flex-col text-slate-800 bg-slate-50">
 
-    <!-- LOGIN V2.0 PRO -->
+    <!-- LOGIN V2.0 PRO REDISEÑADO -->
     <div id="view-login" class="fixed inset-0 login-bg flex justify-center items-center z-50 p-4 relative overflow-hidden">
         <div class="glow-effect -top-20 -left-20"></div>
         <div class="glow-effect -bottom-20 -right-20"></div>
@@ -149,14 +149,14 @@
             </div>
 
             <h1 class="text-3xl font-black mb-1 text-white tracking-tight">Bienvenido</h1>
-            <p class="text-slate-400 text-sm mb-6 font-medium">Plataforma SaaS de Gestión de Eventos IA</p>
+            <p class="text-slate-400 text-sm mb-6 font-medium">Plataforma SaaS de Gestión de Eventos IA México</p>
             
             <div class="space-y-4 mb-6">
                 <div>
-                    <input type="text" id="login-user" placeholder="ID de Usuario o Email" class="w-full border border-slate-700 p-4 rounded-2xl outline-none focus:border-blue-500 text-sm font-medium bg-slate-900/60 text-white placeholder-slate-500 transition shadow-inner">
+                    <input type="text" id="login-user" onkeydown="if(event.key==='Enter') window.appLogin()" placeholder="ID de Usuario o Email" class="w-full border border-slate-700 p-4 rounded-2xl outline-none focus:border-blue-500 text-sm font-medium bg-slate-900/60 text-white placeholder-slate-500 transition shadow-inner">
                 </div>
                 <div class="relative w-full">
-                    <input type="password" id="login-pass" placeholder="Contraseña" class="w-full border border-slate-700 p-4 rounded-2xl outline-none focus:border-blue-500 text-sm font-medium pr-12 bg-slate-900/60 text-white placeholder-slate-500 transition shadow-inner">
+                    <input type="password" id="login-pass" onkeydown="if(event.key==='Enter') window.appLogin()" placeholder="Contraseña" class="w-full border border-slate-700 p-4 rounded-2xl outline-none focus:border-blue-500 text-sm font-medium pr-12 bg-slate-900/60 text-white placeholder-slate-500 transition shadow-inner">
                     <button onclick="window.togglePassword('login-pass')" class="absolute right-4 top-4 text-slate-500 hover:text-blue-400 transition">
                         <i class="fa-solid fa-eye"></i>
                     </button>
@@ -169,12 +169,12 @@
 
             <div class="mt-8 pt-6 border-t border-slate-800 flex justify-between items-center text-xs text-slate-500 font-medium">
                 <span class="flex items-center gap-1.5"><i class="fa-solid fa-shield-halved text-emerald-400"></i> IA Isolada Activa</span>
-                <span class="flex items-center gap-1.5"><i class="fa-solid fa-cloud text-blue-400"></i> Cloud Sync</span>
+                <span class="flex items-center gap-1.5"><i class="fa-solid fa-cloud text-blue-400"></i> Cloud Sync MX</span>
             </div>
         </div>
     </div>
 
-    <!-- MODAL BIENVENIDA -->
+    <!-- MODAL BIENVENIDA CONFIGURACIÓN -->
     <div id="welcome-modal" class="fixed inset-0 bg-slate-900/80 items-center justify-center z-50 hidden glass p-4">
         <div class="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-sm text-center mx-auto border border-slate-100 max-h-[90vh] overflow-y-auto custom-scrollbar">
             <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
@@ -194,7 +194,7 @@
                 <option value="Otro">✏️ Otro (Especificar)</option>
             </select>
             
-            <input type="text" id="welcome-event-custom" placeholder="Escribe el tipo de evento..." class="w-full border-2 border-slate-100 p-4 rounded-xl text-sm outline-none bg-slate-50 focus:bg-white focus:border-blue-500 mb-6 hidden font-medium transition">
+            <input type="text" id="welcome-event-custom" onkeydown="if(event.key==='Enter') window.saveWelcomeEventType()" placeholder="Escribe el tipo de evento..." class="w-full border-2 border-slate-100 p-4 rounded-xl text-sm outline-none bg-slate-50 focus:bg-white focus:border-blue-500 mb-6 hidden font-medium transition">
 
             <button onclick="window.saveWelcomeEventType()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded-xl transition shadow-lg text-lg flex items-center justify-center gap-2">
                 Guardar y Entrar <i class="fa-solid fa-check"></i>
@@ -461,7 +461,7 @@
                 </div>
             </section>
 
-            <!-- SECCIÓN ESTADÍSTICAS & LOGÍSTICA -->
+            <!-- SECCIÓN ESTADÍSTICAS & LOGÍSTICA CON ESTÁNDARES MÉXICO -->
             <section id="crm-sec-stats" class="hidden flex-1 flex-col min-h-0 w-full overflow-y-auto custom-scrollbar pb-32 pr-2">
                 <div class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col gap-2 sm:gap-3">
                     <button onclick="window.exportStatsExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl shadow-xl font-bold flex items-center gap-2 transform transition hover:scale-105 text-xs sm:text-sm">
@@ -474,7 +474,7 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-7xl mx-auto w-full" id="stats-print-area">
                     <div class="bg-white p-4 sm:p-6 rounded-3xl shadow-sm border border-slate-200 col-span-1 md:col-span-2 lg:col-span-4">
-                        <h3 class="text-base sm:text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-chart-pie text-blue-500"></i> Asistencia General</h3>
+                        <h3 class="text-base sm:text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-chart-pie text-blue-500"></i> Asistencia General (Cómputo México)</h3>
                         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4 text-center">
                             <div class="bg-slate-50 rounded-xl p-3 border border-slate-100 flex flex-col justify-center">
                                 <p class="text-xl sm:text-3xl font-black text-slate-800" id="st-tot">0</p>
@@ -533,7 +533,7 @@
                                 </select>
                             </div>
                             <div class="col-span-2">
-                                <label class="text-[9px] sm:text-[10px] font-bold text-teal-800 uppercase tracking-wider block mb-1">Tornaboda (Cierre)</label>
+                                <label class="text-[9px] sm:text-[10px] font-bold text-teal-800 uppercase tracking-wider block mb-1">Tornaboda (Cierre MX)</label>
                                 <select id="cfg-musica-torna" onchange="window.crmUpdateConfig('musicTorna', this.value)" class="w-full border-2 border-teal-100 rounded-lg p-2 text-[10px] sm:text-xs font-bold outline-none focus:border-teal-500 bg-white">
                                     <option value="Ninguno">Ninguno</option>
                                     <option value="Mariachi">Mariachi</option>
@@ -548,8 +548,8 @@
                                 <p class="text-[10px] text-amber-800 leading-tight">Presupuesta <strong class="text-amber-900" id="st-staff-meals">0</strong> platillos extra.</p>
                             </div>
                             <div class="bg-blue-100/50 p-2.5 rounded-xl border border-blue-200">
-                                <p class="text-[10px] font-black text-blue-900 mb-0.5"><i class="fa-solid fa-bowl-food"></i> Snack Noche</p>
-                                <p class="text-[10px] text-blue-800 leading-tight">Pide <strong class="text-blue-900" id="st-torna-snacks">0</strong> porciones.</p>
+                                <p class="text-[10px] font-black text-blue-900 mb-0.5"><i class="fa-solid fa-bowl-food"></i> Chilaquiles / Torna</p>
+                                <p class="text-[10px] text-blue-800 leading-tight">Pide <strong class="text-blue-900" id="st-torna-snacks">0</strong> porciones (65% confirmados).</p>
                             </div>
                         </div>
 
@@ -559,53 +559,55 @@
                         </div>
                     </div>
 
+                    <!-- Bebidas con Estándar México -->
                     <div class="bg-indigo-50 p-4 sm:p-5 rounded-3xl shadow-sm border border-indigo-200 col-span-1 lg:col-span-1 flex flex-col justify-start gap-4 h-fit">
-                        <h3 class="text-sm sm:text-base font-bold text-indigo-900 flex items-center gap-2"><i class="fa-solid fa-wine-glass-empty text-indigo-500"></i> Bebidas & Hielo</h3>
+                        <h3 class="text-sm sm:text-base font-bold text-indigo-900 flex items-center gap-2"><i class="fa-solid fa-wine-glass-empty text-indigo-500"></i> Bebidas MX (Bar)</h3>
                         <div class="space-y-2">
                             <div class="flex justify-between text-[10px] bg-white p-2.5 rounded-lg border border-indigo-100 shadow-sm">
-                                <span class="font-bold text-slate-700">Botellas <span class="text-[8px] text-slate-400 font-normal uppercase block">1 c/3 adu</span></span>
+                                <span class="font-bold text-slate-700">Botellas 750ml <span class="text-[8px] text-slate-400 font-normal uppercase block">1 c/3 adu (Tequila/Whisky)</span></span>
                                 <span class="font-black text-indigo-700 text-sm self-center" id="st-bot">0 bts</span>
                             </div>
                             <div class="flex justify-between text-[10px] bg-white p-2.5 rounded-lg border border-indigo-100 shadow-sm">
-                                <span class="font-bold text-slate-700">Cervezas <span class="text-[8px] text-slate-400 font-normal uppercase block">3 c/adu</span></span>
+                                <span class="font-bold text-slate-700">Cervezas <span class="text-[8px] text-slate-400 font-normal uppercase block">3 a 4 c/adu</span></span>
                                 <span class="font-black text-indigo-700 text-sm self-center" id="st-cer">0 pz</span>
                             </div>
                             <div class="flex justify-between text-[10px] bg-white p-2.5 rounded-lg border border-indigo-100 shadow-sm">
-                                <span class="font-bold text-slate-700 self-center">Refrescos</span>
+                                <span class="font-bold text-slate-700 self-center">Refrescos / Agua 2L <span class="text-[8px] text-slate-400 font-normal uppercase block">Toronja, Cola, Mineral</span></span>
                                 <span class="font-black text-indigo-700 text-sm self-center" id="st-ref">0 L</span>
                             </div>
                             <div class="flex justify-between text-[10px] bg-white p-2.5 rounded-lg border border-indigo-100 shadow-sm">
-                                <span class="font-bold text-slate-700">Hielo <span class="text-[8px] text-slate-400 font-normal uppercase block">1kg c/adu</span></span>
+                                <span class="font-bold text-slate-700">Hielo <span class="text-[8px] text-slate-400 font-normal uppercase block">1.2kg c/adu</span></span>
                                 <span class="font-black text-indigo-700 text-sm self-center" id="st-hie">0 kg</span>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Mesa de Dulces / Botanas MX -->
                     <div class="bg-amber-50 p-4 sm:p-5 rounded-3xl shadow-sm border border-amber-200 col-span-1 lg:col-span-1 flex flex-col justify-start gap-4 h-fit">
                         <div>
                             <div class="flex justify-between items-center mb-3">
-                                <h3 class="text-sm sm:text-base font-bold text-amber-900 flex items-center gap-2"><i class="fa-solid fa-candy-cane text-amber-500"></i> Mesa de dulces</h3>
+                                <h3 class="text-sm sm:text-base font-bold text-amber-900 flex items-center gap-2"><i class="fa-solid fa-candy-cane text-amber-500"></i> Mesa Dulces & Botana MX</h3>
                                 <button onclick="window.crmRenderStats()" class="text-amber-400 hover:text-amber-600 transition"><i class="fa-solid fa-sync"></i></button>
                             </div>
                             <div class="bg-white rounded-xl p-3 border border-amber-100 text-center shadow-sm mb-3">
                                 <p class="text-2xl font-black text-amber-600" id="st-dul-tot">0</p>
-                                <p class="text-[9px] font-bold text-amber-800 uppercase tracking-widest mt-0.5">Piezas Recomendadas</p>
+                                <p class="text-[9px] font-bold text-amber-800 uppercase tracking-widest mt-0.5">Piezas Recomendadas (4 c/pax)</p>
                             </div>
                         </div>
                         <div class="space-y-2">
-                            <div class="flex justify-between text-[10px] bg-white p-2 rounded-lg border border-amber-100 shadow-sm"><span class="font-bold text-slate-700">Salado (35%)</span><span class="font-black text-amber-700" id="st-dul-sal">0 pz</span></div>
-                            <div class="flex justify-between text-[10px] bg-white p-2 rounded-lg border border-amber-100 shadow-sm"><span class="font-bold text-slate-700">Dulce (25%)</span><span class="font-black text-amber-700" id="st-dul-cho">0 pz</span></div>
-                            <div class="flex justify-between text-[10px] bg-white p-2 rounded-lg border border-amber-100 shadow-sm"><span class="font-bold text-slate-700">Postre (20%)</span><span class="font-black text-amber-700" id="st-dul-pos">0 pz</span></div>
-                            <div class="flex justify-between text-[10px] bg-white p-2 rounded-lg border border-amber-100 shadow-sm"><span class="font-bold text-slate-700">Snacks (20%)</span><span class="font-black text-amber-700" id="st-dul-gra">0 pz</span></div>
+                            <div class="flex justify-between text-[10px] bg-white p-2 rounded-lg border border-amber-100 shadow-sm"><span class="font-bold text-slate-700">Salado / Chamoy (35%)</span><span class="font-black text-amber-700" id="st-dul-sal">0 pz</span></div>
+                            <div class="flex justify-between text-[10px] bg-white p-2 rounded-lg border border-amber-100 shadow-sm"><span class="font-bold text-slate-700">Dulces / Chocolate (25%)</span><span class="font-black text-amber-700" id="st-dul-cho">0 pz</span></div>
+                            <div class="flex justify-between text-[10px] bg-white p-2 rounded-lg border border-amber-100 shadow-sm"><span class="font-bold text-slate-700">Postres Gourmet (20%)</span><span class="font-black text-amber-700" id="st-dul-pos">0 pz</span></div>
+                            <div class="flex justify-between text-[10px] bg-white p-2 rounded-lg border border-amber-100 shadow-sm"><span class="font-bold text-slate-700">Frituras / Papas (20%)</span><span class="font-black text-amber-700" id="st-dul-gra">0 pz</span></div>
                         </div>
                     </div>
 
                     <div class="bg-purple-50 p-4 sm:p-5 rounded-3xl shadow-sm border border-purple-200 col-span-1 lg:col-span-1 flex flex-col justify-start gap-4 h-fit">
-                        <h3 class="text-sm sm:text-base font-bold text-purple-900 flex items-center gap-2"><i class="fa-solid fa-gift text-purple-500"></i> Amenidades</h3>
+                        <h3 class="text-sm sm:text-base font-bold text-purple-900 flex items-center gap-2"><i class="fa-solid fa-gift text-purple-500"></i> Amenidades Fiesta</h3>
                         <div class="space-y-3">
                             <div class="flex justify-between text-xs bg-white p-3 rounded-xl border border-purple-100 shadow-sm"><span class="font-bold text-slate-700">Recuerdos</span><span class="font-black text-purple-700" id="rec-parejas">0 pz</span></div>
-                            <div class="flex justify-between text-xs bg-white p-3 rounded-xl border border-purple-100 shadow-sm"><span class="font-bold text-slate-700">Sandalias (Muj)</span><span class="font-black text-purple-700" id="rec-sandalias">0 prs</span></div>
-                            <div class="flex justify-between text-xs bg-white p-3 rounded-xl border border-purple-100 shadow-sm"><span class="font-bold text-slate-700">Kit Anticruda</span><span class="font-black text-purple-700" id="rec-anticruda">0 pz</span></div>
+                            <div class="flex justify-between text-xs bg-white p-3 rounded-xl border border-purple-100 shadow-sm"><span class="font-bold text-slate-700">Pantuflas/Sandalias (Mujeres)</span><span class="font-black text-purple-700" id="rec-sandalias">0 prs</span></div>
+                            <div class="flex justify-between text-xs bg-white p-3 rounded-xl border border-purple-100 shadow-sm"><span class="font-bold text-slate-700">Kit Anticruda MX</span><span class="font-black text-purple-700" id="rec-anticruda">0 pz</span></div>
                         </div>
                     </div>
 
@@ -686,7 +688,7 @@
                 
                 <div class="text-center w-full shrink-0 pb-6">
                     <p class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-2">Búsqueda Manual Alternativa</p>
-                    <input type="text" id="hostess-search" onkeyup="window.hostessManualSearch()" placeholder="Escribe el nombre de la familia..." class="w-full bg-slate-800 border border-slate-700 p-3 rounded-xl text-sm outline-none focus:border-blue-500 text-white placeholder-slate-500 text-center">
+                    <input type="text" id="hostess-search" onkeydown="if(event.key==='Enter') window.hostessManualSearch()" onkeyup="window.hostessManualSearch()" placeholder="Escribe el nombre de la familia..." class="w-full bg-slate-800 border border-slate-700 p-3 rounded-xl text-sm outline-none focus:border-blue-500 text-white placeholder-slate-500 text-center">
                     <div id="hostess-search-results" class="mt-2 space-y-2 max-h-40 overflow-y-auto custom-scrollbar"></div>
                 </div>
             </div>
@@ -768,7 +770,7 @@
             <div class="space-y-4">
                 <div>
                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Nombre o Familia *</label>
-                    <input type="text" id="modal-guest-name" placeholder="Ej. Familia Pérez" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition font-medium">
+                    <input type="text" id="modal-guest-name" onkeydown="if(event.key==='Enter') window.saveModalGuest()" placeholder="Ej. Familia Pérez" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition font-medium">
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
@@ -783,7 +785,7 @@
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1"><i class="fa-brands fa-whatsapp text-emerald-500"></i> WhatsApp</label>
-                        <input type="text" id="modal-guest-phone" placeholder="10 dígitos" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition font-medium">
+                        <input type="text" id="modal-guest-phone" onkeydown="if(event.key==='Enter') window.saveModalGuest()" placeholder="10 dígitos" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition font-medium">
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
@@ -822,7 +824,7 @@
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Notas / Alergias</label>
-                    <input type="text" id="modal-guest-obs" placeholder="Menú infantil, alergias..." class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition font-medium">
+                    <input type="text" id="modal-guest-obs" onkeydown="if(event.key==='Enter') window.saveModalGuest()" placeholder="Menú infantil, alergias..." class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition font-medium">
                 </div>
             </div>
             <div class="mt-8 flex justify-end gap-3 border-t border-slate-100 pt-6">
@@ -880,7 +882,7 @@
                         <option value="formal">Elegante y Formal 🎩</option>
                         <option value="casual">Casual y Directo 👋</option>
                     </select>
-                    <button type="button" onclick="window.applyLocalTemplate()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl shadow-md transition flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
+                    <button type="button" onclick="window.applyLocalTemplate()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl shadow-md transition flex items-center gap-2" title="Regenerar texto"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
                 </div>
                 
                 <div id="wa-premium-link-container" style="display: none;" class="items-center gap-2 mt-4 pt-4 border-t border-emerald-100 cursor-pointer">
@@ -919,7 +921,7 @@
             <div class="tpd-msg bot" id="tpd-chat-welcome">Cargando contexto del evento...</div>
         </div>
         <div class="flex border-t border-slate-200 p-3 bg-white gap-2">
-            <input type="text" id="tpd-chat-input" placeholder="Pregúntame sobre tus listas..." class="flex-1 border-2 border-slate-100 rounded-xl px-4 py-2 text-sm outline-none focus:border-blue-400 transition bg-slate-50">
+            <input type="text" id="tpd-chat-input" onkeydown="if(event.key==='Enter') window.sendTPDChat()" placeholder="Pregúntame sobre tus listas..." class="flex-1 border-2 border-slate-100 rounded-xl px-4 py-2 text-sm outline-none focus:border-blue-400 transition bg-slate-50">
             <button onclick="window.sendTPDChat()" class="bg-blue-600 text-white rounded-xl w-10 h-10 flex items-center justify-center hover:bg-blue-700 shadow-md transition"><i class="fa-solid fa-paper-plane text-xs"></i></button>
         </div>
     </div>
@@ -957,8 +959,6 @@
         let hCurrentGuest = null;
         let hAduToEnter = 0;
         let hNinToEnter = 0;
-        let hMaxAdu = 0;
-        let hMaxNin = 0;
 
         let state = { 
             invitados: [], 
@@ -982,8 +982,8 @@
             for (let i = 1; i <= pageCount; i++) {
                 docInstance.setPage(i);
                 docInstance.setFontSize(8);
-                docInstance.setTextColor(150);
-                docInstance.text("Generado por tupasedigital.online", pageWidth / 2, pageHeight - 8, { align: 'center' });
+                docInstance.setTextColor(140);
+                docInstance.text("Generado por TPD Enterprise v2.0 Pro • tupasedigital.online", pageWidth / 2, pageHeight - 8, { align: 'center' });
             }
         };
 
@@ -1184,15 +1184,15 @@
             else { window.appLogout(); }
         };
 
-        // ASISTENTE DE IA INDEPENDIENTE POR EVENTO
+        // ASISTENTE DE IA CON PARÁMETROS DE MÉXICO
         window.initEventAssistant = function() {
             const activeId = impersonatingId || currentUser;
             const container = document.getElementById('tpd-chat-messages');
             const titleEl = document.getElementById('tpd-chat-title');
             
-            if(titleEl) titleEl.innerHTML = `<i class="fa-solid fa-brain mr-2"></i> IA: ${currentEventType || 'Evento'}`;
+            if(titleEl) titleEl.innerHTML = `<i class="fa-solid fa-brain mr-2"></i> IA México: ${currentEventType || 'Evento'}`;
             
-            const initialMsg = `¡Hola! Soy el asistente de la versión v2.0 Pro para tu <b>${currentEventType || 'Evento'}</b> (ID: <i>${activeId}</i>).<br><br>Consulta mesas, bebidas, notas o métricas de tu evento activo.`;
+            const initialMsg = `¡Hola! Soy el asistente v2.0 Pro para tu <b>${currentEventType || 'Evento'}</b> en México (ID: <i>${activeId}</i>).<br><br>Pídeme calcular <b>bebidas</b> (destilados, cervezas y mezcladores), <b>mesas</b>, <b>chilaquiles/tornaboda</b>, <b>mesa de dulces/botanas</b> o <b>resumen</b>.`;
             
             if(container) container.innerHTML = `<div class="tpd-msg bot">${initialMsg}</div>`;
         };
@@ -1221,14 +1221,14 @@
             container.scrollTop = container.scrollHeight;
 
             const loadingId = 'loading-' + Date.now(); 
-            container.innerHTML += `<div id="${loadingId}" class="tpd-msg bot"><i class="fa-solid fa-circle-notch fa-spin"></i> Analizando catálogo...</div>`; 
+            container.innerHTML += `<div id="${loadingId}" class="tpd-msg bot"><i class="fa-solid fa-circle-notch fa-spin"></i> Analizando datos de tu evento en México...</div>`; 
             container.scrollTop = container.scrollHeight;
 
             setTimeout(() => {
                 const loader = document.getElementById(loadingId);
                 if(loader) loader.remove();
 
-                let reply = "No logré entender la consulta. Prueba con: <b>bebidas</b>, <b>mesas</b>, <b>notas/alergias</b> o <b>resumen</b>.";
+                let reply = "No logré entender la consulta. Prueba con: <b>bebidas</b>, <b>mesas</b>, <b>chilaquiles</b>, <b>dulces/botanas</b> o <b>resumen</b>.";
                 let cAdu = 0, cNin = 0, sinMesa = 0, declinados = 0, totalPases = 0;
 
                 state.invitados.forEach(g => {
@@ -1250,34 +1250,45 @@
                 if (text.includes('resumen') || text.includes('estatus') || text.includes('cuantos')) {
                     reply = `📊 <b>Resumen para ${currentEventType}:</b><br>` +
                             `• Total catálogo: ${totalPases} pases.<br>` +
-                            `• Confirmados: <b>${totalConfirmados}</b> (${cAdu}A, ${cNin}N).<br>` +
-                            `• Declinados: ${declinados}.`;
-                    if(sinMesa > 0) reply += `<br>⚠️ Hay <b>${sinMesa} confirmados</b> sin mesa.`;
+                            `• Confirmados: <b>${totalConfirmados}</b> (${cAdu} Adultos, ${cNin} Niños).<br>` +
+                            `• Declinados: ${declinados} pases libres.`;
+                    if(sinMesa > 0) reply += `<br>⚠️ Hay <b>${sinMesa} confirmados</b> sin mesa asignada.`;
                 } 
-                else if (text.includes('bebida') || text.includes('alcohol') || text.includes('hielo')) {
-                    if(cAdu === 0) reply = "No hay adultos confirmados para calcular insumos.";
+                else if (text.includes('bebida') || text.includes('alcohol') || text.includes('hielo') || text.includes('cerveza') || text.includes('botella')) {
+                    if(cAdu === 0) reply = "No hay adultos confirmados en el catálogo para calcular insumos.";
                     else {
-                        reply = `🍾 <b>Insumos de Bar (${cAdu} Adultos):</b><br>` +
-                                `• Destilados: <b>${Math.ceil(cAdu / 3)} botellas</b>.<br>` +
-                                `• Cervezas: <b>${Math.ceil(cAdu * 3)} pz</b>.<br>` +
-                                `• Refrescos: <b>${Math.ceil(((cAdu * 1) + (cNin * 0.5)) * 1.15)} L</b>.<br>` +
-                                `• Hielo: <b>${Math.ceil(cAdu * 1)} kg</b>.`;
+                        const botellas = Math.ceil(cAdu / 3);
+                        const cervezas = Math.ceil(cAdu * 3.5);
+                        const refrescoL = Math.ceil(((cAdu * 1.5) + (cNin * 0.75)));
+                        const hieloKg = Math.ceil(cAdu * 1.2);
+                        reply = `🍾 <b>Insumos de Bar para México (${cAdu} Adultos):</b><br>` +
+                                `• Destilados (Tequila/Whisky/Ron): <b>${botellas} botellas (750ml)</b> (1 c/3 adu).<br>` +
+                                `• Cervezas: <b>${cervezas} pz</b> (3.5 c/adu).<br>` +
+                                `• Mezcladores (Refrescos/Agua mineral): <b>${refrescoL} L</b>.<br>` +
+                                `• Hielo en bolsa: <b>${hieloKg} kg</b> (1.2 kg c/adu).`;
                     }
+                }
+                else if (text.includes('chilaquiles') || text.includes('torna') || text.includes('trasnoche') || text.includes('snack')) {
+                    const porciones = Math.ceil(totalConfirmados * 0.65);
+                    reply = `🥘 <b>Tornaboda / Trasnoche MX:</b><br>` +
+                            `• Para ${totalConfirmados} asistentes, te sugiero presupuestar <b>${porciones} porciones de chilaquiles o tacos</b> (65% del total).`;
+                }
+                else if (text.includes('dulce') || text.includes('botana') || text.includes('postre')) {
+                    const totalPiezas = Math.ceil((cAdu * 3.5) + (cNin * 4.5));
+                    reply = `🍬 <b>Mesa de Dulces y Botanas MX:</b><br>` +
+                            `Recomiendo <b>${totalPiezas} piezas</b> en total:<br>` +
+                            `• 35% Botana Salada/Chamoy (Papas, cacahuates, Chicharrones): ${Math.ceil(totalPiezas*0.35)} pz.<br>` +
+                            `• 25% Chocolates y Dulces: ${Math.ceil(totalPiezas*0.25)} pz.<br>` +
+                            `• 20% Postres / Vasitos: ${Math.ceil(totalPiezas*0.20)} pz.<br>` +
+                            `• 20% Frituras a granel: ${Math.ceil(totalPiezas*0.20)} pz.`;
                 }
 
                 container.innerHTML += `<div class="tpd-msg bot">${reply}</div>`; 
                 container.scrollTop = container.scrollHeight;
-            }, 400);
+            }, 350);
         };
 
-        window.togglePassword = function(id) { const el = document.getElementById(id); el.type = el.type === "password" ? "text" : "password"; };
-        window.generateRandomPassword = function(targetId) {
-            const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#";
-            let pass = ""; for(let i=0; i<8; i++) pass += chars.charAt(Math.floor(Math.random() * chars.length));
-            const passInput = document.getElementById(targetId); passInput.type = 'text'; passInput.value = pass;
-        };
-
-        // LOGIN ATÓMICO Y RESILIENTE
+        // LOGIN ATÓMICO
         window.appLogin = async function() {
             const userInput = document.getElementById('login-user');
             const passInput = document.getElementById('login-pass');
@@ -1311,18 +1322,12 @@
                     loginSuccess = true;
                     usedEmail = email;
                     break;
-                } catch (e) {
-                    // Ignorar fallos de intento progresivo
-                }
+                } catch (e) {}
             }
 
             if (!loginSuccess) {
                 Swal.close();
-                return Swal.fire({ 
-                    title: 'Acceso Denegado', 
-                    text: 'Las credenciales ingresadas son incorrectas.', 
-                    icon: 'error' 
-                });
+                return Swal.fire({ title: 'Acceso Denegado', text: 'Las credenciales ingresadas son incorrectas.', icon: 'error' });
             }
 
             let dbUserId = userRaw;
@@ -1478,30 +1483,6 @@
             if(k === 'capacidadMesa') window.crmRenderTables();
             window.crmRenderStats();
         };
-        
-        window.crmRenderAll = function() { window.crmRenderGuests(); window.crmRenderTables(); window.crmRenderStats(); };
-        
-        window.crmSwitchTab = function(tab) {
-            ['guests', 'tables', 'stats'].forEach(t => {
-                const sec = document.getElementById(`crm-sec-${t}`);
-                if(sec) { sec.classList.remove('flex'); sec.classList.add('hidden'); }
-                const tabBtn = document.getElementById(`tab-${t}`);
-                if(tabBtn) {
-                    tabBtn.classList.replace('text-blue-600', 'text-slate-500');
-                    tabBtn.classList.replace('border-blue-600', 'border-transparent');
-                }
-            });
-            const activeSec = document.getElementById(`crm-sec-${tab}`);
-            if(activeSec) { activeSec.classList.remove('hidden'); activeSec.classList.add('flex'); }
-            const activeTabBtn = document.getElementById(`tab-${tab}`);
-            if(activeTabBtn) {
-                activeTabBtn.classList.replace('text-slate-500', 'text-blue-600');
-                activeTabBtn.classList.replace('border-transparent', 'border-blue-600');
-            }
-            
-            if(tab === 'tables') window.crmRenderTables();
-            if(tab === 'stats') window.crmRenderStats();
-        };
 
         window.openAddGuestModal = function() {
             const mesaSelect = document.getElementById('modal-guest-mesa');
@@ -1511,6 +1492,7 @@
             document.getElementById('modal-guest-obs').value = '';
             document.getElementById('add-guest-modal').classList.remove('hidden'); 
             document.getElementById('add-guest-modal').classList.add('flex');
+            setTimeout(()=>document.getElementById('modal-guest-name').focus(), 100);
         };
 
         window.saveModalGuest = function() {
@@ -1530,6 +1512,32 @@
             window.crmSave(); window.crmRenderAll(); Toast.fire({ icon: 'success', title: 'Invitado Guardado' });
         };
 
+        // EDICIÓN CON LÁPIZ DE INVITADOS
+        window.editGuestName = function(id) {
+            const guest = state.invitados.find(g => g.id === id);
+            if (!guest) return;
+            
+            Swal.fire({
+                title: 'Editar Nombre de Invitado',
+                input: 'text',
+                inputValue: guest.nombre,
+                showCancelButton: true,
+                confirmButtonColor: '#2563eb',
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Guardar Nombre',
+                inputValidator: (value) => {
+                    if (!value.trim()) return '¡El nombre no puede estar vacío!';
+                }
+            }).then((result) => {
+                if (result.isConfirmed && result.value.trim() !== '') {
+                    guest.nombre = result.value.trim();
+                    window.crmRenderGuests();
+                    window.crmSave();
+                    Toast.fire({ icon: 'success', title: 'Nombre actualizado en la nube' });
+                }
+            });
+        };
+
         window.crmRenderGuests = function() {
             const tbody = document.getElementById('crm-guests-tbody');
             if(!tbody) return;
@@ -1546,16 +1554,23 @@
 
                 tr.innerHTML = `
                     <td class="p-4 text-center w-12"><input type="checkbox" class="g-cb w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer" value="${g.id}"></td>
-                    <td class="p-4"><div class="font-bold text-slate-800">${g.nombre}</div></td>
-                    <td class="p-4"><select onchange="window.crmUpdateGuest(${g.id}, 'grupo', this.value)" class="border border-slate-200 p-1.5 text-xs rounded-lg w-28 outline-none text-slate-700 font-bold">${optionsGrupo.map(opt => `<option value="${opt}" ${g.grupo===opt?'selected':''}>${opt}</option>`).join('')}</select></td>
+                    <td class="p-4">
+                        <div class="flex items-center gap-2 font-bold text-slate-800">
+                            <span>${g.nombre}</span>
+                            <button onclick="window.editGuestName(${g.id})" class="text-slate-400 hover:text-blue-600 transition p-1" title="Editar Nombre"><i class="fa-solid fa-pencil text-xs"></i></button>
+                        </div>
+                    </td>
+                    <td class="p-4"><select onchange="window.crmUpdateGuest(${g.id}, 'grupo', this.value)" class="border border-slate-200 p-1.5 text-xs rounded-lg w-28 outline-none text-slate-700 font-bold bg-white">${optionsGrupo.map(opt => `<option value="${opt}" ${g.grupo===opt?'selected':''}>${opt}</option>`).join('')}</select></td>
                     <td class="p-4"><input type="text" value="${g.telefono || ''}" onchange="window.crmUpdateGuest(${g.id}, 'telefono', this.value)" placeholder="10 Digitos" class="border border-slate-200 p-1.5 text-xs rounded-lg w-28 outline-none"></td>
                     <td class="p-4 text-center"><input type="number" min="0" value="${ads}" onchange="window.crmUpdateGuest(${g.id}, 'adultos', this.value)" class="w-12 text-center font-bold border rounded p-1 text-xs"></td>
                     <td class="p-4 text-center"><input type="number" min="0" value="${nns}" onchange="window.crmUpdateGuest(${g.id}, 'ninos', this.value)" class="w-12 text-center font-bold border rounded p-1 text-xs"></td>
                     <td class="p-4 text-center"><select onchange="window.crmUpdateGuest(${g.id}, 'status', this.value)" class="border p-1.5 text-xs rounded-lg ${stColor} font-bold"><option value="Pendiente" ${g.status==='Pendiente'?'selected':''}>⏳ Pendiente</option><option value="Confirmado" ${g.status==='Confirmado'?'selected':''}>✅ Confirmado</option><option value="Declinado" ${g.status==='Declinado'?'selected':''}>❌ Declinado</option></select></td>
                     <td class="p-4"><input type="text" value="${g.observaciones || ''}" onchange="window.crmUpdateGuest(${g.id}, 'observaciones', this.value)" placeholder="Notas..." class="border border-slate-200 p-1.5 text-xs rounded-lg w-40 outline-none"></td>
-                    <td class="p-4 text-center flex justify-center gap-1">
-                        <button onclick="window.showTicketVisual(${g.id})" class="bg-blue-50 text-blue-600 border border-blue-200 w-8 h-8 rounded-lg shadow-sm text-sm font-bold"><i class="fa-solid fa-qrcode"></i></button>
-                        <button onclick="window.openLocalGeneratorModal(${g.id})" class="bg-emerald-50 text-emerald-600 border border-emerald-200 w-8 h-8 rounded-lg shadow-sm text-sm font-bold"><i class="fa-brands fa-whatsapp"></i></button>
+                    <td class="p-4 text-center">
+                        <div class="flex justify-center gap-1.5">
+                            <button onclick="window.showTicketVisual(${g.id})" class="bg-blue-50 text-blue-600 border border-blue-200 w-8 h-8 rounded-lg shadow-sm text-sm font-bold hover:bg-blue-100 transition" title="Pase QR"><i class="fa-solid fa-qrcode"></i></button>
+                            <button onclick="window.openLocalGeneratorModal(${g.id})" class="bg-emerald-50 text-emerald-600 border border-emerald-200 w-8 h-8 rounded-lg shadow-sm text-sm font-bold hover:bg-emerald-100 transition" title="Enviar WhatsApp"><i class="fa-brands fa-whatsapp"></i></button>
+                        </div>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -1587,16 +1602,47 @@
 
         window.crmExportExcel = function() {
             if(!state.invitados.length) return Toast.fire({icon:'warning', title:'Lista vacía'});
-            const data = state.invitados.map(g => ({ "Nombre": g.nombre, "WhatsApp": g.telefono||"", "Grupo": g.grupo, "Adultos": g.adultos, "Niños": g.ninos, "Status": g.status, "Mesa": g.mesa }));
+            const data = state.invitados.map(g => ({ "Nombre": g.nombre, "WhatsApp": g.telefono||"", "Grupo": g.grupo, "Adultos": g.adultos, "Niños": g.ninos, "Status": g.status, "Mesa": g.mesa===0?"Sin Asignar":(state.mesas.find(m=>m.id===g.mesa)?.nombre || g.mesa), "Observaciones": g.observaciones||"" }));
             const ws = XLSX.utils.json_to_sheet(data); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Invitados"); XLSX.writeFile(wb, `Invitados_${impersonatingId||currentUser}.xlsx`);
         };
 
         window.crmExportPDF = function() {
             if(!state.invitados.length) return Toast.fire({icon:'warning', title:'Lista vacía'});
-            const { jsPDF } = window.jspdf; const doc = new jsPDF(); doc.text(`Lista de Acceso - ${impersonatingId||currentUser}`, 14, 15);
-            const body = state.invitados.map(g => [g.nombre, `${g.adultos}A, ${g.ninos}N`, g.status, g.mesa===0?'-':g.mesa]);
-            doc.autoTable({ startY: 20, head: [['Nombre', 'Pases', 'Status', 'Mesa']], body: body }); 
-            window.addPDFFooter(doc); doc.save(`Lista_${impersonatingId||currentUser}.pdf`);
+            const { jsPDF } = window.jspdf; 
+            const doc = new jsPDF(); 
+            const activeUser = impersonatingId || currentUser;
+            
+            doc.setFillColor(30, 41, 59);
+            doc.rect(0, 0, 210, 28, 'F');
+            doc.setFontSize(16);
+            doc.setTextColor(255, 255, 255);
+            doc.setFont(undefined, 'bold');
+            doc.text(`Lista de Acceso Puerta - ${currentEventType || 'Evento'}`, 14, 15);
+            doc.setFontSize(10);
+            doc.setTextColor(203, 213, 225);
+            doc.text(`Instancia Inquilino: ${activeUser} | Fecha: ${new Date().toLocaleDateString('es-MX')}`, 14, 22);
+
+            const body = state.invitados.map(g => [
+                g.nombre, 
+                g.grupo || 'Otros',
+                `${g.adultos||1}A, ${g.ninos||0}N`, 
+                g.status, 
+                g.mesa === 0 ? 'Sin Asignar' : (state.mesas.find(m => m.id === g.mesa)?.nombre || `Mesa ${g.mesa}`),
+                g.observaciones || ''
+            ]);
+
+            doc.autoTable({ 
+                startY: 34, 
+                head: [['Nombre / Familia', 'Grupo', 'Pases', 'Status', 'Mesa', 'Notas / Alergias']], 
+                body: body,
+                theme: 'striped',
+                headStyles: { fillColor: [37, 99, 235], textColor: [255, 255, 255], fontStyle: 'bold' },
+                alternateRowStyles: { fillColor: [248, 250, 252] },
+                styles: { fontSize: 9, cellPadding: 3 }
+            }); 
+
+            window.addPDFFooter(doc); 
+            doc.save(`Lista_Puerta_${activeUser}.pdf`);
         };
 
         window.downloadExcelTemplate = function() {
@@ -1723,18 +1769,43 @@
         };
 
         window.crmExportTablesPDF = function() {
-            const { jsPDF } = window.jspdf; const doc = new jsPDF(); doc.text(`Mesas - ${impersonatingId||currentUser}`, 14, 15);
-            let y = 25;
+            const { jsPDF } = window.jspdf; 
+            const doc = new jsPDF(); 
+            const activeUser = impersonatingId || currentUser;
+
+            doc.setFillColor(15, 23, 42);
+            doc.rect(0, 0, 210, 28, 'F');
+            doc.setFontSize(16);
+            doc.setTextColor(255, 255, 255);
+            doc.setFont(undefined, 'bold');
+            doc.text(`Distribución de Mesas - ${currentEventType || 'Evento'}`, 14, 15);
+            doc.setFontSize(10);
+            doc.setTextColor(203, 213, 225);
+            doc.text(`Inquilino: ${activeUser} | Capacidad por Mesa: ${state.config.capacidadMesa||10} pax`, 14, 22);
+
+            let y = 35;
             state.mesas.forEach(t => {
                 const gt = state.invitados.filter(g => g.mesa === t.id); if(!gt.length) return;
-                doc.setFontSize(12); doc.text(`${t.nombre}`, 14, y); y += 5;
-                doc.autoTable({ startY: y, head: [['Invitado', 'Pases']], body: gt.map(g=>[g.nombre, `${g.adultos||1}A, ${g.ninos||0}N`]) });
-                y = doc.lastAutoTable.finalY + 10;
+                doc.setFontSize(12); doc.setTextColor(37, 99, 235); doc.setFont(undefined, 'bold');
+                doc.text(`${t.nombre}`, 14, y); y += 4;
+                
+                const tableData = gt.map(g => [g.nombre, g.grupo||'Otros', `${g.adultos||1} Adultos, ${g.ninos||0} Niños`]);
+                doc.autoTable({ 
+                    startY: y, 
+                    head: [['Invitado / Familia', 'Grupo', 'Desglose Pases']], 
+                    body: tableData,
+                    theme: 'grid',
+                    headStyles: { fillColor: [51, 65, 85] }
+                });
+                y = doc.lastAutoTable.finalY + 8;
+                if (y > 260) { doc.addPage(); y = 20; }
             });
-            window.addPDFFooter(doc); doc.save(`Mesas_${impersonatingId||currentUser}.pdf`);
+
+            window.addPDFFooter(doc); 
+            doc.save(`Mesas_${activeUser}.pdf`);
         };
 
-        // STATS & LOGISTICS
+        // STATS & LOGISTICS (MÉXICO)
         window.crmRenderStats = function() {
             let totalGeneral = 0, conf = 0, decl = 0, ninosTotales = 0, adultosTotales = 0, recuperados = 0;
             state.invitados.forEach(g => {
@@ -1753,34 +1824,77 @@
             const stNin = document.getElementById('st-nin'); if(stNin) stNin.innerText = ninosTotales;
             const stRecup = document.getElementById('st-recup'); if(stRecup) stRecup.innerText = recuperados;
             
-            const dul = Math.ceil((adultosTotales * 3.0) + (ninosTotales * 4.5));
+            // Medición Dulces MX (4 pz c/pax)
+            const dul = Math.ceil((adultosTotales * 3.5) + (ninosTotales * 4.5));
             const stDulTot = document.getElementById('st-dul-tot'); if(stDulTot) stDulTot.innerText = dul; 
             const stDulSal = document.getElementById('st-dul-sal'); if(stDulSal) stDulSal.innerText = Math.ceil(dul * 0.35) + ' pz'; 
             const stDulCho = document.getElementById('st-dul-cho'); if(stDulCho) stDulCho.innerText = Math.ceil(dul * 0.25) + ' pz'; 
             const stDulPos = document.getElementById('st-dul-pos'); if(stDulPos) stDulPos.innerText = Math.ceil(dul * 0.20) + ' pz'; 
             const stDulGra = document.getElementById('st-dul-gra'); if(stDulGra) stDulGra.innerText = Math.ceil(dul * 0.20) + ' pz';
             
+            // Medición Bar MX (Destilados 750ml 1 c/3 adu, Cerveza 3.5 c/adu, Mezcladores 1.5L c/adu, Hielo 1.2kg c/adu)
             const stBot = document.getElementById('st-bot'); if(stBot) stBot.innerText = Math.ceil(adultosTotales / 3) + ' bts'; 
-            const stCer = document.getElementById('st-cer'); if(stCer) stCer.innerText = Math.ceil(adultosTotales * 3) + ' pz'; 
-            const stRef = document.getElementById('st-ref'); if(stRef) stRef.innerText = Math.ceil(((adultosTotales * 1) + (ninosTotales * 0.5)) * 1.15) + ' L'; 
-            const stHie = document.getElementById('st-hie'); if(stHie) stHie.innerText = Math.ceil(adultosTotales * 1) + ' kg';
+            const stCer = document.getElementById('st-cer'); if(stCer) stCer.innerText = Math.ceil(adultosTotales * 3.5) + ' pz'; 
+            const stRef = document.getElementById('st-ref'); if(stRef) stRef.innerText = Math.ceil(((adultosTotales * 1.5) + (ninosTotales * 0.75))) + ' L'; 
+            const stHie = document.getElementById('st-hie'); if(stHie) stHie.innerText = Math.ceil(adultosTotales * 1.2) + ' kg';
+
+            document.getElementById('rec-parejas').innerText = Math.ceil((adultosTotales / 2) * 1.10) + ' pz'; 
+            document.getElementById('rec-sandalias').innerText = Math.ceil((adultosTotales * 0.5) * 1.10) + ' prs'; 
+            document.getElementById('rec-anticruda').innerText = Math.ceil(adultosTotales * 0.6) + ' pz';
+
+            const numMesas = state.mesas.length;
+            const floresMesa = parseInt(state.config.flowersPerTable) || 15;
+            document.getElementById('st-centros').innerText = numMesas;
+            document.getElementById('st-flores-totales').innerText = numMesas * floresMesa;
         };
 
         window.exportStatsExcel = function() {
             const stats = [
                 { Categoria: "Asistencia", Item: "Lugares Totales", Valor: document.getElementById('st-tot').innerText },
                 { Categoria: "Asistencia", Item: "Confirmados", Valor: document.getElementById('st-conf').innerText },
-                { Categoria: "Bebidas", Item: "Botellas Destilado", Valor: document.getElementById('st-bot').innerText },
-                { Categoria: "Bebidas", Item: "Cervezas", Valor: document.getElementById('st-cer').innerText }
+                { Categoria: "Bebidas MX", Item: "Botellas Destilado 750ml", Valor: document.getElementById('st-bot').innerText },
+                { Categoria: "Bebidas MX", Item: "Cervezas", Valor: document.getElementById('st-cer').innerText }
             ];
             const ws = XLSX.utils.json_to_sheet(stats); const wb = XLSX.utils.book_new(); 
-            XLSX.utils.book_append_sheet(wb, ws, "Logistica"); XLSX.writeFile(wb, `Logistica_${impersonatingId||currentUser}.xlsx`);
+            XLSX.utils.book_append_sheet(wb, ws, "Logistica_MX"); XLSX.writeFile(wb, `Logistica_MX_${impersonatingId||currentUser}.xlsx`);
         };
 
         window.exportStatsPDF = function() {
             const { jsPDF } = window.jspdf; const doc = new jsPDF(); 
-            doc.text(`Reporte Logistica - ${impersonatingId||currentUser}`, 14, 15);
-            window.addPDFFooter(doc); doc.save(`Logistica_${impersonatingId||currentUser}.pdf`);
+            const activeUser = impersonatingId || currentUser;
+            
+            doc.setFillColor(13, 148, 136);
+            doc.rect(0, 0, 210, 28, 'F');
+            doc.setFontSize(16);
+            doc.setTextColor(255, 255, 255);
+            doc.setFont(undefined, 'bold');
+            doc.text(`Reporte Ejecutivo de Logística México - ${currentEventType || 'Evento'}`, 14, 15);
+            doc.setFontSize(10);
+            doc.setTextColor(204, 251, 241);
+            doc.text(`Usuario: ${activeUser} | Fecha: ${new Date().toLocaleDateString('es-MX')}`, 14, 22);
+
+            const statsData = [
+                ['Asistencia Total Esperada', document.getElementById('st-tot').innerText],
+                ['Confirmados (Adultos/Niños)', `${document.getElementById('st-adu').innerText} / ${document.getElementById('st-nin').innerText}`],
+                ['Declinados / Pases Recuperados', `${document.getElementById('st-decl').innerText} / ${document.getElementById('st-recup').innerText}`],
+                ['Botellas de Destilado 750ml (1 c/3 adu)', document.getElementById('st-bot').innerText],
+                ['Cervezas Estimadas (3.5 c/adu)', document.getElementById('st-cer').innerText],
+                ['Refrescos / Mezcladores (L)', document.getElementById('st-ref').innerText],
+                ['Hielo Requerido (kg)', document.getElementById('st-hie').innerText],
+                ['Mesa de Dulces / Botana MX (Piezas Totales)', document.getElementById('st-dul-tot').innerText],
+                ['Amenidades (Pantuflas / Recuerdos)', `${document.getElementById('rec-sandalias').innerText} / ${document.getElementById('rec-parejas').innerText}`],
+                ['Centros de Mesa / Flores Totales', `${document.getElementById('st-centros').innerText} mesas / ${document.getElementById('st-flores-totales').innerText} flores`]
+            ];
+
+            doc.autoTable({
+                startY: 34,
+                head: [['Métrica Logística (Cómputo MX)', 'Cálculo Recomendado']],
+                body: statsData,
+                theme: 'grid',
+                headStyles: { fillColor: [13, 148, 136] }
+            });
+
+            window.addPDFFooter(doc); doc.save(`Logistica_MX_${activeUser}.pdf`);
         };
 
         // VISUALIZADOR DE PASE QR Y NOTIFICACIÓN
@@ -1808,16 +1922,46 @@
         window.downloadNativeTicket = function() {
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: [80, 110] });
-            pdf.setFillColor(59, 130, 246); pdf.rect(0, 0, 80, 110, 'F');
-            pdf.setTextColor(255, 255, 255); pdf.setFontSize(14);
-            pdf.text(document.getElementById('ticket-guest-name').innerText, 40, 20, { align: 'center' });
+            
+            pdf.setFillColor(15, 23, 42); 
+            pdf.rect(0, 0, 80, 110, 'F');
+            
+            pdf.setTextColor(255, 255, 255); 
+            pdf.setFontSize(13);
+            pdf.setFont(undefined, 'bold');
+            pdf.text(document.getElementById('ticket-event-name').innerText, 40, 15, { align: 'center' });
+            
+            pdf.setFontSize(8);
+            pdf.setTextColor(148, 163, 184);
+            pdf.text("PASE DE ACCESO OFICIAL", 40, 21, { align: 'center' });
+
+            const qrCanvas = document.querySelector('#ticket-qrcode canvas');
+            if (qrCanvas) {
+                const qrData = qrCanvas.toDataURL("image/png");
+                pdf.setFillColor(255, 255, 255);
+                pdf.rect(20, 26, 40, 40, 'F');
+                pdf.addImage(qrData, 'PNG', 22, 28, 36, 36);
+            }
+
+            pdf.setFontSize(12);
+            pdf.setTextColor(255, 255, 255);
+            pdf.text(document.getElementById('ticket-guest-name').innerText, 40, 75, { align: 'center' });
+            
+            pdf.setFontSize(10);
+            pdf.setTextColor(59, 130, 246);
+            pdf.text(document.getElementById('ticket-guest-passes').innerText, 40, 82, { align: 'center' });
+
+            pdf.setFontSize(7);
+            pdf.setTextColor(100, 116, 139);
+            pdf.text("Presenta este código al ingresar al salón", 40, 102, { align: 'center' });
+
             pdf.save(`Pase_${document.getElementById('ticket-guest-name').innerText}.pdf`);
         };
 
         window.sendTicketWAAntiBlock = function() {
             const guest = state.invitados.find(g => g.id === currentTargetGuestId);
             if (!guest || !guest.telefono) return Toast.fire({icon:'warning', title:'Sin WhatsApp'});
-            const msg = encodeURIComponent(`¡Hola ${guest.nombre}! Aquí tienes tu Pase de Acceso Oficial.`);
+            const msg = encodeURIComponent(`¡Hola ${guest.nombre}! Aquí tienes tu Pase de Acceso Oficial. Por favor preséntalo en la recepción.`);
             window.open(`https://api.whatsapp.com/send?phone=${guest.telefono}&text=${msg}`, '_blank');
         };
 
@@ -1831,8 +1975,26 @@
         window.applyLocalTemplate = function() {
             const guest = state.invitados.find(g => g.id === currentTargetGuestId);
             if(!guest) return;
-            const msgEl = document.getElementById('wa-standard-msg');
-            msgEl.value = `¡Hola ${guest.nombre}! Te confirmamos tus pases para ${currentEventType || 'nuestro evento'}.`;
+            
+            const tone = document.getElementById('local-tone-select').value;
+            const includeLink = document.getElementById('wa-include-link').checked;
+            let msg = "";
+
+            if (tone === 'formal') {
+                msg = `Estimado/a *${guest.nombre}*, nos complace confirmar sus ${guest.adultos||1} pases de adulto para *${currentEventType||'nuestro evento'}*. ¡Le esperamos con gusto!`;
+            } else if (tone === 'casual') {
+                msg = `¡Hola *${guest.nombre}*! 👋 Te recordamos tus ${guest.adultos||1} pases para *${currentEventType||'nuestro evento'}*. ¡Prepárate para celebrar!`;
+            } else {
+                msg = `¡Hola *${guest.nombre}*! 🎉 Estamos súper felices de contar contigo. Tienes reservado(s) ${guest.adultos||1} pase(s) para *${currentEventType||'nuestro evento'}*. ✨`;
+            }
+
+            if(includeLink) {
+                const activeTarget = impersonatingId || currentUser;
+                const subdominio = getSubdomain(currentEventType);
+                msg += `\n\n👉 Consulta tu pase digital aquí:\nhttps://${subdominio}${activeTarget}.tupasedigital.online/index2.html?u=${activeTarget}&id=${guest.id}`;
+            }
+
+            document.getElementById('wa-standard-msg').value = msg;
         };
 
         window.uploadTicketBg = function(e) {
@@ -1965,25 +2127,71 @@
         };
 
         window.hostessExportReportPDF = function() {
-            const { jsPDF } = window.jspdf; const doc = new jsPDF();
-            doc.text(`Corte Hostess - ${impersonatingId||currentUser}`, 14, 15);
-            window.addPDFFooter(doc); doc.save(`Corte_Hostess_${impersonatingId||currentUser}.pdf`);
+            const { jsPDF } = window.jspdf; 
+            const doc = new jsPDF();
+            const activeUser = impersonatingId || currentUser;
+
+            doc.setFillColor(15, 23, 42);
+            doc.rect(0, 0, 210, 28, 'F');
+            doc.setFontSize(16);
+            doc.setTextColor(255, 255, 255);
+            doc.setFont(undefined, 'bold');
+            doc.text(`Corte de Recepción Hostess - ${currentEventType || 'Evento'}`, 14, 15);
+            doc.setFontSize(10);
+            doc.setTextColor(148, 163, 184);
+            doc.text(`Evento ID: ${activeUser} | Fecha Cierre: ${new Date().toLocaleDateString('es-MX')}`, 14, 22);
+
+            let totalEsperados = 0, totalIngresados = 0;
+            state.invitados.forEach(g => {
+                let ads = parseInt(g.adultos||1); let nns = parseInt(g.ninos||0);
+                totalEsperados += (ads + nns);
+                totalIngresados += ((parseInt(g.ingresadosA)||0) + (parseInt(g.ingresadosN)||0));
+            });
+
+            const hostessData = [
+                ['Invitados Totales Esperados en Lista', totalEsperados],
+                ['Invitados Ingresados por QR / Lista', totalIngresados],
+                ['Personas Extra Ingresadas en Puerta', state.config.extras || 0],
+                ['TOTAL GENERAL DE ASISTENTES EN SALÓN', totalIngresados + (state.config.extras||0)]
+            ];
+
+            doc.autoTable({
+                startY: 34,
+                head: [['Métrica de Puerta', 'Cómputo']],
+                body: hostessData,
+                theme: 'striped',
+                headStyles: { fillColor: [16, 185, 129] }
+            });
+
+            let finalY = doc.lastAutoTable.finalY + 30;
+            if(finalY > 250) { doc.addPage(); finalY = 40; }
+
+            doc.setDrawColor(100);
+            doc.line(60, finalY, 150, finalY);
+            doc.setFontSize(9);
+            doc.setTextColor(100);
+            doc.text("Firma de Conformidad Hostess / Recepción", 105, finalY + 6, { align: "center" });
+
+            window.addPDFFooter(doc); doc.save(`Corte_Hostess_${activeUser}.pdf`);
         };
 
-        // DOM ATÓMICO CON MANEJO DE ENTER Y LISTENERS
+        // DOM LOAD & EMOJI PICKER BINDINGS
         document.addEventListener('DOMContentLoaded', () => {
-            const loginUserEl = document.getElementById('login-user');
-            const loginPassEl = document.getElementById('login-pass');
-            
-            const triggerEnterLogin = (e) => {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    window.appLogin();
-                }
-            };
-
-            if (loginUserEl) loginUserEl.addEventListener('keyup', triggerEnterLogin);
-            if (loginPassEl) loginPassEl.addEventListener('keyup', triggerEnterLogin);
+            const picker = document.querySelector('emoji-picker');
+            if (picker) {
+                picker.addEventListener('emoji-click', event => {
+                    const textarea = document.getElementById('wa-standard-msg');
+                    if(textarea) {
+                        const start = textarea.selectionStart || 0;
+                        const end = textarea.selectionEnd || 0;
+                        textarea.value = textarea.value.substring(0, start) + event.detail.unicode + textarea.value.substring(end);
+                        textarea.selectionStart = textarea.selectionEnd = start + event.detail.unicode.length;
+                        textarea.focus();
+                    }
+                    const container = document.getElementById('emoji-picker-container');
+                    if(container) container.classList.add('hidden');
+                });
+            }
         });
 
         const savedTheme = localStorage.getItem('tpd_selected_theme');
