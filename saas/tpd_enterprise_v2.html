@@ -52,7 +52,7 @@
             background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, rgba(99, 102, 241, 0) 70%); border-radius: 50%; pointer-events: none;
         }
 
-        /* TEMAS DINÁMICOS DE DISEÑO (V2) */
+        /* TEMAS DINÁMICOS DE DISEÑO */
         body.theme-midnight { --bg-canvas: #090d16; --card-bg: #111827; --text-main: #f3f4f6; --primary-color: #fbbf24; }
         body.theme-midnight .bg-white { background-color: #111827 !important; color: #f3f4f6 !important; border-color: #1f2937 !important; }
         body.theme-midnight .bg-slate-50 { background-color: #1f2937 !important; color: #f3f4f6 !important; border-color: #374151 !important; }
@@ -68,7 +68,7 @@
         input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
         input[type=number] { -moz-appearance: textfield; }
 
-        /* Asistente TPD Chat V2 */
+        /* Asistente TPD Chat IA */
         #tpd-chat-widget { 
             position: fixed; bottom: 85px; right: 20px; z-index: 9998; width: 92%; max-width: 360px; 
             display: none; flex-direction: column; background: var(--card-bg); border-radius: 20px; 
@@ -144,15 +144,42 @@
                 Ingresar al Sistema <i class="fa-solid fa-arrow-right"></i>
             </button>
 
-            <!-- Modo Demo para Pruebas Rápidas -->
+            <!-- Modo Demo para Pruebas -->
             <button onclick="window.startDemoEnvironment()" class="w-full mt-3 bg-slate-800/80 hover:bg-slate-700 text-slate-300 font-bold py-2.5 rounded-xl border border-slate-700 transition text-xs flex items-center justify-center gap-2">
                 <i class="fa-solid fa-play text-blue-400"></i> Entrar en Modo Demostración
             </button>
 
             <div class="mt-8 pt-6 border-t border-slate-800 flex justify-between items-center text-xs text-slate-500 font-medium">
                 <span class="flex items-center gap-1.5"><i class="fa-solid fa-shield-halved text-emerald-400"></i> Cloud Sync</span>
-                <span class="flex items-center gap-1.5"><i class="fa-solid fa-cloud text-blue-400"></i> IA Isolada</span>
+                <span class="flex items-center gap-1.5"><i class="fa-solid fa-robot text-purple-400"></i> IA Gemini</span>
             </div>
+        </div>
+    </div>
+
+    <!-- MODAL AUTORIZACIÓN DEMO -->
+    <div id="demo-auth-modal" class="fixed inset-0 bg-slate-900/80 items-center justify-center z-50 hidden glass p-4">
+        <div class="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-sm text-center mx-auto border border-slate-100 flex flex-col transform transition-all">
+            <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-4 shadow-inner">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <h2 class="text-2xl font-black text-slate-800 mb-2">Acceso a Demostración</h2>
+            <p class="text-sm text-slate-500 mb-6 font-medium">Por favor, introduce el código PIN de autorización temporal.</p>
+            
+            <input type="number" id="demo-auth-code" placeholder="Ej. 1234" onkeypress="if(event.key === 'Enter') window.verifyDemoCode()" class="w-full border-2 border-slate-100 p-4 rounded-xl text-center text-2xl tracking-[0.2em] outline-none bg-slate-50 focus:bg-white focus:border-blue-500 mb-6 font-black text-slate-700 transition shadow-inner">
+
+            <div class="flex gap-3">
+                <button onclick="document.getElementById('demo-auth-modal').classList.replace('flex', 'hidden'); document.getElementById('demo-auth-code').value = '';" class="w-1/3 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-4 rounded-xl transition">
+                    Cancelar
+                </button>
+                <button onclick="window.verifyDemoCode()" class="w-2/3 bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
+                    Verificar <i class="fa-solid fa-shield-check"></i>
+                </button>
+            </div>
+            
+            <!-- NUEVO BOTÓN: Pedir PIN por WhatsApp -->
+            <button onclick="window.open('https://wa.me/521XXXXXXXXXX?text=Hola,%20me%20gustar%C3%ADa%20probar%20el%20demo%20de%20TPD%20Enterprise.%20%C2%BFMe%20podr%C3%ADas%20proporcionar%20el%20PIN%20de%20acceso%3F', '_blank')" class="w-full mt-4 bg-emerald-50 text-emerald-600 hover:bg-emerald-100 font-bold py-3.5 rounded-xl transition border border-emerald-200 flex items-center justify-center gap-2 shadow-sm">
+                <i class="fa-brands fa-whatsapp text-xl"></i> Solicitar PIN por WhatsApp
+            </button>
         </div>
     </div>
 
@@ -191,7 +218,13 @@
                 <div class="bg-blue-500/20 p-2 rounded-lg"><i class="fa-solid fa-shield-halved text-blue-400 text-xl"></i></div>
                 <h1 class="font-bold text-lg tracking-wide">Alta de Usuarios (Agencia)</h1>
             </div>
-            <button onclick="window.appLogout()" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2 border border-red-500/20"><i class="fa-solid fa-sign-out-alt"></i> Salir</button>
+            <div class="flex items-center gap-4">
+                <!-- NUEVO BOTÓN: Ver PIN Demo -->
+                <button onclick="window.showAdminDemoPin()" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 border border-amber-500/30 px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2" title="Generar clave actual de Demo">
+                    <i class="fa-solid fa-key"></i> PIN Demo
+                </button>
+                <button onclick="window.appLogout()" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2 border border-red-500/20"><i class="fa-solid fa-sign-out-alt"></i> Salir</button>
+            </div>
         </header>
         
         <main class="flex-1 overflow-y-auto p-4 md:p-6 custom-scrollbar absolute inset-0 top-[72px]">
@@ -252,7 +285,6 @@
 
     <!-- WORKSPACE CRM COMPLETO (CLIENTE) -->
     <div id="view-crm" class="hidden flex-1 flex-col bg-transparent min-h-0 relative">
-        <!-- Barra de Impersonation -->
         <div id="crm-impersonation-bar" class="hidden bg-amber-400 text-amber-900 px-6 py-2 flex justify-between items-center font-bold text-sm shadow-inner shrink-0 z-20">
             <span><i class="fa-solid fa-user-secret mr-2"></i> Estás supervisando la base de datos de: <span id="crm-imp-name" class="underline uppercase"></span></span>
             <button onclick="window.appExitImpersonation()" class="bg-amber-700 hover:bg-amber-800 text-white px-4 py-1.5 rounded-lg shadow-sm text-xs transition">Salir al Panel</button>
@@ -267,12 +299,6 @@
                 </div>
             </div>
             <div class="flex items-center gap-4">
-                <div class="hidden sm:flex items-center gap-2 bg-slate-50 border border-slate-100 px-3 py-1.5 rounded-lg shadow-sm" title="Medida de seguridad de la plataforma">
-                    <i class="fa-solid fa-shield-halved text-blue-500 text-sm"></i>
-                    <span class="text-[8px] text-slate-500 font-bold uppercase tracking-wider leading-tight text-left">
-                        Cambio de clave<br>solicitar al Agente
-                    </span>
-                </div>
                 <div class="text-right hidden md:block">
                     <p class="text-sm font-bold uppercase text-slate-700" id="user-display">Usuario</p>
                     <p class="text-[10px] text-emerald-600 font-bold tracking-widest uppercase"><i class="fa-solid fa-cloud"></i> Nube Sincronizada</p>
@@ -286,7 +312,6 @@
             <button onclick="window.crmSwitchTab('tables')" id="tab-tables" class="py-4 text-slate-500 hover:text-slate-800 border-b-2 border-transparent whitespace-nowrap transition-colors"><i class="fa-solid fa-chair mr-2"></i>Acomodo de Mesas</button>
             <button onclick="window.crmSwitchTab('stats')" id="tab-stats" class="py-4 text-slate-500 hover:text-slate-800 border-b-2 border-transparent whitespace-nowrap transition-colors"><i class="fa-solid fa-chart-pie mr-2"></i>Logística & Proveedores</button>
             
-            <!-- V2 PREMIUM DESIGN SELECTORS -->
             <div id="crm-premium-design" class="ml-auto flex items-center border-l border-slate-200 pl-4 gap-3 py-2 shrink-0">
                 <div class="flex items-center gap-1 hidden md:flex">
                     <label class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Tema:</label>
@@ -326,7 +351,6 @@
             <section id="crm-sec-guests" class="flex-1 flex flex-col min-h-0 w-full overflow-hidden flex">
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-4 shrink-0 flex flex-col gap-4">
                     <div class="flex flex-col xl:flex-row items-center gap-4 justify-between">
-                        <!-- Buscador -->
                         <div class="flex items-center gap-2 w-full xl:w-auto">
                             <div class="relative flex-1 md:w-72">
                                 <i class="fa-solid fa-search absolute left-3 top-3 text-slate-400 text-sm"></i>
@@ -336,19 +360,14 @@
                             <button onclick="window.crmLoadData()" class="bg-slate-100 hover:bg-slate-200 text-blue-600 px-3 py-2.5 rounded-xl text-sm font-bold transition shadow-sm" title="Sincronizar Nube"><i class="fa-solid fa-sync"></i></button>
                         </div>
                         
-                        <!-- Botones de Acción Clásicos -->
                         <div class="flex items-center gap-2 w-full xl:w-auto overflow-x-auto pb-2 xl:pb-0 custom-scrollbar shrink-0">
                             <button onclick="window.openAddGuestModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap flex items-center gap-2">
                                 <i class="fa-solid fa-user-plus"></i> Añadir
                             </button>
-                            
                             <div class="h-8 w-px bg-slate-200 mx-1 shrink-0"></div>
-                            
                             <button onclick="window.crmDeleteSelected()" class="bg-white border-2 border-red-100 text-red-500 hover:bg-red-50 hover:border-red-200 px-3 py-2 rounded-xl text-sm font-bold transition flex items-center gap-1" title="Borrar Seleccionados"><i class="fa-solid fa-trash-can"></i> <span class="hidden sm:inline">Selección</span></button>
                             <button onclick="window.crmDeleteAllGuests()" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-xl text-sm font-bold transition shadow-sm flex items-center gap-1" title="Vaciar toda la lista"><i class="fa-solid fa-dumpster-fire"></i> <span class="hidden sm:inline">Vaciar</span></button>
-                            
                             <div class="h-8 w-px bg-slate-200 mx-1 shrink-0"></div>
-                            
                             <button onclick="window.downloadExcelTemplate()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 border-2 border-slate-200 px-3 py-2 rounded-xl text-sm font-bold transition whitespace-nowrap flex items-center gap-2" title="Descargar formato para rellenar">
                                 <i class="fa-solid fa-file-arrow-down"></i> Plantilla
                             </button>
@@ -356,16 +375,13 @@
                                 <i class="fa-solid fa-upload"></i> Subir Excel
                                 <input type="file" id="excel-uploader" class="hidden" accept=".xlsx, .xls" onchange="window.crmImportExcel(event)">
                             </label>
-                            
                             <div class="h-8 w-px bg-slate-200 mx-1 shrink-0"></div>
-
                             <button onclick="window.crmExportExcel()" class="bg-slate-800 hover:bg-slate-900 text-white px-3 py-2 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap" title="Descargar Excel con Datos"><i class="fa-solid fa-file-excel"></i> Excel</button>
                             <button onclick="window.crmExportPDF()" class="bg-slate-800 hover:bg-slate-900 text-white px-3 py-2 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap" title="Descargar Lista de Puerta PDF"><i class="fa-solid fa-file-pdf"></i> PDF</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Contenedor Tabla -->
                 <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden flex-1 flex flex-col min-h-0">
                     <div class="overflow-auto flex-1 custom-scrollbar">
                         <table class="w-full text-left text-sm whitespace-nowrap min-w-max" id="main-guests-table">
@@ -398,9 +414,7 @@
                                 <i class="fa-solid fa-map"></i> Subir Croquis Salón
                                 <input type="file" class="hidden" accept="image/*" onchange="window.uploadCroquis(event)">
                             </label>
-                            
                             <div class="h-6 w-px bg-slate-200 mx-1 shrink-0"></div>
-
                             <button onclick="window.crmExportTablesPDF()" class="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap flex items-center gap-2"><i class="fa-solid fa-print"></i> Reporte Mesas PDF</button>
                             <button onclick="window.randomizeTables()" class="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap flex items-center gap-2"><i class="fa-solid fa-dice"></i> Llenado Automático</button>
                             <div class="h-6 w-px bg-slate-200 mx-1 shrink-0"></div>
@@ -418,7 +432,6 @@
                             </div>
                         </div>
                         <div class="h-8 w-px bg-slate-200 hidden md:block"></div>
-                        
                         <div class="flex items-center gap-3">
                             <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Crear Mesas:</span>
                             <div class="flex items-center gap-2">
@@ -430,7 +443,6 @@
                                 <button onclick="window.addMultipleTables()" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-sm font-bold shadow-md transition flex items-center gap-1"><i class="fa-solid fa-plus"></i> Añadir</button>
                             </div>
                         </div>
-                        
                         <div id="croquis-preview-container" class="ml-auto hidden items-center gap-2 bg-white p-1 rounded-lg border border-slate-200 shadow-sm">
                             <span class="text-[10px] font-bold text-slate-400 uppercase ml-2">Croquis Activo:</span>
                             <img id="croquis-thumbnail" src="" class="h-8 w-auto rounded object-cover cursor-pointer hover:opacity-80" onclick="window.viewCroquisFull()" title="Ver Croquis">
@@ -463,10 +475,7 @@
                     </button>
                 </div>
 
-                <!-- Bento Grid Dashboard -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-7xl mx-auto w-full" id="stats-print-area">
-                    
-                    <!-- 1. Asistencia General (NUEVA FILA DE 6 CAJAS) -->
                     <div class="bg-white p-4 sm:p-6 rounded-3xl shadow-sm border border-slate-200 col-span-1 md:col-span-2 lg:col-span-4">
                         <h3 class="text-base sm:text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-chart-pie text-blue-500"></i> Asistencia General</h3>
                         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4 text-center">
@@ -490,7 +499,6 @@
                                 <p class="text-xl sm:text-3xl font-black text-red-500" id="st-decl">0</p>
                                 <p class="text-[8px] sm:text-[10px] text-red-700 uppercase tracking-widest font-bold mt-1">Declinados</p>
                             </div>
-                            <!-- NUEVA MÉTRICA: Pases Recuperados -->
                             <div class="bg-indigo-50 rounded-xl sm:rounded-2xl p-3 border border-indigo-100 flex flex-col justify-center shadow-inner relative overflow-hidden group cursor-default" title="Pases libres que puedes reasignar">
                                 <p class="text-xl sm:text-3xl font-black text-indigo-600 relative z-10" id="st-recup">0</p>
                                 <p class="text-[8px] sm:text-[10px] text-indigo-800 uppercase tracking-widest font-bold mt-1 relative z-10"><i class="fa-solid fa-rotate-left mr-1"></i>Recuperados</p>
@@ -498,11 +506,8 @@
                         </div>
                     </div>
 
-                    <!-- 2. Cronograma y Entretenimiento (Director de Tiempos) - Ocupa 2 columnas y 2 filas en PC -->
                     <div class="bg-teal-50 p-4 sm:p-6 rounded-3xl shadow-sm border border-teal-200 col-span-1 md:col-span-2 lg:col-span-2 lg:row-span-2 flex flex-col">
                         <h3 class="text-base sm:text-lg font-bold text-teal-900 mb-4 flex items-center gap-2 shrink-0"><i class="fa-solid fa-clock text-teal-500"></i> Director de Tiempos</h3>
-                        
-                        <!-- Configuradores -->
                         <div class="grid grid-cols-2 gap-3 mb-4 shrink-0">
                             <div>
                                 <label class="text-[9px] sm:text-[10px] font-bold text-teal-800 uppercase tracking-wider block mb-1">Inicio Evento</label>
@@ -540,7 +545,6 @@
                             </div>
                         </div>
 
-                        <!-- Alertas Inteligentes -->
                         <div class="grid grid-cols-2 gap-2 mb-4 shrink-0">
                             <div class="bg-amber-100/50 p-2.5 rounded-xl border border-amber-200">
                                 <p class="text-[10px] font-black text-amber-900 mb-0.5"><i class="fa-solid fa-utensils"></i> Cenas Staff</p>
@@ -552,20 +556,14 @@
                             </div>
                         </div>
 
-                        <!-- Cronograma Visual -->
                         <div class="bg-white rounded-2xl p-4 border border-teal-100 shadow-sm flex-1 overflow-y-auto custom-scrollbar min-h-32">
                             <h4 class="text-xs font-black text-slate-800 mb-3 border-b border-slate-100 pb-2">Cronograma Calculado</h4>
-                            <div id="st-timeline" class="space-y-3">
-                                <!-- JS Generates this -->
-                            </div>
+                            <div id="st-timeline" class="space-y-3"></div>
                         </div>
                     </div>
 
-                    <!-- 3. Bebidas & Hielo -->
                     <div class="bg-indigo-50 p-4 sm:p-5 rounded-3xl shadow-sm border border-indigo-200 col-span-1 lg:col-span-1 flex flex-col justify-start gap-4 h-fit">
-                        <div>
-                            <h3 class="text-sm sm:text-base font-bold text-indigo-900 mb-4 flex items-center gap-2"><i class="fa-solid fa-wine-glass-empty text-indigo-500"></i> Bebidas & Hielo</h3>
-                        </div>
+                        <div><h3 class="text-sm sm:text-base font-bold text-indigo-900 mb-4 flex items-center gap-2"><i class="fa-solid fa-wine-glass-empty text-indigo-500"></i> Bebidas & Hielo</h3></div>
                         <div class="space-y-2">
                             <div class="flex justify-between text-[10px] bg-white p-2.5 rounded-lg border border-indigo-100 shadow-sm">
                                 <span class="font-bold text-slate-700">Botellas <span class="text-[8px] text-slate-400 font-normal uppercase block">1 c/3 adu</span></span>
@@ -586,7 +584,6 @@
                         </div>
                     </div>
 
-                    <!-- 4. Mesa de dulces -->
                     <div class="bg-amber-50 p-4 sm:p-5 rounded-3xl shadow-sm border border-amber-200 col-span-1 lg:col-span-1 flex flex-col justify-start gap-4 h-fit">
                         <div>
                             <div class="flex justify-between items-center mb-3">
@@ -606,7 +603,6 @@
                         </div>
                     </div>
 
-                    <!-- 5. Amenidades -->
                     <div class="bg-purple-50 p-4 sm:p-5 rounded-3xl shadow-sm border border-purple-200 col-span-1 lg:col-span-1 flex flex-col justify-start gap-4 h-fit">
                         <h3 class="text-sm sm:text-base font-bold text-purple-900 flex items-center gap-2"><i class="fa-solid fa-gift text-purple-500"></i> Amenidades</h3>
                         <div class="space-y-3">
@@ -616,7 +612,6 @@
                         </div>
                     </div>
 
-                    <!-- 6. Decoración -->
                     <div class="bg-rose-50 p-4 sm:p-5 rounded-3xl shadow-sm border border-rose-200 col-span-1 lg:col-span-1 flex flex-col justify-start gap-4 h-fit">
                         <div>
                             <h3 class="text-sm sm:text-base font-bold text-rose-900 mb-4 flex items-center gap-2"><i class="fa-solid fa-seedling text-rose-500"></i> Decoración</h3>
@@ -640,7 +635,7 @@
         </main>
     </div>
 
-    <!-- WORKSPACE HOSTESS (Lector, Croquis y Lista) -->
+    <!-- WORKSPACE HOSTESS -->
     <div id="view-hostess" class="hidden flex-1 flex-col bg-slate-900 text-white relative min-h-0">
         <header class="bg-slate-800 px-4 py-3 flex flex-col shadow-lg border-b border-slate-700 z-10 shrink-0">
             <div class="flex justify-between items-center mb-2">
@@ -846,16 +841,10 @@
     <div id="ticket-modal" class="fixed inset-0 bg-slate-900/90 items-center justify-center z-50 hidden glass p-4">
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm flex flex-col border border-slate-200 overflow-hidden">
             
-            <!-- HEADER DEL PASE REDISEÑADO -->
             <div id="ticket-header-bg" class="p-8 pb-4 text-center relative text-white rounded-t-3xl overflow-hidden transition-colors duration-300 flex flex-col justify-between" style="min-height: 400px; background-color: #0f172a;">
-                
-                <!-- CAPA DE IMAGEN DE FONDO (Premium) al 95% -->
                 <img id="ticket-bg-image" src="" class="absolute top-0 left-0 w-full h-[95%] object-cover opacity-0 transition-opacity duration-500 z-0 pointer-events-none">
-                
-                <!-- FILTRO OSCURO -->
                 <div id="ticket-dark-overlay" class="absolute top-0 left-0 w-full h-[95%] bg-slate-900/60 z-0 pointer-events-none hidden"></div>
 
-                <!-- CONTENIDO DEL TICKET -->
                 <div class="relative z-10 flex flex-col h-full justify-between flex-1">
                     <div>
                         <h3 class="text-2xl font-black mb-1 drop-shadow-lg mt-4" id="ticket-event-name">Cargando...</h3>
@@ -892,27 +881,20 @@
             </div>
             
             <div class="mb-4 bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100">
-                <label class="block text-xs font-bold text-emerald-800 uppercase tracking-wider mb-2">Asistente de Redacción</label>
+                <label class="block text-xs font-bold text-emerald-800 uppercase tracking-wider mb-2">Asistente de Redacción <i class="fa-solid fa-wand-magic-sparkles text-emerald-600 ml-1"></i></label>
                 <div class="flex gap-2">
-                    <select id="local-tone-select" onchange="window.applyLocalTemplate()" class="flex-1 border-2 border-emerald-100 p-2.5 rounded-xl text-sm outline-none bg-white text-slate-700 font-bold cursor-pointer">
+                    <select id="local-tone-select" class="flex-1 border-2 border-emerald-100 p-2.5 rounded-xl text-sm outline-none bg-white text-slate-700 font-bold cursor-pointer">
                         <option value="emotivo">Emotivo y Lleno de Energía 🎉</option>
                         <option value="formal">Elegante y Formal 🎩</option>
                         <option value="casual">Casual y Directo 👋</option>
                     </select>
-                    <button type="button" onclick="window.applyLocalTemplate()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl shadow-md transition flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
+                    <button type="button" onclick="window.applyLocalTemplate()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl shadow-md transition flex items-center gap-2"><i class="fa-solid fa-rotate-right"></i> Generar</button>
                 </div>
                 
                 <div id="wa-premium-link-container" style="display: none;" class="items-center gap-2 mt-4 pt-4 border-t border-emerald-100 cursor-pointer">
                     <input type="checkbox" id="wa-include-link" class="w-4 h-4 text-emerald-600 rounded border-emerald-300 focus:ring-emerald-500" onchange="window.applyLocalTemplate()">
                     <span class="text-xs font-bold text-slate-600 flex items-center gap-1">
                         Adjuntar Link Mágico (Pase Digital y RSVP)
-                        <div class="relative group inline-block ml-1">
-                            <i class="fa-solid fa-circle-info text-blue-500 hover:text-blue-700 transition text-sm"></i>
-                            <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block w-64 bg-slate-800 text-white text-[10px] p-2.5 rounded-lg shadow-xl z-50 text-center font-medium leading-relaxed cursor-default pointer-events-none">
-                                El enlace apuntará al repositorio web correspondiente. <br>Ej: https://bodacarlos.tupasedigital.online/index2.html?u=carlos...
-                                <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-800"></div>
-                            </div>
-                        </div>
                     </span>
                 </div>
             </div>
@@ -932,7 +914,7 @@
         </div>
     </div>
 
-    <!-- Asistente TPD Chat Independiente por Evento (Diseño V2) -->
+    <!-- Asistente TPD Chat Independiente por Evento (Gemini IA) -->
     <div id="tpd-fab" onclick="window.toggleTPDChat()" title="Asistente IA del Evento">
         <i class="fa-solid fa-robot"></i>
     </div>
@@ -977,7 +959,7 @@
         let unsubscribe = null;
         let currentUser = null;
         let currentRole = null;
-        let currentEventType = "";
+        let currentEventType = "Evento";
         let impersonatingId = null;
         let currentTargetGuestId = null; 
         
@@ -1000,6 +982,7 @@
         
         const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, timerProgressBar: true });
 
+        // Temas y Estilos Dinámicos
         window.setAppStyleTheme = function(theme) {
             document.body.classList.remove('theme-midnight', 'theme-rosegold');
             if(theme === 'midnight') document.body.classList.add('theme-midnight');
@@ -1013,31 +996,218 @@
             if(select) select.value = savedTheme;
         }
 
+        // ==========================================
+        // 1. SISTEMA DE SEGURIDAD MODO DEMOSTRACIÓN
+        // ==========================================
         window.startDemoEnvironment = function() {
-            currentUser = "demo_local";
-            currentRole = "Cliente";
-            currentEventType = "Evento";
-            state = { 
-                invitados: [
-                    { id: 1, nombre: "Familia García López", grupo: "Familia", telefono: "2221234567", adultos: 2, ninos: 1, status: "Confirmado", mesa: 1, observaciones: "Silla alta" },
-                    { id: 2, nombre: "Lic. Roberto Martínez", grupo: "Trabajo", telefono: "2229876543", adultos: 2, ninos: 0, status: "Confirmado", mesa: 1, observaciones: "Alergia mariscos" }
-                ], 
-                mesas: [{ id: 1, nombre: "Mesa VIP" }], config: { capacidadMesa: 10, themeColor: '#3b82f6', extras: 0, totalExtrasCost: 0, fontFamily: 'Plus Jakarta Sans' }, croquis: null, ticketBg: null
-            };
-            isPremiumUser = true;
+            // Mostrar modal de seguridad
+            document.getElementById('demo-auth-modal').classList.remove('hidden');
+            document.getElementById('demo-auth-modal').classList.add('flex');
+            setTimeout(() => document.getElementById('demo-auth-code').focus(), 100);
+        };
 
-            document.getElementById('view-login').classList.add('hidden');
-            document.getElementById('view-login').classList.remove('flex');
-            document.getElementById('view-crm').classList.remove('hidden');
-            document.getElementById('view-crm').classList.add('flex');
+        window.verifyDemoCode = function() {
+            const inputCode = document.getElementById('demo-auth-code').value.trim();
+            if (!inputCode) return Toast.fire({ icon: 'warning', title: 'Ingresa un código' });
+
+            // Generar código dinámico esperado (Algoritmo TOTP Simple)
+            const now = new Date();
+            const day = now.getDate();
+            const month = now.getMonth() + 1; 
+            const hour = now.getHours();
+
+            // Fórmula: (Día * Mes * 100) + Hora
+            const expectedCode = ((day * month * 100) + hour).toString();
+            const masterCode = "9999"; // Código fijo de emergencia
+
+            if (inputCode === expectedCode || inputCode === masterCode) {
+                // Código Correcto
+                document.getElementById('demo-auth-modal').classList.replace('flex', 'hidden');
+                document.getElementById('demo-auth-code').value = '';
+                
+                currentUser = "evento_demo_pro";
+                currentRole = "Cliente";
+                currentEventType = "Boda";
+                state = { 
+                    invitados: [
+                        { id: 1, nombre: "Familia García López", grupo: "Familia", telefono: "2221234567", adultos: 2, ninos: 1, status: "Confirmado", mesa: 1, observaciones: "Silla alta" },
+                        { id: 2, nombre: "Lic. Roberto Martínez", grupo: "Trabajo", telefono: "2229876543", adultos: 2, ninos: 0, status: "Confirmado", mesa: 1, observaciones: "Alergia mariscos" }
+                    ], 
+                    mesas: [{ id: 1, nombre: "Mesa VIP" }], config: { capacidadMesa: 10, themeColor: '#3b82f6', extras: 0, totalExtrasCost: 0, fontFamily: 'Plus Jakarta Sans' }, croquis: null, ticketBg: null
+                };
+                isPremiumUser = true;
+
+                document.getElementById('view-login').classList.add('hidden');
+                document.getElementById('view-login').classList.remove('flex');
+                document.getElementById('view-crm').classList.remove('hidden');
+                document.getElementById('view-crm').classList.add('flex');
+                
+                document.getElementById('tpd-fab').style.display = 'flex';
+                document.getElementById('user-display').innerText = "Organizador Pro (DEMO)";
+                document.getElementById('crm-header-id').innerText = `${currentEventType} - ${currentUser}`;
+                
+                window.crmRenderAll();
+                window.initEventAssistant();
+                Toast.fire({ icon: 'success', title: 'Acceso Autorizado' });
+            } else {
+                Toast.fire({ icon: 'error', title: 'Código inválido o expirado' });
+                document.getElementById('demo-auth-code').value = '';
+            }
+        };
+
+        // ==========================================
+        // 2. MOTOR DE INTELIGENCIA ARTIFICIAL GEMINI
+        // ==========================================
+        async function fetchGemini(systemPrompt, userPrompt) {
             
-            document.getElementById('tpd-fab').style.display = 'flex';
-            document.getElementById('user-display').innerText = "Organizador Pro (DEMO)";
-            document.getElementById('crm-header-id').innerText = `${currentEventType} - ${currentUser}`;
-            
-            window.crmRenderAll();
-            window.initEventAssistant();
-            Toast.fire({ icon: 'info', title: 'Modo Demostración Activo' });
+            const apiKey = "AQ.Ab8RN6LndvhQdjt6dLf4mlUba5qqv3Hwm0m6jjjzpsumaQUVaA";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+            const payload = {
+                contents: [{ parts: [{ text: userPrompt }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] }
+            };
+
+            let delay = 1000;
+            let retries = 3;
+            while (retries > 0) {
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    if (response.status === 429) {
+                        retries--;
+                        await new Promise(res => setTimeout(res, delay));
+                        delay *= 2;
+                        continue;
+                    }
+                    
+                    if (!response.ok) throw new Error("API Error");
+                    const result = await response.json();
+                    return result.candidates?.[0]?.content?.parts?.[0]?.text || "Sin respuesta";
+                } catch (e) {
+                    if (retries === 1) return "Error de conexión con la Inteligencia Artificial.";
+                    retries--;
+                    await new Promise(res => setTimeout(res, delay));
+                    delay *= 2;
+                }
+            }
+            return "Error de conexión con la IA.";
+        }
+
+        // ==========================================
+        // 3. INTEGRACIÓN IA AL ASISTENTE CHATBOT
+        // ==========================================
+        window.initEventAssistant = function() {
+            const activeId = impersonatingId || currentUser || "demo_id";
+            const container = document.getElementById('tpd-chat-messages');
+            const titleEl = document.getElementById('tpd-chat-title');
+            if(titleEl) titleEl.innerHTML = `<i class="fa-solid fa-brain mr-2"></i> IA: ${currentEventType || 'Evento'}`;
+            const initialMsg = `¡Hola! Soy el asistente logístico impulsado por IA para tu <b>${currentEventType || 'Evento'}</b>.<br><br>Consulta mesas, bebidas, mesa de dulces o métricas activas de tu evento.`;
+            if(container) container.innerHTML = `<div class="tpd-msg bot">${initialMsg}</div>`;
+        };
+
+        window.toggleTPDChat = function() {
+            const chat = document.getElementById('tpd-chat-widget'); const fab = document.getElementById('tpd-fab');
+            if(chat.style.display === 'flex') { chat.style.display = 'none'; fab.style.display = 'flex'; } else { chat.style.display = 'flex'; fab.style.display = 'none'; document.getElementById('tpd-chat-input').focus(); }
+        };
+
+        window.sendTPDChat = async function() {
+            const input = document.getElementById('tpd-chat-input'); 
+            const text = input.value.trim(); 
+            if(!text) return;
+
+            const container = document.getElementById('tpd-chat-messages'); 
+            container.innerHTML += `<div class="tpd-msg user">${text}</div>`; 
+            input.value = ''; 
+            container.scrollTop = container.scrollHeight;
+
+            const loadingId = 'loading-' + Date.now(); 
+            container.innerHTML += `<div id="${loadingId}" class="tpd-msg bot"><i class="fa-solid fa-circle-notch fa-spin"></i> Consultando a Gemini IA...</div>`; 
+            container.scrollTop = container.scrollHeight;
+
+            let cAdu = 0, cNin = 0, sinMesa = 0, declinados = 0, pendientes = 0, totalPases = 0;
+            state.invitados.forEach(g => {
+                let ads = parseInt(g.adultos !== undefined ? g.adultos : g.pases) || 0;
+                let nns = parseInt(g.ninos) || 0;
+                let tot = ads + nns;
+                totalPases += tot;
+
+                if (g.status === 'Confirmado') {
+                    cAdu += ads; cNin += nns;
+                    if(g.mesa === 0) sinMesa += tot;
+                } else if (g.status === 'Declinado') {
+                    declinados += tot;
+                } else {
+                    pendientes += tot;
+                }
+            });
+
+            const contexto = `Tipo de evento: ${currentEventType}. Total invitados esperados (capacidad): ${totalPases}. Confirmados actualmente: ${cAdu} adultos y ${cNin} niños. Declinados: ${declinados}. Pendientes: ${pendientes}. Invitados confirmados que aún no tienen mesa asignada: ${sinMesa}.`;
+            const systemPrompt = `Eres el asistente logístico experto del organizador de eventos sociales. Responde preguntas del usuario de forma útil, profesional y empática basándote en los datos logísticos: ${contexto}. Sé breve y directo. Usa formato HTML básico (<b> o <br>) y emojis apropiados. No inventes nombres de invitados.`;
+
+            const reply = await fetchGemini(systemPrompt, text);
+
+            const loader = document.getElementById(loadingId);
+            if(loader) loader.remove();
+
+            container.innerHTML += `<div class="tpd-msg bot">${reply.replace(/\n/g, '<br>')}</div>`; 
+            container.scrollTop = container.scrollHeight;
+        };
+
+        // ==========================================
+        // 4. INTEGRACIÓN IA A WHATSAPP GENERATOR
+        // ==========================================
+        window.openLocalGeneratorModal = function(id) { 
+            currentTargetGuestId = id; 
+            document.getElementById('wa-standard-modal').classList.remove('hidden'); 
+            document.getElementById('wa-standard-modal').classList.add('flex'); 
+            window.applyLocalTemplate(); 
+        };
+
+        window.applyLocalTemplate = async function() {
+            try {
+                if(!currentTargetGuestId) return; 
+                const guest = state.invitados.find(g => g.id === currentTargetGuestId); 
+                if(!guest) throw new Error("Invitado no encontrado");
+                
+                const tone = document.getElementById('local-tone-select').value; 
+                const includeLink = document.getElementById('wa-include-link').checked;
+                const eventoDinamico = { "Boda": "nuestra boda", "XV Años": "los XV años", "Bautizo": "el bautizo", "Primera Comunión": "la primera comunión", "Confirmación": "la confirmación", "Cumpleaños": "el cumpleaños" }[currentEventType] || `nuestra celebración de ${currentEventType || 'evento'}`;
+                
+                let ads = parseInt(guest.adultos !== undefined ? guest.adultos : guest.pases) || 1; let nns = parseInt(guest.ninos) || 0;
+
+                const msgEl = document.getElementById('wa-standard-msg');
+                msgEl.style.backgroundColor = '#f1f5f9';
+                msgEl.value = "Generando mensaje con Gemini IA... 🪄\n\nPor favor espera unos segundos.";
+                
+                const systemPrompt = "Eres un redactor experto en relaciones públicas para eventos sociales de lujo. Redacta mensajes de WhatsApp persuasivos y cordiales. Devuelve ESTRICTAMENTE el texto final, sin comentarios extra, sin comillas o formato markdown de código.";
+                
+                const userPrompt = `Redacta un mensaje de WhatsApp para el invitado que se llama: "${guest.nombre}". 
+                Datos: Estado RSVP: ${guest.status}. Pases reservados: ${ads} adultos y ${nns} niños. Evento: ${eventoDinamico}. Tono: ${tone}.
+                Instrucciones: Si "Declinado", agradece y despídete (no pidas confirmar). Si "Pendiente", recuerda los pases y pide confirmar. Si "Confirmado", muéstrate feliz y agradécele. Usa emojis. No uses corchetes con variables para llenar después.`;
+
+                let msg = await fetchGemini(systemPrompt, userPrompt);
+
+                if (includeLink && guest.status !== 'Declinado') {
+                    const activeTarget = impersonatingId || currentUser; 
+                    const subdominio = getSubdomain(currentEventType);
+                    const enlaceDinamico = `${subdominio}${activeTarget}`.replace(/\s+/g, '').toLowerCase();
+                    msg += `\n\n👉 *Consulta tu Pase Digital y Ubicaciones aquí:*\nhttps://${enlaceDinamico}.tupasedigital.online/index2.html?u=${activeTarget}&id=${guest.id}`;
+                }
+
+                msgEl.value = msg;
+                msgEl.style.transition = 'background-color 0.3s ease'; 
+                msgEl.style.backgroundColor = '#d1fae5'; setTimeout(() => { msgEl.style.backgroundColor = ''; }, 400);
+                
+                document.getElementById('wa-standard-send-btn').onclick = function() {
+                    if(!guest.telefono) return Toast.fire({icon:'warning', title:'El invitado no tiene WhatsApp registrado'});
+                    window.open(`https://api.whatsapp.com/send?phone=${guest.telefono}&text=${encodeURIComponent(msgEl.value)}`, '_blank');
+                    document.getElementById('wa-standard-modal').classList.replace('flex', 'hidden');
+                };
+            } catch (err) { console.error(err); }
         };
 
         window.addPDFFooter = function(docInstance) {
@@ -1186,10 +1356,30 @@
                     tbody.appendChild(tr);
                 });
                 Swal.close();
-            } catch(e) { Swal.close(); Swal.fire({ title: 'Mensaje de Firebase', html: `Error:<br><br><b style="color:#ef4444;">${e.message}</b>`, icon: 'error' }); }
+            } catch(e) { Swal.close(); Swal.fire({ title: 'Error', text: 'Error al cargar usuarios', icon: 'error' }); }
         };
 
         window.adminLoadUsers = async function() { Swal.fire({ title: 'Actualizando...', didOpen: () => Swal.showLoading(), allowOutsideClick: false }); await window.loadAdminPanel(); Toast.fire({ icon: 'success', title: 'Panel actualizado' }); };
+        
+        // NUEVA FUNCIÓN: Generador del PIN en el panel de Admin
+        window.showAdminDemoPin = function() {
+            const now = new Date();
+            const expectedCode = ((now.getDate() * (now.getMonth() + 1) * 100) + now.getHours()).toString();
+            Swal.fire({
+                title: 'PIN de Demostración',
+                html: `
+                    <p class="text-sm text-slate-500 mb-3">Código válido para esta hora exacta:</p>
+                    <div class="bg-slate-50 p-4 rounded-xl border-2 border-slate-200">
+                        <p class="text-4xl font-black text-blue-600 tracking-[0.2em]">${expectedCode}</p>
+                    </div>
+                    <p class="text-[10px] text-slate-400 mt-4">La fórmula <i>(Día * Mes * 100) + Hora</i> cambia automáticamente al dar la siguiente hora en punto.</p>
+                `,
+                icon: 'info',
+                confirmButtonColor: '#3b82f6',
+                confirmButtonText: 'Entendido'
+            });
+        };
+
         window.adminCreateUser = async function() {
             try {
                 const user = document.getElementById('new-user').value.trim().toLowerCase(); const pass = document.getElementById('new-pass').value.trim(); const role = document.getElementById('new-role').value;
@@ -1207,7 +1397,7 @@
         };
 
         window.adminTogglePremium = async function(userId, currentStatus) { try { await setDoc(doc(db, 'artifacts', 'weddingflow', 'users', userId), { hasPremiumLink: !currentStatus }, { merge: true }); window.loadAdminPanel(); Toast.fire({icon: 'success', title: !currentStatus ? '✨ Premium Activado' : 'Premium Desactivado'}); } catch(e) { Toast.fire({icon: 'error', title: 'Error de BD'}); } };
-        window.adminResetPassword = function(userId) { Swal.fire({ title: 'Restablecer Contraseña', icon: 'info', html: 'Como usamos correos encriptados, ve a tu consola de Firebase Auth, borra el correo de este usuario y vuelve a crearlo aquí con el mismo ID.', confirmButtonColor: '#3b82f6' }); };
+        window.adminResetPassword = function(userId) { Swal.fire({ title: 'Restablecer Contraseña', icon: 'info', html: 'Ve a tu consola de Firebase Auth, borra el correo de este usuario y vuelve a crearlo aquí con el mismo ID.', confirmButtonColor: '#3b82f6' }); };
         window.adminToggleStatus = async function(userId, newStatus) { try { await setDoc(doc(db, 'artifacts', 'weddingflow', 'users', userId), { status: newStatus }, { merge: true }); window.loadAdminPanel(); } catch(e) {} };
         window.deleteClient = function(user) { Swal.fire({ title: `¿Borrar Instancia de ${user}?`, icon: 'error', showCancelButton: true, confirmButtonColor: '#ef4444', confirmButtonText: 'Sí, borrar base de datos' }).then(async (res) => { try { if(res.isConfirmed) { await deleteDoc(doc(db, 'artifacts', 'weddingflow', 'users', user)); Toast.fire({icon:'success', title:'Borrada'}); window.loadAdminPanel(); } } catch(e) { Swal.fire('Error', 'Fallo al borrar', 'error'); } }); };
 
@@ -1316,20 +1506,18 @@
         window.crmSave = async function() {
             try {
                 const act = impersonatingId || currentUser;
-                if(act === 'demo_local') return; // No guardar si es demo local puro
+                if(act === 'evento_demo_pro') return; // No guardar si es demo local puro
                 const docRef = doc(db, 'artifacts', 'weddingflow', 'users', act);
                 await setDoc(docRef, { invitados: state.invitados, mesas: state.mesas, config: state.config, croquis: state.croquis, ticketBg: state.ticketBg || null }, { merge: true });
             } catch(e) { console.error('Fallo crmSave', e); Toast.fire({icon: 'error', title: 'Error de guardado'}); }
         };
-        
-        window.crmRenderAll = function() { window.crmRenderGuests(); window.crmRenderTables(); window.crmRenderStats(); };
         
         window.crmLoadData = async function() { 
             const btn = document.activeElement; if(btn) btn.blur(); document.getElementById('crm-search').value = ''; 
             Swal.fire({ title: 'Sincronizando...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
             try {
                 const act = impersonatingId || currentUser;
-                if(act === 'demo_local') { Swal.close(); return Toast.fire({icon: 'success', title:'Todo OK en local'}); }
+                if(act === 'evento_demo_pro') { Swal.close(); return Toast.fire({icon: 'success', title:'Todo OK en local'}); }
                 const snap = await getDoc(doc(db, 'artifacts', 'weddingflow', 'users', act));
                 if(snap.exists()) {
                     const data = snap.data();
@@ -1344,16 +1532,6 @@
             window.crmSave(); 
             if(k === 'capacity' || k === 'capacidadMesa') window.crmRenderTables(); 
             if(['eventStartTime', 'eventDuration', 'musicMain', 'musicDinner', 'musicTorna', 'flowersPerTable'].includes(k)) window.crmRenderStats(); 
-        };
-
-        window.crmSwitchTab = function(tab) {
-            ['guests', 'tables', 'stats'].forEach(t => {
-                const sec = document.getElementById(`crm-sec-${t}`); sec.classList.remove('flex'); sec.classList.add('hidden');
-                document.getElementById(`tab-${t}`).classList.replace('text-blue-600', 'text-slate-500'); document.getElementById(`tab-${t}`).classList.replace('border-blue-600', 'border-transparent');
-            });
-            const activeSec = document.getElementById(`crm-sec-${tab}`); activeSec.classList.remove('hidden'); activeSec.classList.add('flex');
-            document.getElementById(`tab-${tab}`).classList.replace('text-slate-500', 'text-blue-600'); document.getElementById(`tab-${tab}`).classList.replace('border-transparent', 'border-blue-600');
-            if(tab === 'tables') window.crmRenderTables(); if(tab === 'stats') window.crmRenderStats();
         };
 
         window.openAddGuestModal = function() {
@@ -1434,7 +1612,7 @@
                     const MAX_WIDTH = 600; const scale = img.width > MAX_WIDTH ? MAX_WIDTH / img.width : 1;
                     const canvas = document.createElement('canvas'); canvas.width = img.width * scale; canvas.height = img.height * scale;
                     const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    state.ticketBg = canvas.toDataURL('image/jpeg', 0.85); window.crmSave(); Toast.fire({icon:'success', title:'Fondo del Pase guardado globalmente'});
+                    state.ticketBg = canvas.toDataURL('image/jpeg', 0.85); window.crmSave(); Toast.fire({icon:'success', title:'Fondo guardado'});
                 };
                 img.src = ev.target.result;
             };
@@ -1443,7 +1621,7 @@
 
         window.removeTicketBg = function() {
             if(!state.ticketBg) return Toast.fire({icon:'info', title:'No hay fondo asignado'});
-            state.ticketBg = null; window.crmSave(); Toast.fire({icon:'success', title:'Fondo removido. Se usará el color base.'});
+            state.ticketBg = null; window.crmSave(); Toast.fire({icon:'success', title:'Fondo removido.'});
         };
 
         window.downloadNativeTicket = function() {
@@ -1497,102 +1675,6 @@
             new QRCode(qrContainer, { text: rsvpUrl, width: 140, height: 140, colorDark : "#1e293b", colorLight : "#ffffff", correctLevel : QRCode.CorrectLevel.H });
             
             document.getElementById('ticket-modal').classList.remove('hidden'); document.getElementById('ticket-modal').classList.add('flex');
-        };
-
-        window.openLocalGeneratorModal = function(id) { currentTargetGuestId = id; document.getElementById('wa-standard-modal').classList.remove('hidden'); document.getElementById('wa-standard-modal').classList.add('flex'); window.applyLocalTemplate(); };
-
-        window.applyLocalTemplate = function() {
-            try {
-                if(!currentTargetGuestId) return; const guest = state.invitados.find(g => g.id === currentTargetGuestId); if(!guest) throw new Error("Invitado no encontrado");
-                const tone = document.getElementById('local-tone-select').value; const includeLink = document.getElementById('wa-include-link').checked;
-                const eventoDinamico = { "Boda": "nuestra boda", "XV Años": "los XV años", "Bautizo": "el bautizo", "Primera Comunión": "la primera comunión", "Confirmación": "la confirmación", "Cumpleaños": "el cumpleaños" }[currentEventType] || `nuestra celebración de ${currentEventType || 'evento'}`;
-                
-                let ads = parseInt(guest.adultos !== undefined ? guest.adultos : guest.pases) || 1; let nns = parseInt(guest.ninos) || 0;
-                let txtAdultos = ads === 1 ? "*1 pase para adulto*" : `*${ads} pases para adultos*`; let txtNinos = nns === 0 ? "" : (nns === 1 ? " y *1 pase infantil*" : ` y *${nns} pases infantiles*`);
-                let txtPases = `${txtAdultos}${txtNinos}`; let msg = "";
-
-                if (guest.status === 'Declinado') { msg = `¡Hola *${guest.nombre}*! 🥺 Nos da mucha tristeza saber que no podrán acompañarnos a ${eventoDinamico}, pero agradecemos muchísimo el tiempo que tomaste para avisarnos. ¡Un abrazo enorme! ✨`; } 
-                else if (guest.status === 'Pendiente') {
-                    if (tone === 'formal') { msg = `Estimado/a *${guest.nombre}*, esperamos que se encuentre muy bien. Le escribimos para recordarle amablemente que tenemos reservados ${txtPases} para ${eventoDinamico} 🥂. Nos encantaría saber si contaremos con su valiosa presencia. ¡Por favor, confirme su asistencia! ✨🎩`; } 
-                    else if (tone === 'casual') { msg = `¡Qué onda *${guest.nombre}*! 👋 Paso a recordarte que te apartamos ${txtPases} para festejar ${eventoDinamico} 🥳. ¡Ojalá sí puedas venir! Échame un mensajito para confirmar, ¿va? 😎`; } 
-                    else { msg = `¡Hola *${guest.nombre}*! 💖 Estamos súper emocionados por ${eventoDinamico} y queremos recordarte que tienes reservados ${txtPases} con muchísimo cariño 🥰. Como aún no tenemos tu confirmación, queríamos pedirte que nos avises. ¡Nos haría muchísima ilusión! 🎉✨`; }
-                } else {
-                    if (tone === 'formal') { msg = `Estimado/a *${guest.nombre}*, es un honor para nosotros informarle que tiene reservados ${txtPases} para ${eventoDinamico} 🥂. Su presencia será muy especial e importante para nosotros. ¡Le esperamos con gran entusiasmo! ✨🎩`; } 
-                    else if (tone === 'casual') { msg = `¡Qué onda *${guest.nombre}*! 👋 Ya está todo listo y preparado. Te recordamos que tienes ${txtPases} para ${eventoDinamico} 🥳. ¡Prepárate para disfrutar muchísimo, nos vemos pronto! 😎`; } 
-                    else { msg = `¡Hola *${guest.nombre}*! 🎉 Estamos contando los días y nos llena de alegría saber que compartiremos este momento contigo. Te compartimos que tienes apartados ${txtPases} para ${eventoDinamico} 💖. ¡No podemos esperar para abrazarte! 🥰✨`; }
-                }
-
-                if (includeLink && guest.status !== 'Declinado') {
-                    const activeTarget = impersonatingId || currentUser; const subdominio = getSubdomain(currentEventType);
-                    const enlaceDinamico = `${subdominio}${activeTarget}`.replace(/\s+/g, '').toLowerCase();
-                    msg += `\n\n👉 *Consulta tu Pase Digital y Ubicaciones aquí:*\nhttps://${enlaceDinamico}.tupasedigital.online/index2.html?u=${activeTarget}&id=${guest.id}`;
-                }
-
-                const msgEl = document.getElementById('wa-standard-msg'); msgEl.value = msg;
-                msgEl.style.transition = 'background-color 0.3s ease'; msgEl.style.backgroundColor = '#d1fae5'; setTimeout(() => { msgEl.style.backgroundColor = ''; }, 400);
-                
-                document.getElementById('wa-standard-send-btn').onclick = function() {
-                    if(!guest.telefono) return Toast.fire({icon:'warning', title:'El invitado no tiene WhatsApp registrado'});
-                    window.open(`https://api.whatsapp.com/send?phone=${guest.telefono}&text=${encodeURIComponent(msgEl.value)}`, '_blank');
-                    document.getElementById('wa-standard-modal').classList.replace('flex', 'hidden');
-                };
-            } catch (err) { console.error(err); }
-        };
-
-        window.initEventAssistant = function() {
-            const activeId = impersonatingId || currentUser || "demo_id";
-            const container = document.getElementById('tpd-chat-messages');
-            const titleEl = document.getElementById('tpd-chat-title');
-            if(titleEl) titleEl.innerHTML = `<i class="fa-solid fa-brain mr-2"></i> IA: ${currentEventType || 'Evento'}`;
-            const initialMsg = `¡Hola! Soy el asistente logístico para tu <b>${currentEventType || 'Evento'}</b> (ID: <i>${activeId}</i>).<br><br>Consulta mesas, bebidas, mesa de dulces o métricas activas de tu evento.`;
-            if(container) container.innerHTML = `<div class="tpd-msg bot">${initialMsg}</div>`;
-        };
-
-        window.toggleTPDChat = function() {
-            const chat = document.getElementById('tpd-chat-widget'); const fab = document.getElementById('tpd-fab');
-            if(chat.style.display === 'flex') { chat.style.display = 'none'; fab.style.display = 'flex'; } else { chat.style.display = 'flex'; fab.style.display = 'none'; document.getElementById('tpd-chat-input').focus(); }
-        };
-
-        window.sendTPDChat = function() {
-            const input = document.getElementById('tpd-chat-input'); const text = input.value.trim().toLowerCase(); if(!text) return;
-            const container = document.getElementById('tpd-chat-messages'); container.innerHTML += `<div class="tpd-msg user">${text}</div>`; input.value = ''; container.scrollTop = container.scrollHeight;
-            const loadingId = 'loading-' + Date.now(); container.innerHTML += `<div id="${loadingId}" class="tpd-msg bot"><i class="fa-solid fa-spinner fa-spin"></i> Analizando Inteligencia Logística...</div>`; container.scrollTop = container.scrollHeight;
-
-            setTimeout(() => {
-                document.getElementById(loadingId).remove();
-                let reply = "Pídeme calcular <b>bebidas</b>, <b>mesas</b>, <b>dulces</b>, <b>niños</b> o hacer un <b>resumen</b>.";
-                let cAdu = 0, cNin = 0, sinMesa = 0, declinados = 0, totalPases = 0;
-                
-                state.invitados.forEach(g => {
-                    let ads = parseInt(g.adultos !== undefined ? g.adultos : g.pases) || 0; let nns = parseInt(g.ninos) || 0; let tot = ads + nns;
-                    totalPases += tot;
-                    if (g.status === 'Confirmado') { cAdu += ads; cNin += nns; if(g.mesa === 0) sinMesa += tot; } 
-                    else if (g.status === 'Declinado') { declinados += tot; }
-                });
-
-                const totalConfirmados = cAdu + cNin;
-
-                if (text.includes('resumen') || text.includes('estatus') || text.includes('cuantos')) {
-                    reply = `📊 <b>Resumen para ${currentEventType}:</b><br>• Total en catálogo: ${totalPases} pases.<br>• Confirmados: <b>${totalConfirmados}</b> (${cAdu}A, ${cNin}N).<br>• Declinados: ${declinados}.`;
-                    if(sinMesa > 0) reply += `<br>⚠️ Hay <b>${sinMesa} lugares confirmados</b> sin mesa.`;
-                } 
-                else if (text.includes('bebida') || text.includes('alcohol') || text.includes('hielo')) {
-                    if(cAdu === 0) reply = "No hay adultos confirmados para calcular insumos de barra.";
-                    else reply = `🍾 <b>Barra (${cAdu} Adultos):</b><br>• Destilados: <b>${Math.ceil(cAdu / 3)} bots</b>.<br>• Cervezas: <b>${Math.ceil(cAdu * 3)} pz</b>.<br>• Refrescos: <b>${Math.ceil(((cAdu * 1) + (cNin * 0.5)) * 1.15)} L</b>.<br>• Hielo: <b>${Math.ceil(cAdu * 1)} kg</b>.`;
-                }
-                else if (text.includes('dulce') || text.includes('postre')) {
-                    let total = Math.ceil((cAdu * 3.0) + (cNin * 4.5));
-                    reply = `🍬 Sugiero <b>${total} piezas</b> en total para la mesa de postres (35% salado/picoso, 25% chocolate, 40% dulce/postre/snack).`;
-                }
-                else if (text.includes('mesa') || text.includes('silla') || text.includes('acomodo')) {
-                    let capacidad = state.mesas.length * (parseInt(state.config.capacidadMesa)||10);
-                    reply = `Tienes capacidad para <b>${capacidad} personas</b> en mesas.<br>Tienes <b>${totalConfirmados} confirmados</b>.`;
-                    if(totalConfirmados > capacidad) reply += "<br>❌ Faltan lugares, debes crear más mesas."; else reply += "<br>✅ Tienes espacio suficiente.";
-                }
-                else if (text.includes('niño')) { reply = `Actualmente hay <b>${cNin} niños</b> confirmados. Considera revisar si ocupan sillas altas o menú infantil en notas.`; }
-
-                container.innerHTML += `<div class="tpd-msg bot">${reply}</div>`; container.scrollTop = container.scrollHeight;
-            }, 600);
         };
 
         window.assignTable = function(gId, tId) { state.invitados.find(g => g.id === gId).mesa = parseInt(tId); window.crmSave(); window.crmRenderTables(); };
