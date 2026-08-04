@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recuerdos VIP | Tu Pase Digital</title>
+    <title>Recuerdos VIP | Tu Pae Digital.online</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -64,7 +64,6 @@
             to { background-position: 200% center; }
         }
 
-        /* Animaciones de entrada (Scroll) */
         .fade-in-up { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
         .fade-in-up.visible { opacity: 1; transform: translateY(0); }
 
@@ -72,35 +71,34 @@
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
         /* ======================================================== */
-        /* ESTILOS EDITORIALES PARA EL PDF (Oculto en la web)       */
+        /* ESTILOS OPTIMIZADOS PARA EL PDF (Hoja Carta Exacta)       */
         /* ======================================================== */
         #print-container {
             position: absolute; left: -9999px; top: 0; 
-            width: 816px; /* Proporción ideal para tamaño Carta */
+            width: 800px; /* Tamaño ajustado para encaje en Hoja Carta */
             background: #ffffff; color: #1a1a1a; 
             font-family: 'Montserrat', sans-serif;
             overflow: hidden;
+            box-sizing: border-box;
         }
         
-        .pdf-header { background: #1a1a1a; padding: 40px; text-align: center; border-bottom: 8px solid #d4af37; }
-        .pdf-header h1 { font-family: 'Playfair Display', serif; font-size: 52px; color: #d4af37; margin: 0; letter-spacing: 2px; }
-        .pdf-header p { color: #ffffff; font-size: 16px; letter-spacing: 5px; text-transform: uppercase; margin-top: 10px; font-weight: 300; }
+        .pdf-header { background: #1a1a1a; padding: 25px 20px; text-align: center; border-bottom: 6px solid #d4af37; }
+        .pdf-header h1 { font-family: 'Playfair Display', serif; font-size: 40px; color: #d4af37; margin: 0; letter-spacing: 2px; }
+        .pdf-header p { color: #ffffff; font-size: 13px; letter-spacing: 4px; text-transform: uppercase; margin-top: 5px; font-weight: 300; }
         
-        .pdf-body { padding: 40px; background-color: #fdf8f6; }
-        .pdf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .pdf-body { padding: 25px; background-color: #fdf8f6; }
+        .pdf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         
-        .pdf-card { background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #f2e8e5; }
-        .pdf-img { width: 100%; height: 200px; object-fit: cover; }
-        .pdf-content { padding: 20px; border-top: 3px solid #d4af37; }
-        .pdf-content h2 { font-family: 'Playfair Display', serif; font-size: 24px; color: #1a1a1a; margin-top: 0; margin-bottom: 10px; }
+        .pdf-card { background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #f2e8e5; }
+        .pdf-img { width: 100%; height: 140px; object-fit: cover; }
+        .pdf-content { padding: 12px 15px; border-top: 3px solid #d4af37; }
+        .pdf-content h2 { font-family: 'Playfair Display', serif; font-size: 18px; color: #1a1a1a; margin-top: 0; margin-bottom: 6px; }
         
-        .pdf-footer { background: #1a1a1a; color: white; padding: 30px 40px; text-align: center; display: flex; justify-content: space-between; items-center; }
-        .pdf-footer-text { text-align: left; }
-        .pdf-footer-text h3 { color: #d4af37; margin: 0 0 5px 0; font-family: 'Playfair Display', serif; font-size: 24px; }
-        .pdf-footer-text p { margin: 0; font-size: 12px; color: #a1a1aa; }
-        .pdf-footer-contact { text-align: right; }
-        .pdf-footer-contact p { margin: 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: #d4af37; }
-        .pdf-footer-contact h4 { margin: 5px 0 0 0; font-size: 28px; color: #ffffff; font-weight: 800; }
+        .pdf-footer { background: #1a1a1a; color: white; padding: 20px 30px; text-align: center; display: flex; justify-content: space-between; align-items: center; }
+        .pdf-footer-text h3 { color: #d4af37; margin: 0 0 3px 0; font-family: 'Playfair Display', serif; font-size: 20px; }
+        .pdf-footer-text p { margin: 0; font-size: 11px; color: #a1a1aa; }
+        .pdf-footer-contact p { margin: 0; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #d4af37; }
+        .pdf-footer-contact h4 { margin: 3px 0 0 0; font-size: 22px; color: #ffffff; font-weight: 800; }
     </style>
 </head>
 <body class="text-slate-800 antialiased overflow-x-hidden">
@@ -163,7 +161,6 @@
 
     <!-- SECCIÓN DE PRODUCTOS -->
     <section id="coleccion" class="py-20 md:py-32 relative">
-        <!-- Decoración de fondo sutil -->
         <div class="absolute top-0 right-0 w-64 h-64 bg-brand-500 opacity-5 rounded-full blur-[80px] pointer-events-none"></div>
         <div class="absolute bottom-0 left-0 w-64 h-64 bg-brand-500 opacity-5 rounded-full blur-[80px] pointer-events-none"></div>
 
@@ -184,15 +181,15 @@
                         <div id="slider-1" data-current="0" data-total="3" class="flex w-full h-full transition-transform duration-700 ease-in-out">
                             <img src="DETALLE PERFECTO.png" alt="Abanicos" class="w-full h-full object-cover flex-shrink-0">
                             <img src="especiales2.png" alt="Bolsas Anticruda" class="w-full h-full object-cover flex-shrink-0">
-							<img src="especiales1.png" alt="Bolsas Anticruda" class="w-full h-full object-cover flex-shrink-0">
+                            <img src="especiales1.png" alt="Kits Especiales" class="w-full h-full object-cover flex-shrink-0">
                         </div>
                         
-                        <!-- Controles Manuales -->
                         <button onclick="moveSlide('slider-1', -1)" class="absolute left-3 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white w-10 h-10 rounded-full opacity-0 group-hover/carousel:opacity-100 transition-all flex items-center justify-center backdrop-blur-sm z-20"><i class="fa-solid fa-chevron-left"></i></button>
                         <button onclick="moveSlide('slider-1', 1)" class="absolute right-3 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white w-10 h-10 rounded-full opacity-0 group-hover/carousel:opacity-100 transition-all flex items-center justify-center backdrop-blur-sm z-20"><i class="fa-solid fa-chevron-right"></i></button>
                         
                         <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
                             <div class="slider-1-dot w-2 h-2 rounded-full bg-white transition-all shadow-md"></div>
+                            <div class="slider-1-dot w-2 h-2 rounded-full bg-white/50 transition-all shadow-md"></div>
                             <div class="slider-1-dot w-2 h-2 rounded-full bg-white/50 transition-all shadow-md"></div>
                         </div>
                     </div>
@@ -229,18 +226,19 @@
                     </div>
                 </article>
 
-                <!-- 2. LICORES PREMIUM (CARRUSEL 2) -->
+                <!-- 2. LICORES PREMIUM (CARRUSEL 2 AJUSTADO SIN CORTE) -->
                 <article class="bg-white rounded-[2rem] p-3 hover-lift border border-slate-100 relative group fade-in-up shadow-xl" style="transition-delay: 100ms;">
                     <div class="absolute top-6 right-6 bg-brand-900 text-white text-[10px] font-bold uppercase tracking-wider py-1.5 px-4 rounded-full z-10 shadow-lg border border-brand-500">Premium</div>
                     
-                    <div class="relative h-64 md:h-80 w-full rounded-[1.5rem] overflow-hidden mb-6 group/carousel bg-black">
+                    <div class="relative h-64 md:h-80 w-full rounded-[1.5rem] overflow-hidden mb-6 group/carousel bg-neutral-900 flex items-center">
                         <div id="slider-2" data-current="0" data-total="2" class="flex w-full h-full transition-transform duration-700 ease-in-out">
-                            <img src="PREMIUM.png" alt="Licores Premium" class="w-full h-full object-cover opacity-90 flex-shrink-0">
-                            <img src="PREMIUM-2.png" alt="Kits Cervezas Temáticos" class="w-full h-full object-cover flex-shrink-0">
+                            <!-- object-contain para asegurar que la imagen PREMIUM-2 o panorámicas no se corten -->
+                            <img src="PREMIUM-2.png" alt="Licores Premium" class="w-full h-full object-contain flex-shrink-0">
+                            <img src="PREMIUM.png" alt="Kits Cervezas Temáticos" class="w-full h-full object-contain flex-shrink-0">
                         </div>
                         
-                        <button onclick="moveSlide('slider-2', -1)" class="absolute left-3 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white w-10 h-10 rounded-full opacity-0 group-hover/carousel:opacity-100 transition-all flex items-center justify-center backdrop-blur-sm z-20"><i class="fa-solid fa-chevron-left"></i></button>
-                        <button onclick="moveSlide('slider-2', 1)" class="absolute right-3 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white w-10 h-10 rounded-full opacity-0 group-hover/carousel:opacity-100 transition-all flex items-center justify-center backdrop-blur-sm z-20"><i class="fa-solid fa-chevron-right"></i></button>
+                        <button onclick="moveSlide('slider-2', -1)" class="absolute left-3 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-white w-10 h-10 rounded-full opacity-0 group-hover/carousel:opacity-100 transition-all flex items-center justify-center backdrop-blur-sm z-20"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button onclick="moveSlide('slider-2', 1)" class="absolute right-3 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-white w-10 h-10 rounded-full opacity-0 group-hover/carousel:opacity-100 transition-all flex items-center justify-center backdrop-blur-sm z-20"><i class="fa-solid fa-chevron-right"></i></button>
                         
                         <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
                             <div class="slider-2-dot w-2 h-2 rounded-full bg-brand-500 transition-all shadow-md"></div>
@@ -275,7 +273,7 @@
                                         <span class="text-slate-600 font-medium">Etiqueta Roja (Johnnie W.)</span> <span class="font-bold text-brand-600">$1,500 c/u</span>
                                     </li>
                                     <li class="flex justify-between items-center pt-1">
-                                        <span class="text-slate-800 font-bold">Kits Cerveza Lucha Libre</span> <span class="text-[10px] text-white bg-brand-900 px-3 py-1 rounded-full font-bold">Cotizar en whatsapp</span>
+                                        <span class="text-slate-800 font-bold">Kits Cerveza Lucha Libre</span> <span class="text-[10px] text-white bg-brand-900 px-3 py-1 rounded-full font-bold">Cotizar</span>
                                     </li>
                                 </ul>
                             </div>
@@ -382,42 +380,40 @@
     </footer>
 
     <!-- ========================================================================= -->
-    <!-- CONTENEDOR OCULTO PARA GENERAR EL PDF EDITORIAL                           -->
+    <!-- CONTENEDOR OCULTO PARA GENERAR EL PDF EDITORIAL (Ajustado para Hoja Carta) -->
     <!-- ========================================================================= -->
     <div id="print-wrapper" style="overflow: hidden; height: 0;">
         <div id="print-container">
             
-            <!-- Encabezado Editorial -->
             <div class="pdf-header">
                 <h1>CATÁLOGO VIP</h1>
                 <p>Haz que tu boda sea inolvidable</p>
             </div>
 
             <div class="pdf-body">
-                <!-- Grid de PDF (2 columnas) -->
                 <div class="pdf-grid">
                     
                     <!-- Tarjeta 1 -->
                     <div class="pdf-card">
                         <img src="DETALLE PERFECTO.png" class="pdf-img">
                         <div class="pdf-content">
-                            <h2>🪭 Abanicos & Especiales</h2>
-                            <ul style="font-size: 14px; line-height: 1.8; color: #4b5563; margin-bottom: 0; padding-left: 15px;">
-                                <li>Abanico Bambú Blanco: <strong style="color: #1a1a1a;">$20 c/u</strong></li>
-                                <li>En caja listo para entregar: <strong style="color: #1a1a1a;">$150 c/u</strong></li>
+                            <h2>🪭 Abanicos Personalizados</h2>
+                            <ul style="font-size: 12px; line-height: 1.6; color: #4b5563; margin-bottom: 0; padding-left: 15px;">
+                                <li>Bambú Blanco: <strong style="color: #1a1a1a;">$20 c/u</strong></li>
+                                <li>En caja de regalo: <strong style="color: #1a1a1a;">$150 c/u</strong></li>
                             </ul>
                         </div>
                     </div>
 
-                    <!-- Tarjeta 2 -->
+                    <!-- Tarjeta 2: Cambiada a especiales2.png -->
                     <div class="pdf-card">
-                        <img src="image_06f13d.png" class="pdf-img">
+                        <img src="especiales2.png" class="pdf-img">
                         <div class="pdf-content">
-                            <h2>🥳 Bolsas Anticruda</h2>
-                            <p style="font-size: 12px; color: #6b7280; margin-bottom: 12px; line-height: 1.5;">Incluye: Alka-Seltzer, Chicles Trident, Cafiaspirina, Pica Fresa, y Bebida.</p>
-                            <div style="background: #f8fafc; padding: 12px; border-radius: 8px; font-size: 14px; border: 1px solid #e2e8f0;">
-                                <div style="margin-bottom: 8px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">Con Agua: <strong style="color: #1a1a1a; float: right;">$2,000 / 50pz</strong></div>
-                                <div>Con Electrolit: <strong style="color: #1a1a1a; float: right;">$3,000 / 50pz</strong></div>
+                            <h2>🥳 Kits Anticruda</h2>
+                            <p style="font-size: 10px; color: #6b7280; margin-bottom: 8px;">Incluye: Alka-Seltzer, Trident, Cafiaspirina, Pica Fresa.</p>
+                            <div style="background: #f8fafc; padding: 8px 10px; border-radius: 6px; font-size: 12px; border: 1px solid #e2e8f0;">
+                                <div>Con Agua: <strong style="color: #1a1a1a; float: right;">$2,000 / 50pz</strong></div>
+                                <div style="margin-top: 4px;">Con Electrolit: <strong style="color: #1a1a1a; float: right;">$3,000 / 50pz</strong></div>
                             </div>
                         </div>
                     </div>
@@ -427,7 +423,7 @@
                         <img src="DETALLE ELEGANTE.png" class="pdf-img">
                         <div class="pdf-content">
                             <h2>🏛️ Detalles en Ónix</h2>
-                            <ul style="font-size: 14px; line-height: 1.8; color: #4b5563; margin-bottom: 0; padding-left: 15px;">
+                            <ul style="font-size: 12px; line-height: 1.6; color: #4b5563; margin-bottom: 0; padding-left: 15px;">
                                 <li>Mini Joyero: <strong style="color: #1a1a1a;">$60 c/u</strong></li>
                                 <li>Broche para cabello: <strong style="color: #1a1a1a;">$50 c/u</strong></li>
                                 <li>Dominó con estuche: <strong style="color: #1a1a1a;">$160 c/u</strong></li>
@@ -440,37 +436,36 @@
                         <img src="AROMA EN RECUERDO.png" class="pdf-img">
                         <div class="pdf-content">
                             <h2>🕯️ Velas Aromáticas</h2>
-                            <p style="font-size: 14px; color: #4b5563; margin-bottom: 10px;">Aromas a Vainilla y Frutos Rojos.</p>
-                            <div style="background: #fff4f5; padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #ffe4e6;">
-                                <p style="font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 5px 0; color: #be123c; font-weight: bold;">Paquete de 50 piezas</p>
-                                <p style="font-size: 24px; font-weight: 800; color: #1a1a1a; margin: 0;">$1,000</p>
+                            <p style="font-size: 12px; color: #4b5563; margin-bottom: 6px;">Vainilla y Frutos Rojos.</p>
+                            <div style="background: #fff4f5; padding: 10px; border-radius: 6px; text-align: center; border: 1px solid #ffe4e6;">
+                                <p style="font-size: 10px; uppercase; letter-spacing: 1px; margin: 0 0 3px 0; color: #be123c; font-weight: bold;">Paquete de 50 piezas</p>
+                                <p style="font-size: 20px; font-weight: 800; color: #1a1a1a; margin: 0;">$1,000</p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Tarjeta 5 -->
                     <div class="pdf-card">
-                        <img src="PREMIUM.png" class="pdf-img">
+                        <img src="PREMIUM-2.png" class="pdf-img">
                         <div class="pdf-content">
                             <h2>🍾 Licores Premium</h2>
-                            <p style="font-size: 13px; margin-bottom: 12px; color: #4b5563;"><strong>Anís Criollo (500ml)</strong>: <span style="color: #1a1a1a; font-weight: bold;">$200 c/u</span></p>
-                            <p style="font-size: 14px; font-weight: bold; margin-bottom: 8px; color: #1a1a1a;">Tablas de Madera + Copa:</p>
-                            <ul style="font-size: 13px; line-height: 1.8; color: #4b5563; margin-top:0; padding-left: 15px;">
-                                <li>Torres 5: <strong style="color: #1a1a1a;">$950 c/u</strong></li>
-                                <li>Torres 10: <strong style="color: #1a1a1a;">$1,100 c/u</strong></li>
-                                <li>Etiqueta Roja: <strong style="color: #1a1a1a;">$1,500 c/u</strong></li>
+                            <p style="font-size: 11px; margin-bottom: 8px; color: #4b5563;"><strong>Anís Criollo (500ml)</strong>: <span style="color: #1a1a1a; font-weight: bold;">$200 c/u</span></p>
+                            <p style="font-size: 12px; font-weight: bold; margin-bottom: 4px; color: #1a1a1a;">Tablas de Madera + Copa:</p>
+                            <ul style="font-size: 11px; line-height: 1.5; color: #4b5563; margin-top:0; padding-left: 15px;">
+                                <li>Torres 5: <strong>$950</strong> | Torres 10: <strong>$1,100</strong></li>
+                                <li>Etiqueta Roja: <strong>$1,500 c/u</strong></li>
                             </ul>
                         </div>
                     </div>
 
                     <!-- Tarjeta 6 -->
                     <div class="pdf-card">
-                        <img src="image_06f176.png" class="pdf-img" style="border-bottom-color: #3b82f6;">
+                        <img src="image_06f176.png" class="pdf-img">
                         <div class="pdf-content">
                             <h2 style="color: #1e40af;">🍻 Kits Cerveza</h2>
-                            <p style="font-size: 13px; color: #4b5563; margin-bottom: 15px; line-height: 1.6;">Sorprende a tus invitados con divertidos kits temáticos (Ej. Lucha Libre). Diseños 100% personalizables.</p>
-                            <div style="background: #eff6ff; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid #bfdbfe;">
-                                <p style="font-size: 14px; font-weight: bold; color: #1e40af; margin: 0;">¡Contáctanos para cotizar!</p>
+                            <p style="font-size: 11px; color: #4b5563; margin-bottom: 10px; line-height: 1.4;">Kits temáticos especiales (Lucha Libre y más). Diseños 100% personalizables.</p>
+                            <div style="background: #eff6ff; padding: 8px; border-radius: 6px; text-align: center; border: 1px solid #bfdbfe;">
+                                <p style="font-size: 12px; font-weight: bold; color: #1e40af; margin: 0;">¡Contáctanos para cotizar!</p>
                             </div>
                         </div>
                     </div>
@@ -516,7 +511,6 @@
             slider.setAttribute('data-current', current);
             slider.style.transform = `translateX(-${current * 100}%)`;
             
-            // Actualizar puntos
             let activeColor = sliderId === 'slider-2' ? 'bg-brand-500' : 'bg-white';
             let inactiveColor = 'bg-white/50';
 
@@ -532,15 +526,14 @@
             });
         }
 
-        // Autoplay para ambos carruseles
+        // Autoplay para carruseles
         setInterval(() => {
             moveSlide('slider-1', 1);
             moveSlide('slider-2', 1);
         }, 4000);
 
-        // Lógica del PDF Mejorada (Editorial)
+        // Lógica del PDF Ajustado para encajar en Hoja Carta
         function generarPDF() {
-            // Prevenir errores subiendo la vista al inicio (Truco esencial para html2canvas)
             window.scrollTo(0, 0);
 
             const btns = document.querySelectorAll('button[onclick="generarPDF()"]');
@@ -555,27 +548,23 @@
             const printWrapper = document.getElementById('print-wrapper');
             const printContainer = document.getElementById('print-container');
             
-            // Hacemos el PDF "visible" en código temporalmente
             printWrapper.style.height = 'auto';
             printWrapper.style.overflow = 'visible';
             
-            // Un pequeño timeout asegura que el navegador renderice el contenedor antes de tomar la foto
             setTimeout(() => {
                 html2canvas(printContainer, {
-                    scale: 2, // Alta resolución
+                    scale: 2, 
                     useCORS: true, 
                     allowTaint: true,
                     logging: false,
                     backgroundColor: "#ffffff"
                 }).then(canvas => {
-                    // Ocultamos de nuevo el wrapper
                     printWrapper.style.height = '0';
                     printWrapper.style.overflow = 'hidden';
 
                     const imgData = canvas.toDataURL('image/jpeg', 1.0);
                     const { jsPDF } = window.jspdf;
                     
-                    // Formato carta (Portrait)
                     const pdf = new jsPDF('p', 'mm', 'letter');
                     const pdfWidth = pdf.internal.pageSize.getWidth();
                     const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
@@ -583,7 +572,6 @@
                     pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
                     pdf.save('Catalogo_Recuerdos_VIP.pdf');
                     
-                    // Restaurar botones
                     btns.forEach((btn, index) => {
                         btn.innerHTML = originalTexts[index];
                         btn.disabled = false;
@@ -601,7 +589,7 @@
                         btn.disabled = false;
                     });
                 });
-            }, 300); // 300ms de espera para el renderizado
+            }, 300);
         }
     </script>
 </body>
