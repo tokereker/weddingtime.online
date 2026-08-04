@@ -6,7 +6,7 @@
     <title>TPD Enterprise v2.0 Pro - SaaS CRM & Hub</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome 6 -->
+    <!-- FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <!-- SheetJS (Excel Export/Import) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -16,7 +16,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <!-- QRCode.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <!-- HTML5 QR Code Scanner para Hostess -->
+    <!-- HTML5 QR Code Scanner -->
     <script src="https://unpkg.com/html5-qrcode"></script>
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -40,28 +40,29 @@
             transition: background-color 0.3s, color 0.3s;
         }
         
-        /* LOGIN V2.0 PRO ULTRA GLASS visual style */
+        /* LOGIN SAAS V2.0 PRO */
         .login-bg {
             background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0f172a 70%, #020617 100%);
         }
 
         .login-card {
-            background: rgba(15, 23, 42, 0.82);
-            backdrop-filter: blur(28px);
-            -webkit-backdrop-filter: blur(28px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 50px rgba(59, 130, 246, 0.25);
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 40px rgba(59, 130, 246, 0.15);
         }
 
         .glow-effect {
             position: absolute;
-            width: 320px;
-            height: 320px;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.35) 0%, rgba(99, 102, 241, 0) 70%);
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, rgba(99, 102, 241, 0) 70%);
             border-radius: 50%;
             pointer-events: none;
         }
 
+        /* TEMAS DINÁMICOS */
         body.theme-midnight {
             --bg-canvas: #090d16;
             --card-bg: #111827;
@@ -83,38 +84,38 @@
         body.theme-rosegold .border-blue-600 { border-color: #e11d48 !important; }
         body.theme-rosegold .text-blue-600 { color: #e11d48 !important; }
 
-        .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(16px); }
-        .glass-dark { background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(16px); }
+        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); }
+        .glass-dark { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); }
         
         input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
         input[type=number] { -moz-appearance: textfield; }
 
         /* Widget Asistente TPD Chat */
         #tpd-chat-widget { 
-            position: fixed; bottom: 85px; right: 20px; z-index: 9998; width: 92%; max-width: 380px; 
-            display: none; flex-direction: column; background: var(--card-bg); border-radius: 24px; 
-            box-shadow: 0 25px 45px -10px rgba(0,0,0,0.35); overflow: hidden; border: 1px solid rgba(226, 232, 240, 0.9);
+            position: fixed; bottom: 85px; right: 20px; z-index: 9998; width: 92%; max-width: 360px; 
+            display: none; flex-direction: column; background: var(--card-bg); border-radius: 20px; 
+            box-shadow: 0 20px 35px -10px rgba(0,0,0,0.3); overflow: hidden; border: 1px solid rgba(226, 232, 240, 0.8);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         #tpd-chat-header { 
             background: linear-gradient(135deg, var(--primary-color), #3b82f6); color: white; 
-            padding: 16px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; cursor: pointer; 
+            padding: 14px 16px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; cursor: pointer; 
         }
         #tpd-chat-messages { 
-            flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; 
-            background: rgba(248, 250, 252, 0.6); min-height: 280px; max-height: 380px;
+            flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; 
+            background: rgba(248, 250, 252, 0.5); min-height: 260px; max-height: 360px;
         }
-        .tpd-msg { padding: 12px 16px; border-radius: 16px; font-size: 13px; max-width: 88%; word-wrap: break-word; line-height: 1.5; }
+        .tpd-msg { padding: 10px 14px; border-radius: 14px; font-size: 13px; max-width: 88%; word-wrap: break-word; line-height: 1.4; }
         .tpd-msg.user { background: var(--primary-color); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
-        .tpd-msg.bot { background: #ffffff; color: #1e293b; align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03); }
+        .tpd-msg.bot { background: #ffffff; color: #1e293b; align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid #e2e8f0; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
         
         #tpd-fab { 
-            position: fixed; bottom: 20px; right: 20px; z-index: 9997; width: 60px; height: 60px; 
-            background: linear-gradient(135deg, var(--primary-color), #3b82f6); color: white; border-radius: 20px; 
-            display: none; justify-content: center; align-items: center; font-size: 24px; cursor: pointer; 
-            box-shadow: 0 12px 28px -5px rgba(37, 99, 235, 0.5); transition: all 0.2s ease; 
+            position: fixed; bottom: 20px; right: 20px; z-index: 9997; width: 56px; height: 56px; 
+            background: linear-gradient(135deg, var(--primary-color), #3b82f6); color: white; border-radius: 18px; 
+            display: none; justify-content: center; align-items: center; font-size: 22px; cursor: pointer; 
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.5); transition: all 0.2s ease; 
         }
-        #tpd-fab:hover { transform: scale(1.08) rotate(-6deg); }
+        #tpd-fab:hover { transform: scale(1.08) rotate(-5deg); }
 
         .guest-card { cursor: grab; transition: transform 0.2s, box-shadow 0.2s; }
         .guest-card:active { cursor: grabbing; transform: scale(0.98); }
@@ -132,7 +133,7 @@
 </head>
 <body class="fixed inset-0 overflow-hidden flex flex-col text-slate-800 bg-slate-50">
 
-    <!-- LOGIN V2.0 PRO REDISEÑADO -->
+    <!-- LOGIN SAAS V2.0 PRO -->
     <div id="view-login" class="fixed inset-0 login-bg flex justify-center items-center z-50 p-4 relative overflow-hidden">
         <div class="glow-effect -top-20 -left-20"></div>
         <div class="glow-effect -bottom-20 -right-20"></div>
@@ -152,33 +153,33 @@
             
             <div class="space-y-4 mb-6">
                 <div>
-                    <input type="text" id="login-user" onkeydown="if(event.key==='Enter') window.appLogin()" placeholder="ID de Usuario o Email" class="w-full border border-slate-700 p-4 rounded-2xl outline-none focus:border-blue-500 text-sm font-medium bg-slate-900/60 text-white placeholder-slate-500 transition shadow-inner">
+                    <input type="text" id="login-user" placeholder="ID de Usuario o Email" class="w-full border border-slate-700 p-4 rounded-2xl outline-none focus:border-blue-500 text-sm font-medium bg-slate-900/60 text-white placeholder-slate-500 transition shadow-inner">
                 </div>
                 <div class="relative w-full">
-                    <input type="password" id="login-pass" onkeydown="if(event.key==='Enter') window.appLogin()" placeholder="Contraseña" class="w-full border border-slate-700 p-4 rounded-2xl outline-none focus:border-blue-500 text-sm font-medium pr-12 bg-slate-900/60 text-white placeholder-slate-500 transition shadow-inner">
+                    <input type="password" id="login-pass" placeholder="Contraseña" class="w-full border border-slate-700 p-4 rounded-2xl outline-none focus:border-blue-500 text-sm font-medium pr-12 bg-slate-900/60 text-white placeholder-slate-500 transition shadow-inner">
                     <button onclick="window.togglePassword('login-pass')" class="absolute right-4 top-4 text-slate-500 hover:text-blue-400 transition">
                         <i class="fa-solid fa-eye"></i>
                     </button>
                 </div>
             </div>
             
-            <button id="login-submit-btn" onclick="window.appLogin()" class="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-500 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-4 rounded-2xl shadow-lg shadow-blue-600/30 transition duration-300 text-base flex items-center justify-center gap-2 transform active:scale-95 mb-3">
+            <button id="login-submit-btn" onclick="window.appLogin()" class="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-500 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-4 rounded-2xl shadow-lg shadow-blue-600/30 transition duration-300 text-base flex items-center justify-center gap-2 transform active:scale-95">
                 Ingresar al Sistema <i class="fa-solid fa-arrow-right"></i>
             </button>
 
-            <!-- Acceso Rápido Modo Demostración -->
-            <button onclick="window.enterDemoMode()" class="w-full bg-slate-800/80 hover:bg-slate-700 text-amber-300 border border-amber-400/30 font-bold py-3 rounded-2xl transition duration-300 text-xs flex items-center justify-center gap-2">
-                <i class="fa-solid fa-bolt text-amber-400"></i> Probar en Modo Demostración
+            <!-- Botón de Demostración -->
+            <button onclick="window.startDemoEnvironment()" class="w-full mt-3 bg-slate-800/80 hover:bg-slate-700 text-slate-300 font-bold py-2.5 rounded-xl border border-slate-700 transition text-xs flex items-center justify-center gap-2">
+                <i class="fa-solid fa-play text-blue-400"></i> Probar en Modo Demostración
             </button>
 
-            <div class="mt-6 pt-5 border-t border-slate-800 flex justify-between items-center text-xs text-slate-500 font-medium">
+            <div class="mt-8 pt-6 border-t border-slate-800 flex justify-between items-center text-xs text-slate-500 font-medium">
                 <span class="flex items-center gap-1.5"><i class="fa-solid fa-shield-halved text-emerald-400"></i> IA Isolada Activa</span>
                 <span class="flex items-center gap-1.5"><i class="fa-solid fa-cloud text-blue-400"></i> Cloud Sync</span>
             </div>
         </div>
     </div>
 
-    <!-- MODAL BIENVENIDA CONFIGURACIÓN -->
+    <!-- MODAL BIENVENIDA -->
     <div id="welcome-modal" class="fixed inset-0 bg-slate-900/80 items-center justify-center z-50 hidden glass p-4">
         <div class="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-sm text-center mx-auto border border-slate-100 max-h-[90vh] overflow-y-auto custom-scrollbar">
             <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
@@ -198,7 +199,7 @@
                 <option value="Otro">✏️ Otro (Especificar)</option>
             </select>
             
-            <input type="text" id="welcome-event-custom" onkeydown="if(event.key==='Enter') window.saveWelcomeEventType()" placeholder="Escribe el tipo de evento..." class="w-full border-2 border-slate-100 p-4 rounded-xl text-sm outline-none bg-slate-50 focus:bg-white focus:border-blue-500 mb-6 hidden font-medium transition">
+            <input type="text" id="welcome-event-custom" placeholder="Escribe el tipo de evento..." class="w-full border-2 border-slate-100 p-4 rounded-xl text-sm outline-none bg-slate-50 focus:bg-white focus:border-blue-500 mb-6 hidden font-medium transition">
 
             <button onclick="window.saveWelcomeEventType()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded-xl transition shadow-lg text-lg flex items-center justify-center gap-2">
                 Guardar y Entrar <i class="fa-solid fa-check"></i>
@@ -307,7 +308,7 @@
             <button onclick="window.crmSwitchTab('tables')" id="tab-tables" class="py-4 text-slate-500 hover:text-slate-800 border-b-2 border-transparent whitespace-nowrap transition-colors"><i class="fa-solid fa-chair mr-2"></i>Acomodo de Mesas</button>
             <button onclick="window.crmSwitchTab('stats')" id="tab-stats" class="py-4 text-slate-500 hover:text-slate-800 border-b-2 border-transparent whitespace-nowrap transition-colors"><i class="fa-solid fa-chart-pie mr-2"></i>Logística & Proveedores</button>
             
-            <div id="crm-premium-design" style="display: none;" class="ml-auto items-center border-l border-slate-200 pl-4 gap-3 py-2 shrink-0">
+            <div id="crm-premium-design" class="ml-auto flex items-center border-l border-slate-200 pl-4 gap-3 py-2 shrink-0">
                 <div class="flex items-center gap-1">
                     <label class="text-[10px] text-slate-400 font-bold uppercase tracking-wider hidden md:block">Tema:</label>
                     <select id="crm-theme-style" onchange="window.setAppStyleTheme(this.value)" class="text-xs border border-slate-200 rounded-lg p-1.5 outline-none font-bold text-slate-700 bg-slate-50 cursor-pointer shadow-sm">
@@ -465,7 +466,7 @@
                 </div>
             </section>
 
-            <!-- SECCIÓN ESTADÍSTICAS & LOGÍSTICA CON ESTÁNDARES -->
+            <!-- SECCIÓN ESTADÍSTICAS & LOGÍSTICA -->
             <section id="crm-sec-stats" class="hidden flex-1 flex-col min-h-0 w-full overflow-y-auto custom-scrollbar pb-32 pr-2">
                 <div class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col gap-2 sm:gap-3">
                     <button onclick="window.exportStatsExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl shadow-xl font-bold flex items-center gap-2 transform transition hover:scale-105 text-xs sm:text-sm">
@@ -537,7 +538,7 @@
                                 </select>
                             </div>
                             <div class="col-span-2">
-                                <label class="text-[9px] sm:text-[10px] font-bold text-teal-800 uppercase tracking-wider block mb-1">Tornaboda / Trasnoche</label>
+                                <label class="text-[9px] sm:text-[10px] font-bold text-teal-800 uppercase tracking-wider block mb-1">Tornaboda (Cierre)</label>
                                 <select id="cfg-musica-torna" onchange="window.crmUpdateConfig('musicTorna', this.value)" class="w-full border-2 border-teal-100 rounded-lg p-2 text-[10px] sm:text-xs font-bold outline-none focus:border-teal-500 bg-white">
                                     <option value="Ninguno">Ninguno</option>
                                     <option value="Mariachi">Mariachi</option>
@@ -552,8 +553,8 @@
                                 <p class="text-[10px] text-amber-800 leading-tight">Presupuesta <strong class="text-amber-900" id="st-staff-meals">0</strong> platillos extra.</p>
                             </div>
                             <div class="bg-blue-100/50 p-2.5 rounded-xl border border-blue-200">
-                                <p class="text-[10px] font-black text-blue-900 mb-0.5"><i class="fa-solid fa-bowl-food"></i> Chilaquiles / Torna</p>
-                                <p class="text-[10px] text-blue-800 leading-tight">Pide <strong class="text-blue-900" id="st-torna-snacks">0</strong> porciones (65% confirmados).</p>
+                                <p class="text-[10px] font-black text-blue-900 mb-0.5"><i class="fa-solid fa-bowl-food"></i> Snack Noche</p>
+                                <p class="text-[10px] text-blue-800 leading-tight">Pide <strong class="text-blue-900" id="st-torna-snacks">0</strong> porciones.</p>
                             </div>
                         </div>
 
@@ -563,20 +564,19 @@
                         </div>
                     </div>
 
-                    <!-- Bebidas (Bar) -->
                     <div class="bg-indigo-50 p-4 sm:p-5 rounded-3xl shadow-sm border border-indigo-200 col-span-1 lg:col-span-1 flex flex-col justify-start gap-4 h-fit">
-                        <h3 class="text-sm sm:text-base font-bold text-indigo-900 flex items-center gap-2"><i class="fa-solid fa-wine-glass-empty text-indigo-500"></i> Insumos de Bar</h3>
+                        <h3 class="text-sm sm:text-base font-bold text-indigo-900 flex items-center gap-2"><i class="fa-solid fa-wine-glass-empty text-indigo-500"></i> Bebidas & Hielo</h3>
                         <div class="space-y-2">
                             <div class="flex justify-between text-[10px] bg-white p-2.5 rounded-lg border border-indigo-100 shadow-sm">
-                                <span class="font-bold text-slate-700">Botellas 750ml <span class="text-[8px] text-slate-400 font-normal uppercase block">1 c/3 adu (Tequila/Whisky)</span></span>
+                                <span class="font-bold text-slate-700">Botellas <span class="text-[8px] text-slate-400 font-normal uppercase block">1 c/3 adu</span></span>
                                 <span class="font-black text-indigo-700 text-sm self-center" id="st-bot">0 bts</span>
                             </div>
                             <div class="flex justify-between text-[10px] bg-white p-2.5 rounded-lg border border-indigo-100 shadow-sm">
-                                <span class="font-bold text-slate-700">Cervezas <span class="text-[8px] text-slate-400 font-normal uppercase block">3 a 4 c/adu</span></span>
+                                <span class="font-bold text-slate-700">Cervezas <span class="text-[8px] text-slate-400 font-normal uppercase block">3 c/adu</span></span>
                                 <span class="font-black text-indigo-700 text-sm self-center" id="st-cer">0 pz</span>
                             </div>
                             <div class="flex justify-between text-[10px] bg-white p-2.5 rounded-lg border border-indigo-100 shadow-sm">
-                                <span class="font-bold text-slate-700 self-center">Refrescos / Agua 2L <span class="text-[8px] text-slate-400 font-normal uppercase block">Toronja, Cola, Mineral</span></span>
+                                <span class="font-bold text-slate-700 self-center">Refrescos</span>
                                 <span class="font-black text-indigo-700 text-sm self-center" id="st-ref">0 L</span>
                             </div>
                             <div class="flex justify-between text-[10px] bg-white p-2.5 rounded-lg border border-indigo-100 shadow-sm">
@@ -586,84 +586,31 @@
                         </div>
                     </div>
 
-                    <!-- Mesa de Dulces / Botanas -->
                     <div class="bg-amber-50 p-4 sm:p-5 rounded-3xl shadow-sm border border-amber-200 col-span-1 lg:col-span-1 flex flex-col justify-start gap-4 h-fit">
                         <div>
                             <div class="flex justify-between items-center mb-3">
-                                <h3 class="text-sm sm:text-base font-bold text-amber-900 flex items-center gap-2"><i class="fa-solid fa-candy-cane text-amber-500"></i> Mesa de Dulces & Botana</h3>
+                                <h3 class="text-sm sm:text-base font-bold text-amber-900 flex items-center gap-2"><i class="fa-solid fa-candy-cane text-amber-500"></i> Mesa de Dulces & Botanas</h3>
                                 <button onclick="window.crmRenderStats()" class="text-amber-400 hover:text-amber-600 transition"><i class="fa-solid fa-sync"></i></button>
                             </div>
                             <div class="bg-white rounded-xl p-3 border border-amber-100 text-center shadow-sm mb-3">
                                 <p class="text-2xl font-black text-amber-600" id="st-dul-tot">0</p>
-                                <p class="text-[9px] font-bold text-amber-800 uppercase tracking-widest mt-0.5">Piezas Recomendadas (4 c/pax)</p>
+                                <p class="text-[9px] font-bold text-amber-800 uppercase tracking-widest mt-0.5">Piezas Recomendadas</p>
                             </div>
                         </div>
                         <div class="space-y-2">
-                            <div class="flex justify-between text-[10px] bg-white p-2 rounded-lg border border-amber-100 shadow-sm"><span class="font-bold text-slate-700">Salado / Chamoy (35%)</span><span class="font-black text-amber-700" id="st-dul-sal">0 pz</span></div>
-                            <div class="flex justify-between text-[10px] bg-white p-2 rounded-lg border border-amber-100 shadow-sm"><span class="font-bold text-slate-700">Dulces / Chocolate (25%)</span><span class="font-black text-amber-700" id="st-dul-cho">0 pz</span></div>
+                            <div class="flex justify-between text-[10px] bg-white p-2 rounded-lg border border-amber-100 shadow-sm"><span class="font-bold text-slate-700">Botana Salada/Picosa (35%)</span><span class="font-black text-amber-700" id="st-dul-sal">0 pz</span></div>
+                            <div class="flex justify-between text-[10px] bg-white p-2 rounded-lg border border-amber-100 shadow-sm"><span class="font-bold text-slate-700">Chocolates/Dulces (25%)</span><span class="font-black text-amber-700" id="st-dul-cho">0 pz</span></div>
                             <div class="flex justify-between text-[10px] bg-white p-2 rounded-lg border border-amber-100 shadow-sm"><span class="font-bold text-slate-700">Postres Gourmet (20%)</span><span class="font-black text-amber-700" id="st-dul-pos">0 pz</span></div>
-                            <div class="flex justify-between text-[10px] bg-white p-2 rounded-lg border border-amber-100 shadow-sm"><span class="font-bold text-slate-700">Frituras / Papas (20%)</span><span class="font-black text-amber-700" id="st-dul-gra">0 pz</span></div>
+                            <div class="flex justify-between text-[10px] bg-white p-2 rounded-lg border border-amber-100 shadow-sm"><span class="font-bold text-slate-700">Frituras/Granel (20%)</span><span class="font-black text-amber-700" id="st-dul-gra">0 pz</span></div>
                         </div>
                     </div>
 
                     <div class="bg-purple-50 p-4 sm:p-5 rounded-3xl shadow-sm border border-purple-200 col-span-1 lg:col-span-1 flex flex-col justify-start gap-4 h-fit">
-                        <h3 class="text-sm sm:text-base font-bold text-purple-900 flex items-center gap-2"><i class="fa-solid fa-gift text-purple-500"></i> Amenidades Fiesta</h3>
+                        <h3 class="text-sm sm:text-base font-bold text-purple-900 flex items-center gap-2"><i class="fa-solid fa-gift text-purple-500"></i> Amenidades</h3>
                         <div class="space-y-3">
                             <div class="flex justify-between text-xs bg-white p-3 rounded-xl border border-purple-100 shadow-sm"><span class="font-bold text-slate-700">Recuerdos</span><span class="font-black text-purple-700" id="rec-parejas">0 pz</span></div>
-                            <div class="flex justify-between text-xs bg-white p-3 rounded-xl border border-purple-100 shadow-sm"><span class="font-bold text-slate-700">Pantuflas/Sandalias (Mujeres)</span><span class="font-black text-purple-700" id="rec-sandalias">0 prs</span></div>
+                            <div class="flex justify-between text-xs bg-white p-3 rounded-xl border border-purple-100 shadow-sm"><span class="font-bold text-slate-700">Sandalias (Muj)</span><span class="font-black text-purple-700" id="rec-sandalias">0 prs</span></div>
                             <div class="flex justify-between text-xs bg-white p-3 rounded-xl border border-purple-100 shadow-sm"><span class="font-bold text-slate-700">Kit Anticruda</span><span class="font-black text-purple-700" id="rec-anticruda">0 pz</span></div>
-                        </div>
-                    </div>
-
-                    <!-- Bebidas con Estándar México -->
-                    <div class="bg-indigo-50 p-4 sm:p-5 rounded-3xl shadow-sm border border-indigo-200 col-span-1 lg:col-span-1 flex flex-col justify-start gap-4 h-fit">
-                        <h3 class="text-sm sm:text-base font-bold text-indigo-900 flex items-center gap-2"><i class="fa-solid fa-wine-glass-empty text-indigo-500"></i> Bebidas MX (Bar)</h3>
-                        <div class="space-y-2">
-                            <div class="flex justify-between text-[10px] bg-white p-2.5 rounded-lg border border-indigo-100 shadow-sm">
-                                <span class="font-bold text-slate-700">Botellas 750ml <span class="text-[8px] text-slate-400 font-normal uppercase block">1 c/3 adu (Tequila/Whisky)</span></span>
-                                <span class="font-black text-indigo-700 text-sm self-center" id="st-bot">0 bts</span>
-                            </div>
-                            <div class="flex justify-between text-[10px] bg-white p-2.5 rounded-lg border border-indigo-100 shadow-sm">
-                                <span class="font-bold text-slate-700">Cervezas <span class="text-[8px] text-slate-400 font-normal uppercase block">3 a 4 c/adu</span></span>
-                                <span class="font-black text-indigo-700 text-sm self-center" id="st-cer">0 pz</span>
-                            </div>
-                            <div class="flex justify-between text-[10px] bg-white p-2.5 rounded-lg border border-indigo-100 shadow-sm">
-                                <span class="font-bold text-slate-700 self-center">Refrescos / Agua 2L <span class="text-[8px] text-slate-400 font-normal uppercase block">Toronja, Cola, Mineral</span></span>
-                                <span class="font-black text-indigo-700 text-sm self-center" id="st-ref">0 L</span>
-                            </div>
-                            <div class="flex justify-between text-[10px] bg-white p-2.5 rounded-lg border border-indigo-100 shadow-sm">
-                                <span class="font-bold text-slate-700">Hielo <span class="text-[8px] text-slate-400 font-normal uppercase block">1.2kg c/adu</span></span>
-                                <span class="font-black text-indigo-700 text-sm self-center" id="st-hie">0 kg</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Mesa de Dulces / Botanas MX -->
-                    <div class="bg-amber-50 p-4 sm:p-5 rounded-3xl shadow-sm border border-amber-200 col-span-1 lg:col-span-1 flex flex-col justify-start gap-4 h-fit">
-                        <div>
-                            <div class="flex justify-between items-center mb-3">
-                                <h3 class="text-sm sm:text-base font-bold text-amber-900 flex items-center gap-2"><i class="fa-solid fa-candy-cane text-amber-500"></i> Mesa Dulces & Botana MX</h3>
-                                <button onclick="window.crmRenderStats()" class="text-amber-400 hover:text-amber-600 transition"><i class="fa-solid fa-sync"></i></button>
-                            </div>
-                            <div class="bg-white rounded-xl p-3 border border-amber-100 text-center shadow-sm mb-3">
-                                <p class="text-2xl font-black text-amber-600" id="st-dul-tot">0</p>
-                                <p class="text-[9px] font-bold text-amber-800 uppercase tracking-widest mt-0.5">Piezas Recomendadas (4 c/pax)</p>
-                            </div>
-                        </div>
-                        <div class="space-y-2">
-                            <div class="flex justify-between text-[10px] bg-white p-2 rounded-lg border border-amber-100 shadow-sm"><span class="font-bold text-slate-700">Salado / Chamoy (35%)</span><span class="font-black text-amber-700" id="st-dul-sal">0 pz</span></div>
-                            <div class="flex justify-between text-[10px] bg-white p-2 rounded-lg border border-amber-100 shadow-sm"><span class="font-bold text-slate-700">Dulces / Chocolate (25%)</span><span class="font-black text-amber-700" id="st-dul-cho">0 pz</span></div>
-                            <div class="flex justify-between text-[10px] bg-white p-2 rounded-lg border border-amber-100 shadow-sm"><span class="font-bold text-slate-700">Postres Gourmet (20%)</span><span class="font-black text-amber-700" id="st-dul-pos">0 pz</span></div>
-                            <div class="flex justify-between text-[10px] bg-white p-2 rounded-lg border border-amber-100 shadow-sm"><span class="font-bold text-slate-700">Frituras / Papas (20%)</span><span class="font-black text-amber-700" id="st-dul-gra">0 pz</span></div>
-                        </div>
-                    </div>
-
-                    <div class="bg-purple-50 p-4 sm:p-5 rounded-3xl shadow-sm border border-purple-200 col-span-1 lg:col-span-1 flex flex-col justify-start gap-4 h-fit">
-                        <h3 class="text-sm sm:text-base font-bold text-purple-900 flex items-center gap-2"><i class="fa-solid fa-gift text-purple-500"></i> Amenidades Fiesta</h3>
-                        <div class="space-y-3">
-                            <div class="flex justify-between text-xs bg-white p-3 rounded-xl border border-purple-100 shadow-sm"><span class="font-bold text-slate-700">Recuerdos</span><span class="font-black text-purple-700" id="rec-parejas">0 pz</span></div>
-                            <div class="flex justify-between text-xs bg-white p-3 rounded-xl border border-purple-100 shadow-sm"><span class="font-bold text-slate-700">Pantuflas/Sandalias (Mujeres)</span><span class="font-black text-purple-700" id="rec-sandalias">0 prs</span></div>
-                            <div class="flex justify-between text-xs bg-white p-3 rounded-xl border border-purple-100 shadow-sm"><span class="font-bold text-slate-700">Kit Anticruda MX</span><span class="font-black text-purple-700" id="rec-anticruda">0 pz</span></div>
                         </div>
                     </div>
 
@@ -744,7 +691,7 @@
                 
                 <div class="text-center w-full shrink-0 pb-6">
                     <p class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mb-2">Búsqueda Manual Alternativa</p>
-                    <input type="text" id="hostess-search" onkeydown="if(event.key==='Enter') window.hostessManualSearch()" onkeyup="window.hostessManualSearch()" placeholder="Escribe el nombre de la familia..." class="w-full bg-slate-800 border border-slate-700 p-3 rounded-xl text-sm outline-none focus:border-blue-500 text-white placeholder-slate-500 text-center">
+                    <input type="text" id="hostess-search" onkeyup="window.hostessManualSearch()" placeholder="Escribe el nombre de la familia..." class="w-full bg-slate-800 border border-slate-700 p-3 rounded-xl text-sm outline-none focus:border-blue-500 text-white placeholder-slate-500 text-center">
                     <div id="hostess-search-results" class="mt-2 space-y-2 max-h-40 overflow-y-auto custom-scrollbar"></div>
                 </div>
             </div>
@@ -826,7 +773,7 @@
             <div class="space-y-4">
                 <div>
                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Nombre o Familia *</label>
-                    <input type="text" id="modal-guest-name" onkeydown="if(event.key==='Enter') window.saveModalGuest()" placeholder="Ej. Familia Pérez" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition font-medium">
+                    <input type="text" id="modal-guest-name" placeholder="Ej. Familia Pérez" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition font-medium">
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
@@ -841,7 +788,7 @@
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1"><i class="fa-brands fa-whatsapp text-emerald-500"></i> WhatsApp</label>
-                        <input type="text" id="modal-guest-phone" onkeydown="if(event.key==='Enter') window.saveModalGuest()" placeholder="10 dígitos" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition font-medium">
+                        <input type="text" id="modal-guest-phone" placeholder="10 dígitos" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition font-medium">
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
@@ -880,7 +827,7 @@
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Notas / Alergias</label>
-                    <input type="text" id="modal-guest-obs" onkeydown="if(event.key==='Enter') window.saveModalGuest()" placeholder="Menú infantil, alergias..." class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition font-medium">
+                    <input type="text" id="modal-guest-obs" placeholder="Menú infantil, alergias..." class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition font-medium">
                 </div>
             </div>
             <div class="mt-8 flex justify-end gap-3 border-t border-slate-100 pt-6">
@@ -938,10 +885,10 @@
                         <option value="formal">Elegante y Formal 🎩</option>
                         <option value="casual">Casual y Directo 👋</option>
                     </select>
-                    <button type="button" onclick="window.applyLocalTemplate()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl shadow-md transition flex items-center gap-2" title="Regenerar texto"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
+                    <button type="button" onclick="window.applyLocalTemplate()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl shadow-md transition flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
                 </div>
                 
-                <div id="wa-premium-link-container" style="display: none;" class="items-center gap-2 mt-4 pt-4 border-t border-emerald-100 cursor-pointer">
+                <div id="wa-premium-link-container" style="display: flex;" class="items-center gap-2 mt-4 pt-4 border-t border-emerald-100 cursor-pointer">
                     <input type="checkbox" id="wa-include-link" class="w-4 h-4 text-emerald-600 rounded border-emerald-300 focus:ring-emerald-500" onchange="window.applyLocalTemplate()">
                     <span class="text-xs font-bold text-slate-600 flex items-center gap-1">
                         Adjuntar Link Mágico (Pase Digital y RSVP)
@@ -977,7 +924,7 @@
             <div class="tpd-msg bot" id="tpd-chat-welcome">Cargando contexto del evento...</div>
         </div>
         <div class="flex border-t border-slate-200 p-3 bg-white gap-2">
-            <input type="text" id="tpd-chat-input" onkeydown="if(event.key==='Enter') window.sendTPDChat()" placeholder="Pregúntame sobre tus listas..." class="flex-1 border-2 border-slate-100 rounded-xl px-4 py-2 text-sm outline-none focus:border-blue-400 transition bg-slate-50">
+            <input type="text" id="tpd-chat-input" placeholder="Pregúntame sobre tus listas..." class="flex-1 border-2 border-slate-100 rounded-xl px-4 py-2 text-sm outline-none focus:border-blue-400 transition bg-slate-50">
             <button onclick="window.sendTPDChat()" class="bg-blue-600 text-white rounded-xl w-10 h-10 flex items-center justify-center hover:bg-blue-700 shadow-md transition"><i class="fa-solid fa-paper-plane text-xs"></i></button>
         </div>
     </div>
@@ -1007,116 +954,28 @@
         let unsubscribe = null;
         let currentUser = null;
         let currentRole = null;
-        let currentEventType = "";
+        let currentEventType = "Boda";
         let impersonatingId = null;
         let currentTargetGuestId = null; 
-        let isPremiumUser = false;
-
-        let hCurrentGuest = null;
-        let hAduToEnter = 0;
-        let hNinToEnter = 0;
+        let isPremiumUser = true;
 
         let state = { 
-            invitados: [], 
-            mesas: [{ id: 1, nombre: "Mesa VIP" }], 
-            config: { capacidadMesa: 10, themeColor: '#3b82f6', extras: 0, totalExtrasCost: 0, fontFamily: 'Playfair Display' },
+            invitados: [
+                { id: 101, nombre: "Familia García López", grupo: "Familia", telefono: "2221234567", adultos: 2, ninos: 1, status: "Confirmado", mesa: 1, observaciones: "Silla alta para el bebé", ingresadosA: 0, ingresadosN: 0 },
+                { id: 102, nombre: "Lic. Roberto Martínez", grupo: "Trabajo", telefono: "2229876543", adultos: 2, ninos: 0, status: "Confirmado", mesa: 1, observaciones: "Alergia a mariscos", ingresadosA: 0, ingresadosN: 0 },
+                { id: 103, nombre: "Dra. Sofía Hernández", grupo: "Amigos", telefono: "2225557788", adultos: 1, ninos: 0, status: "Pendiente", mesa: 0, observaciones: "Menú vegetariano", ingresadosA: 0, ingresadosN: 0 },
+                { id: 104, nombre: "Familia Morales Ruiz", grupo: "Familia", telefono: "2224441122", adultos: 4, ninos: 2, status: "Confirmado", mesa: 2, observaciones: "", ingresadosA: 0, ingresadosN: 0 }
+            ], 
+            mesas: [
+                { id: 1, nombre: "Mesa VIP" },
+                { id: 2, nombre: "Mesa 2 - Familia" }
+            ], 
+            config: { capacidadMesa: 10, themeColor: '#3b82f6', extras: 0, totalExtrasCost: 0, fontFamily: 'Playfair Display', eventStartTime: "20:00", eventDuration: 6, musicMain: "Grupo Versátil", musicDinner: "Saxofón", musicTorna: "Mariachi", flowersPerTable: 15 },
             croquis: null,
             ticketBg: null
         };
 
         const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, timerProgressBar: true });
-
-        // FUNCIONES DE ARRASTRE (DRAG & DROP)
-        window.allowDrop = function(ev) {
-            ev.preventDefault();
-            if(ev.currentTarget) ev.currentTarget.classList.add('dragover');
-        };
-
-        window.leaveDrop = function(ev) {
-            if(ev.currentTarget) ev.currentTarget.classList.remove('dragover');
-        };
-
-        window.dragGuest = function(ev, id) {
-            ev.dataTransfer.setData("text/plain", id.toString());
-            if(ev.target) setTimeout(() => ev.target.classList.add('dragging'), 0);
-        };
-
-        window.dropGuest = function(ev, tableId) {
-            ev.preventDefault();
-            if(ev.currentTarget) ev.currentTarget.classList.remove('dragover');
-            const gId = parseInt(ev.dataTransfer.getData("text/plain"));
-            if (!gId) return;
-            document.querySelectorAll('.dragging').forEach(el => el.classList.remove('dragging'));
-            const guest = state.invitados.find(g => g.id === gId);
-            if(guest) {
-                guest.mesa = parseInt(tableId);
-                window.crmSave();
-                window.crmRenderTables();
-                Toast.fire({ icon: 'success', title: tableId === 0 ? 'Pase movido a Sin Asignar' : 'Pase asignado a mesa' });
-            }
-        };
-
-        window.togglePassword = function(id) {
-            const el = document.getElementById(id);
-            if (el) {
-                el.type = el.type === "password" ? "text" : "password";
-            }
-        };
-
-        window.generateRandomPassword = function(targetId) {
-            const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#";
-            let pass = "";
-            for(let i=0; i<10; i++) pass += chars.charAt(Math.floor(Math.random() * chars.length));
-            const passInput = document.getElementById(targetId);
-            if(passInput) {
-                passInput.type = 'text';
-                passInput.value = pass;
-            }
-        };
-
-        // MODO DEMOSTRACIÓN
-        window.enterDemoMode = function() {
-            currentUser = "boda_demomx";
-            currentRole = "Cliente";
-            currentEventType = "Boda";
-            isPremiumUser = true;
-            
-            state = {
-                invitados: [
-                    { id: 101, nombre: "Familia García López", grupo: "Familia", telefono: "2221234567", adultos: 4, ninos: 2, status: "Confirmado", mesa: 1, observaciones: "Alergia a mariscos (1 adulto)" },
-                    { id: 102, nombre: "Familia Rodríguez Pérez", grupo: "Familia", telefono: "2227654321", adultos: 2, ninos: 1, status: "Confirmado", mesa: 1, observaciones: "Menú infantil (1 niño)" },
-                    { id: 103, nombre: "Ing. Carlos Mendoza", grupo: "Trabajo", telefono: "2229876543", adultos: 2, ninos: 0, status: "Confirmado", mesa: 2, observaciones: "Vegetariano" },
-                    { id: 104, nombre: "Lic. Ana Sofía Martínez", grupo: "Trabajo", telefono: "2224567890", adultos: 2, ninos: 0, status: "Confirmado", mesa: 2, observaciones: "" },
-                    { id: 105, nombre: "Familia Hernández Morales", grupo: "Familia", telefono: "2223334455", adultos: 5, ninos: 2, status: "Confirmado", mesa: 3, observaciones: "" },
-                    { id: 106, nombre: "Dr. Roberto Sánchez", grupo: "Amigos", telefono: "2226667788", adultos: 2, ninos: 0, status: "Confirmado", mesa: 3, observaciones: "" },
-                    { id: 107, nombre: "Familia Torres Ramírez", grupo: "Conocidos", telefono: "2229990011", adultos: 3, ninos: 1, status: "Pendiente", mesa: 0, observaciones: "" },
-                    { id: 108, nombre: "Familia Flores Castro", grupo: "Amigos", telefono: "2224445566", adultos: 2, ninos: 0, status: "Declinado", mesa: 0, observaciones: "Fuera del país" }
-                ],
-                mesas: [
-                    { id: 1, nombre: "Mesa VIP - Novios" },
-                    { id: 2, nombre: "Mesa Corporativa" },
-                    { id: 3, nombre: "Mesa Familia Hernández" }
-                ],
-                config: {
-                    capacidadMesa: 10,
-                    themeColor: '#3b82f6',
-                    extras: 2,
-                    totalExtrasCost: 1000,
-                    fontFamily: 'Playfair Display',
-                    eventStartTime: "20:00",
-                    eventDuration: 6,
-                    musicDinner: "Saxofón",
-                    musicMain: "Grupo Versátil",
-                    musicTorna: "Mariachi",
-                    flowersPerTable: 15
-                },
-                croquis: null,
-                ticketBg: null
-            };
-            
-            window.setupClientEnvironment("boda_demomx", { role: "Cliente", eventType: "Boda", hasPremiumLink: true });
-            Toast.fire({ icon: 'info', title: '💡 Modo Demostración Activado' });
-        };
 
         function getSubdomain(eventType) {
             const map = { "XV Años": "xvana", "Bautizo": "bautizo", "Primera Comunión": "comunion", "Confirmación": "confirmacion", "Primera Comunión y Confirmación": "comunion", "Cumpleaños": "cumple", "Boda": "boda" };
@@ -1130,8 +989,8 @@
             for (let i = 1; i <= pageCount; i++) {
                 docInstance.setPage(i);
                 docInstance.setFontSize(8);
-                docInstance.setTextColor(140);
-                docInstance.text("Generado por TPD Enterprise v2.0 Pro • tupasedigital.online", pageWidth / 2, pageHeight - 8, { align: 'center' });
+                docInstance.setTextColor(150);
+                docInstance.text("Generado por tupasedigital.online", pageWidth / 2, pageHeight - 8, { align: 'center' });
             }
         };
 
@@ -1142,205 +1001,34 @@
             localStorage.setItem('tpd_selected_theme', theme);
         };
 
-        // WELCOME MODAL
-        window.toggleCustomEventInput = function(selectId, inputId) {
-            const select = document.getElementById(selectId);
-            const input = document.getElementById(inputId);
-            if(select.value === 'Otro') { input.classList.remove('hidden'); input.focus(); } else { input.classList.add('hidden'); input.value = ''; }
+        // MODO DEMOSTRACIÓN AUTOMÁTICO
+        window.startDemoEnvironment = function() {
+            currentUser = "evento_demo_pro";
+            currentRole = "Cliente";
+            currentEventType = "Boda";
+            
+            document.getElementById('view-login').classList.add('hidden');
+            document.getElementById('view-crm').classList.remove('hidden');
+            document.getElementById('view-crm').classList.add('flex');
+            
+            document.getElementById('tpd-fab').style.display = 'flex';
+            document.getElementById('user-display').innerText = "Organizador Pro (DEMO)";
+            document.getElementById('crm-header-id').innerText = `${currentEventType} - ${currentUser}`;
+            
+            window.crmRenderAll();
+            window.initEventAssistant();
+            Toast.fire({ icon: 'info', title: 'Modo Demostración Activo' });
         };
 
-        window.saveWelcomeEventType = async function() {
-            try {
-                const selectVal = document.getElementById('welcome-event-type').value;
-                let type = selectVal;
-                if(selectVal === 'Otro') {
-                    type = document.getElementById('welcome-event-custom').value.trim();
-                    if(!type) return Toast.fire({icon:'warning', title:'Escribe el tipo de evento'});
-                }
-                const activeTarget = impersonatingId || currentUser;
-                const docRef = doc(db, 'artifacts', 'weddingflow', 'users', activeTarget);
-                await setDoc(docRef, { eventType: type }, { merge: true });
-                document.getElementById('welcome-modal').classList.replace('flex', 'hidden');
-                window.subscribeToUser(activeTarget);
-            } catch(e) { Swal.fire('Error', 'Fallo al guardar evento', 'error'); }
-        };
-
-        // ADMIN PANEL
-        window.loadAdminPanel = async function() {
-            try {
-                document.getElementById('view-login').classList.add('hidden');
-                document.getElementById('view-crm').classList.add('hidden');
-                document.getElementById('view-admin').classList.remove('hidden');
-                document.getElementById('view-admin').classList.add('flex');
-                
-                document.getElementById('tpd-fab').style.display = 'none';
-                document.getElementById('tpd-chat-widget').style.display = 'none';
-                
-                if(currentRole === 'Staff' || currentRole === 'Soporte') {
-                    document.getElementById('admin-creator-panel').classList.add('hidden');
-                } else {
-                    document.getElementById('admin-creator-panel').classList.remove('hidden');
-                }
-                
-                const colRef = collection(db, 'artifacts', 'weddingflow', 'users');
-                const snaps = await getDocs(colRef);
-                const tbody = document.getElementById('admin-users-tbody');
-                tbody.innerHTML = '';
-                
-                snaps.forEach(docSnap => {
-                    const d = docSnap.data();
-                    let rol = d.role || 'Cliente';
-                    let tipoDisplay = '';
-
-                    if (rol === 'Administrador') tipoDisplay = '<span class="text-indigo-600 font-black">Admin Global</span>';
-                    else if (rol === 'Staff') tipoDisplay = '<span class="text-slate-500 font-bold">Staff Agencia</span>';
-                    else if (rol === 'Soporte') tipoDisplay = '<span class="text-slate-500 font-bold">Soporte Técnico</span>';
-                    else if (rol === 'Hostess') tipoDisplay = '<span class="text-blue-500 font-bold">Staff Evento</span>';
-                    else if (rol === 'Cliente Web') tipoDisplay = '<span class="text-purple-600 font-black">CLIENTE WEB</span>';
-                    else tipoDisplay = d.eventType ? `<span class="font-bold text-slate-800">${d.eventType}</span>` : '<span class="text-amber-500 font-bold">Sin evento</span>';
-
-                    let roleCol = rol === 'Cliente' ? 'Organizador Pro (CRM)' : rol;
-                    let bdg = d.status === 'Suspendido' ? '<span class="bg-red-100 text-red-700 px-2 py-1 rounded text-[10px] font-bold">Suspendido</span>' : '<span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-[10px] font-bold">Activo</span>';
-                    
-                    let btnSt = d.status === 'Suspendido' 
-                        ? `<button onclick="window.adminToggleStatus('${docSnap.id}','Activo')" class="text-emerald-500 hover:text-emerald-700 px-2 text-sm transition" title="Reactivar"><i class="fa-solid fa-play"></i></button>` 
-                        : `<button onclick="window.adminToggleStatus('${docSnap.id}','Suspendido')" class="text-amber-500 hover:text-amber-700 px-2 text-sm transition" title="Suspender"><i class="fa-solid fa-pause"></i></button>`;
-                    
-                    let deleteBtn = currentRole === 'Administrador' ? `<button onclick="window.deleteClient('${docSnap.id}')" class="text-red-400 hover:text-red-600 px-2 text-sm transition" title="Borrar DB"><i class="fa-solid fa-trash-can"></i></button>` : '';
-
-                    let impBtn = '';
-                    let premiumBtn = '';
-                    let infoAdminBtn = '';
-                    
-                    if (d.role === 'Cliente' || d.role === 'Cliente Web' || d.role === 'Hostess') {
-                        impBtn = `<button onclick="window.impStart('${docSnap.id}', '${d.role}')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-100 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1" title="Supervisar"><i class="fa-solid fa-eye"></i> Supervisar</button>`;
-                        if (d.role === 'Cliente') {
-                            let isPremium = d.hasPremiumLink === true;
-                            premiumBtn = `<button onclick="window.adminTogglePremium('${docSnap.id}', ${isPremium})" class="${isPremium ? 'text-amber-500 hover:text-amber-600' : 'text-slate-300 hover:text-slate-400'} transition p-2 text-xl" title="Premium"><i class="fa-solid fa-star"></i></button>`;
-                        }
-                    }
-
-                    if (d.role === 'Administrador' || d.role === 'Staff' || d.role === 'Soporte') {
-                        infoAdminBtn = `<button onclick="window.adminResetPassword('${docSnap.id}')" class="text-blue-400 hover:text-blue-600 transition p-2" title="Información"><i class="fa-solid fa-circle-info text-lg"></i></button>`;
-                    }
-
-                    const tr = document.createElement('tr');
-                    tr.className = 'hover:bg-slate-50 transition border-b border-slate-50';
-                    tr.innerHTML = `
-                        <td class="p-4 font-bold text-slate-800">${docSnap.id} <br><span class="text-[10px] text-slate-500 font-medium">${tipoDisplay}</span></td>
-                        <td class="p-4 font-bold text-xs text-slate-500 uppercase">${roleCol}</td>
-                        <td class="p-4 text-center">${bdg}</td>
-                        <td class="p-4 flex items-center justify-end gap-2">
-                            ${impBtn} ${premiumBtn} ${infoAdminBtn} ${btnSt} ${deleteBtn}
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-                Swal.close();
-            } catch(e) {
-                console.error(e);
-                Swal.close();
-            }
-        };
-
-        window.adminLoadUsers = async function() {
-            Swal.fire({ title: 'Actualizando...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
-            await window.loadAdminPanel();
-            Toast.fire({ icon: 'success', title: 'Panel actualizado' });
-        };
-
-        window.adminCreateUser = async function() {
-            try {
-                const user = document.getElementById('new-user').value.trim().toLowerCase();
-                const pass = document.getElementById('new-pass').value.trim();
-                const role = document.getElementById('new-role').value;
-
-                if(!user || !pass) return Swal.fire('Atención', 'Rellena ID de usuario y contraseña.', 'warning');
-                const pseudoEmail = `${user}@tpd.online`;
-
-                await createUserWithEmailAndPassword(secondaryAuth, pseudoEmail, pass);
-                await signOut(secondaryAuth);
-
-                const docRef = doc(db, 'artifacts', 'weddingflow', 'users', user);
-                await setDoc(docRef, { role, status: 'Activo', eventType: "", invitados: [], mesas: [{id:1,nombre:"Mesa VIP"}], config: {capacidadMesa:10, themeColor: '#3b82f6', extras: 0, totalExtrasCost: 0, fontFamily: 'Playfair Display'}, croquis: null, hasPremiumLink: false, ticketBg: null });
-                
-                document.getElementById('new-user').value = ''; document.getElementById('new-pass').value = '';
-                Toast.fire({icon: 'success', title: 'Usuario Registrado'});
-                window.loadAdminPanel();
-            } catch(e) { 
-                Swal.fire('Error', 'Fallo al crear usuario.', 'error'); 
-            }
-        };
-
-        window.adminTogglePremium = async function(userId, currentStatus) {
-            try {
-                await setDoc(doc(db, 'artifacts', 'weddingflow', 'users', userId), { hasPremiumLink: !currentStatus }, { merge: true });
-                window.loadAdminPanel();
-                Toast.fire({icon: 'success', title: !currentStatus ? '✨ Premium Activado' : 'Premium Desactivado'});
-            } catch(e) { Toast.fire({icon: 'error', title: 'Error de BD'}); }
-        };
-
-        window.adminResetPassword = function(userId) {
-            Swal.fire({ title: 'Restablecer Contraseña', icon: 'info', html: 'Para restablecer la clave, borra el usuario en Firebase Auth y vuélvelo a crear con el mismo ID.', confirmButtonColor: '#2563eb' });
-        };
-
-        window.adminToggleStatus = async function(userId, newStatus) {
-            try {
-                await setDoc(doc(db, 'artifacts', 'weddingflow', 'users', userId), { status: newStatus }, { merge: true });
-                window.loadAdminPanel();
-            } catch(e) { Toast.fire({icon: 'error', title: 'Error de BD'}); }
-        };
-
-        window.deleteClient = function(user) {
-            Swal.fire({ title: `¿Borrar ${user}?`, icon: 'error', showCancelButton: true, confirmButtonColor: '#ef4444' }).then(async (res) => {
-                if(res.isConfirmed) { await deleteDoc(doc(db, 'artifacts', 'weddingflow', 'users', user)); Toast.fire({icon:'success', title:'Instancia Borrada'}); window.loadAdminPanel(); }
-            });
-        };
-
-        window.impStart = async function(user, userRole) {
-            try {
-                if (userRole === 'Hostess') {
-                    const { value: eventId } = await Swal.fire({ title: 'Supervisar Hostess', input: 'text', inputPlaceholder: 'ID Evento', showCancelButton: true });
-                    if (eventId) { window.loadHostessView(eventId.toLowerCase().trim()); }
-                    return;
-                }
-                const docRef = doc(db, 'artifacts', 'weddingflow', 'users', user);
-                const snap = await getDoc(docRef);
-                if (snap.exists()) {
-                    const data = snap.data();
-                    impersonatingId = user;
-                    document.getElementById('view-admin').classList.add('hidden');
-                    document.getElementById('crm-impersonation-bar').classList.remove('hidden'); 
-                    document.getElementById('crm-imp-name').innerText = user; 
-                    window.setupClientEnvironment(user, data);
-                }
-            } catch(e) { Swal.fire('Error', 'Fallo al suplantar', 'error'); }
-        };
-
-        window.appExitImpersonation = function() {
-            impersonatingId = null;
-            document.getElementById('crm-impersonation-bar').classList.add('hidden');
-            document.getElementById('view-crm').classList.add('hidden');
-            document.getElementById('view-hostess').classList.add('hidden');
-            if (unsubscribe) unsubscribe();
-            window.loadAdminPanel();
-        };
-
-        window.promptHostessLogin = async function() {
-            const { value: eventId } = await Swal.fire({ title: 'Recepción Hostess', input: 'text', inputLabel: 'ID del Evento', showCancelButton: true });
-            if (eventId) { window.loadHostessView(eventId.toLowerCase().trim()); } 
-            else { window.appLogout(); }
-        };
-
-        // ASISTENTE DE IA CON PARÁMETROS DE LOGÍSTICA
+        // ASISTENTE IA INDEPENDIENTE POR EVENTO
         window.initEventAssistant = function() {
-            const activeId = impersonatingId || currentUser;
+            const activeId = impersonatingId || currentUser || "demo_id";
             const container = document.getElementById('tpd-chat-messages');
             const titleEl = document.getElementById('tpd-chat-title');
             
-            if(titleEl) titleEl.innerHTML = `<i class="fa-solid fa-brain mr-2"></i> Asistente de Evento: ${currentEventType || 'Evento'}`;
+            if(titleEl) titleEl.innerHTML = `<i class="fa-solid fa-brain mr-2"></i> IA: ${currentEventType || 'Evento'}`;
             
-            const initialMsg = `¡Hola! Soy el asistente v2.0 Pro para tu <b>${currentEventType || 'Evento'}</b> (ID: <i>${activeId}</i>).<br><br>Pídeme calcular <b>bebidas</b> (destilados, cervezas y mezcladores), <b>mesas</b>, <b>chilaquiles/tornaboda</b>, <b>mesa de dulces/botanas</b> o <b>resumen</b>.`;
+            const initialMsg = `¡Hola! Soy el asistente especializado para tu <b>${currentEventType || 'Evento'}</b> (ID: <i>${activeId}</i>).<br><br>Consulta mesas, bebidas, notas o métricas de tu evento activo.`;
             
             if(container) container.innerHTML = `<div class="tpd-msg bot">${initialMsg}</div>`;
         };
@@ -1369,14 +1057,14 @@
             container.scrollTop = container.scrollHeight;
 
             const loadingId = 'loading-' + Date.now(); 
-            container.innerHTML += `<div id="${loadingId}" class="tpd-msg bot"><i class="fa-solid fa-circle-notch fa-spin"></i> Analizando datos de tu evento...</div>`; 
+            container.innerHTML += `<div id="${loadingId}" class="tpd-msg bot"><i class="fa-solid fa-circle-notch fa-spin"></i> Analizando catálogo...</div>`; 
             container.scrollTop = container.scrollHeight;
 
             setTimeout(() => {
                 const loader = document.getElementById(loadingId);
                 if(loader) loader.remove();
 
-                let reply = "No logré entender la consulta. Prueba con: <b>bebidas</b>, <b>mesas</b>, <b>chilaquiles</b>, <b>dulces/botanas</b> o <b>resumen</b>.";
+                let reply = "No logré entender la consulta. Prueba con: <b>bebidas</b>, <b>mesas</b>, <b>notas/alergias</b> o <b>resumen</b>.";
                 let cAdu = 0, cNin = 0, sinMesa = 0, declinados = 0, totalPases = 0;
 
                 state.invitados.forEach(g => {
@@ -1398,45 +1086,442 @@
                 if (text.includes('resumen') || text.includes('estatus') || text.includes('cuantos')) {
                     reply = `📊 <b>Resumen para ${currentEventType}:</b><br>` +
                             `• Total catálogo: ${totalPases} pases.<br>` +
-                            `• Confirmados: <b>${totalConfirmados}</b> (${cAdu} Adultos, ${cNin} Niños).<br>` +
-                            `• Declinados: ${declinados} pases libres.`;
-                    if(sinMesa > 0) reply += `<br>⚠️ Hay <b>${sinMesa} confirmados</b> sin mesa asignada.`;
+                            `• Confirmados: <b>${totalConfirmados}</b> (${cAdu}A, ${cNin}N).<br>` +
+                            `• Declinados: ${declinados}.`;
+                    if(sinMesa > 0) reply += `<br>⚠️ Hay <b>${sinMesa} confirmados</b> sin mesa.`;
                 } 
-                else if (text.includes('bebida') || text.includes('alcohol') || text.includes('hielo') || text.includes('cerveza') || text.includes('botella')) {
-                    if(cAdu === 0) reply = "No hay adultos confirmados en el catálogo para calcular insumos.";
+                else if (text.includes('bebida') || text.includes('alcohol') || text.includes('hielo')) {
+                    if(cAdu === 0) reply = "No hay adultos confirmados para calcular insumos.";
                     else {
-                        const botellas = Math.ceil(cAdu / 3);
-                        const cervezas = Math.ceil(cAdu * 3.5);
-                        const refrescoL = Math.ceil(((cAdu * 1.5) + (cNin * 0.75)));
-                        const hieloKg = Math.ceil(cAdu * 1.2);
                         reply = `🍾 <b>Insumos de Bar (${cAdu} Adultos):</b><br>` +
-                                `• Destilados (Tequila/Whisky/Ron): <b>${botellas} botellas (750ml)</b> (1 c/3 adu).<br>` +
-                                `• Cervezas: <b>${cervezas} pz</b> (3.5 c/adu).<br>` +
-                                `• Mezcladores (Refrescos/Agua mineral): <b>${refrescoL} L</b>.<br>` +
-                                `• Hielo en bolsa: <b>${hieloKg} kg</b> (1.2 kg c/adu).`;
+                                `• Destilados: <b>${Math.ceil(cAdu / 3)} botellas</b>.<br>` +
+                                `• Cervezas: <b>${Math.ceil(cAdu * 3)} pz</b>.<br>` +
+                                `• Refrescos: <b>${Math.ceil(((cAdu * 1) + (cNin * 0.5)) * 1.15)} L</b>.<br>` +
+                                `• Hielo: <b>${Math.ceil(cAdu * 1.2)} kg</b>.`;
                     }
-                }
-                else if (text.includes('chilaquiles') || text.includes('torna') || text.includes('trasnoche') || text.includes('snack')) {
-                    const porciones = Math.ceil(totalConfirmados * 0.65);
-                    reply = `🥘 <b>Tornaboda / Trasnoche:</b><br>` +
-                            `• Para ${totalConfirmados} asistentes, te sugiero presupuestar <b>${porciones} porciones de chilaquiles o tacos</b> (65% del total).`;
-                }
-                else if (text.includes('dulce') || text.includes('botana') || text.includes('postre')) {
-                    const totalPiezas = Math.ceil((cAdu * 3.5) + (cNin * 4.5));
-                    reply = `🍬 <b>Mesa de Dulces y Botanas:</b><br>` +
-                            `Recomiendo <b>${totalPiezas} piezas</b> en total:<br>` +
-                            `• 35% Botana Salada/Chamoy (Papas, cacahuates, Chicharrones): ${Math.ceil(totalPiezas*0.35)} pz.<br>` +
-                            `• 25% Chocolates y Dulces: ${Math.ceil(totalPiezas*0.25)} pz.<br>` +
-                            `• 20% Postres / Vasitos: ${Math.ceil(totalPiezas*0.20)} pz.<br>` +
-                            `• 20% Frituras a granel: ${Math.ceil(totalPiezas*0.20)} pz.`;
                 }
 
                 container.innerHTML += `<div class="tpd-msg bot">${reply}</div>`; 
                 container.scrollTop = container.scrollHeight;
-            }, 350);
+            }, 400);
         };
 
-        // LOGIN ATÓMICO
+        window.togglePassword = function(id) { const el = document.getElementById(id); if(el) el.type = el.type === "password" ? "text" : "password"; };
+        window.generateRandomPassword = function(targetId) {
+            const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#";
+            let pass = ""; for(let i=0; i<8; i++) pass += chars.charAt(Math.floor(Math.random() * chars.length));
+            const passInput = document.getElementById(targetId); if(passInput) { passInput.type = 'text'; passInput.value = pass; }
+        };
+
+        // ADMINISTRADOR & INQUILINOS
+        window.loadAdminPanel = async function() {
+            try {
+                document.getElementById('view-login').classList.add('hidden');
+                document.getElementById('view-crm').classList.add('hidden');
+                document.getElementById('view-admin').classList.remove('hidden');
+                document.getElementById('view-admin').classList.add('flex');
+                
+                document.getElementById('tpd-fab').style.display = 'none';
+                document.getElementById('tpd-chat-widget').style.display = 'none';
+                
+                const colRef = collection(db, 'artifacts', 'weddingflow', 'users');
+                const snaps = await getDocs(colRef);
+                const tbody = document.getElementById('admin-users-tbody');
+                if(tbody) tbody.innerHTML = '';
+                
+                snaps.forEach(docSnap => {
+                    const d = docSnap.data();
+                    let rol = d.role || 'Cliente';
+                    let bdg = d.status === 'Suspendido' ? '<span class="bg-red-100 text-red-700 px-2 py-1 rounded text-[10px] font-bold">Suspendido</span>' : '<span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-[10px] font-bold">Activo</span>';
+                    
+                    const tr = document.createElement('tr');
+                    tr.className = 'hover:bg-slate-50 transition border-b border-slate-50';
+                    tr.innerHTML = `
+                        <td class="p-4 font-bold text-slate-800">${docSnap.id}</td>
+                        <td class="p-4 font-bold text-xs text-slate-500 uppercase">${rol}</td>
+                        <td class="p-4 text-center">${bdg}</td>
+                        <td class="p-4 flex items-center justify-end gap-2">
+                            <button onclick="window.impStart('${docSnap.id}', '${rol}')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-100 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1"><i class="fa-solid fa-eye"></i> Supervisar</button>
+                        </td>
+                    `;
+                    if(tbody) tbody.appendChild(tr);
+                });
+            } catch(e) {
+                console.error(e);
+            }
+        };
+
+        window.adminLoadUsers = async function() {
+            await window.loadAdminPanel();
+            Toast.fire({ icon: 'success', title: 'Usuarios sincronizados' });
+        };
+
+        window.adminCreateUser = async function() {
+            try {
+                const user = document.getElementById('new-user').value.trim().toLowerCase();
+                const pass = document.getElementById('new-pass').value.trim();
+                const role = document.getElementById('new-role').value;
+
+                if(!user || !pass) return Swal.fire('Atención', 'Ingresa usuario y contraseña.', 'warning');
+                
+                const pseudoEmail = `${user}@tpd.online`;
+                await createUserWithEmailAndPassword(secondaryAuth, pseudoEmail, pass);
+                await signOut(secondaryAuth);
+
+                const docRef = doc(db, 'artifacts', 'weddingflow', 'users', user);
+                await setDoc(docRef, { role, status: 'Activo', eventType: "Boda", invitados: [], mesas: [{id:1,nombre:"Mesa VIP"}], config: state.config, croquis: null, hasPremiumLink: true });
+                
+                document.getElementById('new-user').value = ''; 
+                document.getElementById('new-pass').value = '';
+                Toast.fire({icon: 'success', title: 'Inquilino creado exitosamente'});
+                window.loadAdminPanel();
+            } catch(e) { 
+                Swal.fire('Error', 'Fallo al crear el usuario.', 'error'); 
+            }
+        };
+
+        // SUPERVISIÓN / IMPERSONACIÓN
+        window.impStart = async function(user, userRole) {
+            try {
+                const docRef = doc(db, 'artifacts', 'weddingflow', 'users', user);
+                const snap = await getDoc(docRef);
+                let data = snap.exists() ? snap.data() : { role: userRole || 'Cliente', eventType: 'Boda', invitados: [], mesas: [{id:1, nombre: "Mesa VIP"}], config: state.config };
+                
+                if(!snap.exists()) {
+                    await setDoc(docRef, data, { merge: true });
+                }
+
+                impersonatingId = user;
+                document.getElementById('view-admin').classList.add('hidden');
+                document.getElementById('crm-impersonation-bar').classList.remove('hidden'); 
+                document.getElementById('crm-impersonation-bar').classList.add('flex');
+                document.getElementById('crm-imp-name').innerText = user; 
+                window.setupClientEnvironment(user, data);
+            } catch(e) { 
+                Swal.fire('Error', 'Fallo al realizar la supervisión.', 'error'); 
+            }
+        };
+
+        window.appExitImpersonation = function() {
+            impersonatingId = null;
+            document.getElementById('crm-impersonation-bar').classList.add('hidden'); 
+            document.getElementById('view-crm').classList.add('hidden');
+            if (unsubscribe) unsubscribe();
+            window.loadAdminPanel();
+        };
+
+        // DRAG AND DROP MESAS
+        window.allowDrop = function(ev) { ev.preventDefault(); ev.currentTarget.classList.add('dragover'); };
+        window.leaveDrop = function(ev) { ev.currentTarget.classList.remove('dragover'); };
+        window.dragGuest = function(ev, id) { ev.dataTransfer.setData("text/plain", id); setTimeout(() => ev.target.classList.add('dragging'), 0); };
+        window.dropGuest = function(ev, tableId) {
+            ev.preventDefault();
+            ev.currentTarget.classList.remove('dragover');
+            const gId = parseInt(ev.dataTransfer.getData("text/plain"));
+            if (!gId) return;
+            document.querySelectorAll('.dragging').forEach(el => el.classList.remove('dragging'));
+            const guest = state.invitados.find(g => g.id === gId);
+            if(guest) {
+                guest.mesa = parseInt(tableId);
+                window.crmSave(); 
+                window.crmRenderTables();
+            }
+        };
+
+        // EDICIÓN DE INVITADO Y LÁPIZ
+        window.editGuestName = function(id) {
+            const guest = state.invitados.find(g => g.id === id);
+            if (!guest) return;
+            
+            Swal.fire({
+                title: 'Editar Nombre de Invitado',
+                input: 'text',
+                inputValue: guest.nombre,
+                showCancelButton: true,
+                confirmButtonColor: '#2563eb',
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Guardar'
+            }).then((result) => {
+                if (result.isConfirmed && result.value.trim() !== '') {
+                    guest.nombre = result.value.trim();
+                    window.crmRenderGuests();
+                    window.crmSave();
+                    Toast.fire({ icon: 'success', title: 'Nombre actualizado' });
+                }
+            });
+        };
+
+        window.openAddGuestModal = function() {
+            const mesaSelect = document.getElementById('modal-guest-mesa');
+            if(mesaSelect) {
+                mesaSelect.innerHTML = '<option value="0">Sin Asignar</option>' + state.mesas.map(m => `<option value="${m.id}">${m.nombre}</option>`).join('');
+            }
+            document.getElementById('modal-guest-name').value = ''; 
+            document.getElementById('modal-guest-phone').value = '';
+            document.getElementById('modal-guest-ads').value = '1'; 
+            document.getElementById('modal-guest-kids').value = '0';
+            document.getElementById('modal-guest-obs').value = '';
+            
+            document.getElementById('add-guest-modal').classList.remove('hidden'); 
+            document.getElementById('add-guest-modal').classList.add('flex');
+        };
+
+        window.saveModalGuest = function() {
+            const name = document.getElementById('modal-guest-name').value.trim(); 
+            const group = document.getElementById('modal-guest-group').value;
+            const phone = document.getElementById('modal-guest-phone').value.trim(); 
+            const pasesA = parseInt(document.getElementById('modal-guest-ads').value) || 1;
+            const pasesN = parseInt(document.getElementById('modal-guest-kids').value) || 0; 
+            const status = document.getElementById('modal-guest-status').value;
+            const mesa = parseInt(document.getElementById('modal-guest-mesa').value) || 0; 
+            const obs = document.getElementById('modal-guest-obs').value.trim();
+
+            if (!name) return Toast.fire({icon: 'warning', title: 'El nombre es obligatorio'});
+            state.invitados.push({ id: Date.now(), nombre: name, grupo: group, telefono: phone, adultos: pasesA, ninos: pasesN, status: status, mesa: mesa, observaciones: obs, ingresadosA: 0, ingresadosN: 0 });
+
+            document.getElementById('add-guest-modal').classList.replace('flex', 'hidden');
+            window.crmSave(); 
+            window.crmRenderAll(); 
+            Toast.fire({ icon: 'success', title: 'Invitado Guardado' });
+        };
+
+        // ACCIONES DE TABLA Y CONFIGURACIÓN
+        window.crmDeleteSelected = function() {
+            const selected = Array.from(document.querySelectorAll('.g-cb:checked')).map(cb => parseInt(cb.value));
+            if (selected.length === 0) return Toast.fire({ icon: 'info', title: 'Selecciona al menos uno' });
+            Swal.fire({ title: '¿Borrar Selección?', text: `Se borrarán ${selected.length} invitados.`, icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444' })
+            .then((r) => { if (r.isConfirmed) { state.invitados = state.invitados.filter(g => !selected.includes(g.id)); window.crmSave(); window.crmRenderAll(); Toast.fire({ icon: 'success', title: 'Borrados' }); } });
+        };
+
+        window.crmDeleteAllGuests = function() {
+            if (state.invitados.length === 0) return;
+            Swal.fire({ title: '¡PELIGRO!', text: '¿Vaciar TODA la lista?', icon: 'error', showCancelButton: true, confirmButtonColor: '#ef4444' })
+            .then((r) => { if (r.isConfirmed) { state.invitados = []; window.crmSave(); window.crmRenderAll(); Toast.fire({ icon: 'success', title: 'Lista Vaciada' }); } });
+        };
+
+        window.crmUpdateConfig = function(k, v) { 
+            state.config[k] = v;
+            window.crmSave();
+            window.crmRenderAll();
+        };
+
+        window.addMultipleTables = function() {
+            let qty = parseInt(document.getElementById('num-tables-add').value) || 1;
+            for(let i=0; i<qty; i++) {
+                state.mesas.push({ id: Date.now() + i, nombre: `Mesa ${state.mesas.length + 1}` });
+            }
+            window.crmSave();
+            window.crmRenderTables();
+            Toast.fire({icon:'success', title: `${qty} Mesa(s) Creada(s)`});
+        };
+
+        window.randomizeTables = function() {
+            if (!state.mesas.length) return Swal.fire('Atención', 'Crea algunas mesas primero.', 'info');
+            const cap = parseInt(state.config.capacidadMesa) || 10; 
+            let unassigned = state.invitados.filter(g => g.mesa === 0);
+            unassigned.forEach(g => {
+                let pases = (parseInt(g.adultos)||0) + (parseInt(g.ninos)||0);
+                let target = state.mesas.find(m => { 
+                    let cur = state.invitados.filter(i => i.mesa === m.id).reduce((s,i) => s + (parseInt(i.adultos)||0) + (parseInt(i.ninos)||0), 0); 
+                    return (cur + pases) <= cap; 
+                });
+                if (target) g.mesa = target.id;
+            });
+            window.crmSave(); 
+            window.crmRenderTables(); 
+            Toast.fire({icon:'success', title:'Llenado automático completado'});
+        };
+
+        window.deleteAllTables = function() {
+            if(!state.mesas.length) return;
+            Swal.fire({ title: '¿Borrar todas las mesas?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444' }).then((r) => { 
+                if(r.isConfirmed) { 
+                    state.mesas = []; 
+                    state.invitados.forEach(g => g.mesa = 0); 
+                    window.crmSave(); 
+                    window.crmRenderTables(); 
+                } 
+            });
+        };
+
+        // PASES DIGITALES QR Y MODAL
+        window.showTicketVisual = function(id) {
+            currentTargetGuestId = id;
+            const guest = state.invitados.find(g => g.id === id);
+            if(!guest) return;
+            
+            document.getElementById('ticket-event-name').innerText = currentEventType;
+            document.getElementById('ticket-guest-name').innerText = guest.nombre;
+            
+            let ads = parseInt(guest.adultos) || 0;
+            let nns = parseInt(guest.ninos) || 0;
+            document.getElementById('ticket-guest-passes').innerText = `${ads + nns} Pases`;
+            
+            const qrContainer = document.getElementById('ticket-qrcode');
+            if(qrContainer) {
+                qrContainer.innerHTML = '';
+                const activeTarget = impersonatingId || currentUser || "demo";
+                const subdominio = getSubdomain(currentEventType);
+                const enlaceDinamico = `${subdominio}${activeTarget}`.replace(/\s+/g, '').toLowerCase();
+                const rsvpUrl = `https://${enlaceDinamico}.tupasedigital.online/index2.html?u=${activeTarget}&id=${guest.id}`;
+                new QRCode(qrContainer, { text: rsvpUrl, width: 140, height: 140, colorDark : "#1e293b", colorLight : "#ffffff" });
+            }
+            
+            document.getElementById('ticket-modal').classList.remove('hidden'); 
+            document.getElementById('ticket-modal').classList.add('flex');
+        };
+
+        window.downloadNativeTicket = function() {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: [80, 110] });
+            const activeColor = state.config.themeColor || '#3b82f6';
+            
+            pdf.setFillColor(activeColor);
+            pdf.rect(0, 0, 80, 110, 'F');
+            pdf.setTextColor(255, 255, 255);
+            pdf.setFont(undefined, 'bold');
+            pdf.setFontSize(14);
+            pdf.text(document.getElementById('ticket-event-name').innerText, 40, 18, { align: 'center' });
+            pdf.setFontSize(9);
+            pdf.text("Pase de Acceso Oficial", 40, 25, { align: 'center' });
+            
+            const qrCanvas = document.querySelector('#ticket-qrcode canvas');
+            if (qrCanvas) {
+                const qrData = qrCanvas.toDataURL("image/png");
+                pdf.setFillColor(255, 255, 255);
+                pdf.rect(22, 32, 36, 36, 'F');
+                pdf.addImage(qrData, 'PNG', 23, 33, 34, 34);
+            }
+            
+            pdf.setFontSize(12);
+            pdf.text(document.getElementById('ticket-guest-name').innerText, 40, 78, { align: 'center' });
+            pdf.setFontSize(9);
+            pdf.text(document.getElementById('ticket-guest-passes').innerText, 40, 85, { align: 'center' });
+            
+            window.addPDFFooter(pdf);
+            pdf.save(`Pase_${document.getElementById('ticket-guest-name').innerText}.pdf`);
+        };
+
+        window.sendTicketWAAntiBlock = function() {
+            const guest = state.invitados.find(g => g.id === currentTargetGuestId);
+            if (!guest || !guest.telefono) return Toast.fire({icon:'warning', title:'Sin teléfono registrado'});
+            const msg = encodeURIComponent(`¡Hola ${guest.nombre}! Aquí tienes tu Pase de Acceso Oficial para ${currentEventType}. ✨`);
+            window.open(`https://api.whatsapp.com/send?phone=${guest.telefono}&text=${msg}`, '_blank');
+        };
+
+        // EXPORTACIÓN DE REPORTES PDF Y EXCEL
+        window.crmExportExcel = function() {
+            if(!state.invitados.length) return Toast.fire({icon:'warning', title:'Lista vacía'});
+            const data = state.invitados.map(g => ({ "Nombre": g.nombre, "WhatsApp": g.telefono||"", "Grupo": g.grupo, "Adultos": g.adultos, "Niños": g.ninos, "Status": g.status, "Mesa": g.mesa === 0 ? "Sin Asignar" : (state.mesas.find(m => m.id === g.mesa)?.nombre || g.mesa) }));
+            const ws = XLSX.utils.json_to_sheet(data); 
+            const wb = XLSX.utils.book_new(); 
+            XLSX.utils.book_append_sheet(wb, ws, "Invitados"); 
+            XLSX.writeFile(wb, `Lista_${impersonatingId||currentUser}.xlsx`);
+        };
+
+        window.crmExportPDF = function() {
+            if(!state.invitados.length) return Toast.fire({icon:'warning', title:'Lista vacía'});
+            const { jsPDF } = window.jspdf; 
+            const doc = new jsPDF(); 
+            doc.text(`Lista de Acceso - ${currentEventType} (${impersonatingId||currentUser})`, 14, 15);
+            const body = state.invitados.map(g => [g.nombre, `${g.adultos}A, ${g.ninos}N`, g.status, g.mesa===0?'-':state.mesas.find(m=>m.id===g.mesa)?.nombre, '']);
+            doc.autoTable({ startY: 20, head: [['Nombre', 'Pases', 'Status', 'Mesa', 'Firma']], body: body, theme: 'grid', headStyles: { fillColor: [59, 130, 246] } }); 
+            window.addPDFFooter(doc); 
+            doc.save(`Lista_Puerta_${impersonatingId||currentUser}.pdf`);
+        };
+
+        window.crmExportTablesPDF = function() {
+            if(!state.mesas.length) return; 
+            const { jsPDF } = window.jspdf; 
+            const doc = new jsPDF(); 
+            doc.text(`Acomodo de Mesas - ${currentEventType} (${impersonatingId||currentUser})`, 14, 15); 
+            let y = 25;
+            state.mesas.forEach(t => {
+                const gt = state.invitados.filter(g => g.mesa === t.id); 
+                if(!gt.length) return;
+                doc.setFontSize(12); doc.setTextColor(59, 130, 246); 
+                doc.text(`${t.nombre} (${gt.reduce((s,g)=>s+(g.adultos||0)+(g.ninos||0),0)} pax)`, 14, y); 
+                y+=5;
+                doc.autoTable({ startY: y, head: [['Invitado', 'Pases']], body: gt.map(g=>[g.nombre, `${g.adultos}A, ${g.ninos}N`]), theme: 'plain' });
+                y = doc.lastAutoTable.finalY + 10; 
+                if(y>270){ doc.addPage(); y=20; }
+            }); 
+            window.addPDFFooter(doc); 
+            doc.save(`Mesas_${impersonatingId||currentUser}.pdf`);
+        };
+
+        window.exportStatsExcel = function() {
+            const stats = [
+                { Categoria: "Asistencia", Item: "Lugares Totales", Valor: document.getElementById('st-tot')?.innerText || "0" },
+                { Categoria: "Asistencia", Item: "Confirmados", Valor: document.getElementById('st-conf')?.innerText || "0" },
+                { Categoria: "Asistencia", Item: "Adultos Confirmados", Valor: document.getElementById('st-adu')?.innerText || "0" },
+                { Categoria: "Asistencia", Item: "Niños Confirmados", Valor: document.getElementById('st-nin')?.innerText || "0" },
+                { Categoria: "Bebidas", Item: "Botellas Destilado", Valor: document.getElementById('st-bot')?.innerText || "0" },
+                { Categoria: "Bebidas", Item: "Cervezas", Valor: document.getElementById('st-cer')?.innerText || "0" },
+                { Categoria: "Bebidas", Item: "Hielo (kg)", Valor: document.getElementById('st-hie')?.innerText || "0" }
+            ];
+            const ws = XLSX.utils.json_to_sheet(stats); 
+            const wb = XLSX.utils.book_new(); 
+            XLSX.utils.book_append_sheet(wb, ws, "Logistica"); 
+            XLSX.writeFile(wb, `Logistica_${impersonatingId||currentUser}.xlsx`);
+        };
+
+        window.exportStatsPDF = function() {
+            const { jsPDF } = window.jspdf; 
+            const doc = new jsPDF();
+            const eventId = impersonatingId || currentUser || "Evento";
+            doc.setFontSize(16); doc.setTextColor(59, 130, 246);
+            doc.text(`Reporte Ejecutivo de Logística - ${currentEventType} (${eventId})`, 14, 15);
+            
+            const body = [
+                ['Invitados Confirmados', `${document.getElementById('st-conf')?.innerText || "0"} (${document.getElementById('st-adu')?.innerText || "0"}A / ${document.getElementById('st-nin')?.innerText || "0"}N)`],
+                ['Botellas de Destilado Estimadas', document.getElementById('st-bot')?.innerText || "0"],
+                ['Cervezas Estimadas', document.getElementById('st-cer')?.innerText || "0"],
+                ['Hielo Requerido', document.getElementById('st-hie')?.innerText || "0"],
+                ['Piezas Mesa de Dulces', document.getElementById('st-dul-tot')?.innerText || "0"]
+            ];
+
+            doc.autoTable({ startY: 25, head: [['Concepto', 'Estimado']], body: body, theme: 'grid', headStyles: { fillColor: [59, 130, 246] } });
+            window.addPDFFooter(doc);
+            doc.save(`Logistica_${eventId}.pdf`);
+        };
+
+        window.downloadExcelTemplate = function() {
+            const ws = XLSX.utils.json_to_sheet([{"Nombre": "Familia Ejemplo (Borrar)", "Adultos": 2, "Niños": 1, "WhatsApp": "1234567890", "Grupo": "Familia"}]);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Plantilla");
+            XLSX.writeFile(wb, `Plantilla_Invitados.xlsx`);
+        };
+
+        window.crmImportExcel = function(e) {
+            const f = e.target.files[0]; if(!f) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                try {
+                    const data = new Uint8Array(ev.target.result);
+                    const wb = XLSX.read(data, {type: 'array'});
+                    const json = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], {defval: ""});
+                    let count = 0;
+                    json.forEach((r, i) => {
+                        let nom = r['Nombre'] || r['Invitado'] || r['Familia'] || '';
+                        let a = parseInt(r['Adultos']) || 1;
+                        let n = parseInt(r['Niños']) || 0;
+                        let tel = String(r['WhatsApp'] || r['Telefono'] || '');
+                        let grp = r['Grupo'] || 'Otros';
+                        if(nom && !nom.includes('Borrar')) {
+                            state.invitados.push({ id: Date.now()+i, nombre: nom, adultos: a, ninos: n, mesa: 0, status: 'Pendiente', telefono: tel, grupo: grp, observaciones: '', ingresadosA: 0, ingresadosN: 0 });
+                            count++;
+                        }
+                    });
+                    window.crmSave(); 
+                    window.crmRenderAll(); 
+                    Swal.fire('Éxito', `Importados ${count} registros`, 'success');
+                } catch(err) { Swal.fire('Error', 'Archivo no válido.', 'error'); }
+            };
+            reader.readAsArrayBuffer(f);
+        };
+
+        // LOGIN RESILIENTE
         window.appLogin = async function() {
             const userInput = document.getElementById('login-user');
             const passInput = document.getElementById('login-pass');
@@ -1597,927 +1682,50 @@
         window.crmSave = async function() {
             try {
                 const act = impersonatingId || currentUser;
+                if(!act || act === 'evento_demo_pro') return;
                 const docRef = doc(db, 'artifacts', 'weddingflow', 'users', act);
                 await setDoc(docRef, { invitados: state.invitados, mesas: state.mesas, config: state.config, croquis: state.croquis, ticketBg: state.ticketBg || null }, { merge: true });
             } catch(e) { console.error('Fallo crmSave', e); }
         };
-
-        window.crmLoadData = async function() {
-            Swal.fire({ title: 'Sincronizando...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
-            try {
-                const act = impersonatingId || currentUser;
-                const snap = await getDoc(doc(db, 'artifacts', 'weddingflow', 'users', act));
-                if(snap.exists()) {
-                    const data = snap.data();
-                    state.invitados = data.invitados || [];
-                    state.mesas = data.mesas || state.mesas;
-                    state.config = data.config || state.config;
-                    state.croquis = data.croquis || null;
-                    state.ticketBg = data.ticketBg || null;
-                    window.crmRenderAll();
-                    Swal.close();
-                    Toast.fire({icon:'success', title:'Datos sincronizados'});
-                }
-            } catch(e) { Swal.fire('Error', 'Fallo al sincronizar', 'error'); }
-        };
-
-        window.crmUpdateConfig = function(k, v) {
-            if(['capacidadMesa', 'eventDuration', 'flowersPerTable'].includes(k)) {
-                state.config[k] = parseInt(v) || 0;
-            } else {
-                state.config[k] = v;
-            }
-            window.crmSave();
-            if(k === 'capacidadMesa') window.crmRenderTables();
-            window.crmRenderStats();
-        };
-
-        window.openAddGuestModal = function() {
-            const mesaSelect = document.getElementById('modal-guest-mesa');
-            mesaSelect.innerHTML = '<option value="0">Sin Asignar</option>' + state.mesas.map(m => `<option value="${m.id}">${m.nombre}</option>`).join('');
-            document.getElementById('modal-guest-name').value = ''; document.getElementById('modal-guest-phone').value = '';
-            document.getElementById('modal-guest-ads').value = '1'; document.getElementById('modal-guest-kids').value = '0';
-            document.getElementById('modal-guest-obs').value = '';
-            document.getElementById('add-guest-modal').classList.remove('hidden'); 
-            document.getElementById('add-guest-modal').classList.add('flex');
-            setTimeout(()=>document.getElementById('modal-guest-name').focus(), 100);
-        };
-
-        window.saveModalGuest = function() {
-            const name = document.getElementById('modal-guest-name').value.trim(); 
-            const group = document.getElementById('modal-guest-group').value;
-            const phone = document.getElementById('modal-guest-phone').value.trim(); 
-            const pasesA = parseInt(document.getElementById('modal-guest-ads').value) || 1;
-            const pasesN = parseInt(document.getElementById('modal-guest-kids').value) || 0; 
-            const status = document.getElementById('modal-guest-status').value;
-            const mesa = parseInt(document.getElementById('modal-guest-mesa').value) || 0; 
-            const obs = document.getElementById('modal-guest-obs').value.trim();
-
-            if (!name) return Toast.fire({icon: 'warning', title: 'El nombre es obligatorio'});
-            state.invitados.push({ id: Date.now(), nombre: name, grupo: group, telefono: phone, adultos: pasesA, pases: pasesA, ninos: pasesN, status: status, mesa: mesa, observaciones: obs });
-
-            document.getElementById('add-guest-modal').classList.replace('flex', 'hidden');
-            window.crmSave(); window.crmRenderAll(); Toast.fire({ icon: 'success', title: 'Invitado Guardado' });
-        };
-
-        // EDICIÓN CON LÁPIZ DE INVITADOS
-        window.editGuestName = function(id) {
-            const guest = state.invitados.find(g => g.id === id);
-            if (!guest) return;
-            
-            Swal.fire({
-                title: 'Editar Nombre de Invitado',
-                input: 'text',
-                inputValue: guest.nombre,
-                showCancelButton: true,
-                confirmButtonColor: '#2563eb',
-                cancelButtonText: 'Cancelar',
-                confirmButtonText: 'Guardar Nombre',
-                inputValidator: (value) => {
-                    if (!value.trim()) return '¡El nombre no puede estar vacío!';
-                }
-            }).then((result) => {
-                if (result.isConfirmed && result.value.trim() !== '') {
-                    guest.nombre = result.value.trim();
-                    window.crmRenderGuests();
-                    window.crmSave();
-                    Toast.fire({ icon: 'success', title: 'Nombre actualizado en la nube' });
+        
+        window.crmRenderAll = function() { window.crmRenderGuests(); window.crmRenderTables(); window.crmRenderStats(); };
+        
+        window.crmSwitchTab = function(tab) {
+            ['guests', 'tables', 'stats'].forEach(t => {
+                const sec = document.getElementById(`crm-sec-${t}`);
+                if(sec) { sec.classList.remove('flex'); sec.classList.add('hidden'); }
+                const tabBtn = document.getElementById(`tab-${t}`);
+                if(tabBtn) {
+                    tabBtn.classList.replace('text-blue-600', 'text-slate-500');
+                    tabBtn.classList.replace('border-blue-600', 'border-transparent');
                 }
             });
-        };
-
-        window.crmRenderGuests = function() {
-            const tbody = document.getElementById('crm-guests-tbody');
-            if(!tbody) return;
-            const term = document.getElementById('crm-search').value.toLowerCase();
-            tbody.innerHTML = '';
-            const optionsGrupo = ["Familia", "Amigos", "Trabajo", "Conocidos", "Otros"];
-
-            state.invitados.filter(g => g.nombre.toLowerCase().includes(term)).forEach(g => {
-                const tr = document.createElement('tr');
-                tr.className = 'hover:bg-slate-50 transition border-b border-slate-50';
-                let stColor = g.status === 'Confirmado' ? 'text-emerald-700 bg-emerald-100 border-emerald-200' : (g.status === 'Declinado' ? 'text-red-700 bg-red-100 border-red-200' : 'text-amber-700 bg-amber-100 border-amber-200');
-                let ads = parseInt(g.adultos !== undefined ? g.adultos : g.pases) || 0; 
-                let nns = parseInt(g.ninos) || 0;
-
-                tr.innerHTML = `
-                    <td class="p-4 text-center w-12"><input type="checkbox" class="g-cb w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer" value="${g.id}"></td>
-                    <td class="p-4">
-                        <div class="flex items-center gap-2 font-bold text-slate-800">
-                            <span>${g.nombre}</span>
-                            <button onclick="window.editGuestName(${g.id})" class="text-slate-400 hover:text-blue-600 transition p-1" title="Editar Nombre"><i class="fa-solid fa-pencil text-xs"></i></button>
-                        </div>
-                    </td>
-                    <td class="p-4"><select onchange="window.crmUpdateGuest(${g.id}, 'grupo', this.value)" class="border border-slate-200 p-1.5 text-xs rounded-lg w-28 outline-none text-slate-700 font-bold bg-white">${optionsGrupo.map(opt => `<option value="${opt}" ${g.grupo===opt?'selected':''}>${opt}</option>`).join('')}</select></td>
-                    <td class="p-4"><input type="text" value="${g.telefono || ''}" onchange="window.crmUpdateGuest(${g.id}, 'telefono', this.value)" placeholder="10 Digitos" class="border border-slate-200 p-1.5 text-xs rounded-lg w-28 outline-none"></td>
-                    <td class="p-4 text-center"><input type="number" min="0" value="${ads}" onchange="window.crmUpdateGuest(${g.id}, 'adultos', this.value)" class="w-12 text-center font-bold border rounded p-1 text-xs"></td>
-                    <td class="p-4 text-center"><input type="number" min="0" value="${nns}" onchange="window.crmUpdateGuest(${g.id}, 'ninos', this.value)" class="w-12 text-center font-bold border rounded p-1 text-xs"></td>
-                    <td class="p-4 text-center"><select onchange="window.crmUpdateGuest(${g.id}, 'status', this.value)" class="border p-1.5 text-xs rounded-lg ${stColor} font-bold"><option value="Pendiente" ${g.status==='Pendiente'?'selected':''}>⏳ Pendiente</option><option value="Confirmado" ${g.status==='Confirmado'?'selected':''}>✅ Confirmado</option><option value="Declinado" ${g.status==='Declinado'?'selected':''}>❌ Declinado</option></select></td>
-                    <td class="p-4"><input type="text" value="${g.observaciones || ''}" onchange="window.crmUpdateGuest(${g.id}, 'observaciones', this.value)" placeholder="Notas..." class="border border-slate-200 p-1.5 text-xs rounded-lg w-40 outline-none"></td>
-                    <td class="p-4 text-center">
-                        <div class="flex justify-center gap-1.5">
-                            <button onclick="window.showTicketVisual(${g.id})" class="bg-blue-50 text-blue-600 border border-blue-200 w-8 h-8 rounded-lg shadow-sm text-sm font-bold hover:bg-blue-100 transition" title="Pase QR"><i class="fa-solid fa-qrcode"></i></button>
-                            <button onclick="window.openLocalGeneratorModal(${g.id})" class="bg-emerald-50 text-emerald-600 border border-emerald-200 w-8 h-8 rounded-lg shadow-sm text-sm font-bold hover:bg-emerald-100 transition" title="Enviar WhatsApp"><i class="fa-brands fa-whatsapp"></i></button>
-                        </div>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        };
-
-        window.crmUpdateGuest = function(id, field, value) {
-            const guest = state.invitados.find(g => g.id === id);
-            if (!guest) return;
-            if (field === 'adultos' || field === 'ninos') { value = parseInt(value) || 0; }
-            guest[field] = value;
-            window.crmRenderGuests();
-            window.crmSave();
-        };
-
-        window.crmDeleteSelected = function() {
-            const selected = Array.from(document.querySelectorAll('.g-cb:checked')).map(cb => parseInt(cb.value));
-            if (selected.length === 0) return Toast.fire({ icon: 'info', title: 'Selecciona invitados' });
-            state.invitados = state.invitados.filter(g => !selected.includes(g.id));
-            window.crmSave(); window.crmRenderAll(); Toast.fire({ icon: 'success', title: 'Borrados' });
-        };
-
-        window.crmDeleteAllGuests = function() {
-            if (state.invitados.length === 0) return;
-            Swal.fire({ title: '¿Vaciar toda la lista?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444' }).then((r) => {
-                if (r.isConfirmed) { state.invitados = []; window.crmSave(); window.crmRenderAll(); Toast.fire({ icon: 'success', title: 'Vaciada' }); }
-            });
-        };
-
-        window.crmExportExcel = function() {
-            if(!state.invitados.length) return Toast.fire({icon:'warning', title:'Lista vacía'});
-            const data = state.invitados.map(g => ({ "Nombre": g.nombre, "WhatsApp": g.telefono||"", "Grupo": g.grupo, "Adultos": g.adultos, "Niños": g.ninos, "Status": g.status, "Mesa": g.mesa===0?"Sin Asignar":(state.mesas.find(m=>m.id===g.mesa)?.nombre || g.mesa), "Observaciones": g.observaciones||"" }));
-            const ws = XLSX.utils.json_to_sheet(data); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Invitados"); XLSX.writeFile(wb, `Invitados_${impersonatingId||currentUser}.xlsx`);
-        };
-
-        window.crmExportPDF = function() {
-            if(!state.invitados.length) return Toast.fire({icon:'warning', title:'Lista vacía'});
-            const { jsPDF } = window.jspdf; 
-            const doc = new jsPDF(); 
-            const activeUser = impersonatingId || currentUser;
-            
-            doc.setFillColor(30, 41, 59);
-            doc.rect(0, 0, 210, 28, 'F');
-            doc.setFontSize(16);
-            doc.setTextColor(255, 255, 255);
-            doc.setFont(undefined, 'bold');
-            doc.text(`Lista de Acceso Puerta - ${currentEventType || 'Evento'}`, 14, 15);
-            doc.setFontSize(10);
-            doc.setTextColor(203, 213, 225);
-            doc.text(`Instancia Inquilino: ${activeUser} | Fecha: ${new Date().toLocaleDateString('es-MX')}`, 14, 22);
-
-            const body = state.invitados.map(g => [
-                g.nombre, 
-                g.grupo || 'Otros',
-                `${g.adultos||1}A, ${g.ninos||0}N`, 
-                g.status, 
-                g.mesa === 0 ? 'Sin Asignar' : (state.mesas.find(m => m.id === g.mesa)?.nombre || `Mesa ${g.mesa}`),
-                g.observaciones || ''
-            ]);
-
-            doc.autoTable({ 
-                startY: 34, 
-                head: [['Nombre / Familia', 'Grupo', 'Pases', 'Status', 'Mesa', 'Notas / Alergias']], 
-                body: body,
-                theme: 'striped',
-                headStyles: { fillColor: [37, 99, 235], textColor: [255, 255, 255], fontStyle: 'bold' },
-                alternateRowStyles: { fillColor: [248, 250, 252] },
-                styles: { fontSize: 9, cellPadding: 3 }
-            }); 
-
-            window.addPDFFooter(doc); 
-            doc.save(`Lista_Puerta_${activeUser}.pdf`);
-        };
-
-        window.downloadExcelTemplate = function() {
-            const ws = XLSX.utils.json_to_sheet([{"Nombre": "Familia Ejemplo", "Adultos": 2, "Niños": 1, "WhatsApp": "1234567890", "Grupo": "Familia"}]); 
-            const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Plantilla"); XLSX.writeFile(wb, `Plantilla_Invitados.xlsx`);
-        };
-
-        window.crmImportExcel = function(e) {
-            const f = e.target.files[0]; if(!f) return; const reader = new FileReader();
-            reader.onload = (ev) => {
-                try {
-                    const data = new Uint8Array(ev.target.result); const wb = XLSX.read(data, {type: 'array'});
-                    const json = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], {defval: ""});
-                    let count = 0;
-                    json.forEach((r, i) => {
-                        let nom = r.Nombre || r.Familia || r.Invitado;
-                        if(nom && nom.trim() !== '') {
-                            state.invitados.push({ id: Date.now()+i, nombre: nom, adultos: parseInt(r.Adultos)||1, ninos: parseInt(r.Niños)||0, mesa: 0, status: 'Pendiente', telefono: String(r.WhatsApp||''), grupo: r.Grupo||'Otros' });
-                            count++;
-                        }
-                    });
-                    window.crmSave(); window.crmRenderAll(); Toast.fire({icon:'success', title:`Importados ${count} registros`});
-                } catch(err) { Swal.fire('Error', 'Archivo no válido.', 'error'); }
-            }; reader.readAsArrayBuffer(f); e.target.value = '';
-        };
-
-        // TABLES & CROQUIS
-        window.uploadCroquis = function(e) {
-            const file = e.target.files[0]; if(!file) return;
-            const reader = new FileReader();
-            reader.onload = function(ev) {
-                state.croquis = ev.target.result; window.crmSave(); window.renderCroquisThumbnail();
-                Toast.fire({icon:'success', title:'Croquis Guardado'});
-            };
-            reader.readAsDataURL(file);
-        };
-
-        window.renderCroquisThumbnail = function() {
-            const container = document.getElementById('croquis-preview-container');
-            const thumb = document.getElementById('croquis-thumbnail');
-            if (state.croquis && container && thumb) {
-                thumb.src = state.croquis; container.classList.remove('hidden'); container.classList.add('flex');
-            } else if(container) { container.classList.add('hidden'); }
-        };
-
-        window.deleteCroquis = function() { state.croquis = null; window.crmSave(); window.renderCroquisThumbnail(); };
-        window.viewCroquisFull = function() { if(state.croquis) Swal.fire({ imageUrl: state.croquis, showConfirmButton: true }); };
-
-        window.crmRenderTables = function() {
-            const cap = state.config.capacidadMesa || 10;
-            const cont = document.getElementById('crm-tables-grid');
-            const unassignedList = document.getElementById('crm-unassigned-list');
-            if(!cont || !unassignedList) return;
-            cont.innerHTML = ''; unassignedList.innerHTML = '';
-            let pasesSinAsignar = 0;
-
-            state.invitados.filter(g => g.mesa === 0).forEach(g => {
-                let ads = parseInt(g.adultos !== undefined ? g.adultos : g.pases) || 0;
-                let nns = parseInt(g.ninos) || 0;
-                pasesSinAsignar += (ads + nns);
-                unassignedList.appendChild(createGuestCard(g, true));
-            });
-            document.getElementById('crm-unassigned-badge').innerText = `${pasesSinAsignar} pases`;
-
-            state.mesas.forEach(mesa => {
-                const mesaDiv = document.createElement('div');
-                mesaDiv.className = 'bg-white border border-slate-200 rounded-2xl shadow-sm flex flex-col h-[280px] table-dropzone';
-                mesaDiv.setAttribute('ondragover', 'window.allowDrop(event)');
-                mesaDiv.setAttribute('ondragleave', 'window.leaveDrop(event)');
-                mesaDiv.setAttribute('ondrop', `window.dropGuest(event, ${mesa.id})`);
-
-                const guestsInTable = state.invitados.filter(g => g.mesa === mesa.id);
-                let pasesMesa = guestsInTable.reduce((sum, g) => sum + (parseInt(g.adultos !== undefined ? g.adultos : g.pases) || 0) + (parseInt(g.ninos) || 0), 0);
-
-                mesaDiv.innerHTML = `
-                    <div class="p-3 border-b border-slate-100 bg-slate-50 flex justify-between items-center rounded-t-2xl cursor-pointer hover:bg-slate-100 transition" onclick="window.renameTable(${mesa.id})" title="Renombrar Mesa">
-                        <span class="font-bold text-slate-700 truncate">${mesa.nombre}</span>
-                        <span class="text-xs px-2.5 py-1 rounded-full font-bold bg-blue-100 text-blue-700">${pasesMesa}/${cap}</span>
-                    </div>
-                    <div class="flex-1 p-2 overflow-y-auto space-y-2 bg-slate-50/30 custom-scrollbar"></div>
-                    <div class="p-2 border-t border-slate-100 bg-white rounded-b-2xl flex justify-center">
-                        <button onclick="window.deleteTable(${mesa.id})" class="text-[10px] text-slate-400 hover:text-red-500 font-bold uppercase transition px-3 py-1"><i class="fa-solid fa-trash-can mr-1"></i> Borrar Mesa</button>
-                    </div>
-                `;
-                const listContainer = mesaDiv.querySelector('.flex-1');
-                guestsInTable.forEach(g => listContainer.appendChild(createGuestCard(g, false)));
-                cont.appendChild(mesaDiv);
-            });
-            window.renderCroquisThumbnail();
-        };
-
-        function createGuestCard(g, isUnassigned) {
-            let ads = parseInt(g.adultos !== undefined ? g.adultos : g.pases) || 0;
-            let nns = parseInt(g.ninos) || 0;
-            const card = document.createElement('div');
-            card.className = 'guest-card bg-white p-2 rounded-xl shadow-sm border border-slate-200 text-sm flex justify-between items-center';
-            card.setAttribute('draggable', 'true');
-            card.setAttribute('ondragstart', `window.dragGuest(event, ${g.id})`);
-            card.setAttribute('ondragend', `this.classList.remove('dragging')`);
-
-            let actionBtn = isUnassigned ? `
-                <select onchange="window.assignTable(${g.id}, this.value)" class="text-[10px] border border-slate-200 rounded-lg outline-none w-20 bg-slate-50 font-bold text-slate-600 ml-1 cursor-pointer py-1">
-                    <option value="0">Mesa...</option>
-                    ${state.mesas.map(m => `<option value="${m.id}">${m.nombre}</option>`).join('')}
-                </select>
-            ` : `
-                <button onclick="window.assignTable(${g.id}, 0)" class="text-slate-300 hover:text-red-500 transition px-2 py-1" title="Mover a Sin Asignar"><i class="fa-solid fa-times"></i></button>
-            `;
-
-            card.innerHTML = `
-                <div class="flex items-center gap-2 overflow-hidden flex-1">
-                    <i class="fa-solid fa-grip-vertical text-slate-300 text-xs cursor-grab shrink-0"></i>
-                    <div class="truncate">
-                        <p class="font-bold text-slate-700 text-xs truncate">${g.nombre}</p>
-                        <span class="text-[9px] bg-blue-50 text-blue-600 px-1.5 rounded font-bold">${ads}A ${nns}N</span>
-                    </div>
-                </div>
-                ${actionBtn}
-            `;
-            return card;
-        }
-
-        window.assignTable = function(gId, tId) {
-            const guest = state.invitados.find(g => g.id === gId);
-            if(guest) {
-                guest.mesa = parseInt(tId);
-                window.crmSave();
-                window.crmRenderTables();
+            const activeSec = document.getElementById(`crm-sec-${tab}`);
+            if(activeSec) { activeSec.classList.remove('hidden'); activeSec.classList.add('flex'); }
+            const activeTabBtn = document.getElementById(`tab-${tab}`);
+            if(activeTabBtn) {
+                activeTabBtn.classList.replace('text-slate-500', 'text-blue-600');
+                activeTabBtn.classList.replace('border-transparent', 'border-blue-600');
             }
-        };
-
-        window.deleteTable = function(id) {
-            Swal.fire({
-                title: '¿Eliminar mesa?',
-                text: 'Los invitados pasarán a la lista de Sin Asignar.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#ef4444'
-            }).then(r => {
-                if(r.isConfirmed) {
-                    state.mesas = state.mesas.filter(m => m.id !== id);
-                    state.invitados.forEach(g => { if(g.mesa === id) g.mesa = 0; });
-                    window.crmSave();
-                    window.crmRenderTables();
-                    Toast.fire({ icon: 'success', title: 'Mesa eliminada' });
-                }
-            });
-        };
-
-        window.renameTable = function(id) {
-            const m = state.mesas.find(x => x.id === id);
-            if(!m) return;
-            Swal.fire({
-                title: 'Renombrar Mesa',
-                input: 'text',
-                inputValue: m.nombre,
-                showCancelButton: true,
-                confirmButtonColor: '#2563eb'
-            }).then(r => {
-                if(r.isConfirmed && r.value && r.value.trim() !== '') {
-                    m.nombre = r.value.trim();
-                    window.crmSave();
-                    window.crmRenderTables();
-                    Toast.fire({ icon: 'success', title: 'Mesa renombrada' });
-                }
-            });
-        };
-
-        window.addMultipleTables = function() {
-            let qty = parseInt(document.getElementById('num-tables-add').value) || 1;
-            for(let i=0; i<qty; i++) state.mesas.push({ id: Date.now() + i, nombre: `Mesa ${state.mesas.length + 1}` });
-            window.crmSave(); window.crmRenderTables(); Toast.fire({icon: 'success', title: `${qty} mesas creadas`});
-        };
-
-        window.deleteAllTables = function() {
-            if(!state.mesas.length) return;
-            Swal.fire({ title: '¿Borrar mesas?', icon: 'warning', showCancelButton: true }).then((r) => {
-                if(r.isConfirmed) { state.mesas = []; state.invitados.forEach(g => g.mesa = 0); window.crmSave(); window.crmRenderTables(); }
-            });
-        };
-
-        window.randomizeTables = function() {
-            if (!state.mesas.length) return Swal.fire('Info', 'Crea mesas primero.', 'info');
-            const cap = parseInt(state.config.capacidadMesa) || 10;
-            state.invitados.filter(g => g.mesa === 0).forEach(g => {
-                let pases = (parseInt(g.adultos)||0) + (parseInt(g.ninos)||0);
-                let target = state.mesas.find(m => {
-                    let cur = state.invitados.filter(i => i.mesa === m.id).reduce((s,i) => s + (parseInt(i.adultos)||0) + (parseInt(i.ninos)||0), 0);
-                    return (cur + pases) <= cap;
-                });
-                if (target) g.mesa = target.id;
-            });
-            window.crmSave(); window.crmRenderTables(); Toast.fire({icon:'success', title:'Auto-llenado completado'});
-        };
-
-        window.crmExportTablesPDF = function() {
-            const { jsPDF } = window.jspdf; 
-            const doc = new jsPDF(); 
-            const activeUser = impersonatingId || currentUser;
-
-            doc.setFillColor(15, 23, 42);
-            doc.rect(0, 0, 210, 28, 'F');
-            doc.setFontSize(16);
-            doc.setTextColor(255, 255, 255);
-            doc.setFont(undefined, 'bold');
-            doc.text(`Distribución de Mesas - ${currentEventType || 'Evento'}`, 14, 15);
-            doc.setFontSize(10);
-            doc.setTextColor(203, 213, 225);
-            doc.text(`Inquilino: ${activeUser} | Capacidad por Mesa: ${state.config.capacidadMesa||10} pax`, 14, 22);
-
-            let y = 35;
-            state.mesas.forEach(t => {
-                const gt = state.invitados.filter(g => g.mesa === t.id); if(!gt.length) return;
-                doc.setFontSize(12); doc.setTextColor(37, 99, 235); doc.setFont(undefined, 'bold');
-                doc.text(`${t.nombre}`, 14, y); y += 4;
-                
-                const tableData = gt.map(g => [g.nombre, g.grupo||'Otros', `${g.adultos||1} Adultos, ${g.ninos||0} Niños`]);
-                doc.autoTable({ 
-                    startY: y, 
-                    head: [['Invitado / Familia', 'Grupo', 'Desglose Pases']], 
-                    body: tableData,
-                    theme: 'grid',
-                    headStyles: { fillColor: [51, 65, 85] }
-                });
-                y = doc.lastAutoTable.finalY + 8;
-                if (y > 260) { doc.addPage(); y = 20; }
-            });
-
-            window.addPDFFooter(doc); 
-            doc.save(`Mesas_${activeUser}.pdf`);
-        };
-
-        // STATS & LOGISTICS (MÉXICO)
-        window.crmRenderStats = function() {
-            let totalGeneral = 0, conf = 0, decl = 0, ninosTotales = 0, adultosTotales = 0, recuperados = 0;
-            state.invitados.forEach(g => {
-                let ads = parseInt(g.adultos !== undefined ? g.adultos : g.pases) || 0; 
-                let nns = parseInt(g.ninos) || 0; 
-                let tot = ads + nns;
-                totalGeneral += tot; 
-                if(g.status === 'Confirmado') { conf += tot; adultosTotales += ads; ninosTotales += nns; } 
-                if(g.status === 'Declinado') { decl += tot; recuperados += tot; }
-            });
             
-            const stTot = document.getElementById('st-tot'); if(stTot) stTot.innerText = totalGeneral; 
-            const stConf = document.getElementById('st-conf'); if(stConf) stConf.innerText = conf; 
-            const stDecl = document.getElementById('st-decl'); if(stDecl) stDecl.innerText = decl; 
-            const stAdu = document.getElementById('st-adu'); if(stAdu) stAdu.innerText = adultosTotales; 
-            const stNin = document.getElementById('st-nin'); if(stNin) stNin.innerText = ninosTotales;
-            const stRecup = document.getElementById('st-recup'); if(stRecup) stRecup.innerText = recuperados;
-            
-            // Medición Dulces MX (4 pz c/pax)
-            const dul = Math.ceil((adultosTotales * 3.5) + (ninosTotales * 4.5));
-            const stDulTot = document.getElementById('st-dul-tot'); if(stDulTot) stDulTot.innerText = dul; 
-            const stDulSal = document.getElementById('st-dul-sal'); if(stDulSal) stDulSal.innerText = Math.ceil(dul * 0.35) + ' pz'; 
-            const stDulCho = document.getElementById('st-dul-cho'); if(stDulCho) stDulCho.innerText = Math.ceil(dul * 0.25) + ' pz'; 
-            const stDulPos = document.getElementById('st-dul-pos'); if(stDulPos) stDulPos.innerText = Math.ceil(dul * 0.20) + ' pz'; 
-            const stDulGra = document.getElementById('st-dul-gra'); if(stDulGra) stDulGra.innerText = Math.ceil(dul * 0.20) + ' pz';
-            
-            // Medición Bar MX (Destilados 750ml 1 c/3 adu, Cerveza 3.5 c/adu, Mezcladores 1.5L c/adu, Hielo 1.2kg c/adu)
-            const stBot = document.getElementById('st-bot'); if(stBot) stBot.innerText = Math.ceil(adultosTotales / 3) + ' bts'; 
-            const stCer = document.getElementById('st-cer'); if(stCer) stCer.innerText = Math.ceil(adultosTotales * 3.5) + ' pz'; 
-            const stRef = document.getElementById('st-ref'); if(stRef) stRef.innerText = Math.ceil(((adultosTotales * 1.5) + (ninosTotales * 0.75))) + ' L'; 
-            const stHie = document.getElementById('st-hie'); if(stHie) stHie.innerText = Math.ceil(adultosTotales * 1.2) + ' kg';
-
-            document.getElementById('rec-parejas').innerText = Math.ceil((adultosTotales / 2) * 1.10) + ' pz'; 
-            document.getElementById('rec-sandalias').innerText = Math.ceil((adultosTotales * 0.5) * 1.10) + ' prs'; 
-            document.getElementById('rec-anticruda').innerText = Math.ceil(adultosTotales * 0.6) + ' pz';
-
-            const numMesas = state.mesas.length;
-            const floresMesa = parseInt(state.config.flowersPerTable) || 15;
-            document.getElementById('st-centros').innerText = numMesas;
-            document.getElementById('st-flores-totales').innerText = numMesas * floresMesa;
-
-            window.generateTimeline(adultosTotales + ninosTotales);
+            if(tab === 'tables') window.crmRenderTables();
+            if(tab === 'stats') window.crmRenderStats();
         };
 
-        window.generateTimeline = function(totalConfirmados) {
-            let startTime = state.config.eventStartTime || "20:00";
-            let duration = parseInt(state.config.eventDuration) || 5;
-            let mainMusic = state.config.musicMain || 'DJ';
-            let dinnerMusic = state.config.musicDinner || 'Playlist';
-            let tornaMusic = state.config.musicTorna || 'Ninguno';
-
-            let staffCount = 3;
-            if (mainMusic === 'Grupo Versátil' || mainMusic === 'Ambos') staffCount += 10;
-            else if (mainMusic === 'DJ') staffCount += 2;
-            if (dinnerMusic === 'Saxofón' || dinnerMusic === 'Violín') staffCount += 1;
-            else if (dinnerMusic === 'Grupo Jazz') staffCount += 4;
-            document.getElementById('st-staff-meals').innerText = staffCount;
-
-            let snackCount = Math.ceil(totalConfirmados * 0.65);
-            document.getElementById('st-torna-snacks').innerText = snackCount;
-
-            let [hours, minutes] = startTime.split(':').map(Number);
-            let time = new Date();
-            time.setHours(hours || 20, minutes || 0, 0);
-
-            function formatTime(d) { return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }); }
-            function addMinutes(d, mins) { return new Date(d.getTime() + mins * 60000); }
-
-            let html = "";
-            const addEvent = (tStr, title, desc) => {
-                html += `
-                <div class="flex gap-4 items-start timeline-event">
-                    <div class="w-16 shrink-0 text-right pt-0.5"><span class="text-xs font-black text-teal-600 time-val">${tStr}</span></div>
-                    <div class="w-4 h-4 rounded-full bg-teal-100 border-2 border-teal-500 shrink-0 mt-1"></div>
-                    <div class="pb-4 border-l-2 border-teal-100 pl-4 -ml-2.5 flex-1 desc-val">
-                        <p class="text-sm font-bold text-slate-800">${title}</p>
-                        ${desc ? `<p class="text-[10px] text-slate-500 mt-1">${desc}</p>` : ''}
-                    </div>
-                </div>`;
-            };
-
-            let t1 = formatTime(time);
-            time = addMinutes(time, 45);
-            addEvent(t1, "Recepción de Invitados", dinnerMusic !== 'Ninguno' ? `Música de ambiente: ${dinnerMusic}` : '');
-
-            t1 = formatTime(time);
-            time = addMinutes(time, 90);
-            addEvent(t1, "Servicio de Banquete / Cena", "Tiempo estimado de platillos.");
-
-            t1 = formatTime(time);
-            time = addMinutes(time, 30);
-            addEvent(t1, "Protocolo & Vals Principal", "Apertura de pista.");
-
-            t1 = formatTime(time);
-            let partyMinutes = (duration * 60) - 165;
-            if (tornaMusic !== 'Ninguno' && partyMinutes > 60) partyMinutes -= 60;
-
-            if (partyMinutes > 0) {
-                time = addMinutes(time, partyMinutes);
-                addEvent(t1, "Apertura de Pista & Fiesta", `Animación principal con ${mainMusic}.`);
-            }
-
-            if (tornaMusic !== 'Ninguno') {
-                t1 = formatTime(time);
-                time = addMinutes(time, 60);
-                addEvent(t1, "Tornaboda / Chilaquiles MX", `Servicio de trasnoche acompañado por ${tornaMusic}.`);
-            }
-
-            addEvent(formatTime(time), "Cierre de Evento", "Desalojo del recinto.");
-            document.getElementById('st-timeline').innerHTML = html;
-        };
-
-        window.exportStatsExcel = function() {
-            const stats = [
-                { Categoria: "Asistencia", Item: "Lugares Totales", Valor: document.getElementById('st-tot').innerText },
-                { Categoria: "Asistencia", Item: "Confirmados", Valor: document.getElementById('st-conf').innerText },
-                { Categoria: "Insumos Bar", Item: "Botellas Destilado 750ml", Valor: document.getElementById('st-bot').innerText },
-                { Categoria: "Insumos Bar", Item: "Cervezas", Valor: document.getElementById('st-cer').innerText }
-            ];
-            const ws = XLSX.utils.json_to_sheet(stats); const wb = XLSX.utils.book_new(); 
-            XLSX.utils.book_append_sheet(wb, ws, "Logistica"); XLSX.writeFile(wb, `Logistica_${impersonatingId||currentUser}.xlsx`);
-        };
-
-        window.exportStatsPDF = function() {
-            const { jsPDF } = window.jspdf; const doc = new jsPDF(); 
-            const activeUser = impersonatingId || currentUser;
-            
-            doc.setFillColor(13, 148, 136);
-            doc.rect(0, 0, 210, 28, 'F');
-            doc.setFontSize(16);
-            doc.setTextColor(255, 255, 255);
-            doc.setFont(undefined, 'bold');
-            doc.text(`Reporte Ejecutivo de Logística - ${currentEventType || 'Evento'}`, 14, 15);
-            doc.setFontSize(10);
-            doc.setTextColor(204, 251, 241);
-            doc.text(`Usuario: ${activeUser} | Fecha: ${new Date().toLocaleDateString('es-MX')}`, 14, 22);
-
-            const statsData = [
-                ['Asistencia Total Esperada', document.getElementById('st-tot').innerText],
-                ['Confirmados (Adultos/Niños)', `${document.getElementById('st-adu').innerText} / ${document.getElementById('st-nin').innerText}`],
-                ['Declinados / Pases Recuperados', `${document.getElementById('st-decl').innerText} / ${document.getElementById('st-recup').innerText}`],
-                ['Botellas de Destilado 750ml (1 c/3 adu)', document.getElementById('st-bot').innerText],
-                ['Cervezas Estimadas (3.5 c/adu)', document.getElementById('st-cer').innerText],
-                ['Refrescos / Mezcladores (L)', document.getElementById('st-ref').innerText],
-                ['Hielo Requerido (kg)', document.getElementById('st-hie').innerText],
-                ['Mesa de Dulces / Botana (Piezas Totales)', document.getElementById('st-dul-tot').innerText],
-                ['Amenidades (Pantuflas / Recuerdos)', `${document.getElementById('rec-sandalias').innerText} / ${document.getElementById('rec-parejas').innerText}`],
-                ['Centros de Mesa / Flores Totales', `${document.getElementById('st-centros').innerText} mesas / ${document.getElementById('st-flores-totales').innerText} flores`]
-            ];
-
-            doc.autoTable({
-                startY: 34,
-                head: [['Métrica Logística', 'Cálculo Recomendado']],
-                body: statsData,
-                theme: 'grid',
-                headStyles: { fillColor: [13, 148, 136] }
-            });
-
-            window.addPDFFooter(doc); doc.save(`Logistica_${activeUser}.pdf`);
-        };
-
-        window.exportStatsPDF = function() {
-            const { jsPDF } = window.jspdf; const doc = new jsPDF(); 
-            const activeUser = impersonatingId || currentUser;
-            
-            doc.setFillColor(13, 148, 136);
-            doc.rect(0, 0, 210, 28, 'F');
-            doc.setFontSize(16);
-            doc.setTextColor(255, 255, 255);
-            doc.setFont(undefined, 'bold');
-            doc.text(`Reporte Ejecutivo de Logística México - ${currentEventType || 'Evento'}`, 14, 15);
-            doc.setFontSize(10);
-            doc.setTextColor(204, 251, 241);
-            doc.text(`Usuario: ${activeUser} | Fecha: ${new Date().toLocaleDateString('es-MX')}`, 14, 22);
-
-            const statsData = [
-                ['Asistencia Total Esperada', document.getElementById('st-tot').innerText],
-                ['Confirmados (Adultos/Niños)', `${document.getElementById('st-adu').innerText} / ${document.getElementById('st-nin').innerText}`],
-                ['Declinados / Pases Recuperados', `${document.getElementById('st-decl').innerText} / ${document.getElementById('st-recup').innerText}`],
-                ['Botellas de Destilado 750ml (1 c/3 adu)', document.getElementById('st-bot').innerText],
-                ['Cervezas Estimadas (3.5 c/adu)', document.getElementById('st-cer').innerText],
-                ['Refrescos / Mezcladores (L)', document.getElementById('st-ref').innerText],
-                ['Hielo Requerido (kg)', document.getElementById('st-hie').innerText],
-                ['Mesa de Dulces / Botana MX (Piezas Totales)', document.getElementById('st-dul-tot').innerText],
-                ['Amenidades (Pantuflas / Recuerdos)', `${document.getElementById('rec-sandalias').innerText} / ${document.getElementById('rec-parejas').innerText}`],
-                ['Centros de Mesa / Flores Totales', `${document.getElementById('st-centros').innerText} mesas / ${document.getElementById('st-flores-totales').innerText} flores`]
-            ];
-
-            doc.autoTable({
-                startY: 34,
-                head: [['Métrica Logística (Cómputo MX)', 'Cálculo Recomendado']],
-                body: statsData,
-                theme: 'grid',
-                headStyles: { fillColor: [13, 148, 136] }
-            });
-
-            window.addPDFFooter(doc); doc.save(`Logistica_MX_${activeUser}.pdf`);
-        };
-
-        // VISUALIZADOR DE PASE QR Y NOTIFICACIÓN
-        window.showTicketVisual = function(id) {
-            currentTargetGuestId = id;
-            const guest = state.invitados.find(g => g.id === id);
-            if(!guest) return;
-            
-            document.getElementById('ticket-event-name').innerText = currentEventType || 'Evento';
-            document.getElementById('ticket-guest-name').innerText = guest.nombre;
-            document.getElementById('ticket-guest-passes').innerText = `${(guest.adultos||0) + (guest.ninos||0)} Pases`;
-            
-            const qrContainer = document.getElementById('ticket-qrcode');
-            qrContainer.innerHTML = '';
-            
-            const activeTarget = impersonatingId || currentUser;
-            const subdominio = getSubdomain(currentEventType);
-            const rsvpUrl = `https://${subdominio}${activeTarget}.tupasedigital.online/index2.html?u=${activeTarget}&id=${guest.id}`;
-            
-            new QRCode(qrContainer, { text: rsvpUrl, width: 140, height: 140 });
-            document.getElementById('ticket-modal').classList.remove('hidden'); 
-            document.getElementById('ticket-modal').classList.add('flex');
-        };
-
-        window.downloadNativeTicket = function() {
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: [80, 110] });
-            
-            pdf.setFillColor(15, 23, 42); 
-            pdf.rect(0, 0, 80, 110, 'F');
-            
-            pdf.setTextColor(255, 255, 255); 
-            pdf.setFontSize(13);
-            pdf.setFont(undefined, 'bold');
-            pdf.text(document.getElementById('ticket-event-name').innerText, 40, 15, { align: 'center' });
-            
-            pdf.setFontSize(8);
-            pdf.setTextColor(148, 163, 184);
-            pdf.text("PASE DE ACCESO OFICIAL", 40, 21, { align: 'center' });
-
-            const qrCanvas = document.querySelector('#ticket-qrcode canvas');
-            if (qrCanvas) {
-                const qrData = qrCanvas.toDataURL("image/png");
-                pdf.setFillColor(255, 255, 255);
-                pdf.rect(20, 26, 40, 40, 'F');
-                pdf.addImage(qrData, 'PNG', 22, 28, 36, 36);
-            }
-
-            pdf.setFontSize(12);
-            pdf.setTextColor(255, 255, 255);
-            pdf.text(document.getElementById('ticket-guest-name').innerText, 40, 75, { align: 'center' });
-            
-            pdf.setFontSize(10);
-            pdf.setTextColor(59, 130, 246);
-            pdf.text(document.getElementById('ticket-guest-passes').innerText, 40, 82, { align: 'center' });
-
-            pdf.setFontSize(7);
-            pdf.setTextColor(100, 116, 139);
-            pdf.text("Presenta este código al ingresar al salón", 40, 102, { align: 'center' });
-
-            pdf.save(`Pase_${document.getElementById('ticket-guest-name').innerText}.pdf`);
-        };
-
-        window.sendTicketWAAntiBlock = function() {
-            const guest = state.invitados.find(g => g.id === currentTargetGuestId);
-            if (!guest || !guest.telefono) return Toast.fire({icon:'warning', title:'Sin WhatsApp'});
-            const msg = encodeURIComponent(`¡Hola ${guest.nombre}! Aquí tienes tu Pase de Acceso Oficial. Por favor preséntalo en la recepción.`);
-            window.open(`https://api.whatsapp.com/send?phone=${guest.telefono}&text=${msg}`, '_blank');
-        };
-
-        window.openLocalGeneratorModal = function(id) {
-            currentTargetGuestId = id;
-            document.getElementById('wa-standard-modal').classList.remove('hidden');
-            document.getElementById('wa-standard-modal').classList.add('flex');
-            window.applyLocalTemplate();
-        };
-
-        window.applyLocalTemplate = function() {
-            const guest = state.invitados.find(g => g.id === currentTargetGuestId);
-            if(!guest) return;
-            
-            const tone = document.getElementById('local-tone-select').value;
-            const includeLink = document.getElementById('wa-include-link').checked;
-            let msg = "";
-
-            if (tone === 'formal') {
-                msg = `Estimado/a *${guest.nombre}*, nos complace confirmar sus ${guest.adultos||1} pases de adulto para *${currentEventType||'nuestro evento'}*. ¡Le esperamos con gusto!`;
-            } else if (tone === 'casual') {
-                msg = `¡Hola *${guest.nombre}*! 👋 Te recordamos tus ${guest.adultos||1} pases para *${currentEventType||'nuestro evento'}*. ¡Prepárate para celebrar!`;
-            } else {
-                msg = `¡Hola *${guest.nombre}*! 🎉 Estamos súper felices de contar contigo. Tienes reservado(s) ${guest.adultos||1} pase(s) para *${currentEventType||'nuestro evento'}*. ✨`;
-            }
-
-            if(includeLink) {
-                const activeTarget = impersonatingId || currentUser;
-                const subdominio = getSubdomain(currentEventType);
-                msg += `\n\n👉 Consulta tu pase digital aquí:\nhttps://${subdominio}${activeTarget}.tupasedigital.online/index2.html?u=${activeTarget}&id=${guest.id}`;
-            }
-
-            document.getElementById('wa-standard-msg').value = msg;
-        };
-
-        window.uploadTicketBg = function(e) {
-            const file = e.target.files[0]; if(!file) return;
-            const reader = new FileReader(); reader.onload = (ev) => { state.ticketBg = ev.target.result; window.crmSave(); Toast.fire({icon:'success', title:'Fondo guardado'}); };
-            reader.readAsDataURL(file);
-        };
-
-        window.removeTicketBg = function() { state.ticketBg = null; window.crmSave(); Toast.fire({icon:'info', title:'Fondo removido'}); };
-
-        // HOSTESS MODULE
-        window.loadHostessView = async function(eventId) {
-            Swal.fire({ title: 'Buscando evento...', didOpen: () => Swal.showLoading() });
-            try {
-                const docRef = doc(db, 'artifacts', 'weddingflow', 'users', eventId);
-                const snap = await getDoc(docRef);
-                if (snap.exists()) {
-                    impersonatingId = eventId;
-                    document.getElementById('view-login').classList.add('hidden');
-                    document.getElementById('view-admin').classList.add('hidden');
-                    document.getElementById('view-crm').classList.add('hidden');
-                    document.getElementById('view-hostess').classList.remove('hidden');
-                    document.getElementById('view-hostess').classList.add('flex');
-                    
-                    const data = snap.data();
-                    document.getElementById('hostess-event-id').innerText = `${data.eventType || 'Evento'} - ${eventId}`;
-                    state.invitados = data.invitados || [];
-                    state.mesas = data.mesas || [];
-                    window.hostessSwitchTab('scanner');
-                    window.subscribeToUser(eventId);
-                    Swal.close();
-                } else { Swal.fire('Error', 'El evento no existe.', 'error'); }
-            } catch(e) { Swal.fire('Error', 'Fallo de conexión.', 'error'); }
-        };
-
-        window.hostessSmartExit = function() {
-            document.getElementById('view-hostess').classList.add('hidden');
-            window.appLogout();
-        };
-
-        window.startScanner = function() {
-            document.getElementById('btn-start-scanner').classList.add('hidden');
-            window.html5QrcodeScanner = new Html5Qrcode("reader");
-            window.html5QrcodeScanner.start(
-                { facingMode: "environment" }, { fps: 10, qrbox: { width: 250, height: 250 } },
-                (decodedText) => {
-                    try {
-                        const url = new URL(decodedText);
-                        const gId = parseInt(url.searchParams.get("id"));
-                        if(gId) { window.html5QrcodeScanner.stop(); window.processHostessAccess(gId); }
-                    } catch(e) {}
-                }, () => {}
-            );
-        };
-
-        window.hostessManualSearch = function() {
-            const query = document.getElementById('hostess-search').value.toLowerCase();
-            const res = document.getElementById('hostess-search-results'); res.innerHTML = '';
-            if(query.length < 2) return;
-            state.invitados.filter(g => g.nombre.toLowerCase().includes(query)).forEach(g => {
-                const btn = document.createElement('button'); 
-                btn.className = 'w-full bg-slate-700 text-white p-3 rounded-lg text-left text-sm font-bold flex justify-between';
-                btn.innerHTML = `<span>${g.nombre}</span> <i class="fa-solid fa-arrow-right"></i>`;
-                btn.onclick = () => window.processHostessAccess(g.id);
-                res.appendChild(btn);
-            });
-        };
-
-        window.processHostessAccess = function(gId) {
-            const g = state.invitados.find(x => x.id === gId);
-            if(!g) return Swal.fire('Error', 'Invitado no encontrado.', 'error');
-            hCurrentGuest = g; hAduToEnter = (parseInt(g.adultos)||1); hNinToEnter = (parseInt(g.ninos)||0);
-            document.getElementById('hr-name').innerText = g.nombre;
-            window.updateEntryUI();
-            const modal = document.getElementById('hostess-result-modal'); const box = document.getElementById('hostess-result-box');
-            modal.classList.remove('hidden'); modal.classList.add('flex');
-            setTimeout(() => { box.classList.remove('scale-95', 'opacity-0'); box.classList.add('scale-100', 'opacity-100'); }, 10);
-        };
-
-        window.adjEntry = function(tipo, val) {
-            if (tipo === 'adu') { hAduToEnter = Math.max(0, hAduToEnter + val); } 
-            else { hNinToEnter = Math.max(0, hNinToEnter + val); }
-            window.updateEntryUI();
-        };
-
-        window.updateEntryUI = function() {
-            document.getElementById('hr-adu-entering').innerText = hAduToEnter; 
-            document.getElementById('hr-nin-entering').innerText = hNinToEnter;
-        };
-
-        window.confirmHostessEntry = function() {
-            if(!hCurrentGuest) return;
-            hCurrentGuest.ingresadosA = (parseInt(hCurrentGuest.ingresadosA) || 0) + hAduToEnter; 
-            hCurrentGuest.ingresadosN = (parseInt(hCurrentGuest.ingresadosN) || 0) + hNinToEnter;
-            window.crmSave(); window.closeHostessResult(); 
-            Toast.fire({icon: 'success', title: 'Ingreso Registrado'}); 
-            window.hostessRenderLiveStats();
-        };
-
-        window.closeHostessResult = function() {
-            const modal = document.getElementById('hostess-result-modal'); const box = document.getElementById('hostess-result-box');
-            box.classList.remove('scale-100', 'opacity-100'); box.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => { modal.classList.replace('flex', 'hidden'); }, 200);
-        };
-
-        window.hostessRenderLiveStats = function() {
-            let totalEsperados = 0, totalIngresados = 0;
-            state.invitados.forEach(g => {
-                let ads = parseInt(g.adultos||1); let nns = parseInt(g.ninos||0);
-                totalEsperados += (ads + nns);
-                totalIngresados += ((parseInt(g.ingresadosA)||0) + (parseInt(g.ingresadosN)||0));
-            });
-            document.getElementById('h-total-esperados').innerText = totalEsperados;
-            document.getElementById('h-total-ingresados').innerText = totalIngresados;
-            document.getElementById('h-total-general').innerText = totalIngresados + (state.config.extras||0);
-        };
-
-        window.hostessAddExtra = function() {
-            Swal.fire({ title: 'Añadir Extra', input: 'number', inputValue: 1 }).then(r => {
-                if(r.isConfirmed) { state.config.extras = (state.config.extras||0) + (parseInt(r.value)||1); window.crmSave(); window.hostessRenderLiveStats(); }
-            });
-        };
-
-        window.hostessSwitchTab = function(tab) {
-            ['scanner', 'list', 'croquis'].forEach(t => {
-                document.getElementById(`hview-${t}`).classList.replace('flex', 'hidden');
-            });
-            document.getElementById(`hview-${tab}`).classList.replace('hidden', 'flex');
-            if(tab === 'list') window.hostessRenderLiveStats();
-        };
-
-        window.hostessExportReportPDF = function() {
-            const { jsPDF } = window.jspdf; 
-            const doc = new jsPDF();
-            const activeUser = impersonatingId || currentUser;
-
-            doc.setFillColor(15, 23, 42);
-            doc.rect(0, 0, 210, 28, 'F');
-            doc.setFontSize(16);
-            doc.setTextColor(255, 255, 255);
-            doc.setFont(undefined, 'bold');
-            doc.text(`Corte de Recepción Hostess - ${currentEventType || 'Evento'}`, 14, 15);
-            doc.setFontSize(10);
-            doc.setTextColor(148, 163, 184);
-            doc.text(`Evento ID: ${activeUser} | Fecha Cierre: ${new Date().toLocaleDateString('es-MX')}`, 14, 22);
-
-            let totalEsperados = 0, totalIngresados = 0;
-            state.invitados.forEach(g => {
-                let ads = parseInt(g.adultos||1); let nns = parseInt(g.ninos||0);
-                totalEsperados += (ads + nns);
-                totalIngresados += ((parseInt(g.ingresadosA)||0) + (parseInt(g.ingresadosN)||0));
-            });
-
-            const hostessData = [
-                ['Invitados Totales Esperados en Lista', totalEsperados],
-                ['Invitados Ingresados por QR / Lista', totalIngresados],
-                ['Personas Extra Ingresadas en Puerta', state.config.extras || 0],
-                ['TOTAL GENERAL DE ASISTENTES EN SALÓN', totalIngresados + (state.config.extras||0)]
-            ];
-
-            doc.autoTable({
-                startY: 34,
-                head: [['Métrica de Puerta', 'Cómputo']],
-                body: hostessData,
-                theme: 'striped',
-                headStyles: { fillColor: [16, 185, 129] }
-            });
-
-            let finalY = doc.lastAutoTable.finalY + 30;
-            if(finalY > 250) { doc.addPage(); finalY = 40; }
-
-            doc.setDrawColor(100);
-            doc.line(60, finalY, 150, finalY);
-            doc.setFontSize(9);
-            doc.setTextColor(100);
-            doc.text("Firma de Conformidad Hostess / Recepción", 105, finalY + 6, { align: "center" });
-
-            window.addPDFFooter(doc); doc.save(`Corte_Hostess_${activeUser}.pdf`);
-        };
-
-        // DOM LOAD & EMOJI PICKER BINDINGS
+        // EVENTOS TECLA ENTER
         document.addEventListener('DOMContentLoaded', () => {
-            const picker = document.querySelector('emoji-picker');
-            if (picker) {
-                picker.addEventListener('emoji-click', event => {
-                    const textarea = document.getElementById('wa-standard-msg');
-                    if(textarea) {
-                        const start = textarea.selectionStart || 0;
-                        const end = textarea.selectionEnd || 0;
-                        textarea.value = textarea.value.substring(0, start) + event.detail.unicode + textarea.value.substring(end);
-                        textarea.selectionStart = textarea.selectionEnd = start + event.detail.unicode.length;
-                        textarea.focus();
-                    }
-                    const container = document.getElementById('emoji-picker-container');
-                    if(container) container.classList.add('hidden');
-                });
-            }
+            const loginUserEl = document.getElementById('login-user');
+            const loginPassEl = document.getElementById('login-pass');
+            
+            const triggerEnterLogin = (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    window.appLogin();
+                }
+            };
+
+            if (loginUserEl) loginUserEl.addEventListener('keyup', triggerEnterLogin);
+            if (loginPassEl) loginPassEl.addEventListener('keyup', triggerEnterLogin);
         });
 
         const savedTheme = localStorage.getItem('tpd_selected_theme');
