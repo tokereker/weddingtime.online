@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TPD Enterprise v2.0 Pro - SaaS CRM & Hub México</title>
+    <title>TPD Enterprise v2.0 Pro - SaaS CRM & Hub</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome 6 -->
@@ -62,7 +62,6 @@
             pointer-events: none;
         }
 
-        /* TEMAS DINÁMICOS */
         body.theme-midnight {
             --bg-canvas: #090d16;
             --card-bg: #111827;
@@ -149,7 +148,7 @@
             </div>
 
             <h1 class="text-3xl font-black mb-1 text-white tracking-tight">Bienvenido</h1>
-            <p class="text-slate-400 text-sm mb-6 font-medium">Plataforma SaaS de Gestión de Eventos IA México</p>
+            <p class="text-slate-400 text-sm mb-6 font-medium">Plataforma SaaS de Gestión de Eventos IA</p>
             
             <div class="space-y-4 mb-6">
                 <div>
@@ -163,13 +162,18 @@
                 </div>
             </div>
             
-            <button id="login-submit-btn" onclick="window.appLogin()" class="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-500 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-4 rounded-2xl shadow-lg shadow-blue-600/30 transition duration-300 text-base flex items-center justify-center gap-2 transform active:scale-95">
+            <button id="login-submit-btn" onclick="window.appLogin()" class="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-500 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-4 rounded-2xl shadow-lg shadow-blue-600/30 transition duration-300 text-base flex items-center justify-center gap-2 transform active:scale-95 mb-3">
                 Ingresar al Sistema <i class="fa-solid fa-arrow-right"></i>
             </button>
 
-            <div class="mt-8 pt-6 border-t border-slate-800 flex justify-between items-center text-xs text-slate-500 font-medium">
+            <!-- Acceso Rápido Modo Demostración -->
+            <button onclick="window.enterDemoMode()" class="w-full bg-slate-800/80 hover:bg-slate-700 text-amber-300 border border-amber-400/30 font-bold py-3 rounded-2xl transition duration-300 text-xs flex items-center justify-center gap-2">
+                <i class="fa-solid fa-bolt text-amber-400"></i> Probar en Modo Demostración
+            </button>
+
+            <div class="mt-6 pt-5 border-t border-slate-800 flex justify-between items-center text-xs text-slate-500 font-medium">
                 <span class="flex items-center gap-1.5"><i class="fa-solid fa-shield-halved text-emerald-400"></i> IA Isolada Activa</span>
-                <span class="flex items-center gap-1.5"><i class="fa-solid fa-cloud text-blue-400"></i> Cloud Sync MX</span>
+                <span class="flex items-center gap-1.5"><i class="fa-solid fa-cloud text-blue-400"></i> Cloud Sync</span>
             </div>
         </div>
     </div>
@@ -461,7 +465,7 @@
                 </div>
             </section>
 
-            <!-- SECCIÓN ESTADÍSTICAS & LOGÍSTICA CON ESTÁNDARES MÉXICO -->
+            <!-- SECCIÓN ESTADÍSTICAS & LOGÍSTICA CON ESTÁNDARES -->
             <section id="crm-sec-stats" class="hidden flex-1 flex-col min-h-0 w-full overflow-y-auto custom-scrollbar pb-32 pr-2">
                 <div class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col gap-2 sm:gap-3">
                     <button onclick="window.exportStatsExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl shadow-xl font-bold flex items-center gap-2 transform transition hover:scale-105 text-xs sm:text-sm">
@@ -474,7 +478,7 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-7xl mx-auto w-full" id="stats-print-area">
                     <div class="bg-white p-4 sm:p-6 rounded-3xl shadow-sm border border-slate-200 col-span-1 md:col-span-2 lg:col-span-4">
-                        <h3 class="text-base sm:text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-chart-pie text-blue-500"></i> Asistencia General (Cómputo México)</h3>
+                        <h3 class="text-base sm:text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-chart-pie text-blue-500"></i> Asistencia General</h3>
                         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4 text-center">
                             <div class="bg-slate-50 rounded-xl p-3 border border-slate-100 flex flex-col justify-center">
                                 <p class="text-xl sm:text-3xl font-black text-slate-800" id="st-tot">0</p>
@@ -533,7 +537,7 @@
                                 </select>
                             </div>
                             <div class="col-span-2">
-                                <label class="text-[9px] sm:text-[10px] font-bold text-teal-800 uppercase tracking-wider block mb-1">Tornaboda (Cierre MX)</label>
+                                <label class="text-[9px] sm:text-[10px] font-bold text-teal-800 uppercase tracking-wider block mb-1">Tornaboda / Trasnoche</label>
                                 <select id="cfg-musica-torna" onchange="window.crmUpdateConfig('musicTorna', this.value)" class="w-full border-2 border-teal-100 rounded-lg p-2 text-[10px] sm:text-xs font-bold outline-none focus:border-teal-500 bg-white">
                                     <option value="Ninguno">Ninguno</option>
                                     <option value="Mariachi">Mariachi</option>
@@ -556,6 +560,58 @@
                         <div class="bg-white rounded-2xl p-4 border border-teal-100 shadow-sm flex-1 overflow-y-auto custom-scrollbar min-h-32">
                             <h4 class="text-xs font-black text-slate-800 mb-3 border-b border-slate-100 pb-2">Cronograma Calculado</h4>
                             <div id="st-timeline" class="space-y-3"></div>
+                        </div>
+                    </div>
+
+                    <!-- Bebidas (Bar) -->
+                    <div class="bg-indigo-50 p-4 sm:p-5 rounded-3xl shadow-sm border border-indigo-200 col-span-1 lg:col-span-1 flex flex-col justify-start gap-4 h-fit">
+                        <h3 class="text-sm sm:text-base font-bold text-indigo-900 flex items-center gap-2"><i class="fa-solid fa-wine-glass-empty text-indigo-500"></i> Insumos de Bar</h3>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-[10px] bg-white p-2.5 rounded-lg border border-indigo-100 shadow-sm">
+                                <span class="font-bold text-slate-700">Botellas 750ml <span class="text-[8px] text-slate-400 font-normal uppercase block">1 c/3 adu (Tequila/Whisky)</span></span>
+                                <span class="font-black text-indigo-700 text-sm self-center" id="st-bot">0 bts</span>
+                            </div>
+                            <div class="flex justify-between text-[10px] bg-white p-2.5 rounded-lg border border-indigo-100 shadow-sm">
+                                <span class="font-bold text-slate-700">Cervezas <span class="text-[8px] text-slate-400 font-normal uppercase block">3 a 4 c/adu</span></span>
+                                <span class="font-black text-indigo-700 text-sm self-center" id="st-cer">0 pz</span>
+                            </div>
+                            <div class="flex justify-between text-[10px] bg-white p-2.5 rounded-lg border border-indigo-100 shadow-sm">
+                                <span class="font-bold text-slate-700 self-center">Refrescos / Agua 2L <span class="text-[8px] text-slate-400 font-normal uppercase block">Toronja, Cola, Mineral</span></span>
+                                <span class="font-black text-indigo-700 text-sm self-center" id="st-ref">0 L</span>
+                            </div>
+                            <div class="flex justify-between text-[10px] bg-white p-2.5 rounded-lg border border-indigo-100 shadow-sm">
+                                <span class="font-bold text-slate-700">Hielo <span class="text-[8px] text-slate-400 font-normal uppercase block">1.2kg c/adu</span></span>
+                                <span class="font-black text-indigo-700 text-sm self-center" id="st-hie">0 kg</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mesa de Dulces / Botanas -->
+                    <div class="bg-amber-50 p-4 sm:p-5 rounded-3xl shadow-sm border border-amber-200 col-span-1 lg:col-span-1 flex flex-col justify-start gap-4 h-fit">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="text-sm sm:text-base font-bold text-amber-900 flex items-center gap-2"><i class="fa-solid fa-candy-cane text-amber-500"></i> Mesa de Dulces & Botana</h3>
+                                <button onclick="window.crmRenderStats()" class="text-amber-400 hover:text-amber-600 transition"><i class="fa-solid fa-sync"></i></button>
+                            </div>
+                            <div class="bg-white rounded-xl p-3 border border-amber-100 text-center shadow-sm mb-3">
+                                <p class="text-2xl font-black text-amber-600" id="st-dul-tot">0</p>
+                                <p class="text-[9px] font-bold text-amber-800 uppercase tracking-widest mt-0.5">Piezas Recomendadas (4 c/pax)</p>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-[10px] bg-white p-2 rounded-lg border border-amber-100 shadow-sm"><span class="font-bold text-slate-700">Salado / Chamoy (35%)</span><span class="font-black text-amber-700" id="st-dul-sal">0 pz</span></div>
+                            <div class="flex justify-between text-[10px] bg-white p-2 rounded-lg border border-amber-100 shadow-sm"><span class="font-bold text-slate-700">Dulces / Chocolate (25%)</span><span class="font-black text-amber-700" id="st-dul-cho">0 pz</span></div>
+                            <div class="flex justify-between text-[10px] bg-white p-2 rounded-lg border border-amber-100 shadow-sm"><span class="font-bold text-slate-700">Postres Gourmet (20%)</span><span class="font-black text-amber-700" id="st-dul-pos">0 pz</span></div>
+                            <div class="flex justify-between text-[10px] bg-white p-2 rounded-lg border border-amber-100 shadow-sm"><span class="font-bold text-slate-700">Frituras / Papas (20%)</span><span class="font-black text-amber-700" id="st-dul-gra">0 pz</span></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-purple-50 p-4 sm:p-5 rounded-3xl shadow-sm border border-purple-200 col-span-1 lg:col-span-1 flex flex-col justify-start gap-4 h-fit">
+                        <h3 class="text-sm sm:text-base font-bold text-purple-900 flex items-center gap-2"><i class="fa-solid fa-gift text-purple-500"></i> Amenidades Fiesta</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between text-xs bg-white p-3 rounded-xl border border-purple-100 shadow-sm"><span class="font-bold text-slate-700">Recuerdos</span><span class="font-black text-purple-700" id="rec-parejas">0 pz</span></div>
+                            <div class="flex justify-between text-xs bg-white p-3 rounded-xl border border-purple-100 shadow-sm"><span class="font-bold text-slate-700">Pantuflas/Sandalias (Mujeres)</span><span class="font-black text-purple-700" id="rec-sandalias">0 prs</span></div>
+                            <div class="flex justify-between text-xs bg-white p-3 rounded-xl border border-purple-100 shadow-sm"><span class="font-bold text-slate-700">Kit Anticruda</span><span class="font-black text-purple-700" id="rec-anticruda">0 pz</span></div>
                         </div>
                     </div>
 
@@ -970,6 +1026,98 @@
 
         const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, timerProgressBar: true });
 
+        // FUNCIONES DE ARRASTRE (DRAG & DROP)
+        window.allowDrop = function(ev) {
+            ev.preventDefault();
+            if(ev.currentTarget) ev.currentTarget.classList.add('dragover');
+        };
+
+        window.leaveDrop = function(ev) {
+            if(ev.currentTarget) ev.currentTarget.classList.remove('dragover');
+        };
+
+        window.dragGuest = function(ev, id) {
+            ev.dataTransfer.setData("text/plain", id.toString());
+            if(ev.target) setTimeout(() => ev.target.classList.add('dragging'), 0);
+        };
+
+        window.dropGuest = function(ev, tableId) {
+            ev.preventDefault();
+            if(ev.currentTarget) ev.currentTarget.classList.remove('dragover');
+            const gId = parseInt(ev.dataTransfer.getData("text/plain"));
+            if (!gId) return;
+            document.querySelectorAll('.dragging').forEach(el => el.classList.remove('dragging'));
+            const guest = state.invitados.find(g => g.id === gId);
+            if(guest) {
+                guest.mesa = parseInt(tableId);
+                window.crmSave();
+                window.crmRenderTables();
+                Toast.fire({ icon: 'success', title: tableId === 0 ? 'Pase movido a Sin Asignar' : 'Pase asignado a mesa' });
+            }
+        };
+
+        window.togglePassword = function(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.type = el.type === "password" ? "text" : "password";
+            }
+        };
+
+        window.generateRandomPassword = function(targetId) {
+            const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#";
+            let pass = "";
+            for(let i=0; i<10; i++) pass += chars.charAt(Math.floor(Math.random() * chars.length));
+            const passInput = document.getElementById(targetId);
+            if(passInput) {
+                passInput.type = 'text';
+                passInput.value = pass;
+            }
+        };
+
+        // MODO DEMOSTRACIÓN
+        window.enterDemoMode = function() {
+            currentUser = "boda_demomx";
+            currentRole = "Cliente";
+            currentEventType = "Boda";
+            isPremiumUser = true;
+            
+            state = {
+                invitados: [
+                    { id: 101, nombre: "Familia García López", grupo: "Familia", telefono: "2221234567", adultos: 4, ninos: 2, status: "Confirmado", mesa: 1, observaciones: "Alergia a mariscos (1 adulto)" },
+                    { id: 102, nombre: "Familia Rodríguez Pérez", grupo: "Familia", telefono: "2227654321", adultos: 2, ninos: 1, status: "Confirmado", mesa: 1, observaciones: "Menú infantil (1 niño)" },
+                    { id: 103, nombre: "Ing. Carlos Mendoza", grupo: "Trabajo", telefono: "2229876543", adultos: 2, ninos: 0, status: "Confirmado", mesa: 2, observaciones: "Vegetariano" },
+                    { id: 104, nombre: "Lic. Ana Sofía Martínez", grupo: "Trabajo", telefono: "2224567890", adultos: 2, ninos: 0, status: "Confirmado", mesa: 2, observaciones: "" },
+                    { id: 105, nombre: "Familia Hernández Morales", grupo: "Familia", telefono: "2223334455", adultos: 5, ninos: 2, status: "Confirmado", mesa: 3, observaciones: "" },
+                    { id: 106, nombre: "Dr. Roberto Sánchez", grupo: "Amigos", telefono: "2226667788", adultos: 2, ninos: 0, status: "Confirmado", mesa: 3, observaciones: "" },
+                    { id: 107, nombre: "Familia Torres Ramírez", grupo: "Conocidos", telefono: "2229990011", adultos: 3, ninos: 1, status: "Pendiente", mesa: 0, observaciones: "" },
+                    { id: 108, nombre: "Familia Flores Castro", grupo: "Amigos", telefono: "2224445566", adultos: 2, ninos: 0, status: "Declinado", mesa: 0, observaciones: "Fuera del país" }
+                ],
+                mesas: [
+                    { id: 1, nombre: "Mesa VIP - Novios" },
+                    { id: 2, nombre: "Mesa Corporativa" },
+                    { id: 3, nombre: "Mesa Familia Hernández" }
+                ],
+                config: {
+                    capacidadMesa: 10,
+                    themeColor: '#3b82f6',
+                    extras: 2,
+                    totalExtrasCost: 1000,
+                    fontFamily: 'Playfair Display',
+                    eventStartTime: "20:00",
+                    eventDuration: 6,
+                    musicDinner: "Saxofón",
+                    musicMain: "Grupo Versátil",
+                    musicTorna: "Mariachi",
+                    flowersPerTable: 15
+                },
+                croquis: null,
+                ticketBg: null
+            };
+            
+            window.setupClientEnvironment("boda_demomx", { role: "Cliente", eventType: "Boda", hasPremiumLink: true });
+            Toast.fire({ icon: 'info', title: '💡 Modo Demostración Activado' });
+        };
+
         function getSubdomain(eventType) {
             const map = { "XV Años": "xvana", "Bautizo": "bautizo", "Primera Comunión": "comunion", "Confirmación": "confirmacion", "Primera Comunión y Confirmación": "comunion", "Cumpleaños": "cumple", "Boda": "boda" };
             return map[eventType] || "boda";
@@ -1184,15 +1332,15 @@
             else { window.appLogout(); }
         };
 
-        // ASISTENTE DE IA CON PARÁMETROS DE MÉXICO
+        // ASISTENTE DE IA CON PARÁMETROS DE LOGÍSTICA
         window.initEventAssistant = function() {
             const activeId = impersonatingId || currentUser;
             const container = document.getElementById('tpd-chat-messages');
             const titleEl = document.getElementById('tpd-chat-title');
             
-            if(titleEl) titleEl.innerHTML = `<i class="fa-solid fa-brain mr-2"></i> IA México: ${currentEventType || 'Evento'}`;
+            if(titleEl) titleEl.innerHTML = `<i class="fa-solid fa-brain mr-2"></i> Asistente de Evento: ${currentEventType || 'Evento'}`;
             
-            const initialMsg = `¡Hola! Soy el asistente v2.0 Pro para tu <b>${currentEventType || 'Evento'}</b> en México (ID: <i>${activeId}</i>).<br><br>Pídeme calcular <b>bebidas</b> (destilados, cervezas y mezcladores), <b>mesas</b>, <b>chilaquiles/tornaboda</b>, <b>mesa de dulces/botanas</b> o <b>resumen</b>.`;
+            const initialMsg = `¡Hola! Soy el asistente v2.0 Pro para tu <b>${currentEventType || 'Evento'}</b> (ID: <i>${activeId}</i>).<br><br>Pídeme calcular <b>bebidas</b> (destilados, cervezas y mezcladores), <b>mesas</b>, <b>chilaquiles/tornaboda</b>, <b>mesa de dulces/botanas</b> o <b>resumen</b>.`;
             
             if(container) container.innerHTML = `<div class="tpd-msg bot">${initialMsg}</div>`;
         };
@@ -1221,7 +1369,7 @@
             container.scrollTop = container.scrollHeight;
 
             const loadingId = 'loading-' + Date.now(); 
-            container.innerHTML += `<div id="${loadingId}" class="tpd-msg bot"><i class="fa-solid fa-circle-notch fa-spin"></i> Analizando datos de tu evento en México...</div>`; 
+            container.innerHTML += `<div id="${loadingId}" class="tpd-msg bot"><i class="fa-solid fa-circle-notch fa-spin"></i> Analizando datos de tu evento...</div>`; 
             container.scrollTop = container.scrollHeight;
 
             setTimeout(() => {
@@ -1261,7 +1409,7 @@
                         const cervezas = Math.ceil(cAdu * 3.5);
                         const refrescoL = Math.ceil(((cAdu * 1.5) + (cNin * 0.75)));
                         const hieloKg = Math.ceil(cAdu * 1.2);
-                        reply = `🍾 <b>Insumos de Bar para México (${cAdu} Adultos):</b><br>` +
+                        reply = `🍾 <b>Insumos de Bar (${cAdu} Adultos):</b><br>` +
                                 `• Destilados (Tequila/Whisky/Ron): <b>${botellas} botellas (750ml)</b> (1 c/3 adu).<br>` +
                                 `• Cervezas: <b>${cervezas} pz</b> (3.5 c/adu).<br>` +
                                 `• Mezcladores (Refrescos/Agua mineral): <b>${refrescoL} L</b>.<br>` +
@@ -1270,12 +1418,12 @@
                 }
                 else if (text.includes('chilaquiles') || text.includes('torna') || text.includes('trasnoche') || text.includes('snack')) {
                     const porciones = Math.ceil(totalConfirmados * 0.65);
-                    reply = `🥘 <b>Tornaboda / Trasnoche MX:</b><br>` +
+                    reply = `🥘 <b>Tornaboda / Trasnoche:</b><br>` +
                             `• Para ${totalConfirmados} asistentes, te sugiero presupuestar <b>${porciones} porciones de chilaquiles o tacos</b> (65% del total).`;
                 }
                 else if (text.includes('dulce') || text.includes('botana') || text.includes('postre')) {
                     const totalPiezas = Math.ceil((cAdu * 3.5) + (cNin * 4.5));
-                    reply = `🍬 <b>Mesa de Dulces y Botanas MX:</b><br>` +
+                    reply = `🍬 <b>Mesa de Dulces y Botanas:</b><br>` +
                             `Recomiendo <b>${totalPiezas} piezas</b> en total:<br>` +
                             `• 35% Botana Salada/Chamoy (Papas, cacahuates, Chicharrones): ${Math.ceil(totalPiezas*0.35)} pz.<br>` +
                             `• 25% Chocolates y Dulces: ${Math.ceil(totalPiezas*0.25)} pz.<br>` +
@@ -1710,15 +1858,22 @@
             state.mesas.forEach(mesa => {
                 const mesaDiv = document.createElement('div');
                 mesaDiv.className = 'bg-white border border-slate-200 rounded-2xl shadow-sm flex flex-col h-[280px] table-dropzone';
+                mesaDiv.setAttribute('ondragover', 'window.allowDrop(event)');
+                mesaDiv.setAttribute('ondragleave', 'window.leaveDrop(event)');
+                mesaDiv.setAttribute('ondrop', `window.dropGuest(event, ${mesa.id})`);
+
                 const guestsInTable = state.invitados.filter(g => g.mesa === mesa.id);
                 let pasesMesa = guestsInTable.reduce((sum, g) => sum + (parseInt(g.adultos !== undefined ? g.adultos : g.pases) || 0) + (parseInt(g.ninos) || 0), 0);
 
                 mesaDiv.innerHTML = `
-                    <div class="p-3 border-b border-slate-100 bg-slate-50 flex justify-between items-center rounded-t-2xl">
+                    <div class="p-3 border-b border-slate-100 bg-slate-50 flex justify-between items-center rounded-t-2xl cursor-pointer hover:bg-slate-100 transition" onclick="window.renameTable(${mesa.id})" title="Renombrar Mesa">
                         <span class="font-bold text-slate-700 truncate">${mesa.nombre}</span>
                         <span class="text-xs px-2.5 py-1 rounded-full font-bold bg-blue-100 text-blue-700">${pasesMesa}/${cap}</span>
                     </div>
                     <div class="flex-1 p-2 overflow-y-auto space-y-2 bg-slate-50/30 custom-scrollbar"></div>
+                    <div class="p-2 border-t border-slate-100 bg-white rounded-b-2xl flex justify-center">
+                        <button onclick="window.deleteTable(${mesa.id})" class="text-[10px] text-slate-400 hover:text-red-500 font-bold uppercase transition px-3 py-1"><i class="fa-solid fa-trash-can mr-1"></i> Borrar Mesa</button>
+                    </div>
                 `;
                 const listContainer = mesaDiv.querySelector('.flex-1');
                 guestsInTable.forEach(g => listContainer.appendChild(createGuestCard(g, false)));
@@ -1732,14 +1887,77 @@
             let nns = parseInt(g.ninos) || 0;
             const card = document.createElement('div');
             card.className = 'guest-card bg-white p-2 rounded-xl shadow-sm border border-slate-200 text-sm flex justify-between items-center';
+            card.setAttribute('draggable', 'true');
+            card.setAttribute('ondragstart', `window.dragGuest(event, ${g.id})`);
+            card.setAttribute('ondragend', `this.classList.remove('dragging')`);
+
+            let actionBtn = isUnassigned ? `
+                <select onchange="window.assignTable(${g.id}, this.value)" class="text-[10px] border border-slate-200 rounded-lg outline-none w-20 bg-slate-50 font-bold text-slate-600 ml-1 cursor-pointer py-1">
+                    <option value="0">Mesa...</option>
+                    ${state.mesas.map(m => `<option value="${m.id}">${m.nombre}</option>`).join('')}
+                </select>
+            ` : `
+                <button onclick="window.assignTable(${g.id}, 0)" class="text-slate-300 hover:text-red-500 transition px-2 py-1" title="Mover a Sin Asignar"><i class="fa-solid fa-times"></i></button>
+            `;
+
             card.innerHTML = `
-                <div class="truncate">
-                    <p class="font-bold text-slate-700 text-xs truncate">${g.nombre}</p>
-                    <span class="text-[9px] bg-blue-50 text-blue-600 px-1.5 rounded font-bold">${ads}A ${nns}N</span>
+                <div class="flex items-center gap-2 overflow-hidden flex-1">
+                    <i class="fa-solid fa-grip-vertical text-slate-300 text-xs cursor-grab shrink-0"></i>
+                    <div class="truncate">
+                        <p class="font-bold text-slate-700 text-xs truncate">${g.nombre}</p>
+                        <span class="text-[9px] bg-blue-50 text-blue-600 px-1.5 rounded font-bold">${ads}A ${nns}N</span>
+                    </div>
                 </div>
+                ${actionBtn}
             `;
             return card;
         }
+
+        window.assignTable = function(gId, tId) {
+            const guest = state.invitados.find(g => g.id === gId);
+            if(guest) {
+                guest.mesa = parseInt(tId);
+                window.crmSave();
+                window.crmRenderTables();
+            }
+        };
+
+        window.deleteTable = function(id) {
+            Swal.fire({
+                title: '¿Eliminar mesa?',
+                text: 'Los invitados pasarán a la lista de Sin Asignar.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444'
+            }).then(r => {
+                if(r.isConfirmed) {
+                    state.mesas = state.mesas.filter(m => m.id !== id);
+                    state.invitados.forEach(g => { if(g.mesa === id) g.mesa = 0; });
+                    window.crmSave();
+                    window.crmRenderTables();
+                    Toast.fire({ icon: 'success', title: 'Mesa eliminada' });
+                }
+            });
+        };
+
+        window.renameTable = function(id) {
+            const m = state.mesas.find(x => x.id === id);
+            if(!m) return;
+            Swal.fire({
+                title: 'Renombrar Mesa',
+                input: 'text',
+                inputValue: m.nombre,
+                showCancelButton: true,
+                confirmButtonColor: '#2563eb'
+            }).then(r => {
+                if(r.isConfirmed && r.value && r.value.trim() !== '') {
+                    m.nombre = r.value.trim();
+                    window.crmSave();
+                    window.crmRenderTables();
+                    Toast.fire({ icon: 'success', title: 'Mesa renombrada' });
+                }
+            });
+        };
 
         window.addMultipleTables = function() {
             let qty = parseInt(document.getElementById('num-tables-add').value) || 1;
@@ -1846,17 +2064,125 @@
             const floresMesa = parseInt(state.config.flowersPerTable) || 15;
             document.getElementById('st-centros').innerText = numMesas;
             document.getElementById('st-flores-totales').innerText = numMesas * floresMesa;
+
+            window.generateTimeline(adultosTotales + ninosTotales);
+        };
+
+        window.generateTimeline = function(totalConfirmados) {
+            let startTime = state.config.eventStartTime || "20:00";
+            let duration = parseInt(state.config.eventDuration) || 5;
+            let mainMusic = state.config.musicMain || 'DJ';
+            let dinnerMusic = state.config.musicDinner || 'Playlist';
+            let tornaMusic = state.config.musicTorna || 'Ninguno';
+
+            let staffCount = 3;
+            if (mainMusic === 'Grupo Versátil' || mainMusic === 'Ambos') staffCount += 10;
+            else if (mainMusic === 'DJ') staffCount += 2;
+            if (dinnerMusic === 'Saxofón' || dinnerMusic === 'Violín') staffCount += 1;
+            else if (dinnerMusic === 'Grupo Jazz') staffCount += 4;
+            document.getElementById('st-staff-meals').innerText = staffCount;
+
+            let snackCount = Math.ceil(totalConfirmados * 0.65);
+            document.getElementById('st-torna-snacks').innerText = snackCount;
+
+            let [hours, minutes] = startTime.split(':').map(Number);
+            let time = new Date();
+            time.setHours(hours || 20, minutes || 0, 0);
+
+            function formatTime(d) { return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }); }
+            function addMinutes(d, mins) { return new Date(d.getTime() + mins * 60000); }
+
+            let html = "";
+            const addEvent = (tStr, title, desc) => {
+                html += `
+                <div class="flex gap-4 items-start timeline-event">
+                    <div class="w-16 shrink-0 text-right pt-0.5"><span class="text-xs font-black text-teal-600 time-val">${tStr}</span></div>
+                    <div class="w-4 h-4 rounded-full bg-teal-100 border-2 border-teal-500 shrink-0 mt-1"></div>
+                    <div class="pb-4 border-l-2 border-teal-100 pl-4 -ml-2.5 flex-1 desc-val">
+                        <p class="text-sm font-bold text-slate-800">${title}</p>
+                        ${desc ? `<p class="text-[10px] text-slate-500 mt-1">${desc}</p>` : ''}
+                    </div>
+                </div>`;
+            };
+
+            let t1 = formatTime(time);
+            time = addMinutes(time, 45);
+            addEvent(t1, "Recepción de Invitados", dinnerMusic !== 'Ninguno' ? `Música de ambiente: ${dinnerMusic}` : '');
+
+            t1 = formatTime(time);
+            time = addMinutes(time, 90);
+            addEvent(t1, "Servicio de Banquete / Cena", "Tiempo estimado de platillos.");
+
+            t1 = formatTime(time);
+            time = addMinutes(time, 30);
+            addEvent(t1, "Protocolo & Vals Principal", "Apertura de pista.");
+
+            t1 = formatTime(time);
+            let partyMinutes = (duration * 60) - 165;
+            if (tornaMusic !== 'Ninguno' && partyMinutes > 60) partyMinutes -= 60;
+
+            if (partyMinutes > 0) {
+                time = addMinutes(time, partyMinutes);
+                addEvent(t1, "Apertura de Pista & Fiesta", `Animación principal con ${mainMusic}.`);
+            }
+
+            if (tornaMusic !== 'Ninguno') {
+                t1 = formatTime(time);
+                time = addMinutes(time, 60);
+                addEvent(t1, "Tornaboda / Chilaquiles MX", `Servicio de trasnoche acompañado por ${tornaMusic}.`);
+            }
+
+            addEvent(formatTime(time), "Cierre de Evento", "Desalojo del recinto.");
+            document.getElementById('st-timeline').innerHTML = html;
         };
 
         window.exportStatsExcel = function() {
             const stats = [
                 { Categoria: "Asistencia", Item: "Lugares Totales", Valor: document.getElementById('st-tot').innerText },
                 { Categoria: "Asistencia", Item: "Confirmados", Valor: document.getElementById('st-conf').innerText },
-                { Categoria: "Bebidas MX", Item: "Botellas Destilado 750ml", Valor: document.getElementById('st-bot').innerText },
-                { Categoria: "Bebidas MX", Item: "Cervezas", Valor: document.getElementById('st-cer').innerText }
+                { Categoria: "Insumos Bar", Item: "Botellas Destilado 750ml", Valor: document.getElementById('st-bot').innerText },
+                { Categoria: "Insumos Bar", Item: "Cervezas", Valor: document.getElementById('st-cer').innerText }
             ];
             const ws = XLSX.utils.json_to_sheet(stats); const wb = XLSX.utils.book_new(); 
-            XLSX.utils.book_append_sheet(wb, ws, "Logistica_MX"); XLSX.writeFile(wb, `Logistica_MX_${impersonatingId||currentUser}.xlsx`);
+            XLSX.utils.book_append_sheet(wb, ws, "Logistica"); XLSX.writeFile(wb, `Logistica_${impersonatingId||currentUser}.xlsx`);
+        };
+
+        window.exportStatsPDF = function() {
+            const { jsPDF } = window.jspdf; const doc = new jsPDF(); 
+            const activeUser = impersonatingId || currentUser;
+            
+            doc.setFillColor(13, 148, 136);
+            doc.rect(0, 0, 210, 28, 'F');
+            doc.setFontSize(16);
+            doc.setTextColor(255, 255, 255);
+            doc.setFont(undefined, 'bold');
+            doc.text(`Reporte Ejecutivo de Logística - ${currentEventType || 'Evento'}`, 14, 15);
+            doc.setFontSize(10);
+            doc.setTextColor(204, 251, 241);
+            doc.text(`Usuario: ${activeUser} | Fecha: ${new Date().toLocaleDateString('es-MX')}`, 14, 22);
+
+            const statsData = [
+                ['Asistencia Total Esperada', document.getElementById('st-tot').innerText],
+                ['Confirmados (Adultos/Niños)', `${document.getElementById('st-adu').innerText} / ${document.getElementById('st-nin').innerText}`],
+                ['Declinados / Pases Recuperados', `${document.getElementById('st-decl').innerText} / ${document.getElementById('st-recup').innerText}`],
+                ['Botellas de Destilado 750ml (1 c/3 adu)', document.getElementById('st-bot').innerText],
+                ['Cervezas Estimadas (3.5 c/adu)', document.getElementById('st-cer').innerText],
+                ['Refrescos / Mezcladores (L)', document.getElementById('st-ref').innerText],
+                ['Hielo Requerido (kg)', document.getElementById('st-hie').innerText],
+                ['Mesa de Dulces / Botana (Piezas Totales)', document.getElementById('st-dul-tot').innerText],
+                ['Amenidades (Pantuflas / Recuerdos)', `${document.getElementById('rec-sandalias').innerText} / ${document.getElementById('rec-parejas').innerText}`],
+                ['Centros de Mesa / Flores Totales', `${document.getElementById('st-centros').innerText} mesas / ${document.getElementById('st-flores-totales').innerText} flores`]
+            ];
+
+            doc.autoTable({
+                startY: 34,
+                head: [['Métrica Logística', 'Cálculo Recomendado']],
+                body: statsData,
+                theme: 'grid',
+                headStyles: { fillColor: [13, 148, 136] }
+            });
+
+            window.addPDFFooter(doc); doc.save(`Logistica_${activeUser}.pdf`);
         };
 
         window.exportStatsPDF = function() {
