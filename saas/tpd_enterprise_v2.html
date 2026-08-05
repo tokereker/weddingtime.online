@@ -223,6 +223,14 @@
                             </select>
                         </div>
                         <button onclick="window.adminCreateUser()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl transition shadow-md mt-4 flex items-center justify-center gap-2"><i class="fa-solid fa-cloud-arrow-up"></i> Registrar Inquilino</button>
+                        
+                        <!-- BOTÓN: PIN DE DEMOSTRACIÓN -->
+                        <div class="mt-6 pt-5 border-t border-slate-100">
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 block">Herramientas de Demostración</label>
+                            <button onclick="window.mostrarPinDemo()" class="w-full bg-emerald-50 hover:bg-emerald-100 text-emerald-600 border border-emerald-200 font-bold py-3 rounded-xl transition shadow-sm flex items-center justify-center gap-2" title="Generar PIN para dar acceso por WhatsApp">
+                                <i class="fa-solid fa-key"></i> PIN Demo Actual
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -466,7 +474,7 @@
                 <!-- Bento Grid Dashboard -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-7xl mx-auto w-full" id="stats-print-area">
                     
-                    <!-- 1. Asistencia General (NUEVA FILA DE 6 CAJAS) -->
+                    <!-- 1. Asistencia General -->
                     <div class="bg-white p-4 sm:p-6 rounded-3xl shadow-sm border border-slate-200 col-span-1 md:col-span-2 lg:col-span-4">
                         <h3 class="text-base sm:text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-chart-pie text-blue-500"></i> Asistencia General</h3>
                         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4 text-center">
@@ -490,7 +498,6 @@
                                 <p class="text-xl sm:text-3xl font-black text-red-500" id="st-decl">0</p>
                                 <p class="text-[8px] sm:text-[10px] text-red-700 uppercase tracking-widest font-bold mt-1">Declinados</p>
                             </div>
-                            <!-- NUEVA MÉTRICA: Pases Recuperados -->
                             <div class="bg-indigo-50 rounded-xl sm:rounded-2xl p-3 border border-indigo-100 flex flex-col justify-center shadow-inner relative overflow-hidden group cursor-default" title="Pases libres que puedes reasignar">
                                 <p class="text-xl sm:text-3xl font-black text-indigo-600 relative z-10" id="st-recup">0</p>
                                 <p class="text-[8px] sm:text-[10px] text-indigo-800 uppercase tracking-widest font-bold mt-1 relative z-10"><i class="fa-solid fa-rotate-left mr-1"></i>Recuperados</p>
@@ -498,7 +505,7 @@
                         </div>
                     </div>
 
-                    <!-- 2. Cronograma y Entretenimiento (Director de Tiempos) - Ocupa 2 columnas y 2 filas en PC -->
+                    <!-- 2. Cronograma y Entretenimiento (Director de Tiempos) -->
                     <div class="bg-teal-50 p-4 sm:p-6 rounded-3xl shadow-sm border border-teal-200 col-span-1 md:col-span-2 lg:col-span-2 lg:row-span-2 flex flex-col">
                         <h3 class="text-base sm:text-lg font-bold text-teal-900 mb-4 flex items-center gap-2 shrink-0"><i class="fa-solid fa-clock text-teal-500"></i> Director de Tiempos</h3>
                         
@@ -845,24 +852,18 @@
     <!-- Modal Visual TICKET QR Rediseñado -->
     <div id="ticket-modal" class="fixed inset-0 bg-slate-900/90 items-center justify-center z-50 hidden glass p-4">
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm flex flex-col border border-slate-200 overflow-hidden">
-            
             <!-- HEADER DEL PASE REDISEÑADO -->
             <div id="ticket-header-bg" class="p-8 pb-4 text-center relative text-white rounded-t-3xl overflow-hidden transition-colors duration-300 flex flex-col justify-between" style="min-height: 400px; background-color: #0f172a;">
-                
                 <!-- CAPA DE IMAGEN DE FONDO (Premium) al 95% -->
                 <img id="ticket-bg-image" src="" class="absolute top-0 left-0 w-full h-[95%] object-cover opacity-0 transition-opacity duration-500 z-0 pointer-events-none">
-                
                 <!-- FILTRO OSCURO -->
                 <div id="ticket-dark-overlay" class="absolute top-0 left-0 w-full h-[95%] bg-slate-900/60 z-0 pointer-events-none hidden"></div>
-
                 <!-- CONTENIDO DEL TICKET -->
                 <div class="relative z-10 flex flex-col h-full justify-between flex-1">
                     <div>
                         <h3 class="text-2xl font-black mb-1 drop-shadow-lg mt-4" id="ticket-event-name">Cargando...</h3>
                         <p class="text-[10px] text-white/80 font-bold uppercase tracking-widest mb-4">Pase de Acceso Oficial</p>
-                        
                         <div class="bg-white p-3 rounded-2xl inline-block mb-4 shadow-2xl"><div id="ticket-qrcode"></div></div>
-                        
                         <h2 class="text-xl font-bold text-white mb-1 drop-shadow-md truncate px-2" id="ticket-guest-name">Invitado</h2>
                         <p class="text-sm text-white/90 font-medium drop-shadow-md mb-2" id="ticket-guest-passes">0 Pases</p>
                     </div>
@@ -1013,31 +1014,126 @@
             if(select) select.value = savedTheme;
         }
 
-        window.startDemoEnvironment = function() {
-            currentUser = "demo_local";
-            currentRole = "Cliente";
-            currentEventType = "Evento";
-            state = { 
-                invitados: [
-                    { id: 1, nombre: "Familia García López", grupo: "Familia", telefono: "2221234567", adultos: 2, ninos: 1, status: "Confirmado", mesa: 1, observaciones: "Silla alta" },
-                    { id: 2, nombre: "Lic. Roberto Martínez", grupo: "Trabajo", telefono: "2229876543", adultos: 2, ninos: 0, status: "Confirmado", mesa: 1, observaciones: "Alergia mariscos" }
-                ], 
-                mesas: [{ id: 1, nombre: "Mesa VIP" }], config: { capacidadMesa: 10, themeColor: '#3b82f6', extras: 0, totalExtrasCost: 0, fontFamily: 'Plus Jakarta Sans' }, croquis: null, ticketBg: null
-            };
-            isPremiumUser = true;
+        /* 
+        * ===============================================
+        * MODIFICACIÓN DE LA FUNCIÓN startDemoEnvironment
+        * (Ahora con lógica asíncrona validada, botón WA y validación numérica segura)
+        * ===============================================
+        */
+        window.startDemoEnvironment = async function() {
+            const now = new Date();
+            const dia = now.getDate();
+            const mes = now.getMonth() + 1; // getMonth va de 0 a 11
+            const hora = now.getHours();
+            
+            const pinCalculado = (dia * mes * 100) + hora;
 
-            document.getElementById('view-login').classList.add('hidden');
-            document.getElementById('view-login').classList.remove('flex');
-            document.getElementById('view-crm').classList.remove('hidden');
-            document.getElementById('view-crm').classList.add('flex');
+            const { value: pinIngresado } = await Swal.fire({
+                title: 'Acceso Modo Demostración',
+                html: `
+                    <p class="text-sm text-slate-600 mb-4">Por seguridad, solicita tu PIN de acceso a través de nuestro WhatsApp oficial.</p>
+                    
+                    <!-- Botón de WhatsApp -->
+                    <a href="https://wa.me/5211234567890?text=Hola,%20me%20gustar%C3%ADa%20solicitar%20el%20PIN%20de%20acceso%20para%20la%20demostraci%C3%B3n%20del%20sistema." target="_blank" class="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-3 px-4 rounded-xl transition mb-4 shadow-md w-full no-underline transform active:scale-95">
+                        <i class="fa-brands fa-whatsapp text-xl"></i> Pedir PIN por WhatsApp
+                    </a>
+                `,
+                input: 'password', // Tipo de entrada para ocultar los dígitos visualmente
+                inputAttributes: {
+                    inputmode: 'numeric', // Fuerzo el teclado numérico en móviles
+                    pattern: '[0-9]*',    // Solo acepta números
+                    maxlength: 6,
+                    autocapitalize: 'off',
+                    autocorrect: 'off'
+                },
+                inputPlaceholder: 'Ingresa el PIN numérico',
+                showCancelButton: true,
+                confirmButtonColor: '#3b82f6',
+                cancelButtonColor: '#94a3b8',
+                confirmButtonText: 'Verificar PIN',
+                cancelButtonText: 'Cancelar'
+            });
+
+            if (!pinIngresado) return; // Si el usuario cierra la ventana o no ingresa nada
+
+            // Validación segura convirtiendo el string a número entero. Si teclean letras parseInt arroja NaN
+            if (parseInt(pinIngresado) === pinCalculado || pinIngresado === '9999') {
+                // PIN CORRECTO -> Generar ambiente demo local
+                currentUser = "demo_local";
+                currentRole = "Cliente";
+                currentEventType = "Evento";
+                state = { 
+                    invitados: [
+                        { id: 1, nombre: "Familia García López", grupo: "Familia", telefono: "2221234567", adultos: 2, ninos: 1, status: "Confirmado", mesa: 1, observaciones: "Silla alta" },
+                        { id: 2, nombre: "Lic. Roberto Martínez", grupo: "Trabajo", telefono: "2229876543", adultos: 2, ninos: 0, status: "Confirmado", mesa: 1, observaciones: "Alergia mariscos" }
+                    ], 
+                    mesas: [{ id: 1, nombre: "Mesa VIP" }], 
+                    config: { capacidadMesa: 10, themeColor: '#3b82f6', extras: 0, totalExtrasCost: 0, fontFamily: 'Plus Jakarta Sans' }, 
+                    croquis: null, 
+                    ticketBg: null
+                };
+                isPremiumUser = true;
+
+                document.getElementById('view-login').classList.add('hidden');
+                document.getElementById('view-login').classList.remove('flex');
+                document.getElementById('view-crm').classList.remove('hidden');
+                document.getElementById('view-crm').classList.add('flex');
+                
+                document.getElementById('tpd-fab').style.display = 'flex';
+                document.getElementById('user-display').innerText = "Organizador Pro (DEMO)";
+                document.getElementById('crm-header-id').innerText = `${currentEventType} - ${currentUser}`;
+                
+                window.crmRenderAll();
+                window.initEventAssistant();
+                Toast.fire({ icon: 'success', title: '¡PIN correcto! Modo Demostración Activo' });
+
+            } else {
+                // PIN INCORRECTO
+                Swal.fire({
+                    title: 'Acceso Denegado',
+                    text: 'El PIN ingresado es incorrecto o ya ha caducado.',
+                    icon: 'error',
+                    confirmButtonColor: '#ef4444'
+                });
+            }
+        };
+
+        /* 
+        * ===============================================
+        * NUEVA FUNCIÓN PARA EL PANEL DE ADMINISTRACIÓN
+        * Muestra el PIN de manera rápida para el Admin
+        * ===============================================
+        */
+        window.mostrarPinDemo = function() {
+            const now = new Date();
+            const dia = now.getDate();
+            const mes = now.getMonth() + 1;
+            const hora = now.getHours();
             
-            document.getElementById('tpd-fab').style.display = 'flex';
-            document.getElementById('user-display').innerText = "Organizador Pro (DEMO)";
-            document.getElementById('crm-header-id').innerText = `${currentEventType} - ${currentUser}`;
-            
-            window.crmRenderAll();
-            window.initEventAssistant();
-            Toast.fire({ icon: 'info', title: 'Modo Demostración Activo' });
+            const pinCalculado = (dia * mes * 100) + hora;
+
+            Swal.fire({
+                title: 'PIN de Demostración',
+                html: `
+                    <p class="text-sm text-slate-600 mb-4">Comparte este PIN con los clientes que solicitan el demo por WhatsApp. Es dinámico y cambia cada hora.</p>
+                    <div class="bg-blue-50 border border-blue-100 rounded-2xl py-4 mb-4">
+                        <span class="text-4xl font-black text-blue-600 tracking-widest">${pinCalculado}</span>
+                    </div>
+                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Fórmula activa:</p>
+                    <p class="text-xs text-slate-500 mb-3">(Día ${dia} x Mes ${mes} x 100) + Hora ${hora}</p>
+                    <p class="text-[10px] bg-slate-100 text-slate-500 inline-block px-3 py-1 rounded-md font-bold border border-slate-200">Código maestro infinito: 9999</p>
+                `,
+                icon: 'info',
+                confirmButtonText: '<i class="fa-solid fa-copy"></i> Copiar para WhatsApp',
+                confirmButtonColor: '#10b981',
+                showCancelButton: true,
+                cancelButtonText: 'Cerrar'
+            }).then((res) => {
+                if(res.isConfirmed) {
+                    navigator.clipboard.writeText(pinCalculado.toString());
+                    Toast.fire({ icon: 'success', title: 'PIN copiado al portapapeles' });
+                }
+            });
         };
 
         window.addPDFFooter = function(docInstance) {
