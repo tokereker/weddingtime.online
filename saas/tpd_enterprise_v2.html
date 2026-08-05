@@ -568,7 +568,7 @@
                 <!-- Bento Grid Dashboard -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-7xl mx-auto w-full" id="stats-print-area">
                     
-                    <!-- 1. Asistencia General -->
+                    <!-- 1. Asistencia General (FILA DE 6 CAJAS) -->
                     <div class="bg-white p-4 sm:p-6 rounded-3xl shadow-sm border border-slate-200 col-span-1 md:col-span-2 lg:col-span-4">
                         <h3 class="text-base sm:text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-chart-pie text-blue-500"></i> Asistencia General</h3>
                         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4 text-center">
@@ -592,6 +592,7 @@
                                 <p class="text-xl sm:text-3xl font-black text-red-500" id="st-decl">0</p>
                                 <p class="text-[8px] sm:text-[10px] text-red-700 uppercase tracking-widest font-bold mt-1">Declinados</p>
                             </div>
+                            <!-- MÉTRICA: Pases Recuperados -->
                             <div class="bg-indigo-50 rounded-xl sm:rounded-2xl p-3 border border-indigo-100 flex flex-col justify-center shadow-inner relative overflow-hidden group cursor-default" title="Pases libres que puedes reasignar">
                                 <p class="text-xl sm:text-3xl font-black text-indigo-600 relative z-10" id="st-recup">0</p>
                                 <p class="text-[8px] sm:text-[10px] text-indigo-800 uppercase tracking-widest font-bold mt-1 relative z-10"><i class="fa-solid fa-rotate-left mr-1"></i>Recuperados</p>
@@ -741,7 +742,6 @@
         </main>
     </div>
 
-    <!-- WORKSPACE HOSTESS (Lector, Croquis y Lista) -->
     <div id="view-hostess" class="hidden flex-1 flex-col bg-slate-900 text-white relative min-h-0">
         <header class="bg-slate-800 px-4 py-3 flex flex-col shadow-lg border-b border-slate-700 z-10 shrink-0">
             <div class="flex justify-between items-center mb-2">
@@ -832,15 +832,11 @@
     <!-- MODAL LLEGADAS PARCIALES HOSTESS -->
     <div id="hostess-result-modal" class="fixed inset-0 bg-slate-900/95 items-center justify-center z-50 hidden backdrop-blur-sm p-4">
         <div class="bg-white text-slate-900 p-6 rounded-3xl shadow-2xl w-full max-w-sm text-center border-t-8 border-blue-500 relative overflow-hidden transform transition-all scale-95 opacity-0 flex flex-col" id="hostess-result-box">
-            
             <button onclick="window.closeHostessResult()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800"><i class="fa-solid fa-times text-xl"></i></button>
-
             <h2 class="text-2xl font-black mb-1 text-slate-800 mt-2" id="hr-name">Familia</h2>
             <p class="text-sm text-blue-600 font-bold uppercase tracking-wider mb-4"><i class="fa-solid fa-chair mr-1"></i> <span id="hr-table">Mesa 1</span></p>
-            
             <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200 mb-6 flex flex-col gap-4 text-left">
                 <p class="text-center font-bold text-slate-700 border-b border-slate-200 pb-2 mb-2">¿Cuántos entran ahora?</p>
-                
                 <div class="flex justify-between items-center">
                     <div>
                         <p class="font-bold text-slate-800 text-sm"><i class="fa-solid fa-user text-slate-400 w-5"></i> Adultos</p>
@@ -852,7 +848,6 @@
                         <button onclick="window.adjEntry('adu', 1)" class="w-8 h-8 rounded-full bg-slate-200 text-slate-700 font-bold hover:bg-slate-300 transition">+</button>
                     </div>
                 </div>
-
                 <div class="flex justify-between items-center" id="hr-nin-row">
                     <div>
                         <p class="font-bold text-slate-800 text-sm"><i class="fa-solid fa-child text-slate-400 w-5"></i> Niños</p>
@@ -865,23 +860,89 @@
                     </div>
                 </div>
             </div>
-
             <button id="hr-confirm-btn" onclick="window.confirmHostessEntry()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg transition text-lg flex items-center justify-center gap-2">
                 <i class="fa-solid fa-check"></i> Registrar Ingreso
             </button>
         </div>
     </div>
 
+    <!-- Modal Añadir Invitado -->
+    <div id="add-guest-modal" class="fixed inset-0 bg-slate-900/75 items-center justify-center z-50 hidden glass p-4">
+        <div class="bg-white p-6 rounded-3xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto border border-slate-100 custom-scrollbar">
+            <h3 class="text-xl font-black text-slate-800 mb-6 flex items-center gap-2"><i class="fa-solid fa-user-plus text-blue-500"></i> Nuevo Invitado</h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Nombre o Familia *</label>
+                    <input type="text" id="modal-guest-name" placeholder="Ej. Familia Pérez" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition font-medium">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Grupo</label>
+                        <select id="modal-guest-group" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50 cursor-pointer font-bold text-slate-700 transition">
+                            <option value="Familia">Familia</option>
+                            <option value="Amigos">Amigos</option>
+                            <option value="Trabajo">Trabajo</option>
+                            <option value="Conocidos">Conocidos</option>
+                            <option value="Otros" selected>Otros</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1"><i class="fa-brands fa-whatsapp text-emerald-500"></i> WhatsApp</label>
+                        <input type="text" id="modal-guest-phone" placeholder="10 dígitos" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition font-medium">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Adultos</label>
+                        <div class="flex items-center bg-slate-50 border-2 border-slate-100 rounded-xl overflow-hidden focus-within:border-blue-500 transition">
+                            <button type="button" onclick="document.getElementById('modal-guest-ads').stepDown()" class="px-4 py-3 text-slate-500 hover:text-blue-600 font-bold bg-slate-100 hover:bg-slate-200 transition">-</button>
+                            <input type="number" id="modal-guest-ads" min="1" value="1" class="w-full bg-transparent text-center font-black text-lg outline-none m-0 p-0">
+                            <button type="button" onclick="document.getElementById('modal-guest-ads').stepUp()" class="px-4 py-3 text-slate-500 hover:text-blue-600 font-bold bg-slate-100 hover:bg-slate-200 transition">+</button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Niños</label>
+                        <div class="flex items-center bg-slate-50 border-2 border-slate-100 rounded-xl overflow-hidden focus-within:border-blue-500 transition">
+                            <button type="button" onclick="document.getElementById('modal-guest-kids').stepDown()" class="px-4 py-3 text-slate-500 hover:text-blue-600 font-bold bg-slate-100 hover:bg-slate-200 transition">-</button>
+                            <input type="number" id="modal-guest-kids" min="0" value="0" class="w-full bg-transparent text-center font-black text-lg outline-none m-0 p-0">
+                            <button type="button" onclick="document.getElementById('modal-guest-kids').stepUp()" class="px-4 py-3 text-slate-500 hover:text-blue-600 font-bold bg-slate-100 hover:bg-slate-200 transition">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">RSVP</label>
+                        <select id="modal-guest-status" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50 cursor-pointer font-bold text-slate-700 transition">
+                            <option value="Pendiente" selected>⏳ Pendiente</option>
+                            <option value="Confirmado">✅ Confirmado</option>
+                            <option value="Declinado">❌ Declinado</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Mesa</label>
+                        <select id="modal-guest-mesa" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50 cursor-pointer font-bold text-slate-700 transition">
+                            <option value="0">Sin Asignar</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Notas / Alergias</label>
+                    <input type="text" id="modal-guest-obs" placeholder="Menú infantil, alergias..." class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition font-medium">
+                </div>
+            </div>
+            <div class="mt-8 flex justify-end gap-3 border-t border-slate-100 pt-6">
+                <button onclick="document.getElementById('add-guest-modal').classList.replace('flex', 'hidden')" class="px-5 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition">Cancelar</button>
+                <button onclick="window.saveModalGuest()" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-md transition flex items-center gap-2"><i class="fa-solid fa-check"></i> Guardar</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Visual TICKET QR Rediseñado -->
     <div id="ticket-modal" class="fixed inset-0 bg-slate-900/90 items-center justify-center z-50 hidden glass p-4">
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm flex flex-col border border-slate-200 overflow-hidden">
-            <!-- HEADER DEL PASE REDISEÑADO -->
             <div id="ticket-header-bg" class="p-8 pb-4 text-center relative text-white rounded-t-3xl overflow-hidden transition-colors duration-300 flex flex-col justify-between" style="min-height: 400px; background-color: #0f172a;">
-                <!-- CAPA DE IMAGEN DE FONDO (Premium) al 95% -->
                 <img id="ticket-bg-image" src="" class="absolute top-0 left-0 w-full h-[95%] object-cover opacity-0 transition-opacity duration-500 z-0 pointer-events-none">
-                <!-- FILTRO OSCURO -->
                 <div id="ticket-dark-overlay" class="absolute top-0 left-0 w-full h-[95%] bg-slate-900/60 z-0 pointer-events-none hidden"></div>
-                <!-- CONTENIDO DEL TICKET -->
                 <div class="relative z-10 flex flex-col h-full justify-between flex-1">
                     <div>
                         <h3 class="text-2xl font-black mb-1 drop-shadow-lg mt-4" id="ticket-event-name">Cargando...</h3>
@@ -890,14 +951,12 @@
                         <h2 class="text-xl font-bold text-white mb-1 drop-shadow-md truncate px-2" id="ticket-guest-name">Invitado</h2>
                         <p class="text-sm text-white/90 font-medium drop-shadow-md mb-2" id="ticket-guest-passes">0 Pases</p>
                         
-                        <!-- NUEVO BLOQUE: MESA DEL INVITADO -->
                         <div class="bg-black/30 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-2 mt-2 inline-block">
                             <p class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-chair text-white/70"></i> <span id="ticket-guest-table">Sin Asignar</span></p>
                         </div>
                     </div>
                 </div>
             </div>
-
             <div class="p-4 bg-slate-50 rounded-b-3xl z-20 shrink-0">
                  <div class="grid grid-cols-2 gap-3 mb-3">
                      <button onclick="window.downloadNativeTicket()" class="bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-2xl font-bold shadow-md transition flex flex-col items-center justify-center gap-1">
@@ -970,6 +1029,24 @@
             <div class="flex-1 overflow-y-auto bg-slate-50 rounded-xl border border-slate-200 p-4 custom-scrollbar" id="audit-list">
                 <!-- Se llena con JS -->
             </div>
+        </div>
+    </div>
+
+    <!-- Asistente TPD Chat Independiente por Evento (Diseño V2) -->
+    <div id="tpd-fab" onclick="window.toggleTPDChat()" title="Asistente IA del Evento">
+        <i class="fa-solid fa-robot"></i>
+    </div>
+    <div id="tpd-chat-widget">
+        <div id="tpd-chat-header" onclick="window.toggleTPDChat()">
+            <span id="tpd-chat-title"><i class="fa-solid fa-brain mr-2"></i> Asistente de Evento</span>
+            <i class="fa-solid fa-chevron-down"></i>
+        </div>
+        <div id="tpd-chat-messages" class="custom-scrollbar">
+            <div class="tpd-msg bot" id="tpd-chat-welcome">Cargando contexto del evento...</div>
+        </div>
+        <div class="flex border-t border-slate-200 p-3 bg-white gap-2">
+            <input type="text" id="tpd-chat-input" placeholder="Pregúntame sobre tus listas..." onkeypress="if(event.key === 'Enter') window.sendTPDChat()" class="flex-1 border-2 border-slate-100 rounded-xl px-4 py-2 text-sm outline-none focus:border-blue-400 transition bg-slate-50">
+            <button onclick="window.sendTPDChat()" class="bg-blue-600 text-white rounded-xl w-10 h-10 flex items-center justify-center hover:bg-blue-700 shadow-md transition"><i class="fa-solid fa-paper-plane text-xs"></i></button>
         </div>
     </div>
 
@@ -1390,7 +1467,9 @@
             document.getElementById('view-admin').classList.add('hidden'); document.getElementById('view-admin').classList.remove('flex');
             document.getElementById('view-crm').classList.remove('hidden'); document.getElementById('view-crm').classList.add('flex');
             
+            // EL BOTÓN DEL ASISTENTE FLOTANTE
             document.getElementById('tpd-fab').style.display = 'flex';
+            
             document.getElementById('user-display').innerText = currentRole === 'Cliente' ? 'Organizador Pro (CRM)' : currentRole;
             
             if (dataSnapshot && !dataSnapshot.eventType && (!impersonatingId)) {
@@ -2479,28 +2558,6 @@
             window.addPDFFooter(doc); doc.save(`Corte_Hostess_${eventId}.pdf`);
             logAction("Hostess descargó el reporte final en PDF.");
         };
-
     </script>
 </body>
 </html>
-```eof
-
-### 📋 Auditoría de Fusión y Corrección de Errores
-
-He tomado el archivo `(2).html` como la estructura base (por ser la más estable) y he migrado exitosamente todas las funciones avanzadas del archivo `(4).html`. A continuación te detallo qué se integró y qué errores se repararon:
-
-**Nuevas Funciones Integradas (Extraídas del archivo 4):**
-1. **Módulo de Presupuesto y Finanzas:** Se agregó la pestaña completa de "Presupuesto & Menú" permitiendo añadir, editar y eliminar gastos y anticipos. 
-2. **Bitácora de Auditoría:** Se añadió el botón superior y el modal de auditoría. Ahora todas las acciones (crear mesas, eliminar invitados, enviar WA, exportar PDFs) quedan registradas localmente con fecha y hora.
-3. **Modo PWA y Soporte Offline:** Se integraron los metadatos PWA y el banner rojo inteligente que detecta cuando el dispositivo pierde la conexión a internet.
-4. **Mejora Visual en Pases PDF:** El visualizador en pantalla y el PDF nativo descargable ahora muestran explícitamente el nombre de la mesa a la que está asignada el invitado.
-5. **Mejora del Asistente IA (Chatbot):** Se actualizó el set de respuestas de la IA para que pueda calcular presupuestos, gastos y reconozca múltiples saludos y formatos.
-6. **Llenado Inteligente de Mesas:** Se reemplazó el llenado automático básico por el logaritmo inteligente que agrupa a las personas por afinidad (Familia con Familia, Amigos con Amigos).
-
-**Errores Detectados y Reparados (Bug Fixes):**
-* **Manejo de Sesiones (Firebase Auth):** El archivo original (2) forzaba la descarga de datos dentro de la función de Login, lo que causaba que al refrescar la página se perdiera la sesión. He implementado el flujo robusto de `onAuthStateChanged` (presente en el archivo 4) que permite recargar la página y recordar quién inició sesión, pero manteniendo la estabilidad visual del archivo 2.
-* **Bloqueo del Botón de WhatsApp:** Algunos números de teléfono venían con espacios o caracteres raros causando que el enlace de WhatsApp fallara. Reparado implementando una limpieza estricta (Regex: `replace(/\D/g, '')`) y la inyección automática del prefijo `+52` si el número tiene exactamente 10 dígitos.
-* **Seguridad en la Generación de PDFs:** El archivo estable generaba PDFs totalmente editables. He fusionado la instrucción de jsPDF del archivo 4 que inyecta una contraseña de propietario aleatoria (`ownerPassword: "SECURE_" + ...`) para bloquear la modificación del archivo y garantizar que los pases no puedan ser alterados.
-* **Crash en el Escáner QR:** Si un usuario negaba el permiso de la cámara al iniciar el escáner de la Hostess, el sistema se congelaba impidiendo usar la búsqueda manual. Se añadió un bloque `.catch(err)` que detecta este error y devuelve el control al usuario con una alerta amigable.
-
-El código resultante en el archivo de arriba es ahora un ecosistema completo, unificado y a prueba de errores. ¡Puedes usarlo y probar todas las pestañas de inmediato! Dime si requieres algún ajuste más.
