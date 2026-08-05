@@ -513,6 +513,7 @@
                                         </tr>
                                     </thead>
                                     <tbody id="budget-tbody" class="divide-y divide-slate-100">
+                                        <!-- Js fills this -->
                                     </tbody>
                                 </table>
                                 <div id="budget-empty" class="p-8 text-center text-slate-400 italic hidden">No hay gastos registrados aún.</div>
@@ -651,6 +652,7 @@
                         <div class="bg-white rounded-2xl p-4 border border-teal-100 shadow-sm flex-1 overflow-y-auto custom-scrollbar min-h-32">
                             <h4 class="text-xs font-black text-slate-800 mb-3 border-b border-slate-100 pb-2">Cronograma Calculado</h4>
                             <div id="st-timeline" class="space-y-3">
+                                <!-- JS Generates this -->
                             </div>
                         </div>
                     </div>
@@ -1029,7 +1031,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, onSnapshot, collection, getDocs, deleteDoc, enableMultiTabIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, setDoc, onSnapshot, collection, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // APP PRINCIPAL
         const firebaseConfig = {
@@ -1042,7 +1044,14 @@
             appId: "1:956437103756:web:b2d27aad4e6bfded7327a9"
         };
 
-        let app, auth, db, secondaryApp, secondaryAuth;
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // APP SECUNDARIA PARA CREAR USUARIOS
+        const secondaryApp = initializeApp(firebaseConfig, "SecondaryApp");
+        const secondaryAuth = getAuth(secondaryApp);
+        
         let unsubscribe = null;
         let currentUser = null;
         let currentRole = null;
@@ -1050,32 +1059,9 @@
         let impersonatingId = null;
         let currentTargetGuestId = null; 
         let auditLogs = []; // PWA Auditoria local
+        
         let isPremiumUser = false;
         
-        const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, timerProgressBar: true });
-
-        // Inicialización segura con soporte offline multi-pestaña
-        try {
-            app = initializeApp(firebaseConfig);
-            auth = getAuth(app);
-            db = getFirestore(app);
-            
-            enableMultiTabIndexedDbPersistence(db).catch((err) => {
-                if (err.code == 'failed-precondition') {
-                    console.warn("Múltiples pestañas abiertas. La persistencia solo funciona en la principal.");
-                } else if (err.code == 'unimplemented') {
-                    console.warn("El navegador no soporta persistencia offline.");
-                }
-            });
-
-            // APP SECUNDARIA PARA CREAR USUARIOS
-            secondaryApp = initializeApp(firebaseConfig, "SecondaryApp");
-            secondaryAuth = getAuth(secondaryApp);
-            
-        } catch (error) {
-            console.error("Error al inicializar Firebase. Posible modo incógnito o credenciales inválidas:", error);
-        }
-
         function getSubdomain(eventType) {
             const map = { "XV Años": "xvana", "Bautizo": "bautizo", "Primera Comunión": "comunion", "Confirmación": "confirmacion", "Primera Comunión y Confirmación": "comunion", "Cumpleaños": "cumple", "Boda": "boda" };
             return map[eventType] || "boda";
@@ -1105,18 +1091,18 @@
             presupuesto: []
         };
         
-        // PWA Offline Support Detector (Mejorado con Alertas Visuales)
+        const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, timerProgressBar: true });
+
+        // PWA Offline Support Detector
         window.addEventListener('online', () => { 
             document.body.classList.remove('offline'); 
             document.querySelectorAll('.network-status-text').forEach(el => el.innerHTML = '<i class="fa-solid fa-cloud"></i> Online (Sincronizado)');
             Toast.fire({icon: 'success', title: 'Conexión recuperada. Sincronizando.'});
             if(currentUser && currentRole !== 'Administrador') window.crmSave();
         });
-        
         window.addEventListener('offline', () => { 
             document.body.classList.add('offline'); 
             document.querySelectorAll('.network-status-text').forEach(el => el.innerHTML = '<i class="fa-solid fa-wifi"></i> Offline (Modo Local)');
-            Toast.fire({icon: 'warning', title: 'Sin conexión. Los cambios se guardarán localmente.'});
         });
 
         window.setAppStyleTheme = function(theme) {
@@ -1231,7 +1217,6 @@
         };
 
         window.appLogin = async function() {
-            if (!auth) return Swal.fire('Error de Conexión', 'Firebase no se inicializó correctamente.', 'error');
             const userRaw = document.getElementById('login-user').value.trim().toLowerCase();
             const pass = document.getElementById('login-pass').value.trim();
 
@@ -1251,41 +1236,39 @@
             if (!loginSuccess) { Swal.close(); return Swal.fire({ title: 'Acceso Rechazado', text: 'Las credenciales son incorrectas.', icon: 'error' }); }
         };
 
-        if(auth) {
-            onAuthStateChanged(auth, async (user) => {
-                if (user) {
-                    Swal.fire({ title: 'Cargando tu espacio...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
-                    let dbUserId = user.email.split('@')[0].replace(/admin$/, '');
-                    if(user.email === 'admin@tpd.online' || user.email === 'adminadmin@tpd.online') dbUserId = 'admin';
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                Swal.fire({ title: 'Cargando tu espacio...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+                let dbUserId = user.email.split('@')[0].replace(/admin$/, '');
+                if(user.email === 'admin@tpd.online' || user.email === 'adminadmin@tpd.online') dbUserId = 'admin';
 
-                    try {
-                        const docRef = doc(db, 'artifacts', 'weddingflow', 'users', dbUserId);
-                        const snap = await getDoc(docRef);
+                try {
+                    const docRef = doc(db, 'artifacts', 'weddingflow', 'users', dbUserId);
+                    const snap = await getDoc(docRef);
 
-                        if (snap.exists()) {
-                            const data = snap.data();
-                            if (data.status === 'Suspendido') { await signOut(auth); Swal.close(); return Swal.fire('Acceso Suspendido', 'Tu cuenta se encuentra suspendida.', 'warning'); }
-                            
-                            currentRole = data.role || 'Cliente';
-                            logAction(`Autenticación exitosa como ${currentRole}`);
-                            
-                            if (currentRole === 'Hostess') { Swal.close(); window.promptHostessLogin(); return; }
-                            if (currentRole === 'Administrador' || currentRole === 'Staff' || currentRole === 'Soporte') { await window.loadAdminPanel(); } 
-                            else if (currentRole === 'Cliente Web') { window.location.href = `estudio_diseno.html?user=${dbUserId}`; } 
-                            else { window.setupClientEnvironment(dbUserId, data); }
-                        } else {
-                            if (dbUserId === 'admin' || dbUserId === 'root') { currentRole = 'Administrador'; await window.loadAdminPanel(); return; }
-                            Swal.close(); Swal.fire('Error', 'Usuario no encontrado en la base de datos.', 'error');
-                        }
-                    } catch (error) { Swal.close(); Swal.fire('Error', 'Fallo al leer la base de datos.', 'error'); }
-                }
-            });
-        }
+                    if (snap.exists()) {
+                        const data = snap.data();
+                        if (data.status === 'Suspendido') { await signOut(auth); Swal.close(); return Swal.fire('Acceso Suspendido', 'Tu cuenta se encuentra suspendida.', 'warning'); }
+                        
+                        currentRole = data.role || 'Cliente';
+                        logAction(`Autenticación exitosa como ${currentRole}`);
+                        
+                        if (currentRole === 'Hostess') { Swal.close(); window.promptHostessLogin(); return; }
+                        if (currentRole === 'Administrador' || currentRole === 'Staff' || currentRole === 'Soporte') { await window.loadAdminPanel(); } 
+                        else if (currentRole === 'Cliente Web') { window.location.href = `estudio_diseno.html?user=${dbUserId}`; } 
+                        else { window.setupClientEnvironment(dbUserId, data); }
+                    } else {
+                        if (dbUserId === 'admin' || dbUserId === 'root') { currentRole = 'Administrador'; await window.loadAdminPanel(); return; }
+                        Swal.close(); Swal.fire('Error', 'Usuario no encontrado en la base de datos.', 'error');
+                    }
+                } catch (error) { Swal.close(); Swal.fire('Error', 'Fallo al leer la base de datos.', 'error'); }
+            }
+        });
 
         window.appLogout = async function() {
             if(unsubscribe) unsubscribe();
             if(window.html5QrcodeScanner) { try { window.html5QrcodeScanner.stop().catch(e=>{}); } catch(err){} }
-            if(auth) await signOut(auth);
+            await signOut(auth);
             
             currentUser = null; currentRole = null; impersonatingId = null; auditLogs = [];
             document.getElementById('login-user').value = ''; document.getElementById('login-pass').value = '';
@@ -1351,7 +1334,6 @@
         window.adminLoadUsers = async function() { Swal.fire({ title: 'Actualizando...', didOpen: () => Swal.showLoading(), allowOutsideClick: false }); await window.loadAdminPanel(); Toast.fire({ icon: 'success', title: 'Panel actualizado' }); };
         window.adminCreateUser = async function() {
             try {
-                if(!secondaryAuth) return Toast.fire({icon: 'error', title: 'Error interno Firebase'});
                 const user = document.getElementById('new-user').value.trim().toLowerCase(); const pass = document.getElementById('new-pass').value.trim(); const role = document.getElementById('new-role').value;
                 if(!user || !pass) return Swal.fire('Atención', 'Rellena el ID y la contraseña.', 'warning');
                 
@@ -1619,13 +1601,14 @@
         window.downloadNativeTicket = function() {
             const { jsPDF } = window.jspdf; 
             
+            // BLINDAJE DE SEGURIDAD: Encriptación nativa para evitar edición
             const pdf = new jsPDF({ 
                 orientation: 'portrait', 
                 unit: 'mm', 
-                format: [80, 115],
+                format: [80, 115], // Tamaño ajustado para la mesa
                 encryption: {
-                    userPermissions: ["print", "high-resolution-print"],
-                    ownerPassword: "SECURE_" + Math.random().toString(36).slice(-8)
+                    userPermissions: ["print", "high-resolution-print"], // Permite imprimir
+                    ownerPassword: "SECURE_" + Math.random().toString(36).slice(-8) // Clave propietaria que el cliente nunca sabrá, bloquea edición
                 }
             });
 
@@ -1644,6 +1627,7 @@
             pdf.setFontSize(14); pdf.text(document.getElementById('ticket-guest-name').innerText, 40, 78, { align: 'center' });
             pdf.setFontSize(10); pdf.text(document.getElementById('ticket-guest-passes').innerText, 40, 85, { align: 'center' });
             
+            // Inyección de Mesa en el PDF
             const tableText = document.getElementById('ticket-guest-table').innerText;
             pdf.setFontSize(9);
             pdf.setFillColor(255, 255, 255); pdf.setGState(new pdf.GState({opacity: 0.15})); pdf.rect(20, 88, 40, 6, 'F'); pdf.setGState(new pdf.GState({opacity: 1.0}));
@@ -1683,6 +1667,7 @@
             let ads = parseInt(guest.adultos !== undefined ? guest.adultos : guest.pases) || 0; let nns = parseInt(guest.ninos) || 0;
             document.getElementById('ticket-guest-passes').innerText = `${ads + nns} Pases`;
             
+            // Inyectar nombre de la mesa
             const tableName = guest.mesa === 0 ? "Sin Asignar" : (state.mesas.find(m => m.id === guest.mesa)?.nombre || "Mesa VIP");
             document.getElementById('ticket-guest-table').innerText = tableName;
 
