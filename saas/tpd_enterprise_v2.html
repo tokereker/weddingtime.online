@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>TPD Enterprise v2.0 Pro - SaaS CRM & Hub</title>
     
     <!-- Tailwind CSS -->
@@ -106,16 +109,23 @@
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 6px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         details > summary::-webkit-details-marker { display: none; }
+        
+        /* PWA Offline Banner */
+        #offline-banner { transition: top 0.3s ease-in-out; }
+        body.offline #offline-banner { top: 0; }
     </style>
 </head>
 <body class="fixed inset-0 overflow-hidden flex flex-col text-slate-800 bg-slate-50">
 
-    <!-- LOGIN SAAS V2.0 PRO -->
-    <div id="view-login" class="fixed inset-0 login-bg flex justify-center items-center z-50 p-4 relative overflow-hidden">
+    <div id="offline-banner" class="fixed -top-12 left-0 w-full bg-red-500 text-white text-center text-xs font-bold py-1.5 z-[9999] shadow-md flex items-center justify-center gap-2">
+        <i class="fa-solid fa-wifi"></i> Conexión Perdida. Trabajando en Modo Offline. Los cambios se sincronizarán al recuperar la señal.
+    </div>
+
+    <div id="view-login" class="fixed inset-0 login-bg flex justify-center items-center z-50 p-4 relative overflow-hidden min-h-screen w-full">
         <div class="glow-effect -top-20 -left-20"></div>
         <div class="glow-effect -bottom-20 -right-20"></div>
 
-        <div class="login-card p-8 sm:p-10 rounded-3xl w-full max-w-md text-center relative z-10">
+        <div class="login-card p-8 sm:p-10 rounded-3xl w-full max-w-md text-center relative z-10 m-auto">
             <div class="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/30 text-blue-400 px-3 py-1 rounded-full text-xs font-bold mb-6 tracking-wide">
                 <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
                 TPD Enterprise v2.0 Pro Engine
@@ -156,7 +166,6 @@
         </div>
     </div>
 
-    <!-- MODAL BIENVENIDA -->
     <div id="welcome-modal" class="fixed inset-0 bg-slate-900/80 items-center justify-center z-50 hidden glass p-4">
         <div class="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-sm text-center mx-auto border border-slate-100 max-h-[90vh] overflow-y-auto custom-scrollbar">
             <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
@@ -184,7 +193,6 @@
         </div>
     </div>
 
-    <!-- PANEL ADMIN SAAS -->
     <div id="view-admin" class="hidden flex-1 flex-col bg-slate-50 min-h-0">
         <header class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center shadow-lg shrink-0">
             <div class="flex items-center gap-3">
@@ -258,7 +266,6 @@
         </main>
     </div>
 
-    <!-- WORKSPACE CRM COMPLETO (CLIENTE) -->
     <div id="view-crm" class="hidden flex-1 flex-col bg-transparent min-h-0 relative">
         <!-- Barra de Impersonation -->
         <div id="crm-impersonation-bar" class="hidden bg-amber-400 text-amber-900 px-6 py-2 flex justify-between items-center font-bold text-sm shadow-inner shrink-0 z-20">
@@ -275,15 +282,15 @@
                 </div>
             </div>
             <div class="flex items-center gap-4">
-                <div class="hidden sm:flex items-center gap-2 bg-slate-50 border border-slate-100 px-3 py-1.5 rounded-lg shadow-sm" title="Medida de seguridad de la plataforma">
-                    <i class="fa-solid fa-shield-halved text-blue-500 text-sm"></i>
+                <div class="hidden sm:flex items-center gap-2 bg-slate-50 border border-slate-100 px-3 py-1.5 rounded-lg shadow-sm cursor-pointer hover:bg-blue-50 transition" onclick="window.showAuditLog()" title="Ver Bitácora de Acciones">
+                    <i class="fa-solid fa-list-check text-blue-500 text-sm"></i>
                     <span class="text-[8px] text-slate-500 font-bold uppercase tracking-wider leading-tight text-left">
-                        Cambio de clave<br>solicitar al Agente
+                        Bitácora<br>Auditoría
                     </span>
                 </div>
                 <div class="text-right hidden md:block">
                     <p class="text-sm font-bold uppercase text-slate-700" id="user-display">Usuario</p>
-                    <p class="text-[10px] text-emerald-600 font-bold tracking-widest uppercase"><i class="fa-solid fa-cloud"></i> Nube Sincronizada</p>
+                    <p class="text-[10px] text-emerald-600 font-bold tracking-widest uppercase network-status-text"><i class="fa-solid fa-cloud"></i> Nube Sincronizada</p>
                 </div>
                 <button onclick="window.appLogout()" class="text-slate-400 hover:text-red-500 transition bg-slate-50 p-2 rounded-lg border border-slate-100 shadow-sm" title="Cerrar Sesión"><i class="fa-solid fa-sign-out-alt"></i></button>
             </div>
@@ -292,7 +299,11 @@
         <nav class="bg-white border-b flex px-6 shrink-0 gap-8 font-semibold text-sm overflow-x-auto custom-scrollbar items-center relative z-10">
             <button onclick="window.crmSwitchTab('guests')" id="tab-guests" class="py-4 text-blue-600 border-b-2 border-blue-600 whitespace-nowrap transition-colors"><i class="fa-solid fa-users mr-2"></i>Lista de Invitados</button>
             <button onclick="window.crmSwitchTab('tables')" id="tab-tables" class="py-4 text-slate-500 hover:text-slate-800 border-b-2 border-transparent whitespace-nowrap transition-colors"><i class="fa-solid fa-chair mr-2"></i>Acomodo de Mesas</button>
-            <button onclick="window.crmSwitchTab('stats')" id="tab-stats" class="py-4 text-slate-500 hover:text-slate-800 border-b-2 border-transparent whitespace-nowrap transition-colors"><i class="fa-solid fa-chart-pie mr-2"></i>Logística & Proveedores</button>
+            
+            <!-- PESTAÑA: PRESUPUESTO & MENÚ -->
+            <button onclick="window.crmSwitchTab('budget')" id="tab-budget" class="py-4 text-slate-500 hover:text-slate-800 border-b-2 border-transparent whitespace-nowrap transition-colors"><i class="fa-solid fa-wallet mr-2"></i>Presupuesto & Menú</button>
+            
+            <button onclick="window.crmSwitchTab('stats')" id="tab-stats" class="py-4 text-slate-500 hover:text-slate-800 border-b-2 border-transparent whitespace-nowrap transition-colors"><i class="fa-solid fa-chart-pie mr-2"></i>Logística</button>
             
             <!-- V2 PREMIUM DESIGN SELECTORS -->
             <div id="crm-premium-design" class="ml-auto flex items-center border-l border-slate-200 pl-4 gap-3 py-2 shrink-0">
@@ -330,7 +341,6 @@
 
         <main class="flex-1 flex flex-col min-h-0 bg-slate-50/90 backdrop-blur-md rounded-b-lg p-4 md:p-6 overflow-hidden">
             
-            <!-- SECCIÓN INVITADOS -->
             <section id="crm-sec-guests" class="flex-1 flex flex-col min-h-0 w-full overflow-hidden flex">
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-4 shrink-0 flex flex-col gap-4">
                     <div class="flex flex-col xl:flex-row items-center gap-4 justify-between">
@@ -396,7 +406,6 @@
                 </div>
             </section>
 
-            <!-- SECCIÓN MESAS -->
             <section id="crm-sec-tables" class="hidden flex-1 flex-col min-h-0 w-full overflow-hidden">
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-4 shrink-0 flex flex-col gap-4">
                     <div class="flex flex-wrap justify-between items-center gap-4">
@@ -410,7 +419,9 @@
                             <div class="h-6 w-px bg-slate-200 mx-1 shrink-0"></div>
 
                             <button onclick="window.crmExportTablesPDF()" class="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap flex items-center gap-2"><i class="fa-solid fa-print"></i> Reporte Mesas PDF</button>
-                            <button onclick="window.randomizeTables()" class="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap flex items-center gap-2"><i class="fa-solid fa-dice"></i> Llenado Automático</button>
+                            
+                            <button onclick="window.randomizeTables()" class="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap flex items-center gap-2" title="Agrupa por familia y amigos automáticamente"><i class="fa-solid fa-wand-magic-sparkles"></i> Llenado Inteligente</button>
+                            
                             <div class="h-6 w-px bg-slate-200 mx-1 shrink-0"></div>
                             <button onclick="window.deleteAllTables()" class="bg-white border-2 border-red-100 text-red-500 hover:bg-red-50 px-3 py-2 rounded-xl text-sm font-bold transition whitespace-nowrap" title="Borrar Todas las Mesas"><i class="fa-solid fa-trash-can"></i></button>
                         </div>
@@ -460,7 +471,84 @@
                 </div>
             </section>
 
-            <!-- SECCIÓN ESTADÍSTICAS & DASHBOARD LOGÍSTICO -->
+            <section id="crm-sec-budget" class="hidden flex-1 flex-col min-h-0 w-full overflow-y-auto custom-scrollbar pb-10 pr-2">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto w-full">
+                    
+                    <!-- Columna Izquierda: Finanzas -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <!-- Dashboard Financiero -->
+                        <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                            <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-coins text-amber-500"></i> Control de Presupuesto Evento</h3>
+                            <div class="grid grid-cols-3 gap-4 text-center">
+                                <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100">
+                                    <p class="text-xs text-slate-500 uppercase tracking-widest font-bold mb-1">Costo Total Estimado</p>
+                                    <p class="text-2xl font-black text-slate-800" id="budget-total">$0.00</p>
+                                </div>
+                                <div class="bg-emerald-50 rounded-2xl p-4 border border-emerald-100">
+                                    <p class="text-xs text-emerald-700 uppercase tracking-widest font-bold mb-1">Total Pagado</p>
+                                    <p class="text-2xl font-black text-emerald-600" id="budget-paid">$0.00</p>
+                                </div>
+                                <div class="bg-red-50 rounded-2xl p-4 border border-red-100">
+                                    <p class="text-xs text-red-700 uppercase tracking-widest font-bold mb-1">Por Pagar (Deuda)</p>
+                                    <p class="text-2xl font-black text-red-500" id="budget-debt">$0.00</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tabla de Gastos -->
+                        <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
+                            <div class="p-5 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
+                                <h3 class="font-bold text-slate-800 flex items-center gap-2"><i class="fa-solid fa-list-ul text-blue-500"></i> Desglose de Gastos & Proveedores</h3>
+                                <button onclick="window.addBudgetItem()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md transition flex items-center gap-2"><i class="fa-solid fa-plus"></i> Añadir Gasto</button>
+                            </div>
+                            <div class="overflow-x-auto w-full custom-scrollbar">
+                                <table class="w-full text-left text-sm whitespace-nowrap min-w-max">
+                                    <thead class="bg-slate-50 text-slate-500 border-b border-slate-200 text-xs uppercase tracking-wider font-bold">
+                                        <tr>
+                                            <th class="p-4">Concepto / Proveedor</th>
+                                            <th class="p-4 text-right">Costo Total ($)</th>
+                                            <th class="p-4 text-right">Pagado ($)</th>
+                                            <th class="p-4 text-center">Estatus</th>
+                                            <th class="p-4 text-center w-16">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="budget-tbody" class="divide-y divide-slate-100">
+                                        <!-- Js fills this -->
+                                    </tbody>
+                                </table>
+                                <div id="budget-empty" class="p-8 text-center text-slate-400 italic hidden">No hay gastos registrados aún.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Columna Derecha: App de Auto-Servicio del Invitado -->
+                    <div class="lg:col-span-1 space-y-6">
+                        <div class="bg-gradient-to-br from-slate-900 to-slate-800 p-6 rounded-3xl shadow-xl border border-slate-700 text-white">
+                            <h3 class="text-lg font-black mb-2 flex items-center gap-2 text-blue-400"><i class="fa-solid fa-mobile-screen"></i> App Modo Invitado</h3>
+                            <p class="text-xs text-slate-300 mb-5 leading-relaxed">Configura lo que verán tus invitados al escanear el código QR de su pase <b class="text-white">estando sentados en su mesa</b> durante la fiesta.</p>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1"><i class="fa-solid fa-utensils"></i> Menú del Evento</label>
+                                    <textarea id="cfg-menu-text" onchange="window.crmUpdateConfig('menuText', this.value)" class="w-full bg-slate-900/50 border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-blue-500 transition min-h-[120px] custom-scrollbar" placeholder="Ej:&#10;Entrada: Crema de Elote&#10;Plato Fuerte: Lomo en salsa de ciruela&#10;Postre: Pastel de Chocolate"></textarea>
+                                </div>
+                                
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1"><i class="fa-brands fa-spotify text-emerald-400"></i> Enlace para pedir canciones (Spotify/Form)</label>
+                                    <input type="text" id="cfg-dj-link" onchange="window.crmUpdateConfig('djLink', this.value)" class="w-full bg-slate-900/50 border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-emerald-500 transition" placeholder="https://open.spotify.com/playlist/...">
+                                </div>
+                                
+                                <div class="bg-blue-500/20 border border-blue-500/30 p-3 rounded-xl text-xs text-blue-200 mt-2 flex items-start gap-2">
+                                    <i class="fa-solid fa-circle-info mt-0.5 text-blue-400"></i>
+                                    <span>Al guardar, el enlace QR de los pases mostrará automáticamente estos datos a los invitados.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
             <section id="crm-sec-stats" class="hidden flex-1 flex-col min-h-0 w-full overflow-y-auto custom-scrollbar pb-32 pr-2">
                 <div class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col gap-2 sm:gap-3">
                     <button onclick="window.exportStatsExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl shadow-xl font-bold flex items-center gap-2 transform transition hover:scale-105 text-xs sm:text-sm" title="Exportar Logística a Excel">
@@ -474,7 +562,7 @@
                 <!-- Bento Grid Dashboard -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-7xl mx-auto w-full" id="stats-print-area">
                     
-                    <!-- 1. Asistencia General -->
+                    <!-- 1. Asistencia General (FILA DE 6 CAJAS) -->
                     <div class="bg-white p-4 sm:p-6 rounded-3xl shadow-sm border border-slate-200 col-span-1 md:col-span-2 lg:col-span-4">
                         <h3 class="text-base sm:text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-chart-pie text-blue-500"></i> Asistencia General</h3>
                         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4 text-center">
@@ -498,6 +586,7 @@
                                 <p class="text-xl sm:text-3xl font-black text-red-500" id="st-decl">0</p>
                                 <p class="text-[8px] sm:text-[10px] text-red-700 uppercase tracking-widest font-bold mt-1">Declinados</p>
                             </div>
+                            <!-- MÉTRICA: Pases Recuperados -->
                             <div class="bg-indigo-50 rounded-xl sm:rounded-2xl p-3 border border-indigo-100 flex flex-col justify-center shadow-inner relative overflow-hidden group cursor-default" title="Pases libres que puedes reasignar">
                                 <p class="text-xl sm:text-3xl font-black text-indigo-600 relative z-10" id="st-recup">0</p>
                                 <p class="text-[8px] sm:text-[10px] text-indigo-800 uppercase tracking-widest font-bold mt-1 relative z-10"><i class="fa-solid fa-rotate-left mr-1"></i>Recuperados</p>
@@ -647,14 +736,13 @@
         </main>
     </div>
 
-    <!-- WORKSPACE HOSTESS (Lector, Croquis y Lista) -->
     <div id="view-hostess" class="hidden flex-1 flex-col bg-slate-900 text-white relative min-h-0">
         <header class="bg-slate-800 px-4 py-3 flex flex-col shadow-lg border-b border-slate-700 z-10 shrink-0">
             <div class="flex justify-between items-center mb-2">
                 <div class="flex items-center gap-3">
                     <div class="bg-blue-500 text-white p-2 rounded-lg"><i class="fa-solid fa-qrcode"></i></div>
                     <div>
-                        <h1 class="font-bold text-lg leading-tight">Hostess App</h1>
+                        <h1 class="font-bold text-lg leading-tight flex items-center gap-2">Hostess App <span class="text-[8px] bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded font-bold uppercase tracking-widest network-status-text">Online</span></h1>
                         <p class="text-[10px] text-blue-300 font-bold uppercase tracking-wider" id="hostess-event-id">Evento</p>
                     </div>
                 </div>
@@ -738,15 +826,11 @@
     <!-- MODAL LLEGADAS PARCIALES HOSTESS -->
     <div id="hostess-result-modal" class="fixed inset-0 bg-slate-900/95 items-center justify-center z-50 hidden backdrop-blur-sm p-4">
         <div class="bg-white text-slate-900 p-6 rounded-3xl shadow-2xl w-full max-w-sm text-center border-t-8 border-blue-500 relative overflow-hidden transform transition-all scale-95 opacity-0 flex flex-col" id="hostess-result-box">
-            
             <button onclick="window.closeHostessResult()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800"><i class="fa-solid fa-times text-xl"></i></button>
-
             <h2 class="text-2xl font-black mb-1 text-slate-800 mt-2" id="hr-name">Familia</h2>
             <p class="text-sm text-blue-600 font-bold uppercase tracking-wider mb-4"><i class="fa-solid fa-chair mr-1"></i> <span id="hr-table">Mesa 1</span></p>
-            
             <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200 mb-6 flex flex-col gap-4 text-left">
                 <p class="text-center font-bold text-slate-700 border-b border-slate-200 pb-2 mb-2">¿Cuántos entran ahora?</p>
-                
                 <div class="flex justify-between items-center">
                     <div>
                         <p class="font-bold text-slate-800 text-sm"><i class="fa-solid fa-user text-slate-400 w-5"></i> Adultos</p>
@@ -758,7 +842,6 @@
                         <button onclick="window.adjEntry('adu', 1)" class="w-8 h-8 rounded-full bg-slate-200 text-slate-700 font-bold hover:bg-slate-300 transition">+</button>
                     </div>
                 </div>
-
                 <div class="flex justify-between items-center" id="hr-nin-row">
                     <div>
                         <p class="font-bold text-slate-800 text-sm"><i class="fa-solid fa-child text-slate-400 w-5"></i> Niños</p>
@@ -771,7 +854,6 @@
                     </div>
                 </div>
             </div>
-
             <button id="hr-confirm-btn" onclick="window.confirmHostessEntry()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg transition text-lg flex items-center justify-center gap-2">
                 <i class="fa-solid fa-check"></i> Registrar Ingreso
             </button>
@@ -852,13 +934,9 @@
     <!-- Modal Visual TICKET QR Rediseñado -->
     <div id="ticket-modal" class="fixed inset-0 bg-slate-900/90 items-center justify-center z-50 hidden glass p-4">
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm flex flex-col border border-slate-200 overflow-hidden">
-            <!-- HEADER DEL PASE REDISEÑADO -->
             <div id="ticket-header-bg" class="p-8 pb-4 text-center relative text-white rounded-t-3xl overflow-hidden transition-colors duration-300 flex flex-col justify-between" style="min-height: 400px; background-color: #0f172a;">
-                <!-- CAPA DE IMAGEN DE FONDO (Premium) al 95% -->
                 <img id="ticket-bg-image" src="" class="absolute top-0 left-0 w-full h-[95%] object-cover opacity-0 transition-opacity duration-500 z-0 pointer-events-none">
-                <!-- FILTRO OSCURO -->
                 <div id="ticket-dark-overlay" class="absolute top-0 left-0 w-full h-[95%] bg-slate-900/60 z-0 pointer-events-none hidden"></div>
-                <!-- CONTENIDO DEL TICKET -->
                 <div class="relative z-10 flex flex-col h-full justify-between flex-1">
                     <div>
                         <h3 class="text-2xl font-black mb-1 drop-shadow-lg mt-4" id="ticket-event-name">Cargando...</h3>
@@ -869,7 +947,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="p-4 bg-slate-50 rounded-b-3xl z-20 shrink-0">
                  <div class="grid grid-cols-2 gap-3 mb-3">
                      <button onclick="window.downloadNativeTicket()" class="bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-2xl font-bold shadow-md transition flex flex-col items-center justify-center gap-1">
@@ -933,27 +1010,21 @@
         </div>
     </div>
 
-    <!-- Asistente TPD Chat Independiente por Evento (Diseño V2) -->
-    <div id="tpd-fab" onclick="window.toggleTPDChat()" title="Asistente IA del Evento">
-        <i class="fa-solid fa-robot"></i>
-    </div>
-    <div id="tpd-chat-widget">
-        <div id="tpd-chat-header" onclick="window.toggleTPDChat()">
-            <span id="tpd-chat-title"><i class="fa-solid fa-brain mr-2"></i> Asistente de Evento</span>
-            <i class="fa-solid fa-chevron-down"></i>
-        </div>
-        <div id="tpd-chat-messages" class="custom-scrollbar">
-            <div class="tpd-msg bot" id="tpd-chat-welcome">Cargando contexto del evento...</div>
-        </div>
-        <div class="flex border-t border-slate-200 p-3 bg-white gap-2">
-            <input type="text" id="tpd-chat-input" placeholder="Pregúntame sobre tus listas..." onkeypress="if(event.key === 'Enter') window.sendTPDChat()" class="flex-1 border-2 border-slate-100 rounded-xl px-4 py-2 text-sm outline-none focus:border-blue-400 transition bg-slate-50">
-            <button onclick="window.sendTPDChat()" class="bg-blue-600 text-white rounded-xl w-10 h-10 flex items-center justify-center hover:bg-blue-700 shadow-md transition"><i class="fa-solid fa-paper-plane text-xs"></i></button>
+    <!-- Modal de Auditoría -->
+    <div id="audit-modal" class="fixed inset-0 bg-slate-900/80 items-center justify-center z-50 hidden glass p-4">
+        <div class="bg-white p-6 rounded-3xl shadow-2xl w-full max-w-2xl flex flex-col h-[80vh] border-t-8 border-blue-600 relative">
+            <button onclick="document.getElementById('audit-modal').classList.replace('flex', 'hidden')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800"><i class="fa-solid fa-times text-xl"></i></button>
+            <h3 class="text-xl font-black text-slate-800 mb-2 flex items-center gap-2"><i class="fa-solid fa-list-check text-blue-500"></i> Bitácora de Auditoría</h3>
+            <p class="text-xs text-slate-500 mb-4">Registro de movimientos locales del sistema.</p>
+            <div class="flex-1 overflow-y-auto bg-slate-50 rounded-xl border border-slate-200 p-4 custom-scrollbar" id="audit-list">
+                <!-- Se llena con JS -->
+            </div>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updatePassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, getDoc, setDoc, onSnapshot, collection, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // APP PRINCIPAL
@@ -981,6 +1052,7 @@
         let currentEventType = "";
         let impersonatingId = null;
         let currentTargetGuestId = null; 
+        let auditLogs = []; // PWA Auditoria local
         
         let isPremiumUser = false;
         
@@ -988,18 +1060,44 @@
             const map = { "XV Años": "xvana", "Bautizo": "bautizo", "Primera Comunión": "comunion", "Confirmación": "confirmacion", "Primera Comunión y Confirmación": "comunion", "Cumpleaños": "cumple", "Boda": "boda" };
             return map[eventType] || "boda";
         }
+
+        function logAction(action) {
+            const time = new Date().toLocaleString();
+            auditLogs.unshift(`[${time}] ${action}`);
+            if(auditLogs.length > 50) auditLogs.pop(); // Mantener solo ultimos 50
+        }
+
+        window.showAuditLog = function() {
+            const list = document.getElementById('audit-list');
+            if(auditLogs.length === 0) { list.innerHTML = '<p class="text-sm text-slate-400 italic text-center mt-10">No hay movimientos recientes registrados en esta sesión.</p>'; }
+            else { list.innerHTML = auditLogs.map(log => `<div class="text-xs text-slate-600 border-b border-slate-200 py-2">${log}</div>`).join(''); }
+            document.getElementById('audit-modal').classList.remove('hidden'); document.getElementById('audit-modal').classList.add('flex');
+        };
         
         let hCurrentGuest = null; let hAduToEnter = 0; let hNinToEnter = 0; let hMaxAdu = 0; let hMaxNin = 0;
         
         let state = { 
             invitados: [], 
             mesas: [{ id: 1, nombre: "Mesa VIP" }], 
-            config: { capacidadMesa: 10, themeColor: '#3b82f6', extras: 0, totalExtrasCost: 0, fontFamily: 'Plus Jakarta Sans' },
+            config: { capacidadMesa: 10, themeColor: '#3b82f6', extras: 0, totalExtrasCost: 0, fontFamily: 'Plus Jakarta Sans', menuText: '', djLink: '' },
             croquis: null,
-            ticketBg: null
+            ticketBg: null,
+            presupuesto: []
         };
         
         const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, timerProgressBar: true });
+
+        // PWA Offline Support Detector
+        window.addEventListener('online', () => { 
+            document.body.classList.remove('offline'); 
+            document.querySelectorAll('.network-status-text').forEach(el => el.innerHTML = '<i class="fa-solid fa-cloud"></i> Online (Sincronizado)');
+            Toast.fire({icon: 'success', title: 'Conexión recuperada. Sincronizando.'});
+            if(currentUser && currentRole !== 'Administrador') window.crmSave();
+        });
+        window.addEventListener('offline', () => { 
+            document.body.classList.add('offline'); 
+            document.querySelectorAll('.network-status-text').forEach(el => el.innerHTML = '<i class="fa-solid fa-wifi"></i> Offline (Modo Local)');
+        });
 
         window.setAppStyleTheme = function(theme) {
             document.body.classList.remove('theme-midnight', 'theme-rosegold');
@@ -1014,126 +1112,62 @@
             if(select) select.value = savedTheme;
         }
 
-        /* 
-        * ===============================================
-        * MODIFICACIÓN DE LA FUNCIÓN startDemoEnvironment
-        * (Ahora con lógica asíncrona validada, botón WA y validación numérica segura)
-        * ===============================================
-        */
         window.startDemoEnvironment = async function() {
             const now = new Date();
-            const dia = now.getDate();
-            const mes = now.getMonth() + 1; // getMonth va de 0 a 11
-            const hora = now.getHours();
-            
-            const pinCalculado = (dia * mes * 100) + hora;
+            const pinCalculado = (now.getDate() * (now.getMonth() + 1) * 100) + now.getHours();
 
             const { value: pinIngresado } = await Swal.fire({
                 title: 'Acceso Modo Demostración',
                 html: `
                     <p class="text-sm text-slate-600 mb-4">Por seguridad, solicita tu PIN de acceso a través de nuestro WhatsApp oficial.</p>
-                    
-                    <!-- Botón de WhatsApp -->
-                    <a href="https://wa.me/5211234567890?text=Hola,%20me%20gustar%C3%ADa%20solicitar%20el%20PIN%20de%20acceso%20para%20la%20demostraci%C3%B3n%20del%20sistema." target="_blank" class="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-3 px-4 rounded-xl transition mb-4 shadow-md w-full no-underline transform active:scale-95">
+                    <a href="https://wa.me/5212202662703?text=Hola,%20me%20gustar%C3%ADa%20solicitar%20el%20PIN%20de%20acceso%20para%20la%20demostraci%C3%B3n%20del%20sistema." target="_blank" class="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-3 px-4 rounded-xl transition mb-4 shadow-md w-full no-underline transform active:scale-95">
                         <i class="fa-brands fa-whatsapp text-xl"></i> Pedir PIN por WhatsApp
                     </a>
                 `,
-                input: 'password', // Tipo de entrada para ocultar los dígitos visualmente
-                inputAttributes: {
-                    inputmode: 'numeric', // Fuerzo el teclado numérico en móviles
-                    pattern: '[0-9]*',    // Solo acepta números
-                    maxlength: 6,
-                    autocapitalize: 'off',
-                    autocorrect: 'off'
-                },
+                input: 'password',
+                inputAttributes: { inputmode: 'numeric', pattern: '[0-9]*', maxlength: 6, autocapitalize: 'off', autocorrect: 'off' },
                 inputPlaceholder: 'Ingresa el PIN numérico',
-                showCancelButton: true,
-                confirmButtonColor: '#3b82f6',
-                cancelButtonColor: '#94a3b8',
-                confirmButtonText: 'Verificar PIN',
-                cancelButtonText: 'Cancelar'
+                showCancelButton: true, confirmButtonColor: '#3b82f6', cancelButtonColor: '#94a3b8', confirmButtonText: 'Verificar PIN', cancelButtonText: 'Cancelar'
             });
 
-            if (!pinIngresado) return; // Si el usuario cierra la ventana o no ingresa nada
-
-            // Validación segura convirtiendo el string a número entero. Si teclean letras parseInt arroja NaN
+            if (!pinIngresado) return; 
             if (parseInt(pinIngresado) === pinCalculado || pinIngresado === '9999') {
-                // PIN CORRECTO -> Generar ambiente demo local
-                currentUser = "demo_local";
-                currentRole = "Cliente";
-                currentEventType = "Evento";
+                currentUser = "demo_local"; currentRole = "Cliente"; currentEventType = "Evento";
                 state = { 
                     invitados: [
-                        { id: 1, nombre: "Familia García López", grupo: "Familia", telefono: "2221234567", adultos: 2, ninos: 1, status: "Confirmado", mesa: 1, observaciones: "Silla alta" },
-                        { id: 2, nombre: "Lic. Roberto Martínez", grupo: "Trabajo", telefono: "2229876543", adultos: 2, ninos: 0, status: "Confirmado", mesa: 1, observaciones: "Alergia mariscos" }
+                        { id: 1, nombre: "Familia García López", grupo: "Familia", telefono: "2202662703", adultos: 2, ninos: 1, status: "Confirmado", mesa: 1, observaciones: "Silla alta" },
+                        { id: 2, nombre: "Lic. Roberto Martínez", grupo: "Trabajo", telefono: "2202662703", adultos: 2, ninos: 0, status: "Confirmado", mesa: 1, observaciones: "Alergia mariscos" }
                     ], 
-                    mesas: [{ id: 1, nombre: "Mesa VIP" }], 
-                    config: { capacidadMesa: 10, themeColor: '#3b82f6', extras: 0, totalExtrasCost: 0, fontFamily: 'Plus Jakarta Sans' }, 
-                    croquis: null, 
-                    ticketBg: null
+                    mesas: [{ id: 1, nombre: "Mesa VIP" }], config: { capacidadMesa: 10, themeColor: '#3b82f6', extras: 0, totalExtrasCost: 0, fontFamily: 'Plus Jakarta Sans', menuText: '', djLink: '' }, croquis: null, ticketBg: null, presupuesto: []
                 };
                 isPremiumUser = true;
 
-                document.getElementById('view-login').classList.add('hidden');
-                document.getElementById('view-login').classList.remove('flex');
-                document.getElementById('view-crm').classList.remove('hidden');
-                document.getElementById('view-crm').classList.add('flex');
+                document.getElementById('view-login').classList.add('hidden'); document.getElementById('view-login').classList.remove('flex');
+                document.getElementById('view-crm').classList.remove('hidden'); document.getElementById('view-crm').classList.add('flex');
                 
                 document.getElementById('tpd-fab').style.display = 'flex';
                 document.getElementById('user-display').innerText = "Organizador Pro (DEMO)";
                 document.getElementById('crm-header-id').innerText = `${currentEventType} - ${currentUser}`;
                 
-                window.crmRenderAll();
-                window.initEventAssistant();
+                window.crmRenderAll(); window.initEventAssistant(); logAction("Inició sesión en Modo Demo Local.");
                 Toast.fire({ icon: 'success', title: '¡PIN correcto! Modo Demostración Activo' });
-
-            } else {
-                // PIN INCORRECTO
-                Swal.fire({
-                    title: 'Acceso Denegado',
-                    text: 'El PIN ingresado es incorrecto o ya ha caducado.',
-                    icon: 'error',
-                    confirmButtonColor: '#ef4444'
-                });
-            }
+            } else { Swal.fire({ title: 'Acceso Denegado', text: 'El PIN ingresado es incorrecto o ya ha caducado.', icon: 'error', confirmButtonColor: '#ef4444' }); }
         };
 
-        /* 
-        * ===============================================
-        * NUEVA FUNCIÓN PARA EL PANEL DE ADMINISTRACIÓN
-        * Muestra el PIN de manera rápida para el Admin
-        * ===============================================
-        */
         window.mostrarPinDemo = function() {
             const now = new Date();
-            const dia = now.getDate();
-            const mes = now.getMonth() + 1;
-            const hora = now.getHours();
-            
+            const dia = now.getDate(); const mes = now.getMonth() + 1; const hora = now.getHours();
             const pinCalculado = (dia * mes * 100) + hora;
 
             Swal.fire({
                 title: 'PIN de Demostración',
                 html: `
-                    <p class="text-sm text-slate-600 mb-4">Comparte este PIN con los clientes que solicitan el demo por WhatsApp. Es dinámico y cambia cada hora.</p>
-                    <div class="bg-blue-50 border border-blue-100 rounded-2xl py-4 mb-4">
-                        <span class="text-4xl font-black text-blue-600 tracking-widest">${pinCalculado}</span>
-                    </div>
-                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Fórmula activa:</p>
-                    <p class="text-xs text-slate-500 mb-3">(Día ${dia} x Mes ${mes} x 100) + Hora ${hora}</p>
+                    <p class="text-sm text-slate-600 mb-4">Comparte este PIN con los clientes que solicitan el demo. Cambia cada hora.</p>
+                    <div class="bg-blue-50 border border-blue-100 rounded-2xl py-4 mb-4"><span class="text-4xl font-black text-blue-600 tracking-widest">${pinCalculado}</span></div>
                     <p class="text-[10px] bg-slate-100 text-slate-500 inline-block px-3 py-1 rounded-md font-bold border border-slate-200">Código maestro infinito: 9999</p>
                 `,
-                icon: 'info',
-                confirmButtonText: '<i class="fa-solid fa-copy"></i> Copiar para WhatsApp',
-                confirmButtonColor: '#10b981',
-                showCancelButton: true,
-                cancelButtonText: 'Cerrar'
-            }).then((res) => {
-                if(res.isConfirmed) {
-                    navigator.clipboard.writeText(pinCalculado.toString());
-                    Toast.fire({ icon: 'success', title: 'PIN copiado al portapapeles' });
-                }
-            });
+                icon: 'info', confirmButtonText: '<i class="fa-solid fa-copy"></i> Copiar para WhatsApp', confirmButtonColor: '#10b981', showCancelButton: true, cancelButtonText: 'Cerrar'
+            }).then((res) => { if(res.isConfirmed) { navigator.clipboard.writeText(pinCalculado.toString()); Toast.fire({ icon: 'success', title: 'Copiado al portapapeles' }); } });
         };
 
         window.addPDFFooter = function(docInstance) {
@@ -1194,40 +1228,46 @@
             }
 
             if (!loginSuccess) { Swal.close(); return Swal.fire({ title: 'Acceso Rechazado', text: 'Las credenciales son incorrectas.', icon: 'error' }); }
-
-            let dbUserId = userRaw;
-            if (userRaw === 'admin' || usedEmail === 'admin@tpd.online' || usedEmail === 'adminadmin@tpd.online') { dbUserId = 'admin'; } else if (userRaw.includes('@')) { dbUserId = usedEmail.split('@')[0].replace(/admin$/, ''); } else { dbUserId = userRaw; }
-
-            try {
-                const docRef = doc(db, 'artifacts', 'weddingflow', 'users', dbUserId);
-                const snap = await getDoc(docRef);
-
-                if (snap.exists()) {
-                    const data = snap.data();
-                    if (data.status === 'Suspendido') { await signOut(auth); Swal.close(); return Swal.fire('Acceso Suspendido', 'Tu cuenta se encuentra suspendida.', 'warning'); }
-                    
-                    currentRole = data.role || 'Cliente';
-                    
-                    if (currentRole === 'Hostess') { Swal.close(); window.promptHostessLogin(); return; }
-                    if (currentRole === 'Administrador' || currentRole === 'Staff' || currentRole === 'Soporte') { await window.loadAdminPanel(); } 
-                    else if (currentRole === 'Cliente Web') { window.location.href = `estudio_diseno.html?user=${dbUserId}`; } 
-                    else { window.setupClientEnvironment(dbUserId, data); }
-                } else {
-                    if (dbUserId === 'admin' || dbUserId === 'root') { currentRole = 'Administrador'; await window.loadAdminPanel(); return; }
-                    Swal.close(); Swal.fire('Error', 'Usuario no encontrado en la base de datos.', 'error');
-                }
-            } catch (error) { Swal.close(); Swal.fire('Error', 'Fallo al leer la base de datos.', 'error'); }
         };
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                Swal.fire({ title: 'Cargando tu espacio...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+                let dbUserId = user.email.split('@')[0].replace(/admin$/, '');
+                if(user.email === 'admin@tpd.online' || user.email === 'adminadmin@tpd.online') dbUserId = 'admin';
+
+                try {
+                    const docRef = doc(db, 'artifacts', 'weddingflow', 'users', dbUserId);
+                    const snap = await getDoc(docRef);
+
+                    if (snap.exists()) {
+                        const data = snap.data();
+                        if (data.status === 'Suspendido') { await signOut(auth); Swal.close(); return Swal.fire('Acceso Suspendido', 'Tu cuenta se encuentra suspendida.', 'warning'); }
+                        
+                        currentRole = data.role || 'Cliente';
+                        logAction(`Autenticación exitosa como ${currentRole}`);
+                        
+                        if (currentRole === 'Hostess') { Swal.close(); window.promptHostessLogin(); return; }
+                        if (currentRole === 'Administrador' || currentRole === 'Staff' || currentRole === 'Soporte') { await window.loadAdminPanel(); } 
+                        else if (currentRole === 'Cliente Web') { window.location.href = `estudio_diseno.html?user=${dbUserId}`; } 
+                        else { window.setupClientEnvironment(dbUserId, data); }
+                    } else {
+                        if (dbUserId === 'admin' || dbUserId === 'root') { currentRole = 'Administrador'; await window.loadAdminPanel(); return; }
+                        Swal.close(); Swal.fire('Error', 'Usuario no encontrado en la base de datos.', 'error');
+                    }
+                } catch (error) { Swal.close(); Swal.fire('Error', 'Fallo al leer la base de datos.', 'error'); }
+            }
+        });
 
         window.appLogout = async function() {
             if(unsubscribe) unsubscribe();
             if(window.html5QrcodeScanner) { try { window.html5QrcodeScanner.stop().catch(e=>{}); } catch(err){} }
             await signOut(auth);
             
-            currentUser = null; currentRole = null; impersonatingId = null;
+            currentUser = null; currentRole = null; impersonatingId = null; auditLogs = [];
             document.getElementById('login-user').value = ''; document.getElementById('login-pass').value = '';
             
-            ['view-admin', 'view-crm', 'view-hostess', 'crm-impersonation-bar', 'welcome-modal', 'ticket-modal', 'wa-standard-modal', 'hostess-result-modal'].forEach(id => {
+            ['view-admin', 'view-crm', 'view-hostess', 'crm-impersonation-bar', 'welcome-modal', 'ticket-modal', 'wa-standard-modal', 'hostess-result-modal', 'audit-modal'].forEach(id => {
                 const el = document.getElementById(id);
                 if(el) { el.classList.add('hidden'); el.classList.remove('flex'); }
             });
@@ -1296,7 +1336,7 @@
                 await signOut(secondaryAuth);
 
                 const docRef = doc(db, 'artifacts', 'weddingflow', 'users', user);
-                await setDoc(docRef, { role, status: 'Activo', eventType: "", invitados: [], mesas: [{id:1,nombre:"Mesa VIP"}], config: {capacidadMesa:10, themeColor: '#3b82f6', extras: 0, totalExtrasCost: 0, fontFamily: 'Plus Jakarta Sans'}, croquis: null, hasPremiumLink: false, ticketBg: null });
+                await setDoc(docRef, { role, status: 'Activo', eventType: "", invitados: [], mesas: [{id:1,nombre:"Mesa VIP"}], config: {capacidadMesa:10, themeColor: '#3b82f6', extras: 0, totalExtrasCost: 0, fontFamily: 'Plus Jakarta Sans', menuText: '', djLink: ''}, croquis: null, hasPremiumLink: false, ticketBg: null, presupuesto: [] });
                 
                 document.getElementById('new-user').value = ''; document.getElementById('new-pass').value = ''; Toast.fire({icon: 'success', title: 'Usuario Registrado Seguro'}); window.loadAdminPanel();
             } catch(e) { let msg = 'Fallo al crear usuario en BD'; if(e.code === 'auth/email-already-in-use') msg = 'Este ID de usuario ya existe.'; Swal.fire('Error', msg, 'error'); }
@@ -1372,11 +1412,14 @@
                 if (docSnap.exists()) {
                     const data = docSnap.data();
                     state.invitados = data.invitados || []; state.mesas = data.mesas || state.mesas; state.config = data.config || state.config;
+                    state.presupuesto = data.presupuesto || [];
                     
                     if(!state.config.themeColor) state.config.themeColor = '#3b82f6';
                     if(!state.config.extras) state.config.extras = 0;
                     if(state.config.totalExtrasCost === undefined) state.config.totalExtrasCost = 0;
                     if(!state.config.fontFamily) state.config.fontFamily = 'Plus Jakarta Sans';
+                    if(!state.config.menuText) state.config.menuText = '';
+                    if(!state.config.djLink) state.config.djLink = '';
 
                     state.croquis = data.croquis || null; state.ticketBg = data.ticketBg || null;
                     isPremiumUser = data.hasPremiumLink === true; currentEventType = data.eventType || currentEventType;
@@ -1412,13 +1455,13 @@
         window.crmSave = async function() {
             try {
                 const act = impersonatingId || currentUser;
-                if(act === 'demo_local') return; // No guardar si es demo local puro
+                if(act === 'demo_local') return; 
                 const docRef = doc(db, 'artifacts', 'weddingflow', 'users', act);
-                await setDoc(docRef, { invitados: state.invitados, mesas: state.mesas, config: state.config, croquis: state.croquis, ticketBg: state.ticketBg || null }, { merge: true });
-            } catch(e) { console.error('Fallo crmSave', e); Toast.fire({icon: 'error', title: 'Error de guardado'}); }
+                await setDoc(docRef, { invitados: state.invitados, mesas: state.mesas, config: state.config, croquis: state.croquis, ticketBg: state.ticketBg || null, presupuesto: state.presupuesto }, { merge: true });
+            } catch(e) { console.error('Fallo crmSave', e); Toast.fire({icon: 'error', title: 'Aviso: Guardado local (Offline)'}); }
         };
         
-        window.crmRenderAll = function() { window.crmRenderGuests(); window.crmRenderTables(); window.crmRenderStats(); };
+        window.crmRenderAll = function() { window.crmRenderGuests(); window.crmRenderTables(); window.crmRenderStats(); window.crmRenderBudget(); };
         
         window.crmLoadData = async function() { 
             const btn = document.activeElement; if(btn) btn.blur(); document.getElementById('crm-search').value = ''; 
@@ -1429,8 +1472,8 @@
                 const snap = await getDoc(doc(db, 'artifacts', 'weddingflow', 'users', act));
                 if(snap.exists()) {
                     const data = snap.data();
-                    state.invitados = data.invitados || []; state.mesas = data.mesas || state.mesas; state.config = data.config || state.config; state.croquis = data.croquis || null; state.ticketBg = data.ticketBg || null; isPremiumUser = data.hasPremiumLink === true;
-                    window.crmRenderAll(); Swal.close(); Toast.fire({icon:'success', title:'Base de datos sincronizada'});
+                    state.invitados = data.invitados || []; state.mesas = data.mesas || state.mesas; state.config = data.config || state.config; state.croquis = data.croquis || null; state.ticketBg = data.ticketBg || null; state.presupuesto = data.presupuesto || []; isPremiumUser = data.hasPremiumLink === true;
+                    window.crmRenderAll(); Swal.close(); Toast.fire({icon:'success', title:'Base de datos sincronizada'}); logAction("Sincronización forzada con la nube completada.");
                 } else { Swal.close(); Toast.fire({icon:'error', title:'Error al sincronizar'}); }
             } catch(e) { Swal.fire('Error', 'Fallo al sincronizar', 'error'); }
         };
@@ -1443,13 +1486,18 @@
         };
 
         window.crmSwitchTab = function(tab) {
-            ['guests', 'tables', 'stats'].forEach(t => {
-                const sec = document.getElementById(`crm-sec-${t}`); sec.classList.remove('flex'); sec.classList.add('hidden');
-                document.getElementById(`tab-${t}`).classList.replace('text-blue-600', 'text-slate-500'); document.getElementById(`tab-${t}`).classList.replace('border-blue-600', 'border-transparent');
+            ['guests', 'tables', 'stats', 'budget'].forEach(t => {
+                const sec = document.getElementById(`crm-sec-${t}`); 
+                if(sec) { sec.classList.remove('flex'); sec.classList.add('hidden'); }
+                const tabBtn = document.getElementById(`tab-${t}`);
+                if(tabBtn) { tabBtn.classList.replace('text-blue-600', 'text-slate-500'); tabBtn.classList.replace('border-blue-600', 'border-transparent'); }
             });
-            const activeSec = document.getElementById(`crm-sec-${tab}`); activeSec.classList.remove('hidden'); activeSec.classList.add('flex');
-            document.getElementById(`tab-${tab}`).classList.replace('text-slate-500', 'text-blue-600'); document.getElementById(`tab-${tab}`).classList.replace('border-transparent', 'border-blue-600');
-            if(tab === 'tables') window.crmRenderTables(); if(tab === 'stats') window.crmRenderStats();
+            const activeSec = document.getElementById(`crm-sec-${tab}`); 
+            if(activeSec) { activeSec.classList.remove('hidden'); activeSec.classList.add('flex'); }
+            const activeTabBtn = document.getElementById(`tab-${tab}`);
+            if(activeTabBtn) { activeTabBtn.classList.replace('text-slate-500', 'text-blue-600'); activeTabBtn.classList.replace('border-transparent', 'border-blue-600'); }
+            
+            if(tab === 'tables') window.crmRenderTables(); if(tab === 'stats') window.crmRenderStats(); if(tab === 'budget') window.crmRenderBudget();
         };
 
         window.openAddGuestModal = function() {
@@ -1469,6 +1517,7 @@
             if (!name) return Toast.fire({icon: 'warning', title: 'El nombre es obligatorio'});
             state.invitados.push({ id: Date.now(), nombre: name, grupo: group, telefono: phone, adultos: pasesA, pases: pasesA, ninos: pasesN, status: status, mesa: mesa, observaciones: obs });
             document.getElementById('add-guest-modal').classList.replace('flex', 'hidden'); window.crmSave(); window.crmRenderAll(); Toast.fire({ icon: 'success', title: 'Invitado Guardado' });
+            logAction(`Agregó un nuevo invitado manualmente: ${name}`);
         };
 
         window.crmRenderGuests = function() {
@@ -1500,12 +1549,13 @@
             const guest = state.invitados.find(g => g.id === id); if (!guest) return;
             if (field === 'pases' || field === 'adultos' || field === 'ninos') { value = parseInt(value) || 0; if(value < 0) value = 0; guest[field] = value; if (field === 'adultos') guest.pases = value; if (field === 'pases') guest.adultos = value; } else { guest[field] = value; }
             window.crmRenderGuests(); window.crmSave();
+            logAction(`Actualizó un campo de ${guest.nombre}`);
         };
 
         window.editGuestName = function(id) {
             const guest = state.invitados.find(g => g.id === id); if (!guest) return;
             Swal.fire({ title: 'Editar Nombre', input: 'text', inputValue: guest.nombre, showCancelButton: true, confirmButtonColor: '#3b82f6', cancelButtonText: 'Cancelar', confirmButtonText: 'Actualizar' }).then((result) => {
-                if (result.isConfirmed && result.value.trim() !== '') { guest.nombre = result.value.trim(); window.crmRenderGuests(); window.crmSave(); Toast.fire({ icon: 'success', title: 'Nombre actualizado' }); }
+                if (result.isConfirmed && result.value.trim() !== '') { guest.nombre = result.value.trim(); window.crmRenderGuests(); window.crmSave(); Toast.fire({ icon: 'success', title: 'Nombre actualizado' }); logAction(`Editó nombre a ${guest.nombre}`); }
             });
         };
 
@@ -1513,13 +1563,13 @@
             const selected = Array.from(document.querySelectorAll('.g-cb:checked')).map(cb => parseInt(cb.value));
             if (selected.length === 0) return Toast.fire({ icon: 'info', title: 'Selecciona al menos uno' });
             Swal.fire({ title: '¿Borrar Selección?', text: `Se borrarán ${selected.length} invitados.`, icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444' })
-            .then((r) => { if (r.isConfirmed) { state.invitados = state.invitados.filter(g => !selected.includes(g.id)); window.crmSave(); window.crmRenderAll(); Toast.fire({ icon: 'success', title: 'Borrados' }); } });
+            .then((r) => { if (r.isConfirmed) { state.invitados = state.invitados.filter(g => !selected.includes(g.id)); window.crmSave(); window.crmRenderAll(); Toast.fire({ icon: 'success', title: 'Borrados' }); logAction(`Eliminó ${selected.length} invitados.`); } });
         };
 
         window.crmDeleteAllGuests = function() {
             if (state.invitados.length === 0) return;
             Swal.fire({ title: '¡PELIGRO!', text: '¿Vaciar TODA la lista?', icon: 'error', showCancelButton: true, confirmButtonColor: '#ef4444' })
-            .then((r) => { if (r.isConfirmed) { state.invitados = []; window.crmSave(); window.crmRenderAll(); Toast.fire({ icon: 'success', title: 'Vaciada' }); } });
+            .then((r) => { if (r.isConfirmed) { state.invitados = []; window.crmSave(); window.crmRenderAll(); Toast.fire({ icon: 'success', title: 'Vaciada' }); logAction(`VACIÓ toda la base de datos de invitados.`); } });
         };
 
         window.uploadTicketBg = function(e) {
@@ -1561,14 +1611,20 @@
             pdf.setFontSize(7); pdf.setTextColor(255, 255, 255); pdf.text("tupasedigital.online", 40, 108.5, { align: 'center' });
             
             pdf.save(`Pase_${document.getElementById('ticket-guest-name').innerText}.pdf`);
+            logAction(`Descargó en PDF el pase de ${document.getElementById('ticket-guest-name').innerText}`);
         };
 
         window.sendTicketWAAntiBlock = function() {
             const newTab = window.open('about:blank', '_blank'); window.downloadNativeTicket();
             const guest = state.invitados.find(g => g.id === currentTargetGuestId);
             if (!guest || !guest.telefono) { newTab.close(); return Toast.fire({icon:'warning', title:'Invitado sin teléfono asignado'}); }
+            
+            let phone = String(guest.telefono).replace(/\D/g, '');
+            if (phone.length === 10) phone = '52' + phone; // AUTO-52 INYECTION FIX
+
             const msg = encodeURIComponent(`¡Hola ${guest.nombre}! Aquí tienes tu Pase de Acceso Oficial. ¡Nos vemos pronto! ✨`);
-            setTimeout(() => { newTab.location.href = `https://api.whatsapp.com/send?phone=${guest.telefono}&text=${msg}`; }, 600);
+            setTimeout(() => { newTab.location.href = `https://api.whatsapp.com/send?phone=${phone}&text=${msg}`; }, 600);
+            logAction(`Envió pase PDF por WA a ${guest.nombre}`);
         };
 
         window.showTicketVisual = function(id) {
@@ -1586,7 +1642,7 @@
             let ads = parseInt(guest.adultos !== undefined ? guest.adultos : guest.pases) || 0; let nns = parseInt(guest.ninos) || 0;
             document.getElementById('ticket-guest-passes').innerText = `${ads + nns} Pases`;
             
-            const qrContainer = document.getElementById('ticket-qrcode'); qrContainer.innerHTML = '';
+            const qrContainer = document.getElementById('ticket-qrcode'); qrContainer.innerHTML = ''; // Prevent dupes
             const activeTarget = impersonatingId || currentUser; const subdominio = getSubdomain(currentEventType);
             const enlaceDinamico = `${subdominio}${activeTarget}`.replace(/\s+/g, '').toLowerCase();
             const rsvpUrl = `https://${enlaceDinamico}.tupasedigital.online/index2.html?u=${activeTarget}&id=${guest.id}`;
@@ -1629,8 +1685,11 @@
                 
                 document.getElementById('wa-standard-send-btn').onclick = function() {
                     if(!guest.telefono) return Toast.fire({icon:'warning', title:'El invitado no tiene WhatsApp registrado'});
-                    window.open(`https://api.whatsapp.com/send?phone=${guest.telefono}&text=${encodeURIComponent(msgEl.value)}`, '_blank');
+                    let phone = String(guest.telefono).replace(/\D/g, '');
+                    if(phone.length === 10) phone = '52' + phone; // AUTO-52 INYECTION
+                    window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(msgEl.value)}`, '_blank');
                     document.getElementById('wa-standard-modal').classList.replace('flex', 'hidden');
+                    logAction(`Envió mensaje predeterminado de WA a ${guest.nombre}`);
                 };
             } catch (err) { console.error(err); }
         };
@@ -1639,8 +1698,17 @@
             const activeId = impersonatingId || currentUser || "demo_id";
             const container = document.getElementById('tpd-chat-messages');
             const titleEl = document.getElementById('tpd-chat-title');
-            if(titleEl) titleEl.innerHTML = `<i class="fa-solid fa-brain mr-2"></i> IA: ${currentEventType || 'Evento'}`;
-            const initialMsg = `¡Hola! Soy el asistente logístico para tu <b>${currentEventType || 'Evento'}</b> (ID: <i>${activeId}</i>).<br><br>Consulta mesas, bebidas, mesa de dulces o métricas activas de tu evento.`;
+            const evento = currentEventType || 'Evento';
+            
+            if(titleEl) titleEl.innerHTML = `<i class="fa-solid fa-brain mr-2"></i> IA: ${evento}`;
+            
+            const saludos = [
+                `¡Hola! Qué gusto saludarte. Soy el asistente IA de tu <b>${evento}</b>. <br><br>Actualmente estoy analizando el ID <i>${activeId}</i>. ¿En qué te puedo ayudar hoy?`,
+                `¡Bienvenido! Soy tu asistente de logística para este <b>${evento}</b>. <br><br>Mis datos están sincronizados en tiempo real con la cuenta <i>${activeId}</i>. Pregúntame sobre mesas, bebidas, finanzas o algún invitado.`,
+                `¡Hola, hola! ✨ Aquí tu asistente virtual de <b>${evento}</b> reportándose. <br><br>Viendo la información de <i>${activeId}</i>... Todo listo. ¿Qué cálculos necesitas que haga?`
+            ];
+            const initialMsg = saludos[Math.floor(Math.random() * saludos.length)];
+            
             if(container) container.innerHTML = `<div class="tpd-msg bot">${initialMsg}</div>`;
         };
 
@@ -1651,61 +1719,135 @@
 
         window.sendTPDChat = function() {
             const input = document.getElementById('tpd-chat-input'); const text = input.value.trim().toLowerCase(); if(!text) return;
-            const container = document.getElementById('tpd-chat-messages'); container.innerHTML += `<div class="tpd-msg user">${text}</div>`; input.value = ''; container.scrollTop = container.scrollHeight;
-            const loadingId = 'loading-' + Date.now(); container.innerHTML += `<div id="${loadingId}" class="tpd-msg bot"><i class="fa-solid fa-spinner fa-spin"></i> Analizando Inteligencia Logística...</div>`; container.scrollTop = container.scrollHeight;
+            const container = document.getElementById('tpd-chat-messages'); 
+            container.innerHTML += `<div class="tpd-msg user">${input.value.trim()}</div>`; 
+            input.value = ''; container.scrollTop = container.scrollHeight;
+            
+            const loadingId = 'loading-' + Date.now(); 
+            const loadingTexts = ["Analizando datos...", "Calculando logística...", "Revisando invitados...", "Pensando..."];
+            const loadingTxt = loadingTexts[Math.floor(Math.random() * loadingTexts.length)];
+            container.innerHTML += `<div id="${loadingId}" class="tpd-msg bot"><i class="fa-solid fa-spinner fa-spin"></i> ${loadingTxt}</div>`; 
+            container.scrollTop = container.scrollHeight;
+
+            const thinkTime = Math.floor(Math.random() * 600) + 600;
 
             setTimeout(() => {
                 document.getElementById(loadingId).remove();
-                let reply = "Pídeme calcular <b>bebidas</b>, <b>mesas</b>, <b>dulces</b>, <b>niños</b> o hacer un <b>resumen</b>.";
-                let cAdu = 0, cNin = 0, sinMesa = 0, declinados = 0, totalPases = 0;
                 
+                let cAdu = 0, cNin = 0, sinMesa = 0, declinados = 0, totalPases = 0, pendientes = 0;
                 state.invitados.forEach(g => {
                     let ads = parseInt(g.adultos !== undefined ? g.adultos : g.pases) || 0; let nns = parseInt(g.ninos) || 0; let tot = ads + nns;
                     totalPases += tot;
                     if (g.status === 'Confirmado') { cAdu += ads; cNin += nns; if(g.mesa === 0) sinMesa += tot; } 
                     else if (g.status === 'Declinado') { declinados += tot; }
+                    else if (g.status === 'Pendiente') { pendientes += tot; }
                 });
 
                 const totalConfirmados = cAdu + cNin;
+                let reply = "";
 
-                if (text.includes('resumen') || text.includes('estatus') || text.includes('cuantos')) {
-                    reply = `📊 <b>Resumen para ${currentEventType}:</b><br>• Total en catálogo: ${totalPases} pases.<br>• Confirmados: <b>${totalConfirmados}</b> (${cAdu}A, ${cNin}N).<br>• Declinados: ${declinados}.`;
-                    if(sinMesa > 0) reply += `<br>⚠️ Hay <b>${sinMesa} lugares confirmados</b> sin mesa.`;
+                if (/hola|buen dia|buenas tardes|buenas noches|que tal|saludos/.test(text)) {
+                    const repSaludos = ["¡Hola! ¿En qué te ayudo con tus invitados o gastos?", "¡Qué tal! Aquí estoy para hacerte la vida más fácil. ¿Qué necesitas?", "¡Hola! Listo para calcular lo que ocupes."];
+                    reply = repSaludos[Math.floor(Math.random() * repSaludos.length)];
+                }
+                else if (/resumen|estatus|como vamos|cuantos|total|estadistica/.test(text)) {
+                    reply = `📊 <b>Total en catálogo:</b> ${totalPases} pases.<br>✅ <b>Confirmados:</b> ${totalConfirmados} (${cAdu}A, ${cNin}N).<br>⏳ <b>Pendientes:</b> ${pendientes} pases.<br>❌ <b>Declinados:</b> ${declinados}.`;
+                    if(sinMesa > 0) reply += `<br>⚠️ Hay ${sinMesa} confirmados sin mesa asignada.`;
                 } 
-                else if (text.includes('bebida') || text.includes('alcohol') || text.includes('hielo')) {
-                    if(cAdu === 0) reply = "No hay adultos confirmados para calcular insumos de barra.";
-                    else reply = `🍾 <b>Barra (${cAdu} Adultos):</b><br>• Destilados: <b>${Math.ceil(cAdu / 3)} bots</b>.<br>• Cervezas: <b>${Math.ceil(cAdu * 3)} pz</b>.<br>• Refrescos: <b>${Math.ceil(((cAdu * 1) + (cNin * 0.5)) * 1.15)} L</b>.<br>• Hielo: <b>${Math.ceil(cAdu * 1)} kg</b>.`;
+                else if (/bebida|alcohol|pisto|chelas|cerveza|vino|botella|hielo|refresco|chupe/.test(text)) {
+                    if(cAdu === 0) { reply = "Aún no tienes adultos confirmados para calcular la bebida."; } 
+                    else { reply = `🍾 <b>Barra (${cAdu} Adultos):</b><br>• Destilados: <b>${Math.ceil(cAdu / 3)} bots</b>.<br>• Cervezas: <b>${Math.ceil(cAdu * 3)} pz</b>.<br>• Refresco: <b>${Math.ceil(((cAdu * 1) + (cNin * 0.5)) * 1.15)} L</b>.<br>• Hielo: <b>${Math.ceil(cAdu * 1)} kg</b>.`; }
                 }
-                else if (text.includes('dulce') || text.includes('postre')) {
-                    let total = Math.ceil((cAdu * 3.0) + (cNin * 4.5));
-                    reply = `🍬 Sugiero <b>${total} piezas</b> en total para la mesa de postres (35% salado/picoso, 25% chocolate, 40% dulce/postre/snack).`;
+                else if (/dulce|postre|pastel|comida|snack|botana/.test(text)) {
+                    let totalDulces = Math.ceil((cAdu * 3.0) + (cNin * 4.5));
+                    reply = `🍬 Para mesa de postres sugiero <b>${totalDulces} piezas/porciones</b> (35% salado, 25% chocolate, 40% dulce).`;
                 }
-                else if (text.includes('mesa') || text.includes('silla') || text.includes('acomodo')) {
+                else if (/mesa|silla|acomodo|lugar|sentar|espacio/.test(text)) {
                     let capacidad = state.mesas.length * (parseInt(state.config.capacidadMesa)||10);
-                    reply = `Tienes capacidad para <b>${capacidad} personas</b> en mesas.<br>Tienes <b>${totalConfirmados} confirmados</b>.`;
-                    if(totalConfirmados > capacidad) reply += "<br>❌ Faltan lugares, debes crear más mesas."; else reply += "<br>✅ Tienes espacio suficiente.";
+                    reply = `Tienes ${state.mesas.length} mesas (Capacidad: <b>${capacidad} personas</b>). Tienes <b>${totalConfirmados} confirmados</b>.`;
+                    if(totalConfirmados > capacidad) reply += "<br>❌ <b>Faltan lugares.</b> Necesitas crear más mesas."; else reply += "<br>✅ Tienes espacio suficiente.";
                 }
-                else if (text.includes('niño')) { reply = `Actualmente hay <b>${cNin} niños</b> confirmados. Considera revisar si ocupan sillas altas o menú infantil en notas.`; }
-
+                else if (/niño|niña|menores|chamaco|hijos/.test(text)) { 
+                    reply = `Actualmente tienes <b>${cNin} niños</b> confirmados. Te sugiero revisar la columna "Observaciones" por si ocupan menú infantil.`; 
+                }
+                else if (/presupuesto|dinero|gasto|pagado|deuda|cobro|costo/.test(text)) {
+                    let stTotal = state.presupuesto.reduce((sum, item) => sum + item.costo, 0);
+                    let stPaid = state.presupuesto.reduce((sum, item) => sum + item.pagado, 0);
+                    let stDebt = stTotal - stPaid;
+                    reply = `💰 <b>Resumen Financiero:</b><br>• Tu evento costará aprox: <b>$${stTotal.toLocaleString('en-US')}</b><br>• Has pagado: <b>$${stPaid.toLocaleString('en-US')}</b><br>• Tienes una deuda de: <b>$${stDebt.toLocaleString('en-US')}</b>`;
+                }
+                else if (/gracias|perfecto|ok|excelente|genial|va/.test(text)) {
+                    const resp = ["¡De nada! Aquí sigo por si necesitas algo más.", "¡Para eso estoy! Con confianza pídeme más cálculos.", "¡Genial! Avísame si ocupas algo más."];
+                    reply = resp[Math.floor(Math.random() * resp.length)];
+                }
+                else {
+                    const palabras = text.split(" ").filter(p => p.length > 2);
+                    let invitadoEncontrado = null;
+                    for (let g of state.invitados) {
+                        const nombreLower = g.nombre.toLowerCase();
+                        if (palabras.some(palabra => nombreLower.includes(palabra))) { invitadoEncontrado = g; break; }
+                    }
+                    if (invitadoEncontrado) {
+                        let mesaTexto = invitadoEncontrado.mesa === 0 ? "⚠️ Sin mesa asignada." : `✅ Mesa ${state.mesas.find(m=>m.id===invitadoEncontrado.mesa)?.nombre || invitadoEncontrado.mesa}.`;
+                        reply = `¡Encontré a <b>${invitadoEncontrado.nombre}</b>!<br>• Estatus: ${invitadoEncontrado.status}<br>• Pases: ${(invitadoEncontrado.adultos||invitadoEncontrado.pases||0)}A, ${invitadoEncontrado.ninos||0}N<br>• Grupo: ${invitadoEncontrado.grupo}<br>${mesaTexto}`;
+                    } else {
+                        const defaultResp = [
+                            "Mmm... No estoy seguro de entender eso. Intenta pedirme calcular <b>bebidas</b>, ver <b>mesas</b>, o <b>presupuesto</b>.",
+                            "Soy bueno con los números, pero me perdí. Prueba preguntándome cuántos <b>niños</b> van o si tenemos suficientes <b>sillas</b>.",
+                            "Recuerda que puedes preguntarme por un invitado específico escribiendo su nombre, o pedirme el cálculo de <b>dinero</b>."
+                        ];
+                        reply = defaultResp[Math.floor(Math.random() * defaultResp.length)];
+                    }
+                }
                 container.innerHTML += `<div class="tpd-msg bot">${reply}</div>`; container.scrollTop = container.scrollHeight;
-            }, 600);
+            }, thinkTime);
         };
 
         window.assignTable = function(gId, tId) { state.invitados.find(g => g.id === gId).mesa = parseInt(tId); window.crmSave(); window.crmRenderTables(); };
-        window.addMultipleTables = function() { let qty = parseInt(document.getElementById('num-tables-add').value) || 1; for(let i=0; i<qty; i++) state.mesas.push({ id: Date.now() + i, nombre: `Mesa ${state.mesas.length + 1}` }); window.crmSave(); window.crmRenderTables(); Toast.fire({icon: 'success', title: `${qty} mesas agregadas`}); };
-        window.deleteTable = function(id) { state.mesas = state.mesas.filter(m => m.id !== id); state.invitados.forEach(g => { if(g.mesa === id) g.mesa = 0; }); window.crmSave(); window.crmRenderTables(); };
-        window.deleteAllTables = function() { if(!state.mesas.length) return; Swal.fire({ title: '¿Borrar todas las mesas?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444' }).then((r) => { if(r.isConfirmed) { state.mesas = []; state.invitados.forEach(g => g.mesa = 0); window.crmSave(); window.crmRenderTables(); } }); };
-        window.renameTable = function(id) { const m = state.mesas.find(x => x.id === id); Swal.fire({ title: 'Renombrar Mesa', input: 'text', inputValue: m.nombre, showCancelButton: true, confirmButtonColor: '#3b82f6' }).then(r => { if(r.isConfirmed && r.value) { m.nombre = r.value.trim(); window.crmSave(); window.crmRenderTables(); } }); };
+        window.addMultipleTables = function() { let qty = parseInt(document.getElementById('num-tables-add').value) || 1; for(let i=0; i<qty; i++) state.mesas.push({ id: Date.now() + i, nombre: `Mesa ${state.mesas.length + 1}` }); window.crmSave(); window.crmRenderTables(); Toast.fire({icon: 'success', title: `${qty} mesas agregadas`}); logAction(`Agregó ${qty} mesas nuevas.`); };
+        window.deleteTable = function(id) { state.mesas = state.mesas.filter(m => m.id !== id); state.invitados.forEach(g => { if(g.mesa === id) g.mesa = 0; }); window.crmSave(); window.crmRenderTables(); logAction(`Eliminó una mesa.`); };
+        window.deleteAllTables = function() { if(!state.mesas.length) return; Swal.fire({ title: '¿Borrar todas las mesas?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444' }).then((r) => { if(r.isConfirmed) { state.mesas = []; state.invitados.forEach(g => g.mesa = 0); window.crmSave(); window.crmRenderTables(); logAction(`Eliminó TODAS las mesas.`); } }); };
+        window.renameTable = function(id) { const m = state.mesas.find(x => x.id === id); Swal.fire({ title: 'Renombrar Mesa', input: 'text', inputValue: m.nombre, showCancelButton: true, confirmButtonColor: '#3b82f6' }).then(r => { if(r.isConfirmed && r.value) { m.nombre = r.value.trim(); window.crmSave(); window.crmRenderTables(); logAction(`Renombró una mesa a ${m.nombre}.`); } }); };
         
         window.randomizeTables = function() {
-            if (!state.mesas.length) return Swal.fire('Atención', 'Crea algunas mesas primero.', 'info');
-            const cap = parseInt(state.config.capacidadMesa) || 10; let unassigned = state.invitados.filter(g => g.mesa === 0).sort(() => Math.random() - 0.5);
+            if (!state.mesas.length) return Swal.fire('Atención', 'Debes crear mesas primero antes de acomodar.', 'info');
+            const cap = parseInt(state.config.capacidadMesa) || 10; 
+            
+            // Acomodo Inteligente (Agrupa por Familia, Amigos, etc.)
+            let unassigned = state.invitados.filter(g => g.mesa === 0);
+            
+            // Ordenar por tamaño de grupo (más grandes primero) y luego alfabéticamente por tipo de relación
+            unassigned.sort((a, b) => {
+                if (a.grupo === b.grupo) {
+                    let sizeA = (parseInt(a.adultos!==undefined?a.adultos:a.pases)||0) + (parseInt(a.ninos)||0);
+                    let sizeB = (parseInt(b.adultos!==undefined?b.adultos:b.pases)||0) + (parseInt(b.ninos)||0);
+                    return sizeB - sizeA;
+                }
+                return a.grupo.localeCompare(b.grupo);
+            });
+
             unassigned.forEach(g => {
                 let pases = (parseInt(g.adultos !== undefined ? g.adultos : g.pases) || 0) + (parseInt(g.ninos) || 0);
-                let target = state.mesas.find(m => { let cur = state.invitados.filter(i => i.mesa === m.id).reduce((s,i) => s + (parseInt(i.adultos !== undefined ? i.adultos : i.pases)||0) + (parseInt(i.ninos)||0), 0); return (cur + pases) <= cap; });
+                
+                // Intenta buscar una mesa que tenga espacio y tenga gente de su MISMO grupo social
+                let target = state.mesas.find(m => {
+                    let guestsInTable = state.invitados.filter(i => i.mesa === m.id);
+                    let cur = guestsInTable.reduce((s,i) => s + (parseInt(i.adultos!==undefined?i.adultos:i.pases)||0) + (parseInt(i.ninos)||0), 0);
+                    let hasSameGroup = guestsInTable.some(i => i.grupo === g.grupo);
+                    return (cur + pases) <= cap && hasSameGroup;
+                });
+
+                // Si no hay mesa compartida con su grupo, busca CUALQUIER mesa vacía o con espacio
+                if (!target) {
+                    target = state.mesas.find(m => {
+                        let cur = state.invitados.filter(i => i.mesa === m.id).reduce((s,i) => s + (parseInt(i.adultos!==undefined?i.adultos:i.pases)||0) + (parseInt(i.ninos)||0), 0);
+                        return (cur + pases) <= cap;
+                    });
+                }
                 if (target) g.mesa = target.id;
             });
-            window.crmSave(); window.crmRenderTables(); Toast.fire({icon:'success', title:'Llenado completado'});
+            window.crmSave(); window.crmRenderTables(); Toast.fire({icon:'success', title:'Llenado Inteligente Completado'});
+            logAction("Ejecutó el Llenado Inteligente de Mesas.");
         };
 
         window.uploadCroquis = function(e) {
@@ -1717,6 +1859,7 @@
                     const canvas = document.createElement('canvas'); canvas.width = img.width * scale; canvas.height = img.height * scale;
                     const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                     state.croquis = canvas.toDataURL('image/jpeg', 0.8); window.crmSave(); window.renderCroquisThumbnail(); Toast.fire({icon:'success', title:'Croquis Subido Exitosamente'});
+                    logAction("Subió un nuevo croquis de salón.");
                 };
                 img.src = ev.target.result;
             };
@@ -1780,6 +1923,104 @@
             return card;
         }
 
+        window.crmRenderBudget = function() {
+            const tbody = document.getElementById('budget-tbody'); tbody.innerHTML = '';
+            const emptyState = document.getElementById('budget-empty');
+            
+            // Render App Config
+            document.getElementById('cfg-menu-text').value = state.config.menuText || '';
+            document.getElementById('cfg-dj-link').value = state.config.djLink || '';
+
+            if(!state.presupuesto) state.presupuesto = [];
+            
+            let total = 0; let paid = 0;
+            state.presupuesto.forEach(item => {
+                total += item.costo; paid += item.pagado;
+                const remaining = item.costo - item.pagado;
+                
+                let badge = remaining <= 0 ? `<span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded font-bold text-[10px]">Liquidado</span>` : `<span class="bg-amber-100 text-amber-700 px-2 py-1 rounded font-bold text-[10px]">Debe $${remaining.toLocaleString('en-US')}</span>`;
+
+                const tr = document.createElement('tr'); tr.className = 'hover:bg-slate-50 transition border-b border-slate-50';
+                tr.innerHTML = `
+                    <td class="p-4"><p class="font-bold text-slate-800 text-xs">${item.concepto}</p></td>
+                    <td class="p-4 text-right"><p class="font-black text-slate-700">$${item.costo.toLocaleString('en-US')}</p></td>
+                    <td class="p-4 text-right"><p class="font-black text-emerald-600">$${item.pagado.toLocaleString('en-US')}</p></td>
+                    <td class="p-4 text-center">${badge}</td>
+                    <td class="p-4 text-center flex items-center justify-center gap-2">
+                        <button onclick="window.editBudgetItem(${item.id})" class="text-slate-400 hover:text-blue-500 transition"><i class="fa-solid fa-pencil text-xs"></i></button>
+                        <button onclick="window.deleteBudgetItem(${item.id})" class="text-slate-400 hover:text-red-500 transition"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            if(state.presupuesto.length === 0) { emptyState.classList.remove('hidden'); } else { emptyState.classList.add('hidden'); }
+
+            document.getElementById('budget-total').innerText = `$${total.toLocaleString('en-US')}`;
+            document.getElementById('budget-paid').innerText = `$${paid.toLocaleString('en-US')}`;
+            document.getElementById('budget-debt').innerText = `$${(total - paid).toLocaleString('en-US')}`;
+        };
+
+        window.addBudgetItem = function() {
+            Swal.fire({
+                title: 'Añadir Gasto',
+                html: `
+                    <input id="swal-b-concepto" class="swal2-input !m-0 !w-full !mb-3 text-sm" placeholder="Concepto (Ej: DJ, Salón, Banquete)">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div><label class="text-[10px] text-slate-500 font-bold uppercase block text-left">Costo Total ($)</label><input type="number" id="swal-b-costo" class="swal2-input !m-0 !w-full text-center" value="0" min="0"></div>
+                        <div><label class="text-[10px] text-slate-500 font-bold uppercase block text-left">Anticipo Pagado ($)</label><input type="number" id="swal-b-pagado" class="swal2-input !m-0 !w-full text-center" value="0" min="0"></div>
+                    </div>
+                `,
+                showCancelButton: true, confirmButtonText: 'Guardar', confirmButtonColor: '#3b82f6',
+                preConfirm: () => {
+                    const concepto = document.getElementById('swal-b-concepto').value.trim();
+                    const costo = parseFloat(document.getElementById('swal-b-costo').value) || 0;
+                    const pagado = parseFloat(document.getElementById('swal-b-pagado').value) || 0;
+                    if(!concepto) { Swal.showValidationMessage('Escribe el concepto del gasto'); return false; }
+                    return { concepto, costo, pagado };
+                }
+            }).then(r => {
+                if(r.isConfirmed) {
+                    if(!state.presupuesto) state.presupuesto = [];
+                    state.presupuesto.push({ id: Date.now(), concepto: r.value.concepto, costo: r.value.costo, pagado: r.value.pagado });
+                    window.crmSave(); window.crmRenderBudget(); Toast.fire({icon:'success', title:'Gasto registrado'}); logAction(`Registró un gasto: ${r.value.concepto}`);
+                }
+            });
+        };
+
+        window.editBudgetItem = function(id) {
+            const item = state.presupuesto.find(i => i.id === id); if(!item) return;
+            Swal.fire({
+                title: 'Editar Gasto',
+                html: `
+                    <input id="swal-b-concepto" class="swal2-input !m-0 !w-full !mb-3 text-sm" value="${item.concepto}">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div><label class="text-[10px] text-slate-500 font-bold uppercase block text-left">Costo Total ($)</label><input type="number" id="swal-b-costo" class="swal2-input !m-0 !w-full text-center" value="${item.costo}" min="0"></div>
+                        <div><label class="text-[10px] text-slate-500 font-bold uppercase block text-left">Monto Pagado ($)</label><input type="number" id="swal-b-pagado" class="swal2-input !m-0 !w-full text-center" value="${item.pagado}" min="0"></div>
+                    </div>
+                `,
+                showCancelButton: true, confirmButtonText: 'Actualizar', confirmButtonColor: '#3b82f6',
+                preConfirm: () => {
+                    const concepto = document.getElementById('swal-b-concepto').value.trim();
+                    const costo = parseFloat(document.getElementById('swal-b-costo').value) || 0;
+                    const pagado = parseFloat(document.getElementById('swal-b-pagado').value) || 0;
+                    if(!concepto) { Swal.showValidationMessage('Escribe el concepto'); return false; }
+                    return { concepto, costo, pagado };
+                }
+            }).then(r => {
+                if(r.isConfirmed) {
+                    item.concepto = r.value.concepto; item.costo = r.value.costo; item.pagado = r.value.pagado;
+                    window.crmSave(); window.crmRenderBudget(); Toast.fire({icon:'success', title:'Actualizado'}); logAction(`Actualizó un abono/gasto: ${r.value.concepto}`);
+                }
+            });
+        };
+
+        window.deleteBudgetItem = function(id) {
+            Swal.fire({ title: '¿Borrar Gasto?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444' }).then(r => {
+                if(r.isConfirmed) { state.presupuesto = state.presupuesto.filter(i => i.id !== id); window.crmSave(); window.crmRenderBudget(); logAction(`Borró un registro de gasto.`); }
+            });
+        };
+
         window.crmRenderStats = function() {
             let totalGeneral = 0, conf = 0, decl = 0, ninosTotales = 0, adultosTotales = 0, recuperados = 0;
             state.invitados.forEach(g => {
@@ -1841,6 +2082,7 @@
             if(!state.invitados.length) return Toast.fire({icon:'warning', title:'Lista vacía'});
             const data = state.invitados.map(g => ({ "Nombre": g.nombre, "WhatsApp": g.telefono||"", "Grupo": g.grupo, "Adultos": g.adultos, "Niños": g.ninos, "Status": g.status, "Mesa": g.mesa === 0 ? "Sin Asignar" : (state.mesas.find(m => m.id === g.mesa)?.nombre || g.mesa) }));
             const ws = XLSX.utils.json_to_sheet(data); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Invitados"); XLSX.writeFile(wb, `Lista_${impersonatingId||currentUser}.xlsx`);
+            logAction("Exportó invitados a Excel.");
         };
 
         window.crmExportPDF = function() {
@@ -1848,6 +2090,7 @@
             const { jsPDF } = window.jspdf; const doc = new jsPDF(); doc.text(`Lista de Acceso (Puerta) - ${impersonatingId||currentUser}`, 14, 15);
             const body = state.invitados.map(g => [g.nombre, `${g.adultos !== undefined ? g.adultos : g.pases}A, ${g.ninos}N`, g.status, g.mesa===0?'-':state.mesas.find(m=>m.id===g.mesa)?.nombre, '']);
             doc.autoTable({ startY: 20, head: [['Nombre', 'Pases', 'Status', 'Mesa', 'Firma']], body: body, theme: 'grid', headStyles: { fillColor: [59, 130, 246] } }); window.addPDFFooter(doc); doc.save(`Puerta_${impersonatingId||currentUser}.pdf`);
+            logAction("Exportó Lista de Puerta a PDF.");
         };
 
         window.crmExportTablesPDF = function() {
@@ -1858,6 +2101,7 @@
                 doc.autoTable({ startY: y, head: [['Invitado', 'Pases']], body: gt.map(g=>[g.nombre, `${g.adultos!==undefined?g.adultos:g.pases}A, ${g.ninos}N`]), theme: 'plain' });
                 y = doc.lastAutoTable.finalY + 10; if(y>270){ doc.addPage(); y=20; }
             }); window.addPDFFooter(doc); doc.save(`Mesas_${impersonatingId||currentUser}.pdf`);
+            logAction("Exportó Acomodo de Mesas a PDF.");
         };
 
         window.exportStatsExcel = function() {
@@ -1963,7 +2207,7 @@
                             if(kl.includes('nombre') || kl.includes('invitado') || kl.includes('familia')) nom = r[k];
                             else if(kl.includes('adulto') || kl.includes('pase')) a = parseInt(r[k]) || 0;
                             else if(kl.includes('niño') || kl.includes('nino') || kl.includes('menor')) n = parseInt(r[k]) || 0;
-                            else if(kl.includes('tel') || kl.includes('whats') || kl.includes('cel')) tel = String(r[k]);
+                            else if(kl.includes('tel') || kl.includes('whats') || kl.includes('cel')) tel = String(r[k]).replace(/[^0-9]/g, '');
                             else if(kl.includes('grupo')) grp = r[k] || 'Otros';
                         }
                         if(nom && nom.trim() !== '' && !nom.includes('Borrar')) {
@@ -1972,6 +2216,7 @@
                         }
                     });
                     window.crmSave(); window.crmRenderAll(); Swal.fire('Éxito', `Importados ${count} registros`, 'success'); 
+                    logAction(`Importó ${count} invitados desde Excel.`);
                 } catch(err) { Swal.fire('Error', 'Archivo no válido. Descarga la plantilla.', 'error'); }
             }; 
             reader.readAsArrayBuffer(f); e.target.value = '';
@@ -2037,6 +2282,7 @@
                     state.config.extras = (state.config.extras || 0) + cantidad;
                     if (costoIndiv > 0) { state.config.totalExtrasCost = (state.config.totalExtrasCost || 0) + (costoIndiv * cantidad); }
                     window.crmSave(); window.hostessRenderLiveStats(); Toast.fire({icon: 'success', title: cantidad === 1 ? '1 invitado extra registrado' : `${cantidad} invitados extra registrados`}); 
+                    logAction(`Hostess registró ${cantidad} extra(s) en puerta.`);
                 }
             });
         };
@@ -2068,7 +2314,7 @@
                     const data = snap.data(); const tipo = data.eventType || 'Evento'; document.getElementById('hostess-event-id').innerText = `${tipo} - ${eventId}`;
                     const btnMesasName = document.getElementById('btn-mesas-event-name'); if (btnMesasName) btnMesasName.innerText = `${tipo} - ${eventId}`;
                     
-                    state.invitados = data.invitados || []; state.mesas = data.mesas || []; state.croquis = data.croquis || null;
+                    state.invitados = data.invitados || []; state.mesas = data.mesas || []; state.croquis = data.croquis || null; state.config = data.config || state.config;
                     
                     if (state.croquis) { document.getElementById('hostess-croquis-img').src = state.croquis; document.getElementById('hostess-croquis-img').classList.remove('hidden'); document.getElementById('hostess-no-croquis').classList.add('hidden'); }
                     
@@ -2090,7 +2336,10 @@
                         if(gId) { window.html5QrcodeScanner.stop(); document.getElementById('btn-start-scanner').classList.remove('hidden'); window.processHostessAccess(gId); }
                     } catch(e) {}
                 }, (err) => {}
-            );
+            ).catch(err => {
+                document.getElementById('btn-start-scanner').classList.remove('hidden');
+                Swal.fire('Cámara Bloqueada', 'Por favor permite el acceso a la cámara en tu navegador para poder escanear.', 'warning');
+            });
         };
 
         window.hostessManualSearch = function() {
@@ -2098,7 +2347,7 @@
             const res = document.getElementById('hostess-search-results'); res.innerHTML = '';
             if(query.length < 2) return;
             state.invitados.filter(g => g.nombre.toLowerCase().includes(query)).forEach(g => {
-                const btn = document.createElement('button'); btn.className = 'w-full bg-slate-700 hover:bg-slate-600 text-white p-3 rounded-lg text-left text-sm font-bold flex justify-between items-center transition';
+                const btn = document.createElement('button'); btn.className = 'w-full bg-slate-700 hover:bg-slate-600 text-white p-3 rounded-lg text-left text-sm font-bold flex justify-between items-center transition mb-1';
                 btn.innerHTML = `<span>${g.nombre}</span> <i class="fa-solid fa-arrow-right text-blue-400"></i>`;
                 btn.onclick = () => window.processHostessAccess(g.id); res.appendChild(btn);
             });
@@ -2149,6 +2398,7 @@
             if(!hCurrentGuest) return;
             hCurrentGuest.ingresadosA = (parseInt(hCurrentGuest.ingresadosA) || 0) + hAduToEnter; hCurrentGuest.ingresadosN = (parseInt(hCurrentGuest.ingresadosN) || 0) + hNinToEnter;
             window.crmSave(); window.closeHostessResult(); Toast.fire({icon: 'success', title: `Registrado: ${hAduToEnter} Adultos, ${hNinToEnter} Niños`}); window.hostessRenderLiveStats();
+            logAction(`Ingreso registrado: ${hCurrentGuest.nombre} (${hAduToEnter}A, ${hNinToEnter}N)`);
         };
 
         window.closeHostessResult = function() {
@@ -2188,6 +2438,7 @@
             doc.setFontSize(10); doc.setTextColor(50, 50, 50); doc.text("________________________________________________", 105, finalY + 40, { align: "center" });
             doc.setFontSize(9); doc.text("Firma de Conformidad (Organizador / Cliente)", 105, finalY + 45, { align: "center" });
             window.addPDFFooter(doc); doc.save(`Corte_Hostess_${eventId}.pdf`);
+            logAction("Hostess descargó el reporte final en PDF.");
         };
 
     </script>
