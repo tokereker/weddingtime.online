@@ -8,32 +8,21 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>TPD Enterprise v2.0 Pro - SaaS CRM & Hub</title>
-    <!-- Chart.js para Gráficas Visuales -->
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- LocalForage para IndexedDB simplificado -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
-	
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <!-- SheetJS (Excel Export/Import) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <!-- jsPDF & html2canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <!-- QRCode.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <!-- HTML5 QR Code Scanner -->
     <script src="https://unpkg.com/html5-qrcode"></script>
-    <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- Emoji Picker Element -->
     <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@1.18.1/index.js"></script>
     
     <style>
-	/* Corrección del cursor global */
     html, body { cursor: default; }
     input, textarea { cursor: text !important; }
     button, a, select, label, .cursor-pointer { cursor: pointer; }
@@ -53,7 +42,6 @@
         transition: background-color 0.3s, color 0.3s;
     }
     
-    /* LOGIN SAAS V2.0 PRO STYLES */
     .login-bg { background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0f172a 70%, #020617 100%); }
     .login-card {
         background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
@@ -64,7 +52,6 @@
         background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, rgba(99, 102, 241, 0) 70%); border-radius: 50%; pointer-events: none;
     }
 
-    /* TEMAS DINÁMICOS DE DISEÑO (V2) */
     body.theme-midnight { --bg-canvas: #090d16; --card-bg: #111827; --text-main: #f3f4f6; --primary-color: #fbbf24; }
     body.theme-midnight .bg-white { background-color: #111827 !important; color: #f3f4f6 !important; border-color: #1f2937 !important; }
     body.theme-midnight .bg-slate-50 { background-color: #1f2937 !important; color: #f3f4f6 !important; border-color: #374151 !important; }
@@ -84,7 +71,6 @@
     body.theme-midnight .text-amber-800, body.theme-midnight .text-purple-800, 
     body.theme-midnight .text-rose-800 { color: #9ca3af !important; }
 
-    /* TEMA: ROSE GOLD */
     body.theme-rosegold { --bg-canvas: #fff5f5; --card-bg: #ffffff; --text-main: #4a3f35; --primary-color: #d97777; }
     body.theme-rosegold .bg-slate-50 { background-color: #fffaf9 !important; border-color: #fce7e7 !important; }
     body.theme-rosegold .bg-white { border-color: #fce7e7 !important; }
@@ -96,7 +82,6 @@
     }
     body.theme-rosegold .text-white { color: #4a3f35 !important; }
 
-    /* CORRECCIÓN TEMAS OSCUROS EN INPUTS */
     body.theme-midnight input, 
     body.theme-midnight textarea, 
     body.theme-midnight select {
@@ -119,7 +104,6 @@
     body.theme-midnight button.bg-slate-100:hover { background-color: #4b5563 !important; }
     body.theme-midnight button.bg-white { background-color: #1f2937 !important; color: #f3f4f6 !important; }
 
-    /* Asistente TPD Chat V2 */
     #tpd-chat-widget { 
         position: fixed; bottom: 85px; right: 20px; z-index: 9998; width: 92%; max-width: 360px; 
         display: none; flex-direction: column; background: var(--card-bg); border-radius: 20px; 
@@ -164,7 +148,6 @@
 </head>
 <body class="fixed inset-0 overflow-hidden flex flex-col text-slate-800 bg-slate-50">
 
-    <!-- Banner Offline -->
     <div id="offline-banner" class="fixed -top-12 left-0 w-full bg-red-500 text-white text-center text-xs font-bold py-1.5 z-[9999] shadow-md flex items-center justify-center gap-2">
         <i class="fa-solid fa-wifi"></i> Conexión Perdida. Trabajando en Modo Offline. Los cambios se sincronizarán al recuperar la señal.
     </div>
@@ -385,7 +368,6 @@
                         <div class="flex items-center gap-2 w-full xl:w-auto">
                             <div class="relative flex-1 md:w-72">
                                 <i class="fa-solid fa-search absolute left-3 top-3 text-slate-400 text-sm"></i>
-                                <!-- CORRECCIÓN: Buscador con Debounce para rendimiento -->
                                 <input type="text" id="crm-search" onkeyup="window.crmSearchDebounced()" placeholder="Buscar familia o invitado..." class="w-full border-2 border-slate-100 p-2 pl-9 text-sm rounded-xl outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition font-medium">
                             </div>
                             <button onclick="document.getElementById('crm-search').value=''; window.crmRenderGuests()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-2.5 rounded-xl text-sm font-bold transition shadow-sm" title="Limpiar Búsqueda"><i class="fa-solid fa-eraser"></i></button>
@@ -410,7 +392,6 @@
 							<button onclick="window.crmExportExcel()" class="bg-slate-800 hover:bg-slate-900 text-white px-3 py-2 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap" title="Descargar Excel con Datos"><i class="fa-solid fa-file-excel"></i> Excel</button>
                             <button onclick="window.crmExportPDF()" class="bg-slate-800 hover:bg-slate-900 text-white px-3 py-2 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap" title="Descargar Lista de Puerta PDF"><i class="fa-solid fa-file-pdf"></i> PDF</button>
                             <div class="h-8 w-px bg-slate-200 mx-1 shrink-0"></div>
-                            <!-- CORRECCIÓN: Botón Masivo WA con nuevo sistema -->
                             <button onclick="window.crmEnvioMasivoWA()" class="bg-emerald-50 border border-emerald-200 text-emerald-600 hover:bg-emerald-100 hover:text-emerald-700 px-3 py-2 rounded-xl text-sm font-bold shadow-sm transition whitespace-nowrap flex items-center gap-1.5" title="Envío Masivo WhatsApp">
                                 <i class="fa-solid fa-envelopes-bulk"></i> <span class="hidden sm:inline">Masivo WA</span>
                             </button>
@@ -498,7 +479,7 @@
                 </div>
             </section>
 
-            <!-- SECCIÓN PRESUPUESTO & MENÚ (Módulo V4) -->
+            <!-- SECCIÓN PRESUPUESTO & MENÚ -->
             <section id="crm-sec-budget" class="hidden flex-1 flex-col min-h-0 w-full overflow-y-auto custom-scrollbar pb-10 pr-2">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto w-full">
                     <div class="lg:col-span-2 space-y-6">
@@ -728,6 +709,7 @@
         </main>
     </div>
 
+    <!-- HOSTESS APP -->
     <div id="view-hostess" class="hidden flex-1 flex-col bg-slate-900 text-white relative min-h-0">
         <header class="bg-slate-800 px-4 py-3 flex flex-col shadow-lg border-b border-slate-700 z-10 shrink-0">
             <div class="flex justify-between items-center mb-2">
@@ -853,7 +835,6 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, updatePassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        // CORRECCIÓN: Se importó writeBatch
         import { getFirestore, doc, getDoc, setDoc, onSnapshot, collection, getDocs, deleteDoc, writeBatch } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -876,7 +857,7 @@
         let currentUser = null, currentRole = null, currentEventType = "";
         let impersonatingId = null, currentTargetGuestId = null; 
         
-        // Variables de optimización (Correcciones)
+        // Variables de optimización
         let searchTimeout;
         let waQueue = [];
         let auditLogs = [];
@@ -897,7 +878,8 @@
             const list = document.getElementById('audit-list');
             if(auditLogs.length === 0) { list.innerHTML = '<p class="text-sm text-slate-400 italic text-center mt-10">No hay movimientos recientes registrados en esta sesión.</p>'; }
             else { list.innerHTML = auditLogs.map(log => `<div class="text-xs text-slate-600 border-b border-slate-200 py-2">${log}</div>`).join(''); }
-            document.getElementById('audit-modal').classList.remove('hidden'); document.getElementById('audit-modal').classList.add('flex');
+            document.getElementById('audit-modal')?.classList.remove('hidden'); 
+            document.getElementById('audit-modal')?.classList.add('flex');
         };
         
         let hCurrentGuest = null; let hAduToEnter = 0; let hNinToEnter = 0; let hMaxAdu = 0; let hMaxNin = 0;
@@ -964,14 +946,27 @@
                     mesas: [{ id: 1, nombre: "Mesa VIP" }], config: { capacidadMesa: 10, themeColor: '#3b82f6', extras: 0, totalExtrasCost: 0, fontFamily: 'Plus Jakarta Sans', menuText: '', djLink: '' }, croquis: null, ticketBg: null, presupuesto: []
                 };
                 isPremiumUser = true;
-				const premiumDesign = document.getElementById('crm-premium-design'); if (premiumDesign) premiumDesign.style.display = isPremiumUser ? 'flex' : 'none';
-				const tabBudget = document.getElementById('tab-budget'); if (tabBudget) tabBudget.style.display = isPremiumUser ? 'block' : 'none';
-
-                document.getElementById('view-login').classList.add('hidden'); document.getElementById('view-login').classList.remove('flex');
-                document.getElementById('view-crm').classList.remove('hidden'); document.getElementById('view-crm').classList.add('flex');
                 
-                document.getElementById('tpd-fab').style.display = 'flex'; document.getElementById('user-display').innerText = "Organizador Pro (DEMO)";
-                document.getElementById('crm-header-id').innerText = `${currentEventType} - ${currentUser}`;
+                // PROTECCIÓN MEDIANTE OPTIONAL CHAINING
+				const premiumDesign = document.getElementById('crm-premium-design'); 
+				if (premiumDesign) premiumDesign.style.display = isPremiumUser ? 'flex' : 'none';
+				
+				const tabBudget = document.getElementById('tab-budget'); 
+				if (tabBudget) tabBudget.style.display = isPremiumUser ? 'block' : 'none';
+
+                document.getElementById('view-login')?.classList.add('hidden'); 
+                document.getElementById('view-login')?.classList.remove('flex');
+                document.getElementById('view-crm')?.classList.remove('hidden'); 
+                document.getElementById('view-crm')?.classList.add('flex');
+                
+                const fab = document.getElementById('tpd-fab');
+                if (fab) fab.style.display = 'flex';
+                
+                const userDisplay = document.getElementById('user-display');
+                if (userDisplay) userDisplay.innerText = "Organizador Pro (DEMO)";
+                
+                const headerId = document.getElementById('crm-header-id');
+                if (headerId) headerId.innerText = `${currentEventType} - ${currentUser}`;
                 
                 window.crmRenderAll(); window.initEventAssistant(); logAction("Inició sesión en Modo Demo Local.");
                 let intentosRestantes = 1 - intentosRealizados; Toast.fire({ icon: 'success', title: `¡Modo Demo! Te queda(n) ${intentosRestantes} oportunidad(es)` });
@@ -1015,7 +1010,7 @@
                 const start = textarea.selectionStart; const end = textarea.selectionEnd;
                 textarea.value = textarea.value.substring(0, start) + event.detail.unicode + textarea.value.substring(end);
                 textarea.selectionStart = textarea.selectionEnd = start + event.detail.unicode.length;
-                textarea.focus(); document.getElementById('emoji-picker-container').classList.add('hidden');
+                textarea.focus(); document.getElementById('emoji-picker-container')?.classList.add('hidden');
             });
         }
 
@@ -1028,7 +1023,9 @@
 
         window.hostessSmartExit = function() {
             if (impersonatingId && currentRole !== 'Hostess') {
-                 document.getElementById('view-hostess').classList.add('hidden'); document.getElementById('view-hostess').classList.remove('flex'); window.appExitImpersonation();
+                 document.getElementById('view-hostess')?.classList.add('hidden'); 
+                 document.getElementById('view-hostess')?.classList.remove('flex'); 
+                 window.appExitImpersonation();
             } else { window.appLogout(); }
         };
 
@@ -1084,16 +1081,19 @@
         window.appLogout = async function() {
 		    window.setAppStyleTheme('default', false);
             if(unsubUser) unsubUser(); if(unsubInv) unsubInv(); if(unsubMesas) unsubMesas(); if(unsubPresup) unsubPresup();
-            // CORRECCIÓN CÁMARA
+            
             if(window.html5QrcodeScanner) { 
-                try { 
-                    window.html5QrcodeScanner.stop().then(() => window.html5QrcodeScanner.clear()).catch(e=>{}); 
-                } catch(err){} 
+                try { window.html5QrcodeScanner.stop().then(() => window.html5QrcodeScanner.clear()).catch(e=>{}); } catch(err){} 
             }
             await signOut(auth);
             
             currentUser = null; currentRole = null; impersonatingId = null; auditLogs = [];
-            document.getElementById('login-user').value = ''; document.getElementById('login-pass').value = '';
+            
+            const loginUserEl = document.getElementById('login-user');
+            if (loginUserEl) loginUserEl.value = '';
+            
+            const loginPassEl = document.getElementById('login-pass');
+            if (loginPassEl) loginPassEl.value = '';
             
             ['view-admin', 'view-crm', 'view-hostess', 'crm-impersonation-bar', 'welcome-modal', 'ticket-modal', 'wa-standard-modal', 'hostess-result-modal', 'audit-modal'].forEach(id => {
                 const el = document.getElementById(id); if(el) { el.classList.add('hidden'); el.classList.remove('flex'); }
@@ -1101,22 +1101,37 @@
             
             const loginView = document.getElementById('view-login');
             if (loginView) { loginView.classList.remove('hidden'); loginView.classList.add('flex'); }
-            const fab = document.getElementById('tpd-fab'); const chat = document.getElementById('tpd-chat-widget');
-            if(fab) fab.style.display = 'none'; if(chat) chat.style.display = 'none';
+            
+            const fab = document.getElementById('tpd-fab'); 
+            const chat = document.getElementById('tpd-chat-widget');
+            if(fab) fab.style.display = 'none'; 
+            if(chat) chat.style.display = 'none';
         };
 
         window.loadAdminPanel = async function() {
             try {
-                document.getElementById('view-login').classList.add('hidden'); document.getElementById('view-crm').classList.add('hidden');
-                document.getElementById('view-admin').classList.remove('hidden'); document.getElementById('view-admin').classList.add('flex');
-                document.getElementById('tpd-fab').style.display = 'none'; document.getElementById('tpd-chat-widget').style.display = 'none';
+                document.getElementById('view-login')?.classList.add('hidden'); 
+                document.getElementById('view-crm')?.classList.add('hidden');
+                document.getElementById('view-admin')?.classList.remove('hidden'); 
+                document.getElementById('view-admin')?.classList.add('flex');
                 
-                if(currentRole === 'Staff' || currentRole === 'Soporte') { document.getElementById('admin-creator-panel').classList.add('hidden'); } else { document.getElementById('admin-creator-panel').classList.remove('hidden'); }
+                // PROTECCIÓN OPTIONAL CHAINING
+                const fab = document.getElementById('tpd-fab');
+                if(fab) fab.style.display = 'none';
+                
+                const chatWidget = document.getElementById('tpd-chat-widget');
+                if(chatWidget) chatWidget.style.display = 'none';
+                
+                if(currentRole === 'Staff' || currentRole === 'Soporte') { 
+                    document.getElementById('admin-creator-panel')?.classList.add('hidden'); 
+                } else { 
+                    document.getElementById('admin-creator-panel')?.classList.remove('hidden'); 
+                }
                 
                 const colRef = collection(db, 'artifacts', 'weddingflow', 'users');
                 const snaps = await getDocs(colRef);
                 const tbody = document.getElementById('admin-users-tbody');
-                tbody.innerHTML = '';
+                if (tbody) tbody.innerHTML = '';
                 
                 snaps.forEach(docSnap => {
                     const d = docSnap.data(); let rol = d.role || 'Cliente'; let tipoDisplay = '';
@@ -1144,7 +1159,7 @@
 
                     const tr = document.createElement('tr'); tr.className = 'hover:bg-slate-50 transition border-b border-slate-50';
                     tr.innerHTML = `<td class="p-4 font-bold text-slate-800">${docSnap.id} <br><span class="text-[10px] text-slate-500 uppercase tracking-wider font-medium">${tipoDisplay}</span></td><td class="p-4 font-bold text-xs text-slate-500 uppercase tracking-wide">${roleCol}</td><td class="p-4 text-center">${bdg}</td><td class="p-4 flex items-center justify-end gap-2">${impBtn} ${(impBtn || premiumBtn || infoAdminBtn) ? '<div class="h-6 w-px bg-slate-200 mx-1"></div>' : ''} ${premiumBtn} ${infoAdminBtn} ${btnSt} ${deleteBtn}</td>`;
-                    tbody.appendChild(tr);
+                    if (tbody) tbody.appendChild(tr);
                 });
                 Swal.close();
             } catch(e) { Swal.close(); Swal.fire({ title: 'Mensaje de Firebase', html: `Error:<br><br><b style="color:#ef4444;">${e.message}</b>`, icon: 'error' }); }
@@ -1184,35 +1199,52 @@
                 if (snap.exists()) {
                      const data = snap.data();
                      if (data.role === 'Cliente Web') { window.location.href = `estudio_diseno.html?user=${user}`; } else {
-                         impersonatingId = user; document.getElementById('view-admin').classList.add('hidden'); document.getElementById('view-admin').classList.remove('flex');
-                         document.getElementById('crm-impersonation-bar').classList.remove('hidden'); document.getElementById('crm-impersonation-bar').classList.add('flex');
-                         document.getElementById('crm-imp-name').innerText = user; window.setupClientEnvironment(user, data);
+                         impersonatingId = user; document.getElementById('view-admin')?.classList.add('hidden'); document.getElementById('view-admin')?.classList.remove('flex');
+                         document.getElementById('crm-impersonation-bar')?.classList.remove('hidden'); document.getElementById('crm-impersonation-bar')?.classList.add('flex');
+                         const impName = document.getElementById('crm-imp-name');
+                         if (impName) impName.innerText = user; 
+                         window.setupClientEnvironment(user, data);
                      }
                 }
             } catch(e) { Swal.fire('Error', 'Fallo al suplantar', 'error'); }
         };
 
         window.appExitImpersonation = function() {
-            impersonatingId = null; document.getElementById('crm-impersonation-bar').classList.add('hidden'); document.getElementById('crm-impersonation-bar').classList.remove('flex');
-            document.getElementById('view-crm').classList.add('hidden'); document.getElementById('view-crm').classList.remove('flex');
-            document.getElementById('view-hostess').classList.add('hidden'); document.getElementById('view-hostess').classList.remove('flex');
+            impersonatingId = null; 
+            document.getElementById('crm-impersonation-bar')?.classList.add('hidden'); 
+            document.getElementById('crm-impersonation-bar')?.classList.remove('flex');
             
-            // CORRECCIÓN SUBCOLECCIONES: Desuscribirse
+            document.getElementById('view-crm')?.classList.add('hidden'); 
+            document.getElementById('view-crm')?.classList.remove('flex');
+            
+            document.getElementById('view-hostess')?.classList.add('hidden'); 
+            document.getElementById('view-hostess')?.classList.remove('flex');
+            
             if(unsubUser) unsubUser(); if(unsubInv) unsubInv(); if(unsubMesas) unsubMesas(); if(unsubPresup) unsubPresup();
             window.loadAdminPanel();
         };
 
         window.setupClientEnvironment = function(userToLoad, dataSnapshot = null) {
             currentUser = userToLoad;
-            document.getElementById('view-login').classList.add('hidden'); document.getElementById('view-login').classList.remove('flex');
-            document.getElementById('view-admin').classList.add('hidden'); document.getElementById('view-admin').classList.remove('flex');
-            document.getElementById('view-crm').classList.remove('hidden'); document.getElementById('view-crm').classList.add('flex');
+            document.getElementById('view-login')?.classList.add('hidden'); 
+            document.getElementById('view-login')?.classList.remove('flex');
             
-            document.getElementById('tpd-fab').style.display = 'flex';
-            document.getElementById('user-display').innerText = currentRole === 'Cliente' ? 'Organizador Pro (CRM)' : currentRole;
+            document.getElementById('view-admin')?.classList.add('hidden'); 
+            document.getElementById('view-admin')?.classList.remove('flex');
+            
+            document.getElementById('view-crm')?.classList.remove('hidden'); 
+            document.getElementById('view-crm')?.classList.add('flex');
+            
+            // PROTECCIÓN OPTIONAL CHAINING
+            const fab = document.getElementById('tpd-fab');
+            if (fab) fab.style.display = 'flex';
+            
+            const userDisplay = document.getElementById('user-display');
+            if(userDisplay) userDisplay.innerText = currentRole === 'Cliente' ? 'Organizador Pro (CRM)' : currentRole;
             
             if (dataSnapshot && !dataSnapshot.eventType && (!impersonatingId)) {
-                document.getElementById('welcome-modal').classList.remove('hidden'); document.getElementById('welcome-modal').classList.add('flex');
+                document.getElementById('welcome-modal')?.classList.remove('hidden'); 
+                document.getElementById('welcome-modal')?.classList.add('flex');
             } else { window.subscribeToUser(userToLoad); }
             
             window.crmSwitchTab('guests'); Swal.close();
@@ -1220,21 +1252,27 @@
 
         window.toggleCustomEventInput = function(selectId, inputId) {
             const select = document.getElementById(selectId); const input = document.getElementById(inputId);
-            if(select.value === 'Otro') { input.classList.remove('hidden'); input.focus(); } else { input.classList.add('hidden'); input.value = ''; }
+            if(select && input) {
+                if(select.value === 'Otro') { input.classList.remove('hidden'); input.focus(); } 
+                else { input.classList.add('hidden'); input.value = ''; }
+            }
         };
 
         window.saveWelcomeEventType = async function() {
             try {
-                const selectVal = document.getElementById('welcome-event-type').value; let type = selectVal;
-                if(selectVal === 'Otro') { type = document.getElementById('welcome-event-custom').value.trim(); if(!type) return Toast.fire({icon:'warning', title:'Escribe el tipo de evento'}); }
+                const selectVal = document.getElementById('welcome-event-type')?.value; let type = selectVal;
+                if(selectVal === 'Otro') { 
+                    type = document.getElementById('welcome-event-custom')?.value.trim(); 
+                    if(!type) return Toast.fire({icon:'warning', title:'Escribe el tipo de evento'}); 
+                }
                 const activeTarget = impersonatingId || currentUser;
                 const docRef = doc(db, 'artifacts', 'weddingflow', 'users', activeTarget);
                 await setDoc(docRef, { eventType: type }, { merge: true });
-                document.getElementById('welcome-modal').classList.replace('flex', 'hidden'); window.subscribeToUser(activeTarget);
+                document.getElementById('welcome-modal')?.classList.replace('flex', 'hidden'); 
+                window.subscribeToUser(activeTarget);
             } catch(e) { Swal.fire('Error', 'Fallo al guardar evento', 'error'); }
         };
 
-        // CORRECCIÓN ARQUITECTURA FIRESTORE (Subcolecciones)
         window.subscribeToUser = function(user) {
             if (unsubUser) unsubUser(); if (unsubInv) unsubInv(); if (unsubMesas) unsubMesas(); if (unsubPresup) unsubPresup();
             
@@ -1261,8 +1299,11 @@
                     isPremiumUser = data.hasPremiumLink === true; currentEventType = data.eventType || currentEventType;
                     
                     const tipo = currentEventType || 'Evento';
-                    document.getElementById('crm-header-id').innerText = `${tipo} - ${user}`;
-                    const btnMesasName = document.getElementById('btn-mesas-event-name'); if (btnMesasName) btnMesasName.innerText = `${tipo} - ${user}`;
+                    const headerId = document.getElementById('crm-header-id');
+                    if(headerId) headerId.innerText = `${tipo} - ${user}`;
+                    
+                    const btnMesasName = document.getElementById('btn-mesas-event-name'); 
+                    if (btnMesasName) btnMesasName.innerText = `${tipo} - ${user}`;
                     
                     document.documentElement.style.setProperty('--primary-color', state.config.themeColor);
                     const colorPicker = document.getElementById('crm-theme-color'); if (colorPicker) colorPicker.value = state.config.themeColor;
@@ -1276,25 +1317,32 @@
                         else if (tLower.includes('cumple')) iconEl.classList.add('fa-cake-candles'); else iconEl.classList.add('fa-calendar-check');
                     }
                     
-                    const premiumDesign = document.getElementById('crm-premium-design'); if (premiumDesign) premiumDesign.style.display = isPremiumUser ? 'flex' : 'none';
-					const tabBudget = document.getElementById('tab-budget'); if (tabBudget) tabBudget.style.display = isPremiumUser ? 'block' : 'none';
-                    const waPremiumContainer = document.getElementById('wa-premium-link-container'); const waCheckbox = document.getElementById('wa-include-link');
-                    if (waPremiumContainer && waCheckbox) { waPremiumContainer.style.display = isPremiumUser ? 'flex' : 'none'; waCheckbox.checked = isPremiumUser; waCheckbox.disabled = !isPremiumUser; }
+                    const premiumDesign = document.getElementById('crm-premium-design'); 
+                    if (premiumDesign) premiumDesign.style.display = isPremiumUser ? 'flex' : 'none';
+					
+                    const tabBudget = document.getElementById('tab-budget'); 
+                    if (tabBudget) tabBudget.style.display = isPremiumUser ? 'block' : 'none';
+                    
+                    const waPremiumContainer = document.getElementById('wa-premium-link-container'); 
+                    const waCheckbox = document.getElementById('wa-include-link');
+                    if (waPremiumContainer && waCheckbox) { 
+                        waPremiumContainer.style.display = isPremiumUser ? 'flex' : 'none'; 
+                        waCheckbox.checked = isPremiumUser; waCheckbox.disabled = !isPremiumUser; 
+                    }
 
                     window.crmRenderAll(); window.initEventAssistant();
                 }
             });
 
-            // Suscribirse a INVITADOS
             const invRef = collection(db, 'artifacts', 'weddingflow', 'users', user, 'invitados');
             unsubInv = onSnapshot(invRef, (snaps) => {
                 state.invitados = [];
                 snaps.forEach(s => state.invitados.push(s.data()));
                 window.crmRenderAll();
-                if(document.getElementById('view-hostess') && !document.getElementById('view-hostess').classList.contains('hidden')) { window.hostessRenderLiveStats(); }
+                const vHostess = document.getElementById('view-hostess');
+                if(vHostess && !vHostess.classList.contains('hidden')) { window.hostessRenderLiveStats(); }
             });
 
-            // Suscribirse a MESAS
             const mesasRef = collection(db, 'artifacts', 'weddingflow', 'users', user, 'mesas');
             unsubMesas = onSnapshot(mesasRef, (snaps) => {
                 state.mesas = [];
@@ -1302,7 +1350,6 @@
                 window.crmRenderTables();
             });
 
-            // Suscribirse a PRESUPUESTO
             const presRef = collection(db, 'artifacts', 'weddingflow', 'users', user, 'presupuesto');
             unsubPresup = onSnapshot(presRef, (snaps) => {
                 state.presupuesto = [];
@@ -1311,7 +1358,6 @@
             });
         };
 
-        // CORRECCIÓN ARQUITECTURA FIRESTORE (Lotes/Batch)
         window.crmSave = async function() {
             try {
                 const act = impersonatingId || currentUser;
@@ -1344,7 +1390,10 @@
         window.crmRenderAll = function() { window.crmRenderGuests(); window.crmRenderTables(); window.crmRenderStats(); window.crmRenderBudget(); };
         
         window.crmLoadData = async function() { 
-            const btn = document.activeElement; if(btn) btn.blur(); document.getElementById('crm-search').value = ''; 
+            const btn = document.activeElement; if(btn) btn.blur(); 
+            const sEl = document.getElementById('crm-search');
+            if(sEl) sEl.value = ''; 
+            
             Swal.fire({ title: 'Sincronizando...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
             try {
                 const act = impersonatingId || currentUser;
@@ -1369,7 +1418,6 @@
             } catch(e) { Swal.fire('Error', 'Fallo al sincronizar', 'error'); }
         };
 
-        // CORRECCIÓN RENDIMIENTO (Debounce Búsqueda)
         window.crmSearchDebounced = function() {
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(() => { window.crmRenderGuests(); }, 250);
@@ -1399,28 +1447,40 @@
 
         window.openAddGuestModal = function() {
             const mesaSelect = document.getElementById('modal-guest-mesa');
-            mesaSelect.innerHTML = '<option value="0">Sin Asignar</option>' + state.mesas.map(m => `<option value="${m.id}">${m.nombre}</option>`).join('');
-            document.getElementById('modal-guest-name').value = ''; document.getElementById('modal-guest-phone').value = ''; document.getElementById('modal-guest-ads').value = '1'; document.getElementById('modal-guest-kids').value = '0'; document.getElementById('modal-guest-obs').value = '';
-            document.getElementById('add-guest-modal').classList.remove('hidden'); document.getElementById('add-guest-modal').classList.add('flex');
-            setTimeout(()=>document.getElementById('modal-guest-name').focus(), 100);
+            if(mesaSelect) {
+                mesaSelect.innerHTML = '<option value="0">Sin Asignar</option>' + state.mesas.map(m => `<option value="${m.id}">${m.nombre}</option>`).join('');
+            }
+            const gName = document.getElementById('modal-guest-name'); if(gName) gName.value = ''; 
+            const gPhone = document.getElementById('modal-guest-phone'); if(gPhone) gPhone.value = ''; 
+            const gAds = document.getElementById('modal-guest-ads'); if(gAds) gAds.value = '1'; 
+            const gKids = document.getElementById('modal-guest-kids'); if(gKids) gKids.value = '0'; 
+            const gObs = document.getElementById('modal-guest-obs'); if(gObs) gObs.value = '';
+            
+            document.getElementById('add-guest-modal')?.classList.remove('hidden'); 
+            document.getElementById('add-guest-modal')?.classList.add('flex');
+            setTimeout(()=> { const nEl = document.getElementById('modal-guest-name'); if(nEl) nEl.focus(); }, 100);
         };
 
         window.saveModalGuest = function() {
-            const name = document.getElementById('modal-guest-name').value.trim(); const group = document.getElementById('modal-guest-group').value;
-            const phone = document.getElementById('modal-guest-phone').value.trim(); const pasesA = parseInt(document.getElementById('modal-guest-ads').value) || 1;
-            const pasesN = parseInt(document.getElementById('modal-guest-kids').value) || 0; const status = document.getElementById('modal-guest-status').value;
-            const mesa = parseInt(document.getElementById('modal-guest-mesa').value) || 0; const obs = document.getElementById('modal-guest-obs').value.trim();
+            const name = document.getElementById('modal-guest-name')?.value.trim(); 
+            const group = document.getElementById('modal-guest-group')?.value;
+            const phone = document.getElementById('modal-guest-phone')?.value.trim(); 
+            const pasesA = parseInt(document.getElementById('modal-guest-ads')?.value) || 1;
+            const pasesN = parseInt(document.getElementById('modal-guest-kids')?.value) || 0; 
+            const status = document.getElementById('modal-guest-status')?.value;
+            const mesa = parseInt(document.getElementById('modal-guest-mesa')?.value) || 0; 
+            const obs = document.getElementById('modal-guest-obs')?.value.trim();
 
             if (!name) return Toast.fire({icon: 'warning', title: 'El nombre es obligatorio'});
             state.invitados.push({ id: Date.now(), nombre: name, grupo: group, telefono: phone, adultos: pasesA, pases: pasesA, ninos: pasesN, status: status, mesa: mesa, observaciones: obs });
-            document.getElementById('add-guest-modal').classList.replace('flex', 'hidden'); window.crmSave(); window.crmRenderAll(); Toast.fire({ icon: 'success', title: 'Invitado Guardado' });
+            document.getElementById('add-guest-modal')?.classList.replace('flex', 'hidden'); 
+            window.crmSave(); window.crmRenderAll(); Toast.fire({ icon: 'success', title: 'Invitado Guardado' });
             logAction(`Agregó un nuevo invitado manualmente: ${name}`);
         };
 
-        // CORRECCIÓN DOM RENDIMIENTO (DocumentFragment)
         window.crmRenderGuests = function() {
             const tbody = document.getElementById('crm-guests-tbody'); if(!tbody) return;
-            const term = document.getElementById('crm-search').value.toLowerCase(); 
+            const term = document.getElementById('crm-search')?.value.toLowerCase() || ''; 
             const optionsGrupo = ["Familia", "Amigos", "Trabajo", "Conocidos", "Otros"];
 
             const fragment = document.createDocumentFragment();
@@ -1510,23 +1570,24 @@
                 pdf.setGState(new pdf.GState({opacity: 1.0})); pdf.setFillColor(activeColor); pdf.rect(0, 109.5, 80, 5.5, 'F');
             } else { pdf.setFillColor(activeColor); pdf.rect(0, 0, 80, 115, 'F'); }
             
-            pdf.setTextColor(255, 255, 255); pdf.setFont(undefined, 'bold'); pdf.setFontSize(16); pdf.text(document.getElementById('ticket-event-name').innerText, 40, 18, { align: 'center' });
+            pdf.setTextColor(255, 255, 255); pdf.setFont(undefined, 'bold'); pdf.setFontSize(16); pdf.text(document.getElementById('ticket-event-name')?.innerText || 'Evento', 40, 18, { align: 'center' });
             pdf.setFontSize(10); pdf.text("Pase de Acceso Oficial", 40, 26, { align: 'center' });
             
             const qrCanvas = document.querySelector('#ticket-qrcode canvas');
             if (qrCanvas) { const qrData = qrCanvas.toDataURL("image/png"); pdf.setFillColor(255, 255, 255); pdf.rect(22, 33, 36, 36, 'F'); pdf.addImage(qrData, 'PNG', 23, 34, 34, 34); }
             
-            pdf.setFontSize(14); pdf.text(document.getElementById('ticket-guest-name').innerText, 40, 78, { align: 'center' });
-            pdf.setFontSize(10); pdf.text(document.getElementById('ticket-guest-passes').innerText, 40, 85, { align: 'center' });
+            const gName = document.getElementById('ticket-guest-name')?.innerText || 'Invitado';
+            pdf.setFontSize(14); pdf.text(gName, 40, 78, { align: 'center' });
+            pdf.setFontSize(10); pdf.text(document.getElementById('ticket-guest-passes')?.innerText || '', 40, 85, { align: 'center' });
             
-            const tableText = document.getElementById('ticket-guest-table').innerText;
+            const tableText = document.getElementById('ticket-guest-table')?.innerText || '';
             pdf.setFontSize(9);
             pdf.setFillColor(255, 255, 255); pdf.setGState(new pdf.GState({opacity: 0.15})); pdf.rect(20, 88, 40, 6, 'F'); pdf.setGState(new pdf.GState({opacity: 1.0}));
             pdf.text(tableText, 40, 92.5, { align: 'center' });
 
             pdf.setFontSize(7); pdf.setTextColor(255, 255, 255); pdf.text("tupasedigital.online", 40, 113.5, { align: 'center' });
-            pdf.save(`Pase_${document.getElementById('ticket-guest-name').innerText}.pdf`);
-            logAction(`Descargó en PDF el pase de ${document.getElementById('ticket-guest-name').innerText}`);
+            pdf.save(`Pase_${gName}.pdf`);
+            logAction(`Descargó en PDF el pase de ${gName}`);
         };
 
         window.sendTicketWAAntiBlock = function() {
@@ -1544,37 +1605,49 @@
 
         window.showTicketVisual = function(id) {
             currentTargetGuestId = id; const guest = state.invitados.find(g => g.id === id); if(!guest) return;
-            const bgImageLayer = document.getElementById('ticket-bg-image'); const overlayLayer = document.getElementById('ticket-dark-overlay'); const headerBg = document.getElementById('ticket-header-bg');
+            const bgImageLayer = document.getElementById('ticket-bg-image'); 
+            const overlayLayer = document.getElementById('ticket-dark-overlay'); 
+            const headerBg = document.getElementById('ticket-header-bg');
             
-            headerBg.style.backgroundColor = state.config.themeColor || '#3b82f6';
+            if(headerBg) headerBg.style.backgroundColor = state.config.themeColor || '#3b82f6';
+            
             if (isPremiumUser && state.ticketBg) {
-                bgImageLayer.src = state.ticketBg; bgImageLayer.classList.remove('opacity-0'); bgImageLayer.classList.add('opacity-100'); overlayLayer.classList.remove('hidden');
-            } else { bgImageLayer.src = ''; bgImageLayer.classList.remove('opacity-100'); bgImageLayer.classList.add('opacity-0'); overlayLayer.classList.add('hidden'); }
+                if(bgImageLayer) { bgImageLayer.src = state.ticketBg; bgImageLayer.classList.remove('opacity-0'); bgImageLayer.classList.add('opacity-100'); }
+                if(overlayLayer) overlayLayer.classList.remove('hidden');
+            } else { 
+                if(bgImageLayer) { bgImageLayer.src = ''; bgImageLayer.classList.remove('opacity-100'); bgImageLayer.classList.add('opacity-0'); }
+                if(overlayLayer) overlayLayer.classList.add('hidden'); 
+            }
 
-            document.getElementById('ticket-event-name').innerText = currentEventType === 'Otro' ? 'Evento Especial' : currentEventType;
-            document.getElementById('ticket-guest-name').innerText = guest.nombre;
+            const tEventEl = document.getElementById('ticket-event-name'); if(tEventEl) tEventEl.innerText = currentEventType === 'Otro' ? 'Evento Especial' : currentEventType;
+            const tGuestEl = document.getElementById('ticket-guest-name'); if(tGuestEl) tGuestEl.innerText = guest.nombre;
             
             let ads = parseInt(guest.adultos !== undefined ? guest.adultos : guest.pases) || 0; let nns = parseInt(guest.ninos) || 0;
-            document.getElementById('ticket-guest-passes').innerText = `${ads + nns} Pases`;
+            const tPassEl = document.getElementById('ticket-guest-passes'); if(tPassEl) tPassEl.innerText = `${ads + nns} Pases`;
             
             const tableName = guest.mesa === 0 ? "Sin Asignar" : (state.mesas.find(m => m.id === guest.mesa)?.nombre || "Mesa VIP");
-            document.getElementById('ticket-guest-table').innerText = tableName;
+            const tTabEl = document.getElementById('ticket-guest-table'); if(tTabEl) tTabEl.innerText = tableName;
 
-            const qrContainer = document.getElementById('ticket-qrcode'); qrContainer.innerHTML = ''; // Prevent dupes
-            const activeTarget = impersonatingId || currentUser; const subdominio = getSubdomain(currentEventType);
-            const enlaceDinamico = `${subdominio}${activeTarget}`.replace(/\s+/g, '').toLowerCase();
-            const rsvpUrl = `https://${enlaceDinamico}.tupasedigital.online/index2.html?u=${activeTarget}&id=${guest.id}`;
-            new QRCode(qrContainer, { text: rsvpUrl, width: 140, height: 140, colorDark : "#1e293b", colorLight : "#ffffff", correctLevel : QRCode.CorrectLevel.H });
+            const qrContainer = document.getElementById('ticket-qrcode'); 
+            if(qrContainer) {
+                qrContainer.innerHTML = ''; 
+                const activeTarget = impersonatingId || currentUser; const subdominio = getSubdomain(currentEventType);
+                const enlaceDinamico = `${subdominio}${activeTarget}`.replace(/\s+/g, '').toLowerCase();
+                const rsvpUrl = `https://${enlaceDinamico}.tupasedigital.online/index2.html?u=${activeTarget}&id=${guest.id}`;
+                new QRCode(qrContainer, { text: rsvpUrl, width: 140, height: 140, colorDark : "#1e293b", colorLight : "#ffffff", correctLevel : QRCode.CorrectLevel.H });
+            }
             
-            document.getElementById('ticket-modal').classList.remove('hidden'); document.getElementById('ticket-modal').classList.add('flex');
+            document.getElementById('ticket-modal')?.classList.remove('hidden'); 
+            document.getElementById('ticket-modal')?.classList.add('flex');
         };
 
-        window.openLocalGeneratorModal = function(id) { currentTargetGuestId = id; document.getElementById('wa-standard-modal').classList.remove('hidden'); document.getElementById('wa-standard-modal').classList.add('flex'); window.applyLocalTemplate(); };
+        window.openLocalGeneratorModal = function(id) { currentTargetGuestId = id; document.getElementById('wa-standard-modal')?.classList.remove('hidden'); document.getElementById('wa-standard-modal')?.classList.add('flex'); window.applyLocalTemplate(); };
 
         window.applyLocalTemplate = function() {
             try {
                 if(!currentTargetGuestId) return; const guest = state.invitados.find(g => g.id === currentTargetGuestId); if(!guest) throw new Error("Invitado no encontrado");
-                const tone = document.getElementById('local-tone-select').value; const includeLink = document.getElementById('wa-include-link').checked;
+                const tone = document.getElementById('local-tone-select')?.value || 'casual'; 
+                const includeLink = document.getElementById('wa-include-link')?.checked || false;
                 const eventoDinamico = { "Boda": "nuestra boda", "XV Años": "los XV años", "Bautizo": "el bautizo", "Primera Comunión": "la primera comunión", "Confirmación": "la confirmación", "Cumpleaños": "el cumpleaños" }[currentEventType] || `nuestra celebración de ${currentEventType || 'evento'}`;
                 
                 let ads = parseInt(guest.adultos !== undefined ? guest.adultos : guest.pases) || 1; let nns = parseInt(guest.ninos) || 0;
@@ -1598,18 +1671,26 @@
                     msg += `\n\n👉 *Consulta tu Pase Digital y Ubicaciones aquí:*\nhttps://${enlaceDinamico}.tupasedigital.online/index2.html?u=${activeTarget}&id=${guest.id}`;
                 }
 
-                const msgEl = document.getElementById('wa-standard-msg'); msgEl.value = msg;
-                msgEl.style.transition = 'background-color 0.3s ease'; msgEl.style.backgroundColor = '#d1fae5'; setTimeout(() => { msgEl.style.backgroundColor = ''; }, 400);
+                const msgEl = document.getElementById('wa-standard-msg'); 
+                if (msgEl) {
+                    msgEl.value = msg;
+                    msgEl.style.transition = 'background-color 0.3s ease'; 
+                    msgEl.style.backgroundColor = '#d1fae5'; 
+                    setTimeout(() => { msgEl.style.backgroundColor = ''; }, 400);
+                }
                 
-                document.getElementById('wa-standard-send-btn').onclick = function() {
-                    if(!guest.telefono) return Toast.fire({icon:'warning', title:'El invitado no tiene WhatsApp registrado'});
-                    let phone = String(guest.telefono).replace(/\D/g, '');
-                    if(phone.length === 10) phone = '52' + phone; 
+                const sendBtn = document.getElementById('wa-standard-send-btn');
+                if (sendBtn) {
+                    sendBtn.onclick = function() {
+                        if(!guest.telefono) return Toast.fire({icon:'warning', title:'El invitado no tiene WhatsApp registrado'});
+                        let phone = String(guest.telefono).replace(/\D/g, '');
+                        if(phone.length === 10) phone = '52' + phone; 
 
-                    window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(msgEl.value)}`, '_blank');
-                    document.getElementById('wa-standard-modal').classList.replace('flex', 'hidden');
-                    logAction(`Envió mensaje predeterminado de WA a ${guest.nombre}`);
-                };
+                        window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(msgEl.value)}`, '_blank');
+                        document.getElementById('wa-standard-modal')?.classList.replace('flex', 'hidden');
+                        logAction(`Envió mensaje predeterminado de WA a ${guest.nombre}`);
+                    };
+                }
             } catch (err) { console.error(err); }
         };
 
@@ -1633,12 +1714,20 @@
 
         window.toggleTPDChat = function() {
             const chat = document.getElementById('tpd-chat-widget'); const fab = document.getElementById('tpd-fab');
-            if(chat.style.display === 'flex') { chat.style.display = 'none'; fab.style.display = 'flex'; } else { chat.style.display = 'flex'; fab.style.display = 'none'; document.getElementById('tpd-chat-input').focus(); }
+            if(chat && fab) {
+                if(chat.style.display === 'flex') { chat.style.display = 'none'; fab.style.display = 'flex'; } 
+                else { chat.style.display = 'flex'; fab.style.display = 'none'; document.getElementById('tpd-chat-input')?.focus(); }
+            }
         };
 
         window.sendTPDChat = function() {
-            const input = document.getElementById('tpd-chat-input'); const text = input.value.trim().toLowerCase(); if(!text) return;
+            const input = document.getElementById('tpd-chat-input'); 
+            if (!input) return;
+            const text = input.value.trim().toLowerCase(); if(!text) return;
+            
             const container = document.getElementById('tpd-chat-messages'); 
+            if (!container) return;
+            
             container.innerHTML += `<div class="tpd-msg user">${input.value.trim()}</div>`; 
             input.value = ''; container.scrollTop = container.scrollHeight;
             
@@ -1651,7 +1740,7 @@
             const thinkTime = Math.floor(Math.random() * 600) + 600;
 
             setTimeout(() => {
-                document.getElementById(loadingId).remove();
+                document.getElementById(loadingId)?.remove();
                 
                 let cAdu = 0, cNin = 0, sinMesa = 0, declinados = 0, totalPases = 0, pendientes = 0;
                 state.invitados.forEach(g => {
@@ -1723,7 +1812,11 @@
         };
 
         window.assignTable = function(gId, tId) { state.invitados.find(g => g.id === gId).mesa = parseInt(tId); window.crmSave(); window.crmRenderTables(); };
-        window.addMultipleTables = function() { let qty = parseInt(document.getElementById('num-tables-add').value) || 1; for(let i=0; i<qty; i++) state.mesas.push({ id: Date.now() + i, nombre: `Mesa ${state.mesas.length + 1}` }); window.crmSave(); window.crmRenderTables(); Toast.fire({icon: 'success', title: `${qty} mesas agregadas`}); logAction(`Agregó ${qty} mesas nuevas.`); };
+        window.addMultipleTables = function() { 
+            let qty = parseInt(document.getElementById('num-tables-add')?.value) || 1; 
+            for(let i=0; i<qty; i++) state.mesas.push({ id: Date.now() + i, nombre: `Mesa ${state.mesas.length + 1}` }); 
+            window.crmSave(); window.crmRenderTables(); Toast.fire({icon: 'success', title: `${qty} mesas agregadas`}); logAction(`Agregó ${qty} mesas nuevas.`); 
+        };
         window.deleteTable = function(id) { state.mesas = state.mesas.filter(m => m.id !== id); state.invitados.forEach(g => { if(g.mesa === id) g.mesa = 0; }); window.crmSave(); window.crmRenderTables(); logAction(`Eliminó una mesa.`); };
         window.deleteAllTables = function() { if(!state.mesas.length) return; Swal.fire({ title: '¿Borrar todas las mesas?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444' }).then((r) => { if(r.isConfirmed) { state.mesas = []; state.invitados.forEach(g => g.mesa = 0); window.crmSave(); window.crmRenderTables(); logAction(`Eliminó TODAS las mesas.`); } }); };
         window.renameTable = function(id) { const m = state.mesas.find(x => x.id === id); Swal.fire({ title: 'Renombrar Mesa', input: 'text', inputValue: m.nombre, showCancelButton: true, confirmButtonColor: '#3b82f6' }).then(r => { if(r.isConfirmed && r.value) { m.nombre = r.value.trim(); window.crmSave(); window.crmRenderTables(); logAction(`Renombró una mesa a ${m.nombre}.`); } }); };
@@ -1783,22 +1876,29 @@
 
         window.renderCroquisThumbnail = function() {
             const container = document.getElementById('croquis-preview-container'); const thumb = document.getElementById('croquis-thumbnail');
-            if (state.croquis) { thumb.src = state.croquis; container.classList.remove('hidden'); container.classList.add('flex'); } else { container.classList.add('hidden'); container.classList.remove('flex'); thumb.src = ''; }
+            if(container && thumb) {
+                if (state.croquis) { thumb.src = state.croquis; container.classList.remove('hidden'); container.classList.add('flex'); } 
+                else { container.classList.add('hidden'); container.classList.remove('flex'); thumb.src = ''; }
+            }
         };
 
         window.deleteCroquis = function() { state.croquis = null; window.crmSave(); window.renderCroquisThumbnail(); Toast.fire({icon:'info', title:'Croquis eliminado'}); };
         window.viewCroquisFull = function() { if(state.croquis) { Swal.fire({ imageUrl: state.croquis, imageAlt: 'Croquis del Salón', showConfirmButton: true, confirmButtonText: 'Cerrar', width: '90%', background: 'transparent', backdrop: `rgba(0,0,0,0.8)` }); } };
 
         window.crmRenderTables = function() {
-            window.renderCroquisThumbnail(); const cap = state.config.capacidadMesa || 10; document.getElementById('crm-table-cap').value = cap;
+            window.renderCroquisThumbnail(); const cap = state.config.capacidadMesa || 10; 
+            const capInput = document.getElementById('crm-table-cap'); if(capInput) capInput.value = cap;
+            
             const cont = document.getElementById('crm-tables-grid'); const unassignedList = document.getElementById('crm-unassigned-list');
+            if(!cont || !unassignedList) return;
+            
             cont.innerHTML = ''; unassignedList.innerHTML = ''; let pasesSinAsignar = 0;
 
             state.invitados.filter(g => g.mesa === 0).forEach(g => {
                 let ads = parseInt(g.adultos !== undefined ? g.adultos : g.pases) || 0; let nns = parseInt(g.ninos) || 0; pasesSinAsignar += (ads + nns);
                 unassignedList.appendChild(createGuestCard(g, true));
             });
-            document.getElementById('crm-unassigned-badge').innerText = `${pasesSinAsignar} pases`;
+            const unBadge = document.getElementById('crm-unassigned-badge'); if(unBadge) unBadge.innerText = `${pasesSinAsignar} pases`;
 
             state.mesas.forEach(mesa => {
                 const mesaDiv = document.createElement('div'); mesaDiv.className = 'bg-white border border-slate-200 rounded-2xl shadow-sm flex flex-col h-[280px] table-dropzone transition-all duration-200';
@@ -1839,11 +1939,14 @@
         }
 
         window.crmRenderBudget = function() {
-            const tbody = document.getElementById('budget-tbody'); tbody.innerHTML = '';
+            const tbody = document.getElementById('budget-tbody'); 
             const emptyState = document.getElementById('budget-empty');
+            if(!tbody || !emptyState) return;
             
-            document.getElementById('cfg-menu-text').value = state.config.menuText || '';
-            document.getElementById('cfg-dj-link').value = state.config.djLink || '';
+            tbody.innerHTML = '';
+            
+            const cfgMenu = document.getElementById('cfg-menu-text'); if(cfgMenu) cfgMenu.value = state.config.menuText || '';
+            const cfgDj = document.getElementById('cfg-dj-link'); if(cfgDj) cfgDj.value = state.config.djLink || '';
 
             if(!state.presupuesto) state.presupuesto = [];
             
@@ -1881,9 +1984,9 @@
 
             if(state.presupuesto.length === 0) { emptyState.classList.remove('hidden'); } else { emptyState.classList.add('hidden'); }
 
-            document.getElementById('budget-total').innerText = `$${total.toLocaleString('en-US')}`;
-            document.getElementById('budget-paid').innerText = `$${paid.toLocaleString('en-US')}`;
-            document.getElementById('budget-debt').innerText = `$${(total - paid).toLocaleString('en-US')}`;
+            const totEl = document.getElementById('budget-total'); if(totEl) totEl.innerText = `$${total.toLocaleString('en-US')}`;
+            const pdEl = document.getElementById('budget-paid'); if(pdEl) pdEl.innerText = `$${paid.toLocaleString('en-US')}`;
+            const dbtEl = document.getElementById('budget-debt'); if(dbtEl) dbtEl.innerText = `$${(total - paid).toLocaleString('en-US')}`;
         };
 
         window.addAbono = function(id) {
@@ -1901,9 +2004,9 @@
                 `,
                 showCancelButton: true, confirmButtonText: 'Guardar Abono', confirmButtonColor: '#10b981',
                 preConfirm: () => {
-                    const monto = parseFloat(document.getElementById('swal-abono-monto').value) || 0;
-                    const fecha = document.getElementById('swal-abono-fecha').value;
-                    const metodo = document.getElementById('swal-abono-metodo').value;
+                    const monto = parseFloat(document.getElementById('swal-abono-monto')?.value) || 0;
+                    const fecha = document.getElementById('swal-abono-fecha')?.value;
+                    const metodo = document.getElementById('swal-abono-metodo')?.value;
                     if (monto <= 0) { Swal.showValidationMessage('El monto debe ser mayor a 0'); return false; }
                     return { monto, fecha, metodo };
                 }
@@ -1930,9 +2033,9 @@
                 `,
                 showCancelButton: true, confirmButtonText: 'Guardar', confirmButtonColor: '#3b82f6',
                 preConfirm: () => {
-                    const concepto = document.getElementById('swal-b-concepto').value.trim();
-                    const costo = parseFloat(document.getElementById('swal-b-costo').value) || 0;
-                    const pagado = parseFloat(document.getElementById('swal-b-pagado').value) || 0;
+                    const concepto = document.getElementById('swal-b-concepto')?.value.trim();
+                    const costo = parseFloat(document.getElementById('swal-b-costo')?.value) || 0;
+                    const pagado = parseFloat(document.getElementById('swal-b-pagado')?.value) || 0;
                     if(!concepto) { Swal.showValidationMessage('Escribe el concepto del gasto'); return false; }
                     return { concepto, costo, pagado };
                 }
@@ -1958,9 +2061,9 @@
                 `,
                 showCancelButton: true, confirmButtonText: 'Actualizar', confirmButtonColor: '#3b82f6',
                 preConfirm: () => {
-                    const concepto = document.getElementById('swal-b-concepto').value.trim();
-                    const costo = parseFloat(document.getElementById('swal-b-costo').value) || 0;
-                    const pagado = parseFloat(document.getElementById('swal-b-pagado').value) || 0;
+                    const concepto = document.getElementById('swal-b-concepto')?.value.trim();
+                    const costo = parseFloat(document.getElementById('swal-b-costo')?.value) || 0;
+                    const pagado = parseFloat(document.getElementById('swal-b-pagado')?.value) || 0;
                     if(!concepto) { Swal.showValidationMessage('Escribe el concepto'); return false; }
                     return { concepto, costo, pagado };
                 }
@@ -1986,20 +2089,39 @@
                 if(g.status === 'Declinado') { decl += tot; recuperados += tot; }
             });
             
-            document.getElementById('cfg-hora').value = state.config.eventStartTime || "20:00"; document.getElementById('cfg-duracion').value = state.config.eventDuration || 5;
-            document.getElementById('cfg-musica-cena').value = state.config.musicDinner || "Playlist"; document.getElementById('cfg-musica-baile').value = state.config.musicMain || "DJ";
-            document.getElementById('cfg-musica-torna').value = state.config.musicTorna || "Ninguno"; document.getElementById('cfg-flores').value = state.config.flowersPerTable || 15;
+            const cfgH = document.getElementById('cfg-hora'); if(cfgH) cfgH.value = state.config.eventStartTime || "20:00"; 
+            const cfgDur = document.getElementById('cfg-duracion'); if(cfgDur) cfgDur.value = state.config.eventDuration || 5;
+            const cfgMusC = document.getElementById('cfg-musica-cena'); if(cfgMusC) cfgMusC.value = state.config.musicDinner || "Playlist"; 
+            const cfgMusB = document.getElementById('cfg-musica-baile'); if(cfgMusB) cfgMusB.value = state.config.musicMain || "DJ";
+            const cfgMusT = document.getElementById('cfg-musica-torna'); if(cfgMusT) cfgMusT.value = state.config.musicTorna || "Ninguno"; 
+            const cfgFlo = document.getElementById('cfg-flores'); if(cfgFlo) cfgFlo.value = state.config.flowersPerTable || 15;
 
-            document.getElementById('st-tot').innerText = totalGeneral; document.getElementById('st-conf').innerText = conf; document.getElementById('st-decl').innerText = decl; 
-            document.getElementById('st-adu').innerText = adultosTotales; document.getElementById('st-nin').innerText = ninosTotales; document.getElementById('st-recup').innerText = recuperados;
+            const stTot = document.getElementById('st-tot'); if(stTot) stTot.innerText = totalGeneral; 
+            const stConf = document.getElementById('st-conf'); if(stConf) stConf.innerText = conf; 
+            const stDecl = document.getElementById('st-decl'); if(stDecl) stDecl.innerText = decl; 
+            const stAdu = document.getElementById('st-adu'); if(stAdu) stAdu.innerText = adultosTotales; 
+            const stNin = document.getElementById('st-nin'); if(stNin) stNin.innerText = ninosTotales; 
+            const stRecup = document.getElementById('st-recup'); if(stRecup) stRecup.innerText = recuperados;
             
             const dul = Math.ceil((adultosTotales * 3.0) + (ninosTotales * 4.5));
-            document.getElementById('st-dul-tot').innerText = dul; document.getElementById('st-dul-sal').innerText = Math.ceil(dul * 0.35) + ' pz'; document.getElementById('st-dul-cho').innerText = Math.ceil(dul * 0.25) + ' pz'; document.getElementById('st-dul-pos').innerText = Math.ceil(dul * 0.20) + ' pz'; document.getElementById('st-dul-gra').innerText = Math.ceil(dul * 0.20) + ' pz';
-            document.getElementById('st-bot').innerText = Math.ceil(adultosTotales / 3) + ' bts'; document.getElementById('st-cer').innerText = Math.ceil(adultosTotales * 3) + ' pz'; document.getElementById('st-ref').innerText = Math.ceil(((adultosTotales * 1) + (ninosTotales * 0.5)) * 1.15) + ' L'; document.getElementById('st-hie').innerText = Math.ceil(adultosTotales * 1) + ' kg';
-            document.getElementById('rec-parejas').innerText = Math.ceil((adultosTotales / 2) * 1.10) + ' pz'; document.getElementById('rec-sandalias').innerText = Math.ceil((adultosTotales * 0.5) * 1.10) + ' prs'; document.getElementById('rec-anticruda').innerText = Math.ceil(adultosTotales * 0.6) + ' pz';
+            const stDulTot = document.getElementById('st-dul-tot'); if(stDulTot) stDulTot.innerText = dul; 
+            const stDulSal = document.getElementById('st-dul-sal'); if(stDulSal) stDulSal.innerText = Math.ceil(dul * 0.35) + ' pz'; 
+            const stDulCho = document.getElementById('st-dul-cho'); if(stDulCho) stDulCho.innerText = Math.ceil(dul * 0.25) + ' pz'; 
+            const stDulPos = document.getElementById('st-dul-pos'); if(stDulPos) stDulPos.innerText = Math.ceil(dul * 0.20) + ' pz'; 
+            const stDulGra = document.getElementById('st-dul-gra'); if(stDulGra) stDulGra.innerText = Math.ceil(dul * 0.20) + ' pz';
+            
+            const stBot = document.getElementById('st-bot'); if(stBot) stBot.innerText = Math.ceil(adultosTotales / 3) + ' bts'; 
+            const stCer = document.getElementById('st-cer'); if(stCer) stCer.innerText = Math.ceil(adultosTotales * 3) + ' pz'; 
+            const stRef = document.getElementById('st-ref'); if(stRef) stRef.innerText = Math.ceil(((adultosTotales * 1) + (ninosTotales * 0.5)) * 1.15) + ' L'; 
+            const stHie = document.getElementById('st-hie'); if(stHie) stHie.innerText = Math.ceil(adultosTotales * 1) + ' kg';
+            
+            const recP = document.getElementById('rec-parejas'); if(recP) recP.innerText = Math.ceil((adultosTotales / 2) * 1.10) + ' pz'; 
+            const recS = document.getElementById('rec-sandalias'); if(recS) recS.innerText = Math.ceil((adultosTotales * 0.5) * 1.10) + ' prs'; 
+            const recA = document.getElementById('rec-anticruda'); if(recA) recA.innerText = Math.ceil(adultosTotales * 0.6) + ' pz';
 
             const numMesas = state.mesas.length; const floresMesa = parseInt(state.config.flowersPerTable) || 15;
-            document.getElementById('st-centros').innerText = numMesas; document.getElementById('st-flores-totales').innerText = numMesas * floresMesa;
+            const stCen = document.getElementById('st-centros'); if(stCen) stCen.innerText = numMesas; 
+            const stFloTot = document.getElementById('st-flores-totales'); if(stFloTot) stFloTot.innerText = numMesas * floresMesa;
 
             window.generateTimeline(adultosTotales);
         };
@@ -2010,10 +2132,10 @@
 
             let staffCount = 3; if (mainMusic === 'Grupo Versátil' || mainMusic === 'Ambos') staffCount += 10; else if (mainMusic === 'DJ') staffCount += 2;
             if (dinnerMusic === 'Saxofón' || dinnerMusic === 'Violín') staffCount += 1; else if (dinnerMusic === 'Grupo Jazz') staffCount += 4;
-            document.getElementById('st-staff-meals').innerText = staffCount;
+            const stStaffEl = document.getElementById('st-staff-meals'); if(stStaffEl) stStaffEl.innerText = staffCount;
 
             let snackCount = 0; if (tornaMusic !== 'Ninguno' && duration >= 5) { snackCount = Math.ceil(adultosTotales * 0.6); }
-            document.getElementById('st-torna-snacks').innerText = snackCount;
+            const stTornaEl = document.getElementById('st-torna-snacks'); if(stTornaEl) stTornaEl.innerText = snackCount;
 
             let [hours, minutes] = startTime.split(':').map(Number); let time = new Date(); time.setHours(hours, minutes, 0);
             function formatTime(d) { return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }); }
@@ -2030,7 +2152,7 @@
             if (tornaMusic !== 'Ninguno') { t1 = formatTime(time); time = addMinutes(time, 60); addEvent(t1, "Tornaboda / Trasnoche", `Entrada de ${tornaMusic} y apertura de snacks.`); }
             addEvent(formatTime(time), "Fin del Evento", "Desalojo del salón.");
 
-            document.getElementById('st-timeline').innerHTML = html;
+            const tlEl = document.getElementById('st-timeline'); if(tlEl) tlEl.innerHTML = html;
         };
 
         window.downloadExcelTemplate = function() { const ws = XLSX.utils.json_to_sheet([{"Nombre": "Familia Ejemplo (Borrar)", "Adultos": 2, "Niños": 1, "WhatsApp": "1234567890", "Grupo": "Familia"}]); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Plantilla"); XLSX.writeFile(wb, `Plantilla_Invitados.xlsx`); };
@@ -2062,29 +2184,30 @@
         };
 
         window.exportStatsExcel = function() {
+            const getVal = (id) => document.getElementById(id)?.innerText || '0';
             const stats = [
-                { Categoria: "Asistencia", Item: "Lugares Totales", Valor: document.getElementById('st-tot').innerText },
-                { Categoria: "Asistencia", Item: "Confirmados", Valor: document.getElementById('st-conf').innerText },
-                { Categoria: "Asistencia", Item: "Adultos Confirmados", Valor: document.getElementById('st-adu').innerText },
-                { Categoria: "Asistencia", Item: "Niños Confirmados", Valor: document.getElementById('st-nin').innerText },
-                { Categoria: "Asistencia", Item: "Declinados", Valor: document.getElementById('st-decl').innerText },
-                { Categoria: "Asistencia", Item: "Pases Recuperados", Valor: document.getElementById('st-recup').innerText },
-                { Categoria: "Decoracion", Item: "Centros de Mesa", Valor: document.getElementById('st-centros').innerText },
-                { Categoria: "Decoracion", Item: "Flores Totales Estimadas", Valor: document.getElementById('st-flores-totales').innerText },
-                { Categoria: "Mesa Dulces", Item: "Piezas Totales", Valor: document.getElementById('st-dul-tot').innerText },
-                { Categoria: "Mesa Dulces", Item: "Salados/Picosos", Valor: document.getElementById('st-dul-sal').innerText },
-                { Categoria: "Mesa Dulces", Item: "Chocolates/Dulces", Valor: document.getElementById('st-dul-cho').innerText },
-                { Categoria: "Mesa Dulces", Item: "Postres Gourmet", Valor: document.getElementById('st-dul-pos').innerText },
-                { Categoria: "Mesa Dulces", Item: "Snacks a granel", Valor: document.getElementById('st-dul-gra').innerText },
-                { Categoria: "Bebidas", Item: "Botellas Destilado", Valor: document.getElementById('st-bot').innerText },
-                { Categoria: "Bebidas", Item: "Cervezas", Valor: document.getElementById('st-cer').innerText },
-                { Categoria: "Bebidas", Item: "Mezcladores/Refresco", Valor: document.getElementById('st-ref').innerText },
-                { Categoria: "Bebidas", Item: "Hielo", Valor: document.getElementById('st-hie').innerText },
-                { Categoria: "Amenidades", Item: "Recuerdos Pareja", Valor: document.getElementById('rec-parejas').innerText },
-                { Categoria: "Amenidades", Item: "Sandalias Mujeres", Valor: document.getElementById('rec-sandalias').innerText },
-                { Categoria: "Amenidades", Item: "Kits Anticruda", Valor: document.getElementById('rec-anticruda').innerText },
-                { Categoria: "Staff / Extras", Item: "Cenas de Staff", Valor: document.getElementById('st-staff-meals').innerText },
-                { Categoria: "Staff / Extras", Item: "Snacks Trasnoche", Valor: document.getElementById('st-torna-snacks').innerText }
+                { Categoria: "Asistencia", Item: "Lugares Totales", Valor: getVal('st-tot') },
+                { Categoria: "Asistencia", Item: "Confirmados", Valor: getVal('st-conf') },
+                { Categoria: "Asistencia", Item: "Adultos Confirmados", Valor: getVal('st-adu') },
+                { Categoria: "Asistencia", Item: "Niños Confirmados", Valor: getVal('st-nin') },
+                { Categoria: "Asistencia", Item: "Declinados", Valor: getVal('st-decl') },
+                { Categoria: "Asistencia", Item: "Pases Recuperados", Valor: getVal('st-recup') },
+                { Categoria: "Decoracion", Item: "Centros de Mesa", Valor: getVal('st-centros') },
+                { Categoria: "Decoracion", Item: "Flores Totales Estimadas", Valor: getVal('st-flores-totales') },
+                { Categoria: "Mesa Dulces", Item: "Piezas Totales", Valor: getVal('st-dul-tot') },
+                { Categoria: "Mesa Dulces", Item: "Salados/Picosos", Valor: getVal('st-dul-sal') },
+                { Categoria: "Mesa Dulces", Item: "Chocolates/Dulces", Valor: getVal('st-dul-cho') },
+                { Categoria: "Mesa Dulces", Item: "Postres Gourmet", Valor: getVal('st-dul-pos') },
+                { Categoria: "Mesa Dulces", Item: "Snacks a granel", Valor: getVal('st-dul-gra') },
+                { Categoria: "Bebidas", Item: "Botellas Destilado", Valor: getVal('st-bot') },
+                { Categoria: "Bebidas", Item: "Cervezas", Valor: getVal('st-cer') },
+                { Categoria: "Bebidas", Item: "Mezcladores/Refresco", Valor: getVal('st-ref') },
+                { Categoria: "Bebidas", Item: "Hielo", Valor: getVal('st-hie') },
+                { Categoria: "Amenidades", Item: "Recuerdos Pareja", Valor: getVal('rec-parejas') },
+                { Categoria: "Amenidades", Item: "Sandalias Mujeres", Valor: getVal('rec-sandalias') },
+                { Categoria: "Amenidades", Item: "Kits Anticruda", Valor: getVal('rec-anticruda') },
+                { Categoria: "Staff / Extras", Item: "Cenas de Staff", Valor: getVal('st-staff-meals') },
+                { Categoria: "Staff / Extras", Item: "Snacks Trasnoche", Valor: getVal('st-torna-snacks') }
             ];
             const ws = XLSX.utils.json_to_sheet(stats); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Logistica"); XLSX.writeFile(wb, `Logistica_${impersonatingId||currentUser}.xlsx`);
         };
@@ -2101,43 +2224,45 @@
                     doc.autoTable({ startY: y + 3, head: [['Concepto', 'Cantidad / Detalle']], body: body, theme: 'grid', headStyles: { fillColor: color } });
                     y = doc.lastAutoTable.finalY + 10;
                 };
+                
+                const getVal = (id) => document.getElementById(id)?.innerText || '0';
 
                 addTable('Asistencia General', [
-                    ['Lugares Totales Esperados', document.getElementById('st-tot').innerText],
-                    ['Confirmados (Adultos/Niños)', `${document.getElementById('st-adu').innerText} / ${document.getElementById('st-nin').innerText}`],
-                    ['Declinados', document.getElementById('st-decl').innerText],
-                    ['Pases Recuperados (Libres)', document.getElementById('st-recup').innerText]
+                    ['Lugares Totales Esperados', getVal('st-tot')],
+                    ['Confirmados (Adultos/Niños)', `${getVal('st-adu')} / ${getVal('st-nin')}`],
+                    ['Declinados', getVal('st-decl')],
+                    ['Pases Recuperados (Libres)', getVal('st-recup')]
                 ], [59, 130, 246]); 
 
                 addTable('Decoracion y Flores', [
-                    ['Centros de Mesa Requeridos', document.getElementById('st-centros').innerText],
-                    ['Flores Totales Estimadas', document.getElementById('st-flores-totales').innerText]
+                    ['Centros de Mesa Requeridos', getVal('st-centros')],
+                    ['Flores Totales Estimadas', getVal('st-flores-totales')]
                 ], [225, 29, 72]); 
 
                 addTable('Bebidas y Hielos', [
-                    ['Botellas de Destilado', document.getElementById('st-bot').innerText],
-                    ['Cervezas', document.getElementById('st-cer').innerText],
-                    ['Mezcladores y Refresco', document.getElementById('st-ref').innerText],
-                    ['Hielo (Kg)', document.getElementById('st-hie').innerText]
+                    ['Botellas de Destilado', getVal('st-bot')],
+                    ['Cervezas', getVal('st-cer')],
+                    ['Mezcladores y Refresco', getVal('st-ref')],
+                    ['Hielo (Kg)', getVal('st-hie')]
                 ], [79, 70, 229]); 
 
                 addTable('Mesa de Dulces', [
-                    ['Total de Piezas', document.getElementById('st-dul-tot').innerText],
-                    ['Salados / Picosos', document.getElementById('st-dul-sal').innerText],
-                    ['Chocolates / Dulces', document.getElementById('st-dul-cho').innerText],
-                    ['Postres Gourmet', document.getElementById('st-dul-pos').innerText],
-                    ['Snacks a granel', document.getElementById('st-dul-gra').innerText]
+                    ['Total de Piezas', getVal('st-dul-tot')],
+                    ['Salados / Picosos', getVal('st-dul-sal')],
+                    ['Chocolates / Dulces', getVal('st-dul-cho')],
+                    ['Postres Gourmet', getVal('st-dul-pos')],
+                    ['Snacks a granel', getVal('st-dul-gra')]
                 ], [217, 119, 6]); 
 
                 addTable('Recuerdos y Amenidades', [
-                    ['Recuerdos en Pareja', document.getElementById('rec-parejas').innerText],
-                    ['Sandalias (Mujeres)', document.getElementById('rec-sandalias').innerText],
-                    ['Kits Anticruda', document.getElementById('rec-anticruda').innerText]
+                    ['Recuerdos en Pareja', getVal('rec-parejas')],
+                    ['Sandalias (Mujeres)', getVal('rec-sandalias')],
+                    ['Kits Anticruda', getVal('rec-anticruda')]
                 ], [147, 51, 234]); 
 
                 addTable('Staff y Trasnoche', [
-                    ['Cenas para Staff (Fotografía, Músicos, etc.)', document.getElementById('st-staff-meals').innerText],
-                    ['Snack de Trasnoche (Tornaboda)', document.getElementById('st-torna-snacks').innerText]
+                    ['Cenas para Staff (Fotografía, Músicos, etc.)', getVal('st-staff-meals')],
+                    ['Snack de Trasnoche (Tornaboda)', getVal('st-torna-snacks')]
                 ], [13, 148, 136]); 
 
                 const timelineBody = []; const tlElements = document.querySelectorAll('.timeline-event');
@@ -2202,11 +2327,17 @@
             });
             
             let totalGeneral = totalIngresados + extras;
-            document.getElementById('h-total-esperados').innerText = totalEsperados; document.getElementById('h-total-ingresados').innerText = totalIngresados; 
-            document.getElementById('h-total-extras').innerText = extras; document.getElementById('h-total-general').innerText = totalGeneral;
+            
+            const heEl = document.getElementById('h-total-esperados'); if(heEl) heEl.innerText = totalEsperados; 
+            const hiEl = document.getElementById('h-total-ingresados'); if(hiEl) hiEl.innerText = totalIngresados; 
+            const hxEl = document.getElementById('h-total-extras'); if(hxEl) hxEl.innerText = extras; 
+            const hgEl = document.getElementById('h-total-general'); if(hgEl) hgEl.innerText = totalGeneral;
             
             const deudaBadge = document.getElementById('h-deuda-badge');
-            if (deuda > 0) { deudaBadge.innerText = `+$${deuda.toFixed(2)}`; deudaBadge.classList.remove('hidden'); } else { deudaBadge.classList.add('hidden'); }
+            if (deudaBadge) {
+                if (deuda > 0) { deudaBadge.innerText = `+$${deuda.toFixed(2)}`; deudaBadge.classList.remove('hidden'); } 
+                else { deudaBadge.classList.add('hidden'); }
+            }
         };
 
         window.hostessAddExtra = function() {
@@ -2230,7 +2361,8 @@
                 `,
                 icon: 'info', showCancelButton: true, confirmButtonText: 'Registrar', cancelButtonText: 'Cancelar', confirmButtonColor: '#d97706',
                 preConfirm: () => {
-                    const qty = parseInt(document.getElementById('extra-qty-input').value) || 1; const cost = parseFloat(document.getElementById('extra-cost-input').value) || 0;
+                    const qty = parseInt(document.getElementById('extra-qty-input')?.value) || 1; 
+                    const cost = parseFloat(document.getElementById('extra-cost-input')?.value) || 0;
                     return { qty, cost };
                 }
             }).then(r => {
@@ -2244,14 +2376,20 @@
             });
         };
         
-        // CORRECCIÓN CÁMARA (Prevención memory leak)
         window.hostessSwitchTab = function(tab) {
             ['scanner', 'list', 'croquis'].forEach(t => {
-                document.getElementById(`hview-${t}`).classList.replace('flex', 'hidden');
-                document.getElementById(`htab-${t}`).className = 'flex-1 py-1.5 sm:py-2 rounded-lg text-[10px] sm:text-xs font-bold text-slate-400 hover:text-white transition';
+                const v = document.getElementById(`hview-${t}`);
+                if(v) v.classList.replace('flex', 'hidden');
+                
+                const tb = document.getElementById(`htab-${t}`);
+                if(tb) tb.className = 'flex-1 py-1.5 sm:py-2 rounded-lg text-[10px] sm:text-xs font-bold text-slate-400 hover:text-white transition';
             });
-            document.getElementById(`hview-${tab}`).classList.replace('hidden', 'flex');
-            document.getElementById(`htab-${tab}`).className = 'flex-1 py-1.5 sm:py-2 rounded-lg text-[10px] sm:text-xs font-bold bg-blue-600 text-white shadow-md transition';
+            
+            const vt = document.getElementById(`hview-${tab}`);
+            if(vt) vt.classList.replace('hidden', 'flex');
+            
+            const tbt = document.getElementById(`htab-${tab}`);
+            if(tbt) tbt.className = 'flex-1 py-1.5 sm:py-2 rounded-lg text-[10px] sm:text-xs font-bold bg-blue-600 text-white shadow-md transition';
             
             if(tab === 'croquis' || tab === 'list') { 
                 if(window.html5QrcodeScanner) { 
@@ -2270,17 +2408,32 @@
                 
                 if (snap.exists()) {
                     impersonatingId = eventId;
-                    document.getElementById('view-login').classList.add('hidden'); document.getElementById('view-admin').classList.add('hidden');
-                    document.getElementById('view-crm').classList.add('hidden'); document.getElementById('view-hostess').classList.remove('hidden'); document.getElementById('view-hostess').classList.add('flex');
+                    document.getElementById('view-login')?.classList.add('hidden'); 
+                    document.getElementById('view-admin')?.classList.add('hidden');
+                    document.getElementById('view-crm')?.classList.add('hidden'); 
                     
-                    document.getElementById('tpd-fab').style.display = 'none'; document.getElementById('tpd-chat-widget').style.display = 'none';
+                    const vHost = document.getElementById('view-hostess');
+                    if(vHost) { vHost.classList.remove('hidden'); vHost.classList.add('flex'); }
                     
-                    const data = snap.data(); const tipo = data.eventType || 'Evento'; document.getElementById('hostess-event-id').innerText = `${tipo} - ${eventId}`;
-                    const btnMesasName = document.getElementById('btn-mesas-event-name'); if (btnMesasName) btnMesasName.innerText = `${tipo} - ${eventId}`;
+                    const fab = document.getElementById('tpd-fab');
+                    if (fab) fab.style.display = 'none';
+                    const chatWidget = document.getElementById('tpd-chat-widget');
+                    if(chatWidget) chatWidget.style.display = 'none';
+                    
+                    const data = snap.data(); const tipo = data.eventType || 'Evento'; 
+                    const hEventId = document.getElementById('hostess-event-id');
+                    if(hEventId) hEventId.innerText = `${tipo} - ${eventId}`;
+                    
+                    const btnMesasName = document.getElementById('btn-mesas-event-name'); 
+                    if (btnMesasName) btnMesasName.innerText = `${tipo} - ${eventId}`;
                     
                     state.config = data.config || state.config;
                     state.croquis = data.croquis || null;
-                    if (state.croquis) { document.getElementById('hostess-croquis-img').src = state.croquis; document.getElementById('hostess-croquis-img').classList.remove('hidden'); document.getElementById('hostess-no-croquis').classList.add('hidden'); }
+                    if (state.croquis) { 
+                        const hcImg = document.getElementById('hostess-croquis-img');
+                        if (hcImg) { hcImg.src = state.croquis; hcImg.classList.remove('hidden'); }
+                        document.getElementById('hostess-no-croquis')?.classList.add('hidden'); 
+                    }
                     
                     window.hostessSwitchTab('scanner'); window.subscribeToUser(eventId); Swal.close();
                 } else {
@@ -2290,25 +2443,31 @@
         };
 
         window.startScanner = function() {
-            document.getElementById('btn-start-scanner').classList.add('hidden');
+            document.getElementById('btn-start-scanner')?.classList.add('hidden');
             window.html5QrcodeScanner = new Html5Qrcode("reader");
             window.html5QrcodeScanner.start(
                 { facingMode: "environment" }, { fps: 10, qrbox: { width: 250, height: 250 } },
                 (decodedText) => {
                     try {
                         const url = new URL(decodedText); const gId = parseInt(url.searchParams.get("id"));
-                        if(gId) { window.html5QrcodeScanner.stop().then(() => window.html5QrcodeScanner.clear()); document.getElementById('btn-start-scanner').classList.remove('hidden'); window.processHostessAccess(gId); }
+                        if(gId) { 
+                            window.html5QrcodeScanner.stop().then(() => window.html5QrcodeScanner.clear()); 
+                            document.getElementById('btn-start-scanner')?.classList.remove('hidden'); 
+                            window.processHostessAccess(gId); 
+                        }
                     } catch(e) {}
                 }, (err) => {}
             ).catch(err => {
-                document.getElementById('btn-start-scanner').classList.remove('hidden');
+                document.getElementById('btn-start-scanner')?.classList.remove('hidden');
                 Swal.fire('Cámara Bloqueada', 'Por favor permite el acceso a la cámara en tu navegador para poder escanear.', 'warning');
             });
         };
 
         window.hostessManualSearch = function() {
-            const query = document.getElementById('hostess-search').value.toLowerCase();
-            const res = document.getElementById('hostess-search-results'); res.innerHTML = '';
+            const query = document.getElementById('hostess-search')?.value.toLowerCase();
+            const res = document.getElementById('hostess-search-results'); 
+            if(!res || !query) return;
+            res.innerHTML = '';
             if(query.length < 2) return;
             state.invitados.filter(g => g.nombre.toLowerCase().includes(query)).forEach(g => {
                 const btn = document.createElement('button'); btn.className = 'w-full bg-slate-700 hover:bg-slate-600 text-white p-3 rounded-lg text-left text-sm font-bold flex justify-between items-center transition mb-1';
@@ -2332,125 +2491,12 @@
             }
 
             hCurrentGuest = g; hAduToEnter = hMaxAdu > 0 ? hMaxAdu : 0; hNinToEnter = hMaxNin > 0 ? hMaxNin : 0;
-            document.getElementById('hr-name').innerText = g.nombre;
+            const hrN = document.getElementById('hr-name'); if(hrN) hrN.innerText = g.nombre;
+            
             const mName = g.mesa === 0 ? "Sin Asignar" : (state.mesas.find(m => m.id === g.mesa)?.nombre || "Desconocida");
-            document.getElementById('hr-table').innerText = mName;
-            document.getElementById('hr-adu-status').innerText = `Han entrado ${ingA} de ${totalA}`; document.getElementById('hr-nin-status').innerText = `Han entrado ${ingN} de ${totalN}`;
-            document.getElementById('hr-nin-row').style.display = totalN > 0 ? 'flex' : 'none';
-
-            window.updateEntryUI();
-
-            const modal = document.getElementById('hostess-result-modal'); const box = document.getElementById('hostess-result-box');
-            modal.classList.remove('hidden'); modal.classList.add('flex');
-            setTimeout(() => { box.classList.remove('scale-95', 'opacity-0'); box.classList.add('scale-100', 'opacity-100'); }, 10);
-            document.getElementById('hostess-search').value = ''; document.getElementById('hostess-search-results').innerHTML = '';
-        };
-
-        window.adjEntry = function(tipo, val) {
-            if (tipo === 'adu') { hAduToEnter += val; if(hAduToEnter < 0) hAduToEnter = 0; if(hAduToEnter > hMaxAdu) hAduToEnter = hMaxAdu; } 
-            else { hNinToEnter += val; if(hNinToEnter < 0) hNinToEnter = 0; if(hNinToEnter > hMaxNin) hNinToEnter = hMaxNin; }
-            window.updateEntryUI();
-        };
-
-        window.updateEntryUI = function() {
-            document.getElementById('hr-adu-entering').innerText = hAduToEnter; document.getElementById('hr-nin-entering').innerText = hNinToEnter;
-            const btn = document.getElementById('hr-confirm-btn');
-            if (hAduToEnter === 0 && hNinToEnter === 0) { btn.classList.replace('bg-blue-600', 'bg-slate-400'); btn.disabled = true; } else { btn.classList.replace('bg-slate-400', 'bg-blue-600'); btn.disabled = false; }
-        };
-
-        window.confirmHostessEntry = function() {
-            if(!hCurrentGuest) return;
-            hCurrentGuest.ingresadosA = (parseInt(hCurrentGuest.ingresadosA) || 0) + hAduToEnter; hCurrentGuest.ingresadosN = (parseInt(hCurrentGuest.ingresadosN) || 0) + hNinToEnter;
-            window.crmSave(); window.closeHostessResult(); Toast.fire({icon: 'success', title: `Registrado: ${hAduToEnter} Adultos, ${hNinToEnter} Niños`}); window.hostessRenderLiveStats();
-            logAction(`Ingreso registrado: ${hCurrentGuest.nombre} (${hAduToEnter}A, ${hNinToEnter}N)`);
-        };
-
-        window.closeHostessResult = function() {
-            const modal = document.getElementById('hostess-result-modal'); const box = document.getElementById('hostess-result-box');
-            box.classList.remove('scale-100', 'opacity-100'); box.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => { modal.classList.replace('flex', 'hidden'); }, 200);
-        };
-
-        window.hostessExportReportPDF = function() {
-            const { jsPDF } = window.jspdf; const doc = new jsPDF(); const eventId = impersonatingId || currentUser || "Evento";
+            const hrT = document.getElementById('hr-table'); if(hrT) hrT.innerText = mName;
             
-            doc.setFontSize(16); doc.setTextColor(37, 99, 235); doc.text(`Reporte de Recepcion (Hostess) - ${eventId}`, 14, 15);
+            const hAduS = document.getElementById('hr-adu-status'); if(hAduS) hAduS.innerText = `Han entrado ${ingA} de ${totalA}`; 
+            const hNinS = document.getElementById('hr-nin-status'); if(hNinS) hNinS.innerText = `Han entrado ${ingN} de ${totalN}`;
             
-            let totalEsperados = 0, totalIngresados = 0;
-            state.invitados.forEach(g => {
-                let ads = parseInt(g.adultos !== undefined ? g.adultos : g.pases) || 0; let nns = parseInt(g.ninos) || 0;
-                let ingA = parseInt(g.ingresadosA) || 0; let ingN = parseInt(g.ingresadosN) || 0;
-                if (g.status === 'Confirmado' || g.status === 'Pendiente') { totalEsperados += (ads + nns); } totalIngresados += (ingA + ingN);
-            });
-            
-            let extras = state.config.extras || 0; let deuda = state.config.totalExtrasCost || 0; let totalGeneral = totalIngresados + extras;
-
-            doc.setFontSize(12); doc.setTextColor(50, 50, 50); doc.text(`Resumen Numerico Final:`, 14, 25);
-            doc.setFontSize(10); doc.text(`- Invitados esperados en lista: ${totalEsperados}`, 14, 32); doc.text(`- Invitados que ingresaron de la lista: ${totalIngresados}`, 14, 38);
-            doc.text(`- Personas extra cobradas en puerta: ${extras}`, 14, 44); doc.text(`- TOTAL DE PERSONAS EN EL SALON: ${totalGeneral}`, 14, 50);
-            if (deuda > 0) { doc.setTextColor(220, 38, 38); doc.text(`- Costo Acumulado de Extras (Deuda): $${deuda.toFixed(2)}`, 14, 56); }
-
-            const body = [];
-            state.invitados.forEach(g => {
-                let tot = (parseInt(g.adultos !== undefined ? g.adultos : g.pases) || 0) + (parseInt(g.ninos) || 0); let ing = (parseInt(g.ingresadosA) || 0) + (parseInt(g.ingresadosN) || 0);
-                if (ing > 0) { const mesaNombre = g.mesa === 0 ? "Sin Asignar" : (state.mesas.find(m => m.id === g.mesa)?.nombre || "Desconocida"); body.push([g.nombre, g.grupo || '-', tot, ing, mesaNombre]); }
-            });
-
-            doc.autoTable({ startY: deuda > 0 ? 65 : 60, head: [['Familia / Invitado', 'Grupo', 'Pases', 'Ingresaron', 'Mesa']], body: body, theme: 'grid', headStyles: { fillColor: [37, 99, 235] } });
-
-            let finalY = doc.lastAutoTable.finalY || 65; if (finalY > 240) { doc.addPage(); finalY = 20; }
-            doc.setFontSize(10); doc.setTextColor(50, 50, 50); doc.text("________________________________________________", 105, finalY + 40, { align: "center" });
-            doc.setFontSize(9); doc.text("Firma de Conformidad (Organizador / Cliente)", 105, finalY + 45, { align: "center" });
-            window.addPDFFooter(doc); doc.save(`Corte_Hostess_${eventId}.pdf`);
-            logAction("Hostess descargó el reporte final en PDF.");
-        };
-		
-        // CORRECCIÓN COLA DE WA MASIVA
-		window.crmEnvioMasivoWA = async function() {
-            waQueue = state.invitados.filter(g => g.telefono && g.telefono.length >= 10 && g.status !== 'Declinado');
-            
-            if(waQueue.length === 0) return Toast.fire({icon: 'warning', title: 'No hay invitados con teléfono válido'});
-            
-            const { isConfirmed } = await Swal.fire({
-                title: 'Envío Masivo en Cola',
-                text: `Hay ${waQueue.length} mensajes listos. Enviaremos uno por uno para evitar que WhatsApp te bloquee por SPAM y saltarnos las restricciones del navegador.`,
-                icon: 'info',
-                showCancelButton: true,
-                confirmButtonText: 'Iniciar Envío'
-            });
-
-            if (isConfirmed) {
-                logAction(`Inició envío masivo a ${waQueue.length} contactos.`);
-                window.procesarSiguienteWA();
-            }
-        };
-
-        window.procesarSiguienteWA = function() {
-            if(waQueue.length === 0) {
-                return Swal.fire('¡Completado!', 'Se ha terminado la lista de envíos.', 'success');
-            }
-            
-            const guest = waQueue.shift();
-            
-            let phone = String(guest.telefono).replace(/\D/g, '');
-            if (phone.length === 10) phone = '52' + phone;
-            let msg = encodeURIComponent(`¡Hola ${guest.nombre}! Te recordamos que tu invitación para nuestro evento está lista. Por favor confirma tu asistencia. ✨`);
-
-            Swal.fire({
-                title: 'Siguiente Mensaje',
-                html: `¿Enviar a <b>${guest.nombre}</b>?<br><br><span class="text-xs text-slate-500">Quedan ${waQueue.length} por enviar.</span>`,
-                confirmButtonText: 'Enviar',
-                cancelButtonText: 'Detener',
-                showCancelButton: true,
-                confirmButtonColor: '#10b981'
-            }).then((r) => {
-                if(r.isConfirmed) {
-                    window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${msg}`, '_blank');
-                    setTimeout(() => window.procesarSiguienteWA(), 1000);
-                }
-            });
-        };
-		
-    </script>
-</body>
-</html>
+            const ninRow = document.getElementById('hrI seem to be encountering an error. Can I try something else for you?
