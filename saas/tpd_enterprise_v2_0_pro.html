@@ -33,6 +33,17 @@
     <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@1.18.1/index.js"></script>
     
     <style>
+	
+	/* Corrección del cursor global */
+html, body {
+    cursor: default;
+}
+input, textarea {
+    cursor: text !important;
+}
+button, a, select, label, .cursor-pointer {
+    cursor: pointer;
+}
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,400&family=Cinzel:wght@600;800&family=Montserrat:wght@400;600;800&display=swap');
         
         :root { 
@@ -385,16 +396,18 @@
                             </label>
                             
                             <div class="h-8 w-px bg-slate-200 mx-1 shrink-0"></div>
-
-                            <button onclick="window.crmExportExcel()" class="bg-slate-800 hover:bg-slate-900 text-white px-3 py-2 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap" title="Descargar Excel con Datos"><i class="fa-solid fa-file-excel"></i> Excel</button>
+							<button onclick="window.crmExportExcel()" class="bg-slate-800 hover:bg-slate-900 text-white px-3 py-2 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap" title="Descargar Excel con Datos"><i class="fa-solid fa-file-excel"></i> Excel</button>
                             <button onclick="window.crmExportPDF()" class="bg-slate-800 hover:bg-slate-900 text-white px-3 py-2 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap" title="Descargar Lista de Puerta PDF"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+                            
+                            <div class="h-8 w-px bg-slate-200 mx-1 shrink-0"></div>
+
+                            <!-- Botón Masivo WA Reducido -->
+                            <button onclick="window.crmEnvioMasivoWA()" class="bg-emerald-50 border border-emerald-200 text-emerald-600 hover:bg-emerald-100 hover:text-emerald-700 px-3 py-2 rounded-xl text-sm font-bold shadow-sm transition whitespace-nowrap flex items-center gap-1.5" title="Envío Masivo WhatsApp">
+                                <i class="fa-solid fa-envelopes-bulk"></i> <span class="hidden sm:inline">Masivo WA</span>
+                            </button>
                         </div>
                     </div>
                 </div>
-				<div class="h-8 w-px bg-slate-200 mx-1 shrink-0"></div>
-<button onclick="window.crmEnvioMasivoWA()" class="bg-emerald-500 hover:bg-emerald-600 text-white px-3 py-2 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap flex items-center gap-2" title="Envío Masivo WhatsApp">
-    <i class="fa-brands fa-whatsapp"></i> Envío Masivo
-</button>
 
                 <!-- Contenedor Tabla -->
                 <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden flex-1 flex flex-col min-h-0">
@@ -1153,7 +1166,7 @@
             if(select) select.value = savedTheme;
         }
 
-        window.startDemoEnvironment = async function() {
+window.startDemoEnvironment = async function() {
             const now = new Date();
             const dia = now.getDate();
             const mes = now.getMonth() + 1; // getMonth va de 0 a 11
@@ -1187,7 +1200,23 @@
 
             if (!pinIngresado) return;
 
+            // Lógica para limitar a 2 oportunidades por PIN
+            const llaveUsos = `demo_uses_${pinIngresado}`;
+            let intentosRealizados = parseInt(localStorage.getItem(llaveUsos) || '0');
+
+            if (intentosRealizados >= 2) {
+                return Swal.fire({
+                    title: 'Demostración Finalizada',
+                    text: 'Has agotado las 2 oportunidades para ver la demostración con este PIN. Solicita otro al agente.',
+                    icon: 'warning',
+                    confirmButtonColor: '#3b82f6'
+                });
+            }
+
             if (parseInt(pinIngresado) === pinCalculado || pinIngresado === '9999') {
+                // Registrar que gastó un intento con este PIN
+                localStorage.setItem(llaveUsos, intentosRealizados + 1);
+
                 currentUser = "demo_local";
                 currentRole = "Cliente";
                 currentEventType = "Evento";
@@ -1216,7 +1245,9 @@
                 window.crmRenderAll();
                 window.initEventAssistant();
                 logAction("Inició sesión en Modo Demo Local.");
-                Toast.fire({ icon: 'success', title: '¡PIN correcto! Modo Demostración Activo' });
+                
+                let intentosRestantes = 1 - intentosRealizados;
+                Toast.fire({ icon: 'success', title: `¡Modo Demo! Te queda(n) ${intentosRestantes} oportunidad(es)` });
 
             } else {
                 Swal.fire({
@@ -1227,6 +1258,7 @@
                 });
             }
         };
+
 
         window.mostrarPinDemo = function() {
     let usos = parseInt(localStorage.getItem('demo_pin_uses') || '0');
