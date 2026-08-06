@@ -1492,7 +1492,7 @@ window.startDemoEnvironment = async function() {
                     let impBtn = ''; let premiumBtn = ''; let infoAdminBtn = '';
                     if (d.role === 'Cliente' || d.role === 'Cliente Web' || d.role === 'Hostess') {
                          impBtn = `<button onclick="window.impStart('${docSnap.id}', '${d.role}')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-100 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1" title="Entrar al panel de este cliente"><i class="fa-solid fa-eye"></i> Supervisar</button>`;
-                         if (d.role === 'Cliente') { let isPremium = d.hasPremiumLink === true; premiumBtn = `<button onclick="window.adminTogglePremium('${docSnap.id}', ${isPremium})" class="${isPremium ? 'text-amber-500 hover:text-amber-600' : 'text-slate-300 hover:text-slate-400'} transition p-2 text-xl" title="💡 Premium: Web + WA + PDF"><i class="fa-solid fa-star"></i></button>`; }
+                         if (d.role === 'Cliente') { let isPremium = d.hasPremiumLink === true; premiumBtn = `<button onclick="window.adminTogglePremium('${docSnap.id}', ${isPremium})" class="${isPremium ? 'text-amber-500 hover:text-amber-600' : 'text-slate-300 hover:text-slate-400'} transition p-2 text-xl" title="💡 Premium: Web + WA + PTO+ PDF"><i class="fa-solid fa-star"></i></button>`; }
                     }
 
                     if (d.role === 'Administrador' || d.role === 'Staff' || d.role === 'Soporte') { infoAdminBtn = `<button onclick="window.adminResetPassword('${docSnap.id}')" class="text-blue-400 hover:text-blue-600 transition p-2" title="Información de Contraseña"><i class="fa-solid fa-circle-info text-lg"></i></button>`; }
