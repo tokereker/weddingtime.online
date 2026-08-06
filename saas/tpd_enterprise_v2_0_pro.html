@@ -71,21 +71,44 @@ button, a, select, label, .cursor-pointer {
             background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, rgba(99, 102, 241, 0) 70%); border-radius: 50%; pointer-events: none;
         }
 
-        /* TEMAS DINÁMICOS DE DISEÑO (V2) */
+    /* TEMAS DINÁMICOS DE DISEÑO (V2) */
         body.theme-midnight { --bg-canvas: #090d16; --card-bg: #111827; --text-main: #f3f4f6; --primary-color: #fbbf24; }
         body.theme-midnight .bg-white { background-color: #111827 !important; color: #f3f4f6 !important; border-color: #1f2937 !important; }
         body.theme-midnight .bg-slate-50 { background-color: #1f2937 !important; color: #f3f4f6 !important; border-color: #374151 !important; }
         body.theme-midnight .text-slate-800, body.theme-midnight .text-slate-700 { color: #f3f4f6 !important; }
         body.theme-midnight .text-slate-500 { color: #9ca3af !important; }
 
-        body.theme-rosegold { --bg-canvas: #fff5f5; --card-bg: #ffffff; --text-main: #4a1d24; --primary-color: #e11d48; }
-        body.theme-rosegold .bg-blue-600 { background-color: #e11d48 !important; }
-        body.theme-rosegold .border-blue-600 { border-color: #e11d48 !important; }
-        body.theme-rosegold .text-blue-600 { color: #e11d48 !important; }
+        /* CORRECCIÓN: Evitar tipografía blanca en fondos blancos para Midnight Luxury */
+        body.theme-midnight input, 
+        body.theme-midnight textarea, 
+        body.theme-midnight select {
+            background-color: #1f2937 !important;
+            color: #f3f4f6 !important;
+            border-color: #374151 !important;
+        }
+        
+        /* Sobrescribir las clases focus:bg-white de Tailwind */
+        body.theme-midnight input:focus, 
+        body.theme-midnight textarea:focus, 
+        body.theme-midnight select:focus {
+            background-color: #111827 !important; 
+            color: #f3f4f6 !important;
+            border-color: var(--primary-color) !important;
+        }
 
-        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); }
-        input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-        input[type=number] { -moz-appearance: textfield; }
+        /* Ajuste para que los botones grises/blancos sean visibles en el tema oscuro */
+        body.theme-midnight button.bg-slate-100 {
+            background-color: #374151 !important;
+            color: #f3f4f6 !important;
+            border-color: #4b5563 !important;
+        }
+        body.theme-midnight button.bg-slate-100:hover {
+            background-color: #4b5563 !important;
+        }
+        body.theme-midnight button.bg-white {
+            background-color: #1f2937 !important;
+            color: #f3f4f6 !important;
+        }
 
         /* Asistente TPD Chat V2 */
         #tpd-chat-widget { 
@@ -1260,17 +1283,9 @@ window.startDemoEnvironment = async function() {
         };
 
 
-        window.mostrarPinDemo = function() {
+ window.mostrarPinDemo = function() {
+    // Se elimina el límite MAX_USOS para permitir generaciones infinitas
     let usos = parseInt(localStorage.getItem('demo_pin_uses') || '0');
-    const MAX_USOS = 5; // Límite de generaciones permitidas
-
-    if (usos >= MAX_USOS) {
-        return Swal.fire({
-            title: 'Límite Alcanzado',
-            text: 'Has alcanzado el número máximo de usos para generar el PIN de demostración.',
-            icon: 'error'
-        });
-    }
 
     const now = new Date();
     const dia = now.getDate();
@@ -1285,7 +1300,7 @@ window.startDemoEnvironment = async function() {
     Swal.fire({
         title: 'PIN de Demostración',
         html: `
-            <p class="text-sm text-slate-600 mb-4">Uso ${usos} de ${MAX_USOS} disponibles.</p>
+            <p class="text-sm text-slate-600 mb-4">PIN generado exitosamente. (Límite: 2 accesos por código)</p>
             <div class="bg-blue-50 border border-blue-100 rounded-2xl py-4 mb-4">
                 <span class="text-4xl font-black text-blue-600 tracking-widest">${pinCalculado}</span>
             </div>
