@@ -351,7 +351,7 @@ button, a, select, label, .cursor-pointer {
             <div id="crm-premium-design" class="ml-auto flex items-center border-l border-slate-200 pl-4 gap-3 py-2 shrink-0">
                 <div class="flex items-center gap-1 hidden md:flex">
                     <label class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Tema:</label>
-                    <select id="crm-theme-style" onchange="window.setAppStyleTheme(this.value)" class="text-xs border border-slate-200 rounded-lg p-1.5 outline-none font-bold text-slate-700 bg-slate-50 cursor-pointer shadow-sm">
+                    <select id="crm-theme-style" onchange="window.setAppStyleTheme(this.value, true)" class="text-xs border border-slate-200 rounded-lg p-1.5 outline-none font-bold text-slate-700 bg-slate-50 cursor-pointer shadow-sm">
                         <option value="default">SaaS Light</option>
                         <option value="midnight">Midnight Luxury</option>
                         <option value="rosegold">Rose Gold</option>
@@ -1174,20 +1174,18 @@ button, a, select, label, .cursor-pointer {
             document.body.classList.add('offline'); 
             document.querySelectorAll('.network-status-text').forEach(el => el.innerHTML = '<i class="fa-solid fa-wifi"></i> Offline (Modo Local)');
         });
-
-        window.setAppStyleTheme = function(theme) {
+window.setAppStyleTheme = function(theme, guardarBaseDatos = true) {
             document.body.classList.remove('theme-midnight', 'theme-rosegold');
             if(theme === 'midnight') document.body.classList.add('theme-midnight');
             if(theme === 'rosegold') document.body.classList.add('theme-rosegold');
-            localStorage.setItem('tpd_selected_theme', theme);
+            
+            // Solo guardamos en Firebase si es un cambio provocado por el cliente en el CRM
+            if (guardarBaseDatos && state && state.config) {
+                state.config.appTheme = theme;
+                window.crmSave();
+            }
         };
         
-        const savedTheme = localStorage.getItem('tpd_selected_theme');
-        if(savedTheme) {
-            window.setAppStyleTheme(savedTheme);
-            const select = document.getElementById('crm-theme-style');
-            if(select) select.value = savedTheme;
-        }
 
 window.startDemoEnvironment = async function() {
             const now = new Date();
@@ -1413,6 +1411,7 @@ window.startDemoEnvironment = async function() {
         });
 
         window.appLogout = async function() {
+		window.setAppStyleTheme('default', false);
             if(unsubscribe) unsubscribe();
             if(window.html5QrcodeScanner) { try { window.html5QrcodeScanner.stop().catch(e=>{}); } catch(err){} }
             await signOut(auth);
@@ -1481,6 +1480,7 @@ window.startDemoEnvironment = async function() {
         window.adminLoadUsers = async function() { Swal.fire({ title: 'Actualizando...', didOpen: () => Swal.showLoading(), allowOutsideClick: false }); await window.loadAdminPanel(); Toast.fire({ icon: 'success', title: 'Panel actualizado' }); };
         window.adminCreateUser = async function() {
             try {
+			window.setAppStyleTheme('default', false);
                 const user = document.getElementById('new-user').value.trim().toLowerCase(); const pass = document.getElementById('new-pass').value.trim(); const role = document.getElementById('new-role').value;
                 if(!user || !pass) return Swal.fire('Atención', 'Rellena el ID y la contraseña.', 'warning');
                 
@@ -1570,6 +1570,12 @@ window.startDemoEnvironment = async function() {
                     state.presupuesto = data.presupuesto || []; // Incorporamos presupuesto
                     
                     if(!state.config.themeColor) state.config.themeColor = '#3b82f6';
+					// Cargar el tema exclusivo de este usuario
+const userTheme = state.config.appTheme || 'default';
+window.setAppStyleTheme(userTheme, false);
+const selectTheme = document.getElementById('crm-theme-style');
+if(selectTheme) selectTheme.value = userTheme;
+					
                     if(!state.config.extras) state.config.extras = 0;
                     if(state.config.totalExtrasCost === undefined) state.config.totalExtrasCost = 0;
                     if(!state.config.fontFamily) state.config.fontFamily = 'Plus Jakarta Sans';
