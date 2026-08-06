@@ -71,50 +71,70 @@ button, a, select, label, .cursor-pointer {
             background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, rgba(99, 102, 241, 0) 70%); border-radius: 50%; pointer-events: none;
         }
 
-        /* TEMAS DINÁMICOS DE DISEÑO (V2) */
+    /* TEMAS DINÁMICOS DE DISEÑO (V2) */
         body.theme-midnight { --bg-canvas: #090d16; --card-bg: #111827; --text-main: #f3f4f6; --primary-color: #fbbf24; }
         body.theme-midnight .bg-white { background-color: #111827 !important; color: #f3f4f6 !important; border-color: #1f2937 !important; }
         body.theme-midnight .bg-slate-50 { background-color: #1f2937 !important; color: #f3f4f6 !important; border-color: #374151 !important; }
         body.theme-midnight .text-slate-800, body.theme-midnight .text-slate-700 { color: #f3f4f6 !important; }
         body.theme-midnight .text-slate-500 { color: #9ca3af !important; }
+			/* EXTENSIÓN DE TEMAS: MIDNIGHT LUXURY (Logística y Presupuesto) */
+body.theme-midnight .bg-teal-50, body.theme-midnight .bg-indigo-50, 
+body.theme-midnight .bg-amber-50, body.theme-midnight .bg-purple-50, 
+body.theme-midnight .bg-rose-50, body.theme-midnight .bg-emerald-50,
+body.theme-midnight .bg-blue-50, body.theme-midnight .bg-red-50 {
+    background-color: #111827 !important; border-color: #374151 !important; color: #f3f4f6 !important;
+}
+body.theme-midnight .text-teal-900, body.theme-midnight .text-indigo-900, 
+body.theme-midnight .text-amber-900, body.theme-midnight .text-purple-900, 
+body.theme-midnight .text-rose-900 { color: #f3f4f6 !important; }
 
-        /* TEMA ROSE GOLD */
-        body.theme-rosegold { --bg-canvas: #fdf2f8; --card-bg: #fff1f2; --text-main: #4c1d95; --primary-color: #e11d48; }
-        body.theme-rosegold .bg-white { background-color: #fff1f2 !important; color: #4c1d95 !important; border-color: #fda4af !important; }
-        body.theme-rosegold .bg-slate-50 { background-color: #ffe4e6 !important; color: #4c1d95 !important; border-color: #fda4af !important; }
-        body.theme-rosegold .text-slate-800, body.theme-rosegold .text-slate-700 { color: #881337 !important; }
-        body.theme-rosegold .text-slate-500 { color: #be123c !important; }
+body.theme-midnight .text-teal-800, body.theme-midnight .text-indigo-800, 
+body.theme-midnight .text-amber-800, body.theme-midnight .text-purple-800, 
+body.theme-midnight .text-rose-800 { color: #9ca3af !important; }
 
-        /* Estilos Dinámicos de Logística y Guest App */
-        .guest-app-preview { background: linear-gradient(to bottom right, #0f172a, #1e293b); color: white; border-color: #334155; }
-        .guest-app-preview input, .guest-app-preview textarea { background: rgba(15, 23, 42, 0.5); border-color: #475569; color: white; }
+/* TEMA: ROSE GOLD */
+body.theme-rosegold { --bg-canvas: #fff5f5; --card-bg: #ffffff; --text-main: #4a3f35; --primary-color: #d97777; }
+body.theme-rosegold .bg-slate-50 { background-color: #fffaf9 !important; border-color: #fce7e7 !important; }
+body.theme-rosegold .bg-white { border-color: #fce7e7 !important; }
+body.theme-rosegold .text-blue-600, body.theme-rosegold .text-blue-500 { color: #d97777 !important; }
+body.theme-rosegold .bg-blue-600 { background-color: #d97777 !important; }
+body.theme-rosegold .bg-blue-600:hover { background-color: #c56565 !important; }
+body.theme-rosegold .bg-gradient-to-br.from-slate-900.to-slate-800 { 
+    background: linear-gradient(to bottom right, #fdf2f2, #fae3e3) !important; color: #4a3f35 !important; border-color: #fce7e7 !important;
+}
+body.theme-rosegold .text-white { color: #4a3f35 !important; }
+
+        /* CORRECCIÓN: Evitar tipografía blanca en fondos blancos para Midnight Luxury */
+        body.theme-midnight input, 
+        body.theme-midnight textarea, 
+        body.theme-midnight select {
+            background-color: #1f2937 !important;
+            color: #f3f4f6 !important;
+            border-color: #374151 !important;
+        }
         
-        body.theme-midnight .bg-teal-50, body.theme-midnight .bg-indigo-50, body.theme-midnight .bg-amber-50, body.theme-midnight .bg-purple-50, body.theme-midnight .bg-rose-50 {
-            background-color: #1f2937 !important; border-color: #374151 !important; color: #f3f4f6 !important;
+        /* Sobrescribir las clases focus:bg-white de Tailwind */
+        body.theme-midnight input:focus, 
+        body.theme-midnight textarea:focus, 
+        body.theme-midnight select:focus {
+            background-color: #111827 !important; 
+            color: #f3f4f6 !important;
+            border-color: var(--primary-color) !important;
         }
-        body.theme-midnight .text-teal-900, body.theme-midnight .text-indigo-900, body.theme-midnight .text-amber-900, body.theme-midnight .text-purple-900, body.theme-midnight .text-rose-900 { color: #f3f4f6 !important; }
-        body.theme-midnight .guest-app-preview { background: #111827; color: #f3f4f6; border-color: #374151; }
-        body.theme-midnight .guest-app-preview input, body.theme-midnight .guest-app-preview textarea { background: #1f2937; border-color: #4b5563; }
-        body.theme-midnight .guest-app-preview h3, body.theme-midnight .guest-app-preview p { color: #f3f4f6 !important; }
 
-        body.theme-rosegold .bg-teal-50, body.theme-rosegold .bg-indigo-50, body.theme-rosegold .bg-amber-50, body.theme-rosegold .bg-purple-50, body.theme-rosegold .bg-rose-50 {
-            background-color: #ffe4e6 !important; border-color: #fda4af !important; color: #4c1d95 !important;
+        /* Ajuste para que los botones grises/blancos sean visibles en el tema oscuro */
+        body.theme-midnight button.bg-slate-100 {
+            background-color: #374151 !important;
+            color: #f3f4f6 !important;
+            border-color: #4b5563 !important;
         }
-        body.theme-rosegold .text-teal-900, body.theme-rosegold .text-indigo-900, body.theme-rosegold .text-amber-900, body.theme-rosegold .text-purple-900, body.theme-rosegold .text-rose-900 { color: #881337 !important; }
-        body.theme-rosegold .guest-app-preview { background: #ffe4e6; color: #881337; border-color: #fda4af; }
-        body.theme-rosegold .guest-app-preview input, body.theme-rosegold .guest-app-preview textarea { background: #fff1f2; border-color: #fda4af; color: #881337; }
-        body.theme-rosegold .guest-app-preview h3, body.theme-rosegold .guest-app-preview p { color: #881337 !important; }
-
-        /* CORRECCIÓN: Evitar tipografía blanca en fondos blancos para Midnight Luxury y Rose */
-        body.theme-midnight input, body.theme-midnight textarea, body.theme-midnight select {
-            background-color: #1f2937 !important; color: #f3f4f6 !important; border-color: #374151 !important;
+        body.theme-midnight button.bg-slate-100:hover {
+            background-color: #4b5563 !important;
         }
-        body.theme-midnight input:focus, body.theme-midnight textarea:focus, body.theme-midnight select:focus {
-            background-color: #111827 !important; color: #f3f4f6 !important; border-color: var(--primary-color) !important;
+        body.theme-midnight button.bg-white {
+            background-color: #1f2937 !important;
+            color: #f3f4f6 !important;
         }
-        body.theme-midnight button.bg-slate-100 { background-color: #374151 !important; color: #f3f4f6 !important; border-color: #4b5563 !important; }
-        body.theme-midnight button.bg-slate-100:hover { background-color: #4b5563 !important; }
-        body.theme-midnight button.bg-white { background-color: #1f2937 !important; color: #f3f4f6 !important; }
 
         /* Asistente TPD Chat V2 */
         #tpd-chat-widget { 
@@ -183,7 +203,7 @@ button, a, select, label, .cursor-pointer {
             </div>
 
             <h1 class="text-3xl font-black mb-1 text-white tracking-tight">Bienvenido</h1>
-            <p class="text-slate-400 text-sm mb-6 font-medium">Plataforma SaaS de Gestión Logística TPD.</p>
+            <p class="text-slate-400 text-sm mb-6 font-medium">Plataforma SaaS de Gestión Logística TPD</p>
             
             <div class="space-y-4 mb-6">
                 <div>
@@ -350,7 +370,7 @@ button, a, select, label, .cursor-pointer {
         <nav class="bg-white border-b flex px-6 shrink-0 gap-8 font-semibold text-sm overflow-x-auto custom-scrollbar items-center relative z-10">
             <button onclick="window.crmSwitchTab('guests')" id="tab-guests" class="py-4 text-blue-600 border-b-2 border-blue-600 whitespace-nowrap transition-colors"><i class="fa-solid fa-users mr-2"></i>Lista de Invitados</button>
             <button onclick="window.crmSwitchTab('tables')" id="tab-tables" class="py-4 text-slate-500 hover:text-slate-800 border-b-2 border-transparent whitespace-nowrap transition-colors"><i class="fa-solid fa-chair mr-2"></i>Acomodo de Mesas</button>
-            <button onclick="window.crmSwitchTab('budget')" id="tab-budget" class="py-4 text-slate-500 hover:text-slate-800 border-b-2 border-transparent whitespace-nowrap transition-colors hidden"><i class="fa-solid fa-wallet mr-2"></i>Presupuesto & Menú</button>
+            <button onclick="window.crmSwitchTab('budget')" id="tab-budget" style="display: none;" class="py-4 text-slate-500 hover:text-slate-800 border-b-2 border-transparent whitespace-nowrap transition-colors"><i class="fa-solid fa-wallet mr-2"></i>Presupuesto & Menú</button>
             <button onclick="window.crmSwitchTab('stats')" id="tab-stats" class="py-4 text-slate-500 hover:text-slate-800 border-b-2 border-transparent whitespace-nowrap transition-colors"><i class="fa-solid fa-chart-pie mr-2"></i>Logística</button>
             
             <!-- V2 PREMIUM DESIGN SELECTORS -->
@@ -561,8 +581,6 @@ button, a, select, label, .cursor-pointer {
                                     <thead class="bg-slate-50 text-slate-500 border-b border-slate-200 text-xs uppercase tracking-wider font-bold">
                                         <tr>
                                             <th class="p-4">Concepto / Proveedor</th>
-                                            <th class="p-4 text-center">Fecha de Abono</th>
-                                            <th class="p-4 text-center">Forma de Pago</th>
                                             <th class="p-4 text-right">Costo Total ($)</th>
                                             <th class="p-4 text-right">Pagado ($)</th>
                                             <th class="p-4 text-center">Estatus</th>
@@ -580,23 +598,23 @@ button, a, select, label, .cursor-pointer {
 
                     <!-- Columna Derecha: App de Auto-Servicio del Invitado -->
                     <div class="lg:col-span-1 space-y-6">
-                        <div id="guest-app-preview" class="guest-app-preview p-6 rounded-3xl shadow-xl border transition-colors duration-300">
+                        <div class="bg-gradient-to-br from-slate-900 to-slate-800 p-6 rounded-3xl shadow-xl border border-slate-700 text-white">
                             <h3 class="text-lg font-black mb-2 flex items-center gap-2 text-blue-400"><i class="fa-solid fa-mobile-screen"></i> App Modo Invitado</h3>
-                            <p class="text-xs text-slate-300 mb-5 leading-relaxed">Configura lo que verán tus invitados al escanear el código QR de su pase <b>estando sentados en su mesa</b> durante la fiesta.</p>
+                            <p class="text-xs text-slate-300 mb-5 leading-relaxed">Configura lo que verán tus invitados al escanear el código QR de su pase <b class="text-white">estando sentados en su mesa</b> durante la fiesta.</p>
                             
                             <div class="space-y-4">
                                 <div>
                                     <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1"><i class="fa-solid fa-utensils"></i> Menú del Evento</label>
-                                    <textarea id="cfg-menu-text" onchange="window.crmUpdateConfig('menuText', this.value)" class="w-full rounded-xl p-3 text-sm outline-none border transition min-h-[120px] custom-scrollbar" placeholder="Ej:&#10;Entrada: Crema de Elote&#10;Plato Fuerte: Lomo en salsa de ciruela&#10;Postre: Pastel de Chocolate"></textarea>
+                                    <textarea id="cfg-menu-text" onchange="window.crmUpdateConfig('menuText', this.value)" class="w-full bg-slate-900/50 border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-blue-500 transition min-h-[120px] custom-scrollbar" placeholder="Ej:&#10;Entrada: Crema de Elote&#10;Plato Fuerte: Lomo en salsa de ciruela&#10;Postre: Pastel de Chocolate"></textarea>
                                 </div>
                                 
                                 <div>
                                     <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1"><i class="fa-brands fa-spotify text-emerald-400"></i> Enlace para pedir canciones (Spotify/Form)</label>
-                                    <input type="text" id="cfg-dj-link" onchange="window.crmUpdateConfig('djLink', this.value)" class="w-full rounded-xl p-3 text-sm outline-none border transition" placeholder="https://open.spotify.com/playlist/...">
+                                    <input type="text" id="cfg-dj-link" onchange="window.crmUpdateConfig('djLink', this.value)" class="w-full bg-slate-900/50 border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-emerald-500 transition" placeholder="https://open.spotify.com/playlist/...">
                                 </div>
                                 
-                                <div class="bg-blue-500/20 border border-blue-500/30 p-3 rounded-xl text-xs text-blue-400 mt-2 flex items-start gap-2">
-                                    <i class="fa-solid fa-circle-info mt-0.5"></i>
+                                <div class="bg-blue-500/20 border border-blue-500/30 p-3 rounded-xl text-xs text-blue-200 mt-2 flex items-start gap-2">
+                                    <i class="fa-solid fa-circle-info mt-0.5 text-blue-400"></i>
                                     <span>Al guardar, el enlace QR de los pases mostrará automáticamente estos datos a los invitados.</span>
                                 </div>
                             </div>
@@ -1261,6 +1279,8 @@ window.startDemoEnvironment = async function() {
                     presupuesto: []
                 };
                 isPremiumUser = true;
+				const premiumDesign = document.getElementById('crm-premium-design'); if (premiumDesign) premiumDesign.style.display = isPremiumUser ? 'flex' : 'none';
+				const tabBudget = document.getElementById('tab-budget'); if (tabBudget) tabBudget.style.display = isPremiumUser ? 'block' : 'none';
 
                 document.getElementById('view-login').classList.add('hidden');
                 document.getElementById('view-login').classList.remove('flex');
@@ -1271,10 +1291,6 @@ window.startDemoEnvironment = async function() {
                 document.getElementById('user-display').innerText = "Organizador Pro (DEMO)";
                 document.getElementById('crm-header-id').innerText = `${currentEventType} - ${currentUser}`;
                 
-                // Mostrar siempre módulo Premium al probar localmente
-                const budgetTabBtn = document.getElementById('tab-budget');
-                if (budgetTabBtn) budgetTabBtn.classList.remove('hidden');
-
                 window.crmRenderAll();
                 window.initEventAssistant();
                 logAction("Inició sesión en Modo Demo Local.");
@@ -1596,12 +1612,6 @@ if(selectTheme) selectTheme.value = userTheme;
 
                     state.croquis = data.croquis || null; state.ticketBg = data.ticketBg || null;
                     isPremiumUser = data.hasPremiumLink === true; currentEventType = data.eventType || currentEventType;
-
-                    const budgetTabBtn = document.getElementById('tab-budget');
-                    if (budgetTabBtn) {
-                        if (isPremiumUser) budgetTabBtn.classList.remove('hidden');
-                        else budgetTabBtn.classList.add('hidden');
-                    }
                     
                     const tipo = currentEventType || 'Evento';
                     document.getElementById('crm-header-id').innerText = `${tipo} - ${user}`;
@@ -1621,6 +1631,7 @@ if(selectTheme) selectTheme.value = userTheme;
                     }
                     
                     const premiumDesign = document.getElementById('crm-premium-design'); if (premiumDesign) premiumDesign.style.display = isPremiumUser ? 'flex' : 'none';
+					const tabBudget = document.getElementById('tab-budget'); if (tabBudget) tabBudget.style.display = isPremiumUser ? 'block' : 'none';
                     const waPremiumContainer = document.getElementById('wa-premium-link-container'); const waCheckbox = document.getElementById('wa-include-link');
                     if (waPremiumContainer && waCheckbox) { waPremiumContainer.style.display = isPremiumUser ? 'flex' : 'none'; waCheckbox.checked = isPremiumUser; waCheckbox.disabled = !isPremiumUser; }
 
@@ -2131,61 +2142,96 @@ if(selectTheme) selectTheme.value = userTheme;
 
         // FUNCIONES DE PRESUPUESTO INYECTADAS
         window.crmRenderBudget = function() {
-            const tbody = document.getElementById('budget-tbody'); tbody.innerHTML = '';
-            const emptyState = document.getElementById('budget-empty');
-            
-            document.getElementById('cfg-menu-text').value = state.config.menuText || '';
-            document.getElementById('cfg-dj-link').value = state.config.djLink || '';
+    const tbody = document.getElementById('budget-tbody'); tbody.innerHTML = '';
+    const emptyState = document.getElementById('budget-empty');
+    
+    document.getElementById('cfg-menu-text').value = state.config.menuText || '';
+    document.getElementById('cfg-dj-link').value = state.config.djLink || '';
 
-            if(!state.presupuesto) state.presupuesto = [];
-            
-            let total = 0; let paid = 0;
-            state.presupuesto.forEach(item => {
-                total += item.costo; paid += item.pagado;
-                const remaining = item.costo - item.pagado;
-                
-                let badge = remaining <= 0 ? `<span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded font-bold text-[10px]">Liquidado</span>` : `<span class="bg-amber-100 text-amber-700 px-2 py-1 rounded font-bold text-[10px]">Debe $${remaining.toLocaleString('en-US')}</span>`;
+    if(!state.presupuesto) state.presupuesto = [];
+    
+    let total = 0; let paid = 0;
+    state.presupuesto.forEach(item => {
+        // Compatibilidad hacia atrás
+        if(!item.abonos) item.abonos = [];
+        
+        let totalAbonado = item.abonos.reduce((sum, abono) => sum + abono.monto, 0);
+        // Si no hay abonos pero hay "pagado" manual anterior
+        if (totalAbonado === 0 && item.pagado > 0) totalAbonado = item.pagado;
+        
+        total += item.costo; paid += totalAbonado;
+        const remaining = item.costo - totalAbonado;
+        
+        let badge = remaining <= 0 ? `<span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded font-bold text-[10px]">Liquidado</span>` : `<span class="bg-amber-100 text-amber-700 px-2 py-1 rounded font-bold text-[10px]">Debe $${remaining.toLocaleString('en-US')}</span>`;
 
-                const tr = document.createElement('tr'); tr.className = 'hover:bg-slate-50 transition border-b border-slate-50';
-                tr.innerHTML = `
-                    <td class="p-4"><p class="font-bold text-slate-800 text-xs">${item.concepto}</p></td>
-                    <td class="p-4 text-center"><p class="text-xs text-slate-600">${item.fecha || '-'}</p></td>
-                    <td class="p-4 text-center"><p class="text-xs text-slate-600">${item.metodo || '-'}</p></td>
-                    <td class="p-4 text-right"><p class="font-black text-slate-700">$${item.costo.toLocaleString('en-US')}</p></td>
-                    <td class="p-4 text-right"><p class="font-black text-emerald-600">$${item.pagado.toLocaleString('en-US')}</p></td>
-                    <td class="p-4 text-center">${badge}</td>
-                    <td class="p-4 text-center flex items-center justify-center gap-2">
-                        <button onclick="window.editBudgetItem(${item.id})" class="text-slate-400 hover:text-blue-500 transition"><i class="fa-solid fa-pencil text-xs"></i></button>
-                        <button onclick="window.deleteBudgetItem(${item.id})" class="text-slate-400 hover:text-red-500 transition"><i class="fa-solid fa-trash-can text-xs"></i></button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
+        let historialHTML = item.abonos.length > 0 ? `<div class="mt-2 space-y-1">` + item.abonos.map(a => `<div class="text-[9px] text-slate-500 bg-slate-100 px-2 py-1 rounded flex justify-between"><span>${a.fecha} - ${a.metodo}</span> <span class="font-bold text-emerald-600">+$${a.monto}</span></div>`).join('') + `</div>` : '';
 
-            if(state.presupuesto.length === 0) { emptyState.classList.remove('hidden'); } else { emptyState.classList.add('hidden'); }
+        const tr = document.createElement('tr'); tr.className = 'hover:bg-slate-50 transition border-b border-slate-50';
+        tr.innerHTML = `
+            <td class="p-4 align-top">
+                <p class="font-bold text-slate-800 text-xs">${item.concepto}</p>
+                ${historialHTML}
+            </td>
+            <td class="p-4 text-right align-top"><p class="font-black text-slate-700">$${item.costo.toLocaleString('en-US')}</p></td>
+            <td class="p-4 text-right align-top"><p class="font-black text-emerald-600">$${totalAbonado.toLocaleString('en-US')}</p></td>
+            <td class="p-4 text-center align-top">${badge}</td>
+            <td class="p-4 text-center flex items-center justify-center gap-2 align-top">
+                <button onclick="window.addAbono(${item.id})" class="text-emerald-500 hover:text-emerald-700 transition bg-emerald-50 px-2 py-1 rounded shadow-sm text-xs font-bold" title="Abonar">+ Abono</button>
+                <button onclick="window.editBudgetItem(${item.id})" class="text-slate-400 hover:text-blue-500 transition"><i class="fa-solid fa-pencil text-xs"></i></button>
+                <button onclick="window.deleteBudgetItem(${item.id})" class="text-slate-400 hover:text-red-500 transition"><i class="fa-solid fa-trash-can text-xs"></i></button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
 
-            document.getElementById('budget-total').innerText = `$${total.toLocaleString('en-US')}`;
-            document.getElementById('budget-paid').innerText = `$${paid.toLocaleString('en-US')}`;
-            document.getElementById('budget-debt').innerText = `$${(total - paid).toLocaleString('en-US')}`;
-        };
+    if(state.presupuesto.length === 0) { emptyState.classList.remove('hidden'); } else { emptyState.classList.add('hidden'); }
+
+    document.getElementById('budget-total').innerText = `$${total.toLocaleString('en-US')}`;
+    document.getElementById('budget-paid').innerText = `$${paid.toLocaleString('en-US')}`;
+    document.getElementById('budget-debt').innerText = `$${(total - paid).toLocaleString('en-US')}`;
+};
+
+// NUEVA FUNCIÓN PARA AÑADIR ABONO (Añádela justo debajo de window.crmRenderBudget)
+window.addAbono = function(id) {
+    const item = state.presupuesto.find(i => i.id === id); if(!item) return;
+    const today = new Date().toISOString().split('T')[0];
+    Swal.fire({
+        title: 'Registrar Nuevo Abono',
+        html: `
+            <p class="text-xs text-slate-500 mb-3 font-bold">Concepto: ${item.concepto}</p>
+            <div class="space-y-3">
+                <div><label class="text-[10px] text-slate-500 font-bold uppercase block text-left">Monto a abonar ($)</label><input type="number" id="swal-abono-monto" class="swal2-input !m-0 !w-full text-center" min="1" placeholder="Ej. 1500"></div>
+                <div><label class="text-[10px] text-slate-500 font-bold uppercase block text-left">Fecha</label><input type="date" id="swal-abono-fecha" class="swal2-input !m-0 !w-full text-center" value="${today}"></div>
+                <div><label class="text-[10px] text-slate-500 font-bold uppercase block text-left">Método de Pago</label><select id="swal-abono-metodo" class="swal2-input !m-0 !w-full text-center"><option value="Efectivo">Efectivo</option><option value="Transferencia">Transferencia</option></select></div>
+            </div>
+        `,
+        showCancelButton: true, confirmButtonText: 'Guardar Abono', confirmButtonColor: '#10b981',
+        preConfirm: () => {
+            const monto = parseFloat(document.getElementById('swal-abono-monto').value) || 0;
+            const fecha = document.getElementById('swal-abono-fecha').value;
+            const metodo = document.getElementById('swal-abono-metodo').value;
+            if (monto <= 0) { Swal.showValidationMessage('El monto debe ser mayor a 0'); return false; }
+            return { monto, fecha, metodo };
+        }
+    }).then(r => {
+        if(r.isConfirmed) {
+            if(!item.abonos) item.abonos = [];
+            item.abonos.push(r.value);
+            window.crmSave(); window.crmRenderBudget(); 
+            Toast.fire({icon:'success', title:'Abono registrado'}); 
+            logAction(`Registró abono de $${r.value.monto} a ${item.concepto}`);
+        }
+    });
+};
 
         window.addBudgetItem = function() {
             Swal.fire({
                 title: 'Añadir Gasto',
                 html: `
                     <input id="swal-b-concepto" class="swal2-input !m-0 !w-full !mb-3 text-sm" placeholder="Concepto (Ej: DJ, Salón, Banquete)">
-                    <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div class="grid grid-cols-2 gap-3">
                         <div><label class="text-[10px] text-slate-500 font-bold uppercase block text-left">Costo Total ($)</label><input type="number" id="swal-b-costo" class="swal2-input !m-0 !w-full text-center" value="0" min="0"></div>
                         <div><label class="text-[10px] text-slate-500 font-bold uppercase block text-left">Anticipo Pagado ($)</label><input type="number" id="swal-b-pagado" class="swal2-input !m-0 !w-full text-center" value="0" min="0"></div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div><label class="text-[10px] text-slate-500 font-bold uppercase block text-left">Fecha de Abono</label><input type="date" id="swal-b-fecha" class="swal2-input !m-0 !w-full text-center"></div>
-                        <div><label class="text-[10px] text-slate-500 font-bold uppercase block text-left">Forma de Pago</label>
-                            <select id="swal-b-metodo" class="swal2-input !m-0 !w-full text-center text-sm">
-                                <option value="Efectivo">Efectivo</option>
-                                <option value="Transferencia">Transferencia</option>
-                            </select>
-                        </div>
                     </div>
                 `,
                 showCancelButton: true, confirmButtonText: 'Guardar', confirmButtonColor: '#3b82f6',
@@ -2193,15 +2239,13 @@ if(selectTheme) selectTheme.value = userTheme;
                     const concepto = document.getElementById('swal-b-concepto').value.trim();
                     const costo = parseFloat(document.getElementById('swal-b-costo').value) || 0;
                     const pagado = parseFloat(document.getElementById('swal-b-pagado').value) || 0;
-                    const fecha = document.getElementById('swal-b-fecha').value;
-                    const metodo = document.getElementById('swal-b-metodo').value;
                     if(!concepto) { Swal.showValidationMessage('Escribe el concepto del gasto'); return false; }
-                    return { concepto, costo, pagado, fecha, metodo };
+                    return { concepto, costo, pagado };
                 }
             }).then(r => {
                 if(r.isConfirmed) {
                     if(!state.presupuesto) state.presupuesto = [];
-                    state.presupuesto.push({ id: Date.now(), concepto: r.value.concepto, costo: r.value.costo, pagado: r.value.pagado, fecha: r.value.fecha, metodo: r.value.metodo });
+                    state.presupuesto.push({ id: Date.now(), concepto: r.value.concepto, costo: r.value.costo, pagado: r.value.pagado });
                     window.crmSave(); window.crmRenderBudget(); Toast.fire({icon:'success', title:'Gasto registrado'}); logAction(`Registró un gasto: ${r.value.concepto}`);
                 }
             });
@@ -2213,18 +2257,9 @@ if(selectTheme) selectTheme.value = userTheme;
                 title: 'Editar Gasto',
                 html: `
                     <input id="swal-b-concepto" class="swal2-input !m-0 !w-full !mb-3 text-sm" value="${item.concepto}">
-                    <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div class="grid grid-cols-2 gap-3">
                         <div><label class="text-[10px] text-slate-500 font-bold uppercase block text-left">Costo Total ($)</label><input type="number" id="swal-b-costo" class="swal2-input !m-0 !w-full text-center" value="${item.costo}" min="0"></div>
                         <div><label class="text-[10px] text-slate-500 font-bold uppercase block text-left">Monto Pagado ($)</label><input type="number" id="swal-b-pagado" class="swal2-input !m-0 !w-full text-center" value="${item.pagado}" min="0"></div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div><label class="text-[10px] text-slate-500 font-bold uppercase block text-left">Fecha de Abono</label><input type="date" id="swal-b-fecha" class="swal2-input !m-0 !w-full text-center" value="${item.fecha || ''}"></div>
-                        <div><label class="text-[10px] text-slate-500 font-bold uppercase block text-left">Forma de Pago</label>
-                            <select id="swal-b-metodo" class="swal2-input !m-0 !w-full text-center text-sm">
-                                <option value="Efectivo" ${item.metodo === 'Efectivo' ? 'selected' : ''}>Efectivo</option>
-                                <option value="Transferencia" ${item.metodo === 'Transferencia' ? 'selected' : ''}>Transferencia</option>
-                            </select>
-                        </div>
                     </div>
                 `,
                 showCancelButton: true, confirmButtonText: 'Actualizar', confirmButtonColor: '#3b82f6',
@@ -2232,14 +2267,12 @@ if(selectTheme) selectTheme.value = userTheme;
                     const concepto = document.getElementById('swal-b-concepto').value.trim();
                     const costo = parseFloat(document.getElementById('swal-b-costo').value) || 0;
                     const pagado = parseFloat(document.getElementById('swal-b-pagado').value) || 0;
-                    const fecha = document.getElementById('swal-b-fecha').value;
-                    const metodo = document.getElementById('swal-b-metodo').value;
                     if(!concepto) { Swal.showValidationMessage('Escribe el concepto'); return false; }
-                    return { concepto, costo, pagado, fecha, metodo };
+                    return { concepto, costo, pagado };
                 }
             }).then(r => {
                 if(r.isConfirmed) {
-                    item.concepto = r.value.concepto; item.costo = r.value.costo; item.pagado = r.value.pagado; item.fecha = r.value.fecha; item.metodo = r.value.metodo;
+                    item.concepto = r.value.concepto; item.costo = r.value.costo; item.pagado = r.value.pagado;
                     window.crmSave(); window.crmRenderBudget(); Toast.fire({icon:'success', title:'Actualizado'}); logAction(`Actualizó un abono/gasto: ${r.value.concepto}`);
                 }
             });
@@ -2428,4 +2461,277 @@ if(selectTheme) selectTheme.value = userTheme;
             const f = e.target.files[0]; if(!f) return; const reader = new FileReader();
             reader.onload = (ev) => {
                 try {
-                    const data = new Uint8Array(ev.targetNo puedo ayudarte porque solo soy un modelo de lenguaje.
+                    const data = new Uint8Array(ev.target.result); const wb = XLSX.read(data, {type: 'array'});
+                    const json = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], {defval: ""}); let count = 0;
+                    json.forEach((r, i) => {
+                        let nom = ''; let a = 0; let n = 0; let tel = ''; let grp = 'Otros';
+                        for (let k in r) {
+                            const kl = k.toLowerCase().trim();
+                            if(kl.includes('nombre') || kl.includes('invitado') || kl.includes('familia')) nom = r[k];
+                            else if(kl.includes('adulto') || kl.includes('pase')) a = parseInt(r[k]) || 0;
+                            else if(kl.includes('niño') || kl.includes('nino') || kl.includes('menor')) n = parseInt(r[k]) || 0;
+                            else if(kl.includes('tel') || kl.includes('whats') || kl.includes('cel')) tel = String(r[k]).replace(/[^0-9]/g, '');
+                            else if(kl.includes('grupo')) grp = r[k] || 'Otros';
+                        }
+                        if(nom && nom.trim() !== '' && !nom.includes('Borrar')) {
+                            if(a === 0 && n === 0) a = 1;
+                            state.invitados.push({ id: Date.now()+i, nombre: nom, adultos: a, ninos: n, mesa: 0, status: 'Pendiente', telefono: tel, grupo: grp }); count++;
+                        }
+                    });
+                    window.crmSave(); window.crmRenderAll(); Swal.fire('Éxito', `Importados ${count} registros`, 'success'); 
+                    logAction(`Importó ${count} invitados desde Excel.`);
+                } catch(err) { Swal.fire('Error', 'Archivo no válido. Descarga la plantilla.', 'error'); }
+            }; 
+            reader.readAsArrayBuffer(f); e.target.value = '';
+        };
+
+        window.hostessRenderLiveStats = function() {
+            let totalEsperados = 0; let totalIngresados = 0; let extras = state.config.extras || 0; let deuda = state.config.totalExtrasCost || 0;
+            const container = document.getElementById('hostess-live-list-container'); if(container) container.innerHTML = '';
+
+            state.invitados.forEach(g => {
+                let ads = parseInt(g.adultos !== undefined ? g.adultos : g.pases) || 0; let nns = parseInt(g.ninos) || 0;
+                let ingA = parseInt(g.ingresadosA) || 0; let ingN = parseInt(g.ingresadosN) || 0;
+                let tot = ads + nns; let ingTot = ingA + ingN;
+
+                totalEsperados += tot; totalIngresados += ingTot;
+
+                if(container && tot > 0) {
+                    let semaforoBg = 'bg-red-50 border-red-200'; let semaforoTx = 'text-red-700'; let semaforoIc = 'fa-times-circle';
+                    if (ingTot === tot) { semaforoBg = 'bg-emerald-50 border-emerald-200'; semaforoTx = 'text-emerald-700'; semaforoIc = 'fa-check-circle'; }
+                    else if (ingTot > 0) { semaforoBg = 'bg-amber-50 border-amber-200'; semaforoTx = 'text-amber-700'; semaforoIc = 'fa-exclamation-circle'; }
+
+                    const div = document.createElement('div'); div.className = `p-3 rounded-xl border ${semaforoBg} shadow-sm flex justify-between items-center`;
+                    div.innerHTML = `<div><p class="font-bold text-sm text-slate-800">${g.nombre}</p><p class="text-[10px] font-bold text-slate-500 mt-0.5">Grupo: ${g.grupo || '-'}</p></div><div class="text-right"><p class="font-black text-lg ${semaforoTx}"><i class="fa-solid ${semaforoIc} text-sm mr-1"></i> ${ingTot}/${tot}</p><button onclick="window.processHostessAccess(${g.id})" class="text-[10px] bg-white border border-slate-200 px-2 py-1 rounded shadow-sm text-slate-600 font-bold hover:bg-blue-50 hover:text-blue-600 mt-1 transition">Ver / Editar</button></div>`;
+                    container.appendChild(div);
+                }
+            });
+            
+            let totalGeneral = totalIngresados + extras;
+            document.getElementById('h-total-esperados').innerText = totalEsperados; document.getElementById('h-total-ingresados').innerText = totalIngresados; 
+            document.getElementById('h-total-extras').innerText = extras; document.getElementById('h-total-general').innerText = totalGeneral;
+            
+            const deudaBadge = document.getElementById('h-deuda-badge');
+            if (deuda > 0) { deudaBadge.innerText = `+$${deuda.toFixed(2)}`; deudaBadge.classList.remove('hidden'); } else { deudaBadge.classList.add('hidden'); }
+        };
+
+        window.hostessAddExtra = function() {
+            Swal.fire({
+                title: 'Registrar Extras',
+                html: `
+                    <p class="text-sm text-slate-600 mb-4">Añade invitados adicionales directamente a la estadística.</p>
+                    <div class="mb-4">
+                        <label class="text-xs font-bold text-slate-500 text-left block mb-2">Cantidad de personas extra:</label>
+                        <div class="flex items-center justify-center gap-3">
+                            <button type="button" onclick="document.getElementById('extra-qty-input').stepDown()" class="w-12 h-12 rounded-xl bg-slate-100 text-slate-700 font-bold hover:bg-slate-200 transition text-2xl flex items-center justify-center border border-slate-200 shadow-sm">-</button>
+                            <input type="number" id="extra-qty-input" class="w-24 text-center font-black text-2xl border-2 border-slate-200 rounded-xl p-2 outline-none focus:border-blue-500 text-slate-800" value="1" min="1">
+                            <button type="button" onclick="document.getElementById('extra-qty-input').stepUp()" class="w-12 h-12 rounded-xl bg-slate-100 text-slate-700 font-bold hover:bg-slate-200 transition text-2xl flex items-center justify-center border border-slate-200 shadow-sm">+</button>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-100">
+                        <label class="text-xs font-bold text-slate-500 text-left block mb-1">Costo individual del platillo (Opcional $):</label>
+                        <input type="number" id="extra-cost-input" class="swal2-input !m-0 !w-full text-center" placeholder="Ej. 500" min="0">
+                        <p class="text-[10px] text-slate-400 mt-2 font-medium">El costo total se calculará multiplicando esta cantidad por el número de personas.</p>
+                    </div>
+                `,
+                icon: 'info', showCancelButton: true, confirmButtonText: 'Registrar', cancelButtonText: 'Cancelar', confirmButtonColor: '#d97706',
+                preConfirm: () => {
+                    const qty = parseInt(document.getElementById('extra-qty-input').value) || 1; const cost = parseFloat(document.getElementById('extra-cost-input').value) || 0;
+                    return { qty, cost };
+                }
+            }).then(r => {
+                if (r.isConfirmed) {
+                    const cantidad = r.value.qty > 0 ? r.value.qty : 1; const costoIndiv = r.value.cost;
+                    state.config.extras = (state.config.extras || 0) + cantidad;
+                    if (costoIndiv > 0) { state.config.totalExtrasCost = (state.config.totalExtrasCost || 0) + (costoIndiv * cantidad); }
+                    window.crmSave(); window.hostessRenderLiveStats(); Toast.fire({icon: 'success', title: cantidad === 1 ? '1 invitado extra registrado' : `${cantidad} invitados extra registrados`}); 
+                    logAction(`Hostess registró ${cantidad} extra(s) en puerta.`);
+                }
+            });
+        };
+        
+        window.hostessSwitchTab = function(tab) {
+            ['scanner', 'list', 'croquis'].forEach(t => {
+                document.getElementById(`hview-${t}`).classList.replace('flex', 'hidden');
+                document.getElementById(`htab-${t}`).className = 'flex-1 py-1.5 sm:py-2 rounded-lg text-[10px] sm:text-xs font-bold text-slate-400 hover:text-white transition';
+            });
+            document.getElementById(`hview-${tab}`).classList.replace('hidden', 'flex');
+            document.getElementById(`htab-${tab}`).className = 'flex-1 py-1.5 sm:py-2 rounded-lg text-[10px] sm:text-xs font-bold bg-blue-600 text-white shadow-md transition';
+            
+            if(tab === 'croquis' || tab === 'list') { if(window.html5QrcodeScanner) { try { window.html5QrcodeScanner.stop().catch(e=>{}); } catch(err){} } }
+            if(tab === 'list') window.hostessRenderLiveStats();
+        };
+
+        window.loadHostessView = async function(eventId) {
+            Swal.fire({ title: 'Buscando evento...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+            try {
+                const docRef = doc(db, 'artifacts', 'weddingflow', 'users', eventId); const snap = await getDoc(docRef);
+                
+                if (snap.exists()) {
+                    impersonatingId = eventId;
+                    document.getElementById('view-login').classList.add('hidden'); document.getElementById('view-admin').classList.add('hidden');
+                    document.getElementById('view-crm').classList.add('hidden'); document.getElementById('view-hostess').classList.remove('hidden'); document.getElementById('view-hostess').classList.add('flex');
+                    
+                    document.getElementById('tpd-fab').style.display = 'none'; document.getElementById('tpd-chat-widget').style.display = 'none';
+                    
+                    const data = snap.data(); const tipo = data.eventType || 'Evento'; document.getElementById('hostess-event-id').innerText = `${tipo} - ${eventId}`;
+                    const btnMesasName = document.getElementById('btn-mesas-event-name'); if (btnMesasName) btnMesasName.innerText = `${tipo} - ${eventId}`;
+                    
+                    state.invitados = data.invitados || []; state.mesas = data.mesas || []; state.croquis = data.croquis || null; state.config = data.config || state.config;
+                    
+                    if (state.croquis) { document.getElementById('hostess-croquis-img').src = state.croquis; document.getElementById('hostess-croquis-img').classList.remove('hidden'); document.getElementById('hostess-no-croquis').classList.add('hidden'); }
+                    
+                    window.hostessSwitchTab('scanner'); window.subscribeToUser(eventId); Swal.close();
+                } else {
+                    Swal.fire({ title: 'Error', text: 'El ID de evento no existe en la base de datos.', icon: 'error', confirmButtonText: 'Intentar de nuevo' }).then(() => { window.promptHostessLogin(); });
+                }
+            } catch(e) { console.error(e); Swal.fire('Error', 'Fallo de conexión.', 'error').then(() => window.appLogout()); }
+        };
+
+        window.startScanner = function() {
+            document.getElementById('btn-start-scanner').classList.add('hidden');
+            window.html5QrcodeScanner = new Html5Qrcode("reader");
+            window.html5QrcodeScanner.start(
+                { facingMode: "environment" }, { fps: 10, qrbox: { width: 250, height: 250 } },
+                (decodedText) => {
+                    try {
+                        const url = new URL(decodedText); const gId = parseInt(url.searchParams.get("id"));
+                        if(gId) { window.html5QrcodeScanner.stop(); document.getElementById('btn-start-scanner').classList.remove('hidden'); window.processHostessAccess(gId); }
+                    } catch(e) {}
+                }, (err) => {}
+            ).catch(err => {
+                document.getElementById('btn-start-scanner').classList.remove('hidden');
+                Swal.fire('Cámara Bloqueada', 'Por favor permite el acceso a la cámara en tu navegador para poder escanear.', 'warning');
+            });
+        };
+
+        window.hostessManualSearch = function() {
+            const query = document.getElementById('hostess-search').value.toLowerCase();
+            const res = document.getElementById('hostess-search-results'); res.innerHTML = '';
+            if(query.length < 2) return;
+            state.invitados.filter(g => g.nombre.toLowerCase().includes(query)).forEach(g => {
+                const btn = document.createElement('button'); btn.className = 'w-full bg-slate-700 hover:bg-slate-600 text-white p-3 rounded-lg text-left text-sm font-bold flex justify-between items-center transition mb-1';
+                btn.innerHTML = `<span>${g.nombre}</span> <i class="fa-solid fa-arrow-right text-blue-400"></i>`;
+                btn.onclick = () => window.processHostessAccess(g.id); res.appendChild(btn);
+            });
+        };
+
+        window.processHostessAccess = function(gId) {
+            const g = state.invitados.find(x => x.id === gId); if(!g) return Swal.fire('Error', 'Invitado no encontrado.', 'error');
+            if(navigator.vibrate) navigator.vibrate([100, 50, 100]);
+
+            let totalA = parseInt(g.adultos !== undefined ? g.adultos : g.pases) || 0; let totalN = parseInt(g.ninos) || 0;
+            let ingA = parseInt(g.ingresadosA) || 0; let ingN = parseInt(g.ingresadosN) || 0;
+
+            hMaxAdu = totalA - ingA; hMaxNin = totalN - ingN;
+
+            if (hMaxAdu <= 0 && hMaxNin <= 0) {
+                if(navigator.vibrate) navigator.vibrate([300, 100, 300]);
+                return Swal.fire({ title: '¡Acceso Denegado!', text: 'Este grupo ya utilizó todos sus pases registrados.', icon: 'error', confirmButtonColor: '#ef4444', confirmButtonText: 'Entendido' });
+            }
+
+            hCurrentGuest = g; hAduToEnter = hMaxAdu > 0 ? hMaxAdu : 0; hNinToEnter = hMaxNin > 0 ? hMaxNin : 0;
+            document.getElementById('hr-name').innerText = g.nombre;
+            const mName = g.mesa === 0 ? "Sin Asignar" : (state.mesas.find(m => m.id === g.mesa)?.nombre || "Desconocida");
+            document.getElementById('hr-table').innerText = mName;
+            document.getElementById('hr-adu-status').innerText = `Han entrado ${ingA} de ${totalA}`; document.getElementById('hr-nin-status').innerText = `Han entrado ${ingN} de ${totalN}`;
+            document.getElementById('hr-nin-row').style.display = totalN > 0 ? 'flex' : 'none';
+
+            window.updateEntryUI();
+
+            const modal = document.getElementById('hostess-result-modal'); const box = document.getElementById('hostess-result-box');
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            setTimeout(() => { box.classList.remove('scale-95', 'opacity-0'); box.classList.add('scale-100', 'opacity-100'); }, 10);
+            document.getElementById('hostess-search').value = ''; document.getElementById('hostess-search-results').innerHTML = '';
+        };
+
+        window.adjEntry = function(tipo, val) {
+            if (tipo === 'adu') { hAduToEnter += val; if(hAduToEnter < 0) hAduToEnter = 0; if(hAduToEnter > hMaxAdu) hAduToEnter = hMaxAdu; } 
+            else { hNinToEnter += val; if(hNinToEnter < 0) hNinToEnter = 0; if(hNinToEnter > hMaxNin) hNinToEnter = hMaxNin; }
+            window.updateEntryUI();
+        };
+
+        window.updateEntryUI = function() {
+            document.getElementById('hr-adu-entering').innerText = hAduToEnter; document.getElementById('hr-nin-entering').innerText = hNinToEnter;
+            const btn = document.getElementById('hr-confirm-btn');
+            if (hAduToEnter === 0 && hNinToEnter === 0) { btn.classList.replace('bg-blue-600', 'bg-slate-400'); btn.disabled = true; } else { btn.classList.replace('bg-slate-400', 'bg-blue-600'); btn.disabled = false; }
+        };
+
+        window.confirmHostessEntry = function() {
+            if(!hCurrentGuest) return;
+            hCurrentGuest.ingresadosA = (parseInt(hCurrentGuest.ingresadosA) || 0) + hAduToEnter; hCurrentGuest.ingresadosN = (parseInt(hCurrentGuest.ingresadosN) || 0) + hNinToEnter;
+            window.crmSave(); window.closeHostessResult(); Toast.fire({icon: 'success', title: `Registrado: ${hAduToEnter} Adultos, ${hNinToEnter} Niños`}); window.hostessRenderLiveStats();
+            logAction(`Ingreso registrado: ${hCurrentGuest.nombre} (${hAduToEnter}A, ${hNinToEnter}N)`);
+        };
+
+        window.closeHostessResult = function() {
+            const modal = document.getElementById('hostess-result-modal'); const box = document.getElementById('hostess-result-box');
+            box.classList.remove('scale-100', 'opacity-100'); box.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => { modal.classList.replace('flex', 'hidden'); }, 200);
+        };
+
+        window.hostessExportReportPDF = function() {
+            const { jsPDF } = window.jspdf; const doc = new jsPDF(); const eventId = impersonatingId || currentUser || "Evento";
+            
+            doc.setFontSize(16); doc.setTextColor(37, 99, 235); doc.text(`Reporte de Recepcion (Hostess) - ${eventId}`, 14, 15);
+            
+            let totalEsperados = 0, totalIngresados = 0;
+            state.invitados.forEach(g => {
+                let ads = parseInt(g.adultos !== undefined ? g.adultos : g.pases) || 0; let nns = parseInt(g.ninos) || 0;
+                let ingA = parseInt(g.ingresadosA) || 0; let ingN = parseInt(g.ingresadosN) || 0;
+                if (g.status === 'Confirmado' || g.status === 'Pendiente') { totalEsperados += (ads + nns); } totalIngresados += (ingA + ingN);
+            });
+            
+            let extras = state.config.extras || 0; let deuda = state.config.totalExtrasCost || 0; let totalGeneral = totalIngresados + extras;
+
+            doc.setFontSize(12); doc.setTextColor(50, 50, 50); doc.text(`Resumen Numerico Final:`, 14, 25);
+            doc.setFontSize(10); doc.text(`- Invitados esperados en lista: ${totalEsperados}`, 14, 32); doc.text(`- Invitados que ingresaron de la lista: ${totalIngresados}`, 14, 38);
+            doc.text(`- Personas extra cobradas en puerta: ${extras}`, 14, 44); doc.text(`- TOTAL DE PERSONAS EN EL SALON: ${totalGeneral}`, 14, 50);
+            if (deuda > 0) { doc.setTextColor(220, 38, 38); doc.text(`- Costo Acumulado de Extras (Deuda): $${deuda.toFixed(2)}`, 14, 56); }
+
+            const body = [];
+            state.invitados.forEach(g => {
+                let tot = (parseInt(g.adultos !== undefined ? g.adultos : g.pases) || 0) + (parseInt(g.ninos) || 0); let ing = (parseInt(g.ingresadosA) || 0) + (parseInt(g.ingresadosN) || 0);
+                if (ing > 0) { const mesaNombre = g.mesa === 0 ? "Sin Asignar" : (state.mesas.find(m => m.id === g.mesa)?.nombre || "Desconocida"); body.push([g.nombre, g.grupo || '-', tot, ing, mesaNombre]); }
+            });
+
+            doc.autoTable({ startY: deuda > 0 ? 65 : 60, head: [['Familia / Invitado', 'Grupo', 'Pases', 'Ingresaron', 'Mesa']], body: body, theme: 'grid', headStyles: { fillColor: [37, 99, 235] } });
+
+            let finalY = doc.lastAutoTable.finalY || 65; if (finalY > 240) { doc.addPage(); finalY = 20; }
+            doc.setFontSize(10); doc.setTextColor(50, 50, 50); doc.text("________________________________________________", 105, finalY + 40, { align: "center" });
+            doc.setFontSize(9); doc.text("Firma de Conformidad (Organizador / Cliente)", 105, finalY + 45, { align: "center" });
+            window.addPDFFooter(doc); doc.save(`Corte_Hostess_${eventId}.pdf`);
+            logAction("Hostess descargó el reporte final en PDF.");
+        };
+		
+		window.crmEnvioMasivoWA = async function() {
+    const invitadosValidos = state.invitados.filter(g => g.telefono && g.telefono.length >= 10 && g.status !== 'Declinado');
+    
+    if(invitadosValidos.length === 0) return Toast.fire({icon: 'warning', title: 'No hay invitados con teléfono válido'});
+    
+    const { isConfirmed } = await Swal.fire({
+        title: 'Envío Masivo',
+        text: `Se enviará mensaje a ${invitadosValidos.length} invitados. Asegúrate de permitir ventanas emergentes (pop-ups).`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Iniciar Envío'
+    });
+
+    if (isConfirmed) {
+        let delay = 0;
+        invitadosValidos.forEach((guest, index) => {
+            setTimeout(() => {
+                let phone = String(guest.telefono).replace(/\D/g, '');
+                if (phone.length === 10) phone = '52' + phone;
+                let msg = encodeURIComponent(`¡Hola ${guest.nombre}! Te recordamos que tu invitación para nuestro evento está lista. Por favor confirma tu asistencia. ✨`);
+                window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${msg}`, '_blank');
+            }, delay);
+            delay += 2500; // 2.5 segundos de retraso entre ventanas para evitar bloqueos
+        });
+        logAction(`Inició envío masivo a ${invitadosValidos.length} contactos.`);
+    }
+};
+		
+    </script>
+</body>
+</html>
