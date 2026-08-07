@@ -1,6 +1,4 @@
-    <style>
-	
-	/* Corrección del cursor global */
+/* Corrección del cursor global */
 html, body {
     cursor: default;
     user-select: none; /* Evita que el cursor de texto aparezca al dar clic fuera */
@@ -148,4 +146,3 @@ body.theme-rosegold .text-white { color: #4a3f35 !important; }
         /* PWA Offline Banner */
         #offline-banner { transition: top 0.3s ease-in-out; }
         body.offline #offline-banner { top: 0; }
-    </style>
