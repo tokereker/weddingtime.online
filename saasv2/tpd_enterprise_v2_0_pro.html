@@ -232,7 +232,7 @@ body.theme-rosegold .text-white { color: #4a3f35 !important; }
 
             <div class="mt-8 pt-6 border-t border-slate-800 flex justify-between items-center text-xs text-slate-500 font-medium">
                 <span class="flex items-center gap-1.5"><i class="fa-solid fa-shield-halved text-emerald-400"></i> Cloud Sync</span>
-                <span class="flex items-center gap-1.5"><i class="fa-solid fa-cloud text-blue-400"></i> IA Isolada</span>
+                <span class="flex items-center gap-1.5"><i class="fa-solid fa-cloud text-blue-400"></i> IA TPD</span>
             </div>
         </div>
     </div>
@@ -1326,7 +1326,12 @@ window.startDemoEnvironment = async function() {
 
     const { value: pinIngresado } = await Swal.fire({
         title: 'Acceso Modo Demostración',
-        html: `<p class="text-sm text-slate-600 mb-4">Solicita tu PIN por WhatsApp.</p>`,
+        html: `
+            <p class="text-sm text-slate-600 mb-4">Por seguridad, solicita tu PIN de acceso a través de nuestro WhatsApp oficial.</p>
+            <a href="https://wa.me/5212202662703?text=Hola,%20me%20gustar%C3%ADa%20solicitar%20el%20PIN%20de%20acceso%20para%20la%20demostraci%C3%B3n%20del%20sistema." target="_blank" class="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold py-3 px-4 rounded-xl transition mb-4 shadow-md w-full no-underline transform active:scale-95">
+                <i class="fa-brands fa-whatsapp text-xl"></i> Pedir PIN por WhatsApp
+            </a>
+        `,
         input: 'password', 
         inputPlaceholder: 'Ingresa el PIN numérico',
         showCancelButton: true, confirmButtonColor: '#3b82f6', cancelButtonColor: '#94a3b8',
@@ -1339,7 +1344,7 @@ window.startDemoEnvironment = async function() {
 
     if (intentosRealizados >= 2) { return Swal.fire({ title: 'Demostración Finalizada', text: 'Has agotado las 2 oportunidades.', icon: 'warning' }); }
 
-    if (parseInt(pinIngresado) === pinCalculado || pinIngresado === '9999') {
+    if (parseInt(pinIngresado) === pinCalculado || pinIngresado === '7777') {
         localStorage.setItem(llaveUsos, intentosRealizados + 1);
 
         window.currentUser = "demo_local";
@@ -1359,7 +1364,7 @@ window.startDemoEnvironment = async function() {
         document.getElementById('view-crm').classList.remove('hidden'); document.getElementById('view-crm').classList.add('flex');
         document.getElementById('tpd-fab').style.display = 'flex';
         document.getElementById('user-display').innerText = "Organizador Pro (DEMO)";
-        document.getElementById('crm-header-id').innerText = `${window.currentEventType} - ${window.currentUser}`;
+        document.getElementById('crm-header-id').innerText = `${window.currentEventType} -${window.currentUser}`;
         
         if(typeof window.crmRenderAll === 'function') window.crmRenderAll(); 
         if(typeof window.initEventAssistant === 'function') window.initEventAssistant(); 
@@ -1367,6 +1372,7 @@ window.startDemoEnvironment = async function() {
         window.Toast.fire({ icon: 'success', title: `¡Modo Demo!` });
     } else { Swal.fire({ title: 'Acceso Denegado', text: 'PIN incorrecto.', icon: 'error' }); }
 };
+
 
 window.mostrarPinDemo = function() {
     let usos = parseInt(localStorage.getItem('demo_pin_uses') || '0');
