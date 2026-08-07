@@ -1,0 +1,151 @@
+    <style>
+	
+	/* Corrección del cursor global */
+html, body {
+    cursor: default;
+    user-select: none; /* Evita que el cursor de texto aparezca al dar clic fuera */
+    -webkit-user-select: none;
+}
+input, textarea, select {
+    cursor: text !important;
+    user-select: text; /* Permite escribir solo en los campos necesarios */
+    -webkit-user-select: text;
+}
+button, a, label, .cursor-pointer {
+    cursor: pointer;
+}
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,400&family=Cinzel:wght@600;800&family=Montserrat:wght@400;600;800&display=swap');
+        
+        :root { 
+            --primary-color: #3b82f6; 
+            --bg-canvas: #0f172a;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+        }
+        
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: var(--bg-canvas) !important; 
+            color: var(--text-main);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        /* LOGIN SAAS V2.0 PRO STYLES */
+        .login-bg { background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0f172a 70%, #020617 100%); }
+        .login-card {
+            background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 40px rgba(59, 130, 246, 0.15);
+        }
+        .glow-effect {
+            position: absolute; width: 250px; height: 250px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, rgba(99, 102, 241, 0) 70%); border-radius: 50%; pointer-events: none;
+        }
+
+    /* TEMAS DINÁMICOS DE DISEÑO (V2) */
+        body.theme-midnight { --bg-canvas: #090d16; --card-bg: #111827; --text-main: #f3f4f6; --primary-color: #fbbf24; }
+        body.theme-midnight .bg-white { background-color: #111827 !important; color: #f3f4f6 !important; border-color: #1f2937 !important; }
+        body.theme-midnight .bg-slate-50 { background-color: #1f2937 !important; color: #f3f4f6 !important; border-color: #374151 !important; }
+        body.theme-midnight .text-slate-800, body.theme-midnight .text-slate-700 { color: #f3f4f6 !important; }
+        body.theme-midnight .text-slate-500 { color: #9ca3af !important; }
+			/* EXTENSIÓN DE TEMAS: MIDNIGHT LUXURY (Logística y Presupuesto) */
+body.theme-midnight .bg-teal-50, body.theme-midnight .bg-indigo-50, 
+body.theme-midnight .bg-amber-50, body.theme-midnight .bg-purple-50, 
+body.theme-midnight .bg-rose-50, body.theme-midnight .bg-emerald-50,
+body.theme-midnight .bg-blue-50, body.theme-midnight .bg-red-50 {
+    background-color: #111827 !important; border-color: #374151 !important; color: #f3f4f6 !important;
+}
+body.theme-midnight .text-teal-900, body.theme-midnight .text-indigo-900, 
+body.theme-midnight .text-amber-900, body.theme-midnight .text-purple-900, 
+body.theme-midnight .text-rose-900 { color: #f3f4f6 !important; }
+
+body.theme-midnight .text-teal-800, body.theme-midnight .text-indigo-800, 
+body.theme-midnight .text-amber-800, body.theme-midnight .text-purple-800, 
+body.theme-midnight .text-rose-800 { color: #9ca3af !important; }
+
+/* TEMA: ROSE GOLD */
+body.theme-rosegold { --bg-canvas: #fff5f5; --card-bg: #ffffff; --text-main: #4a3f35; --primary-color: #d97777; }
+body.theme-rosegold .bg-slate-50 { background-color: #fffaf9 !important; border-color: #fce7e7 !important; }
+body.theme-rosegold .bg-white { border-color: #fce7e7 !important; }
+body.theme-rosegold .text-blue-600, body.theme-rosegold .text-blue-500 { color: #d97777 !important; }
+body.theme-rosegold .bg-blue-600 { background-color: #d97777 !important; }
+body.theme-rosegold .bg-blue-600:hover { background-color: #c56565 !important; }
+body.theme-rosegold .bg-gradient-to-br.from-slate-900.to-slate-800 { 
+    background: linear-gradient(to bottom right, #fdf2f2, #fae3e3) !important; color: #4a3f35 !important; border-color: #fce7e7 !important;
+}
+body.theme-rosegold .text-white { color: #4a3f35 !important; }
+
+        /* CORRECCIÓN: Evitar tipografía blanca en fondos blancos para Midnight Luxury */
+        body.theme-midnight input, 
+        body.theme-midnight textarea, 
+        body.theme-midnight select {
+            background-color: #1f2937 !important;
+            color: #f3f4f6 !important;
+            border-color: #374151 !important;
+        }
+        
+        /* Sobrescribir las clases focus:bg-white de Tailwind */
+        body.theme-midnight input:focus, 
+        body.theme-midnight textarea:focus, 
+        body.theme-midnight select:focus {
+            background-color: #111827 !important; 
+            color: #f3f4f6 !important;
+            border-color: var(--primary-color) !important;
+        }
+
+        /* Ajuste para que los botones grises/blancos sean visibles en el tema oscuro */
+        body.theme-midnight button.bg-slate-100 {
+            background-color: #374151 !important;
+            color: #f3f4f6 !important;
+            border-color: #4b5563 !important;
+        }
+        body.theme-midnight button.bg-slate-100:hover {
+            background-color: #4b5563 !important;
+        }
+        body.theme-midnight button.bg-white {
+            background-color: #1f2937 !important;
+            color: #f3f4f6 !important;
+        }
+
+        /* Asistente TPD Chat V2 */
+        #tpd-chat-widget { 
+            position: fixed; bottom: 85px; right: 20px; z-index: 9998; width: 92%; max-width: 360px; 
+            display: none; flex-direction: column; background: var(--card-bg); border-radius: 20px; 
+            box-shadow: 0 20px 35px -10px rgba(0,0,0,0.3); overflow: hidden; border: 1px solid rgba(226, 232, 240, 0.8);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #tpd-chat-header { 
+            background: linear-gradient(135deg, var(--primary-color), #3b82f6); color: white; 
+            padding: 14px 16px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; cursor: pointer; 
+        }
+        #tpd-chat-messages { 
+            flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; 
+            background: rgba(248, 250, 252, 0.5); min-height: 260px; max-height: 360px;
+        }
+        .tpd-msg { padding: 10px 14px; border-radius: 14px; font-size: 13px; max-width: 88%; word-wrap: break-word; line-height: 1.4; }
+        .tpd-msg.user { background: var(--primary-color); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+        .tpd-msg.bot { background: #ffffff; color: #1e293b; align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid #e2e8f0; }
+        
+        #tpd-fab { 
+            position: fixed; bottom: 20px; right: 20px; z-index: 9997; width: 56px; height: 56px; 
+            background: linear-gradient(135deg, var(--primary-color), #3b82f6); color: white; border-radius: 18px; 
+            display: none; justify-content: center; align-items: center; font-size: 22px; cursor: pointer; 
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.5); transition: all 0.2s ease; 
+        }
+        #tpd-fab:hover { transform: scale(1.08) rotate(-5deg); }
+
+        .guest-card { cursor: grab; transition: transform 0.2s, box-shadow 0.2s; }
+        .guest-card:active { cursor: grabbing; transform: scale(0.98); }
+        .guest-card.dragging { opacity: 0.4; transform: scale(0.95); }
+        .table-dropzone { transition: background-color 0.2s; border: 2px dashed transparent; }
+        .table-dropzone.dragover { background-color: #eff6ff; border: 2px dashed var(--primary-color); border-radius: 1rem; }
+        
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        details > summary::-webkit-details-marker { display: none; }
+
+        /* PWA Offline Banner */
+        #offline-banner { transition: top 0.3s ease-in-out; }
+        body.offline #offline-banner { top: 0; }
+    </style>
