@@ -739,12 +739,18 @@ window.showTicketVisual = function(id) {
     const qrContainer = document.getElementById('ticket-qrcode'); qrContainer.innerHTML = ''; 
     const activeTarget = window.impersonatingId || window.currentUser; 
     
-    const map = { "XV Años": "xvana", "Bautizo": "bautizo", "Primera Comunión": "comunion", "Confirmación": "confirmacion", "Primera Comunión y Confirmación": "comunion", "Cumpleaños": "cumple", "Boda": "boda" };
-    const subdominio = map[window.currentEventType] || "boda";
+    // =========================================================================
+    // ACTUALIZACIÓN FASE 2: REDIRECCIÓN AL HUB DEL INVITADO
+    // =========================================================================
+    // Obtenemos el dominio actual automáticamente (funciona en Vercel o local)
+    const currentDomain = window.location.origin; 
     
-    const enlaceDinamico = `${subdominio}${activeTarget}`.replace(/\s+/g, '').toLowerCase();
-    const rsvpUrl = `https://${enlaceDinamico}.tupasedigital.online/index2.html?u=${activeTarget}&id=${guest.id}`;
-    new QRCode(qrContainer, { text: rsvpUrl, width: 140, height: 140, colorDark : "#1e293b", colorLight : "#ffffff", correctLevel : QRCode.CorrectLevel.H });
+    // Armamos la URL apuntando a la nueva App In-Seat (invitado.html)
+    // Pasamos el evento (e) y mantenemos el (id) para la app de Hostess
+    const hubUrl = `${currentDomain}/invitado.html?e=${activeTarget}&id=${guest.id}`;
+    
+    new QRCode(qrContainer, { text: hubUrl, width: 140, height: 140, colorDark : "#1e293b", colorLight : "#ffffff", correctLevel : QRCode.CorrectLevel.H });
+    // =========================================================================
     
     document.getElementById('ticket-modal').classList.remove('hidden'); document.getElementById('ticket-modal').classList.add('flex');
 };
