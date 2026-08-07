@@ -336,35 +336,36 @@
 			
             <!-- SECCIÓN MESAS -->
             <section id="crm-sec-tables" class="hidden flex-1 flex-col min-h-0 w-full overflow-hidden">
-					<div class="flex flex-col xl:flex-row justify-between items-center gap-4">
-		<!-- Contenedor Izquierdo: Título y Buscador -->
-		<div class="flex flex-col sm:flex-row items-center gap-4 w-full xl:w-auto">
-			<h2 class="font-bold text-lg text-slate-800 flex items-center gap-2 whitespace-nowrap">
-				<i class="fa-solid fa-chair text-blue-500"></i> Acomodo de Mesas
-			</h2>
-			<div class="relative w-full sm:w-64">
-				<i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-400 text-sm"></i>
-				<input type="text" id="crm-tables-search" onkeyup="window.searchInTables()" placeholder="Buscar invitado..." class="w-full border-2 border-slate-100 p-2 pl-9 text-sm rounded-xl outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition font-medium">
-			</div>
-		</div>
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-4 shrink-0 flex flex-col gap-4">
+                    <div class="flex flex-col xl:flex-row justify-between items-center gap-4">
+                        <!-- Contenedor Izquierdo: Título y Buscador -->
+                        <div class="flex flex-col sm:flex-row items-center gap-4 w-full xl:w-auto">
+                            <h2 class="font-bold text-lg text-slate-800 flex items-center gap-2 whitespace-nowrap">
+                                <i class="fa-solid fa-chair text-blue-500"></i> Acomodo de Mesas
+                            </h2>
+                            <div class="relative w-full sm:w-64">
+                                <i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-400 text-sm"></i>
+                                <input type="text" id="crm-tables-search" onkeyup="window.searchInTables()" placeholder="Buscar invitado..." class="w-full border-2 border-slate-100 p-2 pl-9 text-sm rounded-xl outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition font-medium">
+                            </div>
+                        </div>
 
-		<!-- Contenedor Derecho: Botones -->
-		<div class="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0 custom-scrollbar w-full xl:w-auto shrink-0">
-			<label class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 px-3 py-2 rounded-xl text-sm font-bold cursor-pointer transition whitespace-nowrap flex items-center gap-2" title="Sube el mapa de tu salón">
-				<i class="fa-solid fa-map"></i> Subir Croquis Salón
-				<input type="file" class="hidden" accept="image/*" onchange="window.uploadCroquis(event)">
-			</label>
-			
-			<div class="h-6 w-px bg-slate-200 mx-1 shrink-0"></div>
+                        <!-- Contenedor Derecho: Botones -->
+                        <div class="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0 custom-scrollbar w-full xl:w-auto shrink-0">
+                            <label class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 px-3 py-2 rounded-xl text-sm font-bold cursor-pointer transition whitespace-nowrap flex items-center gap-2" title="Sube el mapa de tu salón">
+                                <i class="fa-solid fa-map"></i> Subir Croquis Salón
+                                <input type="file" class="hidden" accept="image/*" onchange="window.uploadCroquis(event)">
+                            </label>
+                            
+                            <div class="h-6 w-px bg-slate-200 mx-1 shrink-0"></div>
 
-			<button onclick="window.crmExportTablesPDF()" class="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap flex items-center gap-2"><i class="fa-solid fa-print"></i> Reporte Mesas PDF</button>
-			<button onclick="window.randomizeTables()" class="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i> Llenado Inteligente</button>
-			
-			<div class="h-6 w-px bg-slate-200 mx-1 shrink-0"></div>
-			
-			<button onclick="window.deleteAllTables()" class="bg-white border-2 border-red-100 text-red-500 hover:bg-red-50 px-3 py-2 rounded-xl text-sm font-bold transition whitespace-nowrap" title="Borrar Todas las Mesas"><i class="fa-solid fa-trash-can"></i></button>
-		</div>
-	</div>
+                            <button onclick="window.crmExportTablesPDF()" class="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap flex items-center gap-2"><i class="fa-solid fa-print"></i> Reporte Mesas PDF</button>
+                            <button onclick="window.randomizeTables()" class="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i> Llenado Inteligente</button>
+                            
+                            <div class="h-6 w-px bg-slate-200 mx-1 shrink-0"></div>
+                            
+                            <button onclick="window.deleteAllTables()" class="bg-white border-2 border-red-100 text-red-500 hover:bg-red-50 px-3 py-2 rounded-xl text-sm font-bold transition whitespace-nowrap" title="Borrar Todas las Mesas"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    </div>
 
                     <div class="flex flex-wrap gap-4 items-center bg-slate-50 p-3 rounded-xl border border-slate-100">
                         <div class="flex items-center gap-3">
