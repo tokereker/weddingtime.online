@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Tus metas y enlaces a CSS que ya tengas... -->
+    
+    <!-- SCRIPT DE SEGURIDAD Y BLOQUEO -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // TUS CREDENCIALES EXACTAS DE FIREBASE
+        const firebaseConfig = {
+            apiKey: "AIzaSyCaRKtx54HYM5jXB2DgtZeLciUNB7Inqjw",
+            authDomain: "wedding-crm-6853f.firebaseapp.com",
+            databaseURL: "https://wedding-crm-6853f-default-rtdb.firebaseio.com",
+            projectId: "wedding-crm-6853f",
+            storageBucket: "wedding-crm-6853f.firebasestorage.app",
+            messagingSenderId: "956437103756",
+            appId: "1:956437103756:web:b2d27aad4e6bfded7327a9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // 1. Ocultar el contenido de la página por defecto (para que no vean nada mientras se valida)
+        document.documentElement.style.display = 'none';
+
+        // 2. Verificar si hay un usuario logueado
+        onAuthStateChanged(auth, async (user) => {
+            // El nombre de tu archivo principal (cámbialo si tu index se llama distinto)
+            const MAIN_PAGE_URL = 'tpd.html'; 
+
+            if (!user) {
+                // Si no inició sesión en el hub primero, lo expulsamos
+                window.location.replace(MAIN_PAGE_URL);
+                return;
+            }
+
+            // 3. Extraer el ID de usuario de la URL (?user=...)
+            const urlParams = new URLSearchParams(window.location.search);
+            const userId = urlParams.get('user');
+
+            if (!userId) {
+                window.location.replace(MAIN_PAGE_URL); 
+                return;
+            }
+
+            try {
+                // 4. Consultar en la base de datos si realmente pagó y tiene el rol correcto
+                const docRef = doc(db, 'artifacts', 'weddingflow', 'users', userId);
+                const snap = await getDoc(docRef);
+
+                if (snap.exists()) {
+                    const data = snap.data();
+                    
+                    if (data.role !== 'Cliente Web' && data.role !== 'Administrador') {
+                        alert("Acceso denegado: No cuentas con una suscripción de Diseño Web.");
+                        window.location.replace(MAIN_PAGE_URL);
+                        return;
+                    }
+                    
+                    if (data.status === 'Suspendido') {
+                        alert("Acceso suspendido. Contacta a tu agencia.");
+                        window.location.replace(MAIN_PAGE_URL);
+                        return;
+                    }
+
+                    document.documentElement.style.display = '';
+                } else {
+                    window.location.replace(MAIN_PAGE_URL);
+                }
+            } catch (error) {
+                console.error("Error validando seguridad:", error);
+                window.location.replace(MAIN_PAGE_URL);
+            }
+        });
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Creador de Invitaciones Digitales TPD</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- jsPDF para la creación del PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- SweetAlert2 para notificaciones -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden text-slate-800 bg-slate-50">
+
+    <!-- Header Principal -->
+    <header class="bg-white shadow-sm border-b px-6 py-4 flex justify-between items-center z-20 shrink-0">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center shadow-md">
+                <i class="fa-solid fa-wand-magic-sparkles text-2xl text-white"></i>
+            </div>
+            <div>
+                <h1 class="text-xl font-black text-slate-800 tracking-tight">Estudio de Diseño AI</h1>
+                <p class="text-xs text-purple-600 font-bold uppercase tracking-widest">Creador de Invitaciones Digitales</p>
+            </div>
+        </div>
+        <div class="hidden md:flex items-center gap-2 bg-purple-50 px-4 py-2 rounded-full border border-purple-100">
+            <i class="fa-solid fa-bolt text-purple-500"></i>
+            <span class="text-sm font-semibold text-purple-700">Rápido y Fácil</span>
+        </div>
+    </header>
+
+    <!-- Área Principal de Trabajo -->
+    <main class="flex-1 overflow-y-auto p-4 md:p-8 flex justify-center custom-scrollbar">
+        <div class="max-w-6xl w-full flex flex-col lg:flex-row gap-8 items-start">
+            
+            <!-- PANEL IZQUIERDO: Formulario de Diseño -->
+            <div class="w-full lg:w-1/2 xl:w-7/12 bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-slate-200">
+                <h2 class="font-black text-2xl mb-2 text-slate-800 flex items-center gap-3">
+                    <i class="fa-solid fa-pen-nib text-purple-500"></i> Datos de tu Evento
+                </h2>
+                <p class="text-sm text-slate-500 mb-6 border-b pb-4">Personaliza los detalles. La vista previa se actualizará en tiempo real.</p>
+                
+                <div class="space-y-6">
+                    <!-- Fila 1: Tipo y Nombre -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div>
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wide block mb-1">Tipo de Evento</label>
+                            <div class="relative">
+                                <select id="ev-type" class="w-full border-2 border-slate-200 p-3.5 rounded-xl outline-none bg-slate-50 text-sm focus:bg-white focus:border-purple-500 transition font-bold text-slate-700 cursor-pointer appearance-none">
+                                    <option value="Boda">💍 Boda</option>
+                                    <option value="XV Años">👑 XV Años</option>
+                                    <option value="Bautizo">👼 Bautizo</option>
+                                    <option value="Primera Comunión">⛪ Primera Comunión</option>
+                                    <option value="Confirmación">🕊️ Confirmación</option>
+                                    <option value="Cumpleaños">🎂 Cumpleaños</option>
+                                    <option value="Evento Especial">🥂 Evento Especial</option>
+                                </select>
+                                <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-400 pointer-events-none"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wide block mb-1">Festejado(s)</label>
+                            <input type="text" id="ev-names" placeholder="Ej. Ana y Carlos" class="w-full border-2 border-slate-200 p-3.5 rounded-xl outline-none bg-slate-50 text-sm focus:bg-white focus:border-purple-500 transition font-bold">
+                        </div>
+                    </div>
+
+                    <!-- Fila 2: Fecha y Hora -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div>
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wide block mb-1">Fecha del Evento</label>
+                            <input type="date" id="ev-date" class="w-full border-2 border-slate-200 p-3.5 rounded-xl outline-none bg-slate-50 text-sm focus:bg-white focus:border-purple-500 transition font-bold text-slate-700">
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wide block mb-1">Hora</label>
+                            <input type="time" id="ev-time" class="w-full border-2 border-slate-200 p-3.5 rounded-xl outline-none bg-slate-50 text-sm focus:bg-white focus:border-purple-500 transition font-bold text-slate-700">
+                        </div>
+                    </div>
+                    
+                    <!-- Ubicaciones (Interactivas para PDF) -->
+                    <div class="space-y-4 pt-2">
+                        <div class="bg-blue-50/50 p-5 rounded-2xl border border-blue-100 relative overflow-hidden group">
+                            <h4 class="text-sm font-bold text-blue-800 mb-3 flex items-center"><i class="fa-solid fa-church mr-2 text-blue-500"></i> Ceremonia (Opcional)</h4>
+                            <div class="space-y-3">
+                                <input type="text" id="ev-ceremony-name" placeholder="Nombre de la Iglesia / Lugar" class="w-full border-2 border-white p-3.5 rounded-xl outline-none bg-white text-sm focus:border-blue-300 shadow-sm transition">
+                                <div class="relative">
+                                    <i class="fa-solid fa-location-dot absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-400"></i>
+                                    <input type="url" id="ev-ceremony-url" placeholder="Enlace de Google Maps (Recomendado)" class="w-full border-2 border-white p-3.5 pl-10 rounded-xl outline-none bg-white text-sm focus:border-blue-300 text-blue-600 shadow-sm transition">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-pink-50/50 p-5 rounded-2xl border border-pink-100 relative overflow-hidden group">
+                            <h4 class="text-sm font-bold text-pink-800 mb-3 flex items-center"><i class="fa-solid fa-champagne-glasses mr-2 text-pink-500"></i> Recepción / Fiesta</h4>
+                            <div class="space-y-3">
+                                <input type="text" id="ev-reception-name" placeholder="Nombre del Salón / Hacienda" class="w-full border-2 border-white p-3.5 rounded-xl outline-none bg-white text-sm focus:border-pink-300 shadow-sm transition">
+                                <div class="relative">
+                                    <i class="fa-solid fa-location-dot absolute left-4 top-1/2 transform -translate-y-1/2 text-pink-400"></i>
+                                    <input type="url" id="ev-reception-url" placeholder="Enlace de Google Maps (Recomendado)" class="w-full border-2 border-white p-3.5 pl-10 rounded-xl outline-none bg-white text-sm focus:border-pink-300 text-pink-600 shadow-sm transition">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Generador IA -->
+                    <div class="bg-gradient-to-br from-amber-50 to-orange-50 p-6 rounded-2xl border border-amber-200 shadow-inner mt-6">
+                        <label class="text-sm font-black text-amber-900 block mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-sparkles text-amber-500 text-lg"></i> ¿Cómo imaginas el diseño?
+                        </label>
+                        <p class="text-xs text-amber-700 mb-4 font-medium">Describe el estilo, colores y elementos (Ej. "flores blancas y doradas", "estilo acuarela", "minimalista oscuro"). La IA pintará el fondo y dejará espacio para tus textos.</p>
+                        
+                        <div class="relative mb-4">
+                            <textarea id="ev-prompt" placeholder="Escribe aquí tu idea creativa..." class="w-full border-2 border-amber-100 p-4 rounded-xl outline-none bg-white text-sm focus:border-amber-400 transition resize-none custom-scrollbar" rows="2"></textarea>
+                        </div>
+                        
+                        <!-- BOTÓN DE GENERAR IA -->
+                        <button onclick="window.generateAIBackground()" id="btn-generate" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold py-4 rounded-xl hover:from-purple-700 hover:to-indigo-700 transition shadow-lg flex justify-center items-center gap-3 text-lg transform hover:-translate-y-0.5">
+                            <i class="fa-solid fa-microchip text-xl"></i> <span>Pintar Fondo con IA</span>
+                        </button>
+                        
+                        <!-- NUEVO: AVISO LEGAL VISIBLE DEBAJO DEL BOTÓN -->
+                        <p class="text-[10px] text-slate-500 mt-3 text-center leading-tight">
+                            Al usar la IA, aceptas que no incluirás marcas o elementos con derechos de autor. 
+                            <a href="#" onclick="window.mostrarAvisoLegal(event)" class="text-purple-600 hover:text-purple-800 underline font-semibold">Ver aviso legal</a>
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANEL DERECHO: Previsualización y Acciones -->
+            <div class="w-full lg:w-1/2 xl:w-5/12 flex flex-col items-center sticky top-8">
+                
+                <!-- Mockup de Previsualización -->
+                <div class="relative w-full max-w-[340px] aspect-[9/16] bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border-[8px] border-slate-800 flex flex-col transition-all duration-300 transform hover:scale-[1.02]" id="preview-container">
+                    
+                    <!-- Capa de Fondo -->
+                    <div id="preview-bg" class="absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-700" style="background-color: #1e293b;">
+                        <div id="ai-loading" class="hidden absolute inset-0 bg-slate-900/80 flex flex-col items-center justify-center text-white z-20 backdrop-blur-sm">
+                            <i class="fa-solid fa-wand-magic-sparkles text-4xl text-purple-400 mb-4 animate-bounce"></i>
+                            <p class="text-sm font-bold text-center px-4">La IA está creando tu diseño único...</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Capa Oscura -->
+                    <div class="absolute inset-0 bg-black/40 z-0"></div>
+
+                    <!-- Textos -->
+                    <div class="relative z-10 flex flex-col h-full text-white p-8 text-center justify-center">
+                        <div class="flex justify-center mb-6 opacity-80">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" class="text-white"><path d="M12 2L15 9L22 12L15 15L12 22L9 15L2 12L9 9L12 2Z"/></svg>
+                        </div>
+
+                        <p id="prev-type" class="text-[10px] font-bold tracking-[0.3em] uppercase mb-3 opacity-90 text-purple-200">Tipo de Evento</p>
+                        
+                        <!-- NOMBRES (Aquí se centra el conector automáticamente) -->
+                        <h2 id="prev-names" class="text-4xl md:text-5xl font-serif font-bold mb-8 drop-shadow-lg leading-tight">Nombres</h2>
+                        
+                        <div class="w-12 h-px bg-white/50 mx-auto mb-6"></div>
+
+                        <div class="mb-8 bg-white/10 backdrop-blur-md py-3 px-4 rounded-2xl border border-white/20 shadow-lg">
+                            <p id="prev-date" class="text-lg font-bold tracking-wide drop-shadow-md">00 / 00 / 0000</p>
+                            <p id="prev-time" class="text-sm font-medium opacity-90 mt-1">00:00 hrs</p>
+                        </div>
+                        
+                        <!-- Ubicaciones -->
+                        <div class="mt-auto space-y-5">
+                            <div id="box-ceremony" class="hidden flex flex-col items-center">
+                                <p class="text-[9px] font-bold uppercase tracking-widest text-blue-200 mb-1">Ceremonia</p>
+                                <p id="prev-ceremony-name" class="text-sm font-semibold drop-shadow-md mb-2">Lugar</p>
+                            </div>
+                            <div id="box-reception" class="flex flex-col items-center">
+                                <p class="text-[9px] font-bold uppercase tracking-widest text-pink-200 mb-1">Recepción</p>
+                                <p id="prev-reception-name" class="text-sm font-semibold drop-shadow-md mb-2">Lugar</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de Acción (PDF y WhatsApp) -->
+                <div class="w-full max-w-[340px] mt-8 flex flex-col gap-3">
+                    <button onclick="window.downloadInteractivePDF()" class="w-full bg-slate-900 hover:bg-black text-white font-bold py-4 rounded-2xl shadow-xl transition-all flex items-center justify-center gap-3">
+                        <i class="fa-solid fa-file-pdf text-red-400 text-xl"></i> 
+                        <span>Generar PDF Interactivo</span>
+                    </button>
+                    <button onclick="window.shareWhatsApp()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 rounded-2xl shadow-xl transition-all flex items-center justify-center gap-3">
+                        <i class="fa-brands fa-whatsapp text-2xl"></i>
+                        <span>Compartir por WhatsApp</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <button id="btn-salir" class="fixed bottom-6 right-6 w-14 h-14 bg-slate-800 text-white rounded-full flex items-center justify-center shadow-2xl hover:bg-red-600 transition-all z-[9999]" title="Cerrar aplicación">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 stroke-[2.5]"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line x1="12" y1="2" x2="12" y2="12"></line></svg>
+    </button>
+
+    <script>
+        // ==========================================
+        // LÓGICA DE PREVISUALIZACIÓN EN VIVO
+        // ==========================================
+        const inputsToWatch = ['ev-type', 'ev-names', 'ev-date', 'ev-time', 'ev-ceremony-name', 'ev-reception-name'];
+        
+        function formatDisplayDate(dateString) {
+            if(!dateString) return 'Fecha por definir';
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const date = new Date(dateString + 'T00:00:00');
+            return date.toLocaleDateString('es-ES', options).replace(/^\w/, (c) => c.toUpperCase());
+        }
+
+        function updatePreview() {
+            document.getElementById('prev-type').innerText = document.getElementById('ev-type').value;
+            
+            // SEPARAR Y CENTRAR "&" o "y"
+            const rawNames = document.getElementById('ev-names').value || 'Nombres';
+            const formattedNames = rawNames.replace(/ (\&|y|Y) /g, '<span class="block text-3xl font-normal italic text-white/80 my-2 opacity-90 drop-shadow-md"> $1 </span>');
+            document.getElementById('prev-names').innerHTML = formattedNames;
+            
+            const rawDate = document.getElementById('ev-date').value;
+            document.getElementById('prev-date').innerText = rawDate ? formatDisplayDate(rawDate) : '00 / 00 / 0000';
+            
+            const rawTime = document.getElementById('ev-time').value;
+            document.getElementById('prev-time').innerText = rawTime ? rawTime + ' hrs' : '00:00 hrs';
+
+            const cerName = document.getElementById('ev-ceremony-name').value;
+            const boxCeremony = document.getElementById('box-ceremony');
+            if (cerName) {
+                document.getElementById('prev-ceremony-name').innerText = cerName;
+                boxCeremony.classList.remove('hidden');
+            } else {
+                boxCeremony.classList.add('hidden');
+            }
+
+            document.getElementById('prev-reception-name').innerText = document.getElementById('ev-reception-name').value || 'Salón de Recepción';
+        }
+
+        inputsToWatch.forEach(id => {
+            document.getElementById(id).addEventListener('input', updatePreview);
+        });
+
+        const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
+        let lastGeneratedImageBase64 = null;
+
+        // ==========================================
+        // AVISO LEGAL (SweetAlert2) - ¡NUEVA FUNCIÓN!
+        // ==========================================
+        window.mostrarAvisoLegal = function(event) {
+            event.preventDefault(); // Evita que la página salte hacia arriba
+            
+            Swal.fire({
+                title: '<strong>Aviso Legal y Derechos de Autor</strong>',
+                icon: 'info',
+                html: `
+                    <div class="text-left text-sm text-slate-600 space-y-3 mt-4">
+                        <p>El módulo de creación de fondos de <strong>tupasedigital.online</strong> utiliza tecnología de Inteligencia Artificial para generar imágenes de uso libre y exentas de derechos de autor.</p>
+                        <p>Al utilizar esta herramienta, el usuario acepta que:</p>
+                        <ol class="list-decimal pl-5 space-y-2">
+                            <li><strong>tupasedigital.online</strong> no supervisa ni controla el texto que los usuarios ingresan para generar sus diseños.</li>
+                            <li>El usuario es el único responsable de garantizar que sus solicitudes no infrinjan derechos de autor, marcas registradas o propiedad intelectual de terceros.</li>
+                            <li><strong>tupasedigital.online</strong> se deslinda de cualquier reclamación legal, daño o perjuicio derivado del mal uso de la plataforma o de la distribución no autorizada de material protegido por parte del usuario.</li>
+                        </ol>
+                        <p class="mt-4 font-bold text-slate-800">La responsabilidad legal sobre el diseño final recae exclusivamente en el creador de la invitación.</p>
+                    </div>
+                `,
+                confirmButtonText: 'Entendido',
+                confirmButtonColor: '#4f46e5',
+                width: '600px'
+            });
+        };
+
+        // ==========================================
+        // GENERADOR DE IA GRATUITO
+        // ==========================================
+        window.generateAIBackground = async function() {
+            const type = document.getElementById('ev-type').value;
+            const customStyle = document.getElementById('ev-prompt').value.trim();
+            const btn = document.getElementById('btn-generate');
+            const loader = document.getElementById('ai-loading');
+            
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Pintando...';
+            btn.disabled = true;
+            loader.classList.remove('hidden');
+
+            try {
+                let promptText = `vertical invitation background for ${type}, ${customStyle || 'elegant aesthetic, minimal, luxurious'}, 9:16 aspect ratio, clear empty clean center space for overlaying text, professional design, high quality, sharp focus, no text, no words, no letters`;
+                const randomSeed = Math.floor(Math.random() * 999999);
+                const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(promptText)}?width=1080&height=1920&nologo=true&seed=${randomSeed}`;
+
+                const response = await fetch(imageUrl);
+                if(!response.ok) throw new Error("Error obteniendo la imagen del servidor.");
+
+                const blob = await response.blob();
+                lastGeneratedImageBase64 = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => { resolve(reader.result.split(',')[1]); };
+                    reader.onerror = reject;
+                    reader.readAsDataURL(blob);
+                });
+
+                const previewUrl = `data:image/jpeg;base64,${lastGeneratedImageBase64}`;
+                document.getElementById('preview-bg').style.backgroundImage = `url('${previewUrl}')`;
+                Toast.fire({ icon: 'success', title: '¡Fondo generado con éxito!' });
+
+            } catch(e) {
+                console.error("Error generando imagen:", e);
+                Swal.fire({ icon: 'error', title: 'Ups, algo falló', text: 'Hubo un inconveniente al conectar con la IA.' });
+            } finally {
+                loader.classList.add('hidden');
+                btn.innerHTML = '<i class="fa-solid fa-microchip text-xl"></i> <span>Pintar Fondo con IA</span>';
+                btn.disabled = false;
+            }
+        };
+
+        // ==========================================
+        // GENERACIÓN DE PDF INTERACTIVO
+        // ==========================================
+        window.downloadInteractivePDF = function() {
+            const names = document.getElementById('ev-names').value;
+            if(!names) return Swal.fire('Faltan Datos', 'Por favor, ingresa al menos los nombres del festejado.', 'warning');
+            
+            if(!lastGeneratedImageBase64) {
+                 return Swal.fire({
+                    title: '¿Sin diseño AI?',
+                    text: 'Te sugerimos usar el botón "Pintar Fondo con IA" primero, pero si quieres podemos generar la invitación con un fondo oscuro.',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, generar oscuro',
+                    cancelButtonText: 'Esperar a diseñar'
+                }).then((result) => {
+                    if (result.isConfirmed) { executePDFGeneration(); }
+                });
+            } else {
+                executePDFGeneration();
+            }
+        };
+
+        function executePDFGeneration() {
+            Swal.fire({ title: 'Ensamblando tu invitación...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+            
+            setTimeout(() => {
+                try {
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: [108, 192] });
+
+                    doc.setProperties({ title: 'Invitación Digital', author: 'tupasedigital.online' });
+
+                    if(lastGeneratedImageBase64) {
+                        doc.addImage(`data:image/jpeg;base64,${lastGeneratedImageBase64}`, 'JPEG', 0, 0, 108, 192);
+                    } else {
+                        doc.setFillColor(30, 41, 59);
+                        doc.rect(0, 0, 108, 192, 'F');
+                    }
+
+                    doc.setFillColor(0, 0, 0);
+                    doc.setGState(new doc.GState({opacity: 0.4}));
+                    doc.rect(0, 0, 108, 192, 'F');
+                    doc.setGState(new doc.GState({opacity: 1.0}));
+                    doc.setTextColor(255, 255, 255);
+                    
+                    doc.setFontSize(9);
+                    doc.setFont("helvetica", "bold");
+                    doc.text(document.getElementById('ev-type').value.toUpperCase(), 54, 45, { align: 'center', charSpace: 2 });
+                    
+                    // Nombres centrados en el PDF
+                    const namesText = document.getElementById('ev-names').value;
+                    let yPos = 60;
+                    if (namesText.match(/ (\&|y|Y) /)) {
+                        const parts = namesText.split(/ (\&|y|Y) /); 
+                        doc.setFontSize(24); doc.setFont("times", "bold"); doc.text(parts[0], 54, 55, { align: 'center' });
+                        doc.setFontSize(18); doc.setFont("times", "italic"); doc.text(parts[1], 54, 63, { align: 'center' });
+                        doc.setFontSize(24); doc.setFont("times", "bold"); doc.text(parts[2], 54, 73, { align: 'center' });
+                        yPos = 85; 
+                    } else {
+                        doc.setFontSize(26); doc.setFont("times", "bold");
+                        const splitNames = doc.splitTextToSize(namesText, 90);
+                        doc.text(splitNames, 54, 60, { align: 'center' });
+                        yPos = 60 + (splitNames.length * 10);
+                    }
+                    
+                    doc.setFont("helvetica", "normal");
+                    doc.setDrawColor(255, 255, 255);
+                    doc.setGState(new doc.GState({opacity: 0.5}));
+                    doc.line(44, yPos, 64, yPos);
+                    doc.setGState(new doc.GState({opacity: 1.0}));
+                    yPos += 15;
+
+                    const rawDate = document.getElementById('ev-date').value;
+                    const dateTxt = rawDate ? formatDisplayDate(rawDate) : 'Fecha del Evento';
+                    const timeTxt = document.getElementById('ev-time').value ? document.getElementById('ev-time').value + ' hrs' : '';
+                    
+                    doc.setFontSize(12); doc.setFont("helvetica", "bold"); doc.text(dateTxt, 54, yPos, { align: 'center' });
+                    if(timeTxt) {
+                        yPos += 6; doc.setFontSize(10); doc.setFont("helvetica", "normal"); doc.text(timeTxt, 54, yPos, { align: 'center' });
+                    }
+                    yPos += 25;
+
+                    const cerName = document.getElementById('ev-ceremony-name').value;
+                    const cerUrl = document.getElementById('ev-ceremony-url').value;
+                    if(cerName) {
+                        doc.setFontSize(8); doc.setTextColor(200, 200, 255); doc.text('CEREMONIA', 54, yPos, { align: 'center' });
+                        yPos += 5;
+                        doc.setFontSize(11); doc.setTextColor(255, 255, 255); doc.setFont("helvetica", "bold");
+                        const splitCer = doc.splitTextToSize(cerName, 90); doc.text(splitCer, 54, yPos, { align: 'center' });
+                        yPos += (splitCer.length * 5) + 3;
+                        if(cerUrl) {
+                            doc.setFillColor(255, 255, 255); doc.roundedRect(34, yPos, 40, 8, 4, 4, 'F');
+                            doc.setTextColor(220, 38, 38); doc.setFontSize(9); doc.setFont("helvetica", "bold");
+                            doc.text("Abrir Mapa", 54, yPos + 5.5, { align: 'center' });
+                            doc.link(34, yPos, 40, 8, { url: cerUrl }); yPos += 12;
+                        } else { yPos += 5; }
+                    }
+
+                    const recName = document.getElementById('ev-reception-name').value || 'Recepción';
+                    const recUrl = document.getElementById('ev-reception-url').value;
+                    if(document.getElementById('ev-reception-name').value || recUrl) {
+                        yPos += 5; doc.setFontSize(8); doc.setTextColor(255, 200, 200); doc.setFont("helvetica", "normal");
+                        doc.text('RECEPCIÓN', 54, yPos, { align: 'center' });
+                        yPos += 5; doc.setFontSize(11); doc.setTextColor(255, 255, 255); doc.setFont("helvetica", "bold");
+                        const splitRec = doc.splitTextToSize(recName, 90); doc.text(splitRec, 54, yPos, { align: 'center' });
+                        yPos += (splitRec.length * 5) + 3;
+                        if(recUrl) {
+                            doc.setFillColor(255, 255, 255); doc.roundedRect(34, yPos, 40, 8, 4, 4, 'F');
+                            doc.setTextColor(220, 38, 38); doc.setFontSize(9); doc.setFont("helvetica", "bold");
+                            doc.text("Abrir Mapa", 54, yPos + 5.5, { align: 'center' }); doc.link(34, yPos, 40, 8, { url: recUrl });
+                        }
+                    }
+
+                    doc.setGState(new doc.GState({opacity: 0.4}));
+                    doc.setFontSize(7); doc.setTextColor(255, 255, 255); doc.setFont("helvetica", "normal");
+                    doc.text("tupasedigital.online", 54, 188, { align: 'center' }); doc.setGState(new doc.GState({opacity: 1.0}));
+
+                    const cleanName = namesText.replace(/[^a-zA-Z0-9]/g, '_');
+                    doc.save(`Invitacion_${cleanName}.pdf`);
+                    Swal.fire({ icon: 'success', title: '¡PDF Creado Exitosamente!', confirmButtonColor: '#2563eb' });
+
+                } catch (error) {
+                    console.error("Error PDF:", error);
+                    Swal.fire('Error', 'Hubo un problema al generar el archivo.', 'error');
+                }
+            }, 500);
+        }
+
+        window.shareWhatsApp = function() {
+            const names = document.getElementById('ev-names').value || 'nosotros';
+            const type = document.getElementById('ev-type').value;
+            const msg = `¡Hola! Estás formalmente invitado a la celebración de ${type} de *${names}*. 🥳\n\nTe envío adjunto a este mensaje nuestra *Invitación Digital*.\n\n_(Abre el archivo PDF para ver todos los detalles. Puedes hacer clic en los botones dentro del archivo para que te lleve directo a la ubicación en Google Maps)_.`;
+            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`, '_blank');
+        };
+
+        document.getElementById('btn-salir').addEventListener('click', function() {
+            window.close();
+            setTimeout(() => {
+                if (!window.closed) Swal.fire({ icon: 'info', title: 'Acción bloqueada por tu navegador', text: 'Cierra esta pestaña de forma manual.', confirmButtonColor: '#475569' });
+            }, 300);
+        });
+
+        window.onload = updatePreview;
+    </script>
+</body>
+</html>
