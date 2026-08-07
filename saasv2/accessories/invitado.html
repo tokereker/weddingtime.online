@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hub del Invitado - TPD</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- SweetAlert2 para alertas interactivas -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Estilos Globales -->
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans">
+
+    <!-- Encabezado del Evento -->
+    <header id="guest-header" class="bg-slate-900 text-white p-6 rounded-b-[2.5rem] shadow-xl relative overflow-hidden transition-colors duration-500">
+        <div class="relative z-10 text-center">
+            <div class="w-12 h-12 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center text-2xl mx-auto mb-3 shadow-inner border border-white/20">
+                <i class="fa-solid fa-martini-glass-citrus"></i>
+            </div>
+            <h1 class="text-2xl font-black mb-1 drop-shadow-md" id="g-event-name">Cargando Evento...</h1>
+            <p class="text-xs text-white/70 font-bold uppercase tracking-widest">Experiencia Interactiva</p>
+        </div>
+        <!-- Efecto de brillo de fondo -->
+        <div class="absolute -bottom-20 -left-20 w-40 h-40 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
+    </header>
+
+    <!-- Contenido Principal (Tarjetas de Acción) -->
+    <main class="flex-1 p-5 max-w-md mx-auto w-full space-y-5 -mt-2">
+        
+        <!-- TARJETA: MENÚ DEL EVENTO -->
+        <div class="bg-white rounded-3xl p-6 shadow-lg border border-slate-100 transform transition active:scale-95">
+            <div class="flex justify-between items-start mb-4">
+                <h2 class="text-lg font-black text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-utensils text-blue-500"></i> Menú de Hoy
+                </h2>
+            </div>
+            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 min-h-[80px]">
+                <p id="g-menu-text" class="text-sm text-slate-600 whitespace-pre-line font-medium leading-relaxed">
+                    El organizador aún no ha publicado el menú.
+                </p>
+            </div>
+        </div>
+
+        <!-- TARJETA: PEDIR CANCIONES (DJ) -->
+        <button onclick="window.abrirLinkDJ()" class="w-full bg-gradient-to-r from-slate-900 to-slate-800 rounded-3xl p-6 shadow-lg border border-slate-700 text-left transform transition hover:-translate-y-1 active:scale-95 group relative overflow-hidden">
+            <div class="relative z-10 flex justify-between items-center">
+                <div>
+                    <h2 class="text-lg font-black text-white flex items-center gap-2 mb-1">
+                        <i class="fa-brands fa-spotify text-emerald-400 text-xl"></i> Pedir Canción
+                    </h2>
+                    <p class="text-xs text-slate-400 font-medium">Mándale tus favoritas al DJ.</p>
+                </div>
+                <div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white group-hover:bg-emerald-500 transition-colors">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </div>
+        </button>
+
+        <!-- TARJETA: LLAMAR AL MESERO (Interactivo) -->
+        <div class="bg-white rounded-3xl p-6 shadow-lg border border-slate-100">
+            <h2 class="text-lg font-black text-slate-800 flex items-center gap-2 mb-1">
+                <i class="fa-solid fa-bell text-amber-500"></i> Servicio a Mesa
+            </h2>
+            <p class="text-xs text-slate-500 font-medium mb-4">¿Necesitas algo en tu mesa? Notifica al staff de inmediato.</p>
+            
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="window.llamarMesero('Falta Hielo / Refresco')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 p-3 rounded-2xl text-xs font-bold transition flex flex-col items-center gap-2 border border-blue-100 text-center">
+                    <i class="fa-solid fa-cubes text-xl"></i> Refill Bebidas
+                </button>
+                <button onclick="window.llamarMesero('Limpiar Mesa')" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 p-3 rounded-2xl text-xs font-bold transition flex flex-col items-center gap-2 border border-emerald-100 text-center">
+                    <i class="fa-solid fa-broom text-xl"></i> Limpiar Mesa
+                </button>
+                <button onclick="window.llamarMesero('Falta Cubierto / Copa')" class="bg-purple-50 hover:bg-purple-100 text-purple-700 p-3 rounded-2xl text-xs font-bold transition flex flex-col items-center gap-2 border border-purple-100 text-center">
+                    <i class="fa-solid fa-spoon text-xl"></i> Cubiertos
+                </button>
+                <button onclick="window.llamarMesero('Asistencia General')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 p-3 rounded-2xl text-xs font-bold transition flex flex-col items-center gap-2 border border-slate-200 text-center">
+                    <i class="fa-solid fa-hand-sparkles text-xl"></i> Otro
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Script de Lógica Específica para Invitados -->
+    <script type="module" src="./src/guest.js"></script>
+</body>
+</html>
