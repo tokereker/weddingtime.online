@@ -1,4 +1,3 @@
-<script type="module">
 // 1. IMPORTACIONES
 import './auth.js';
 import './admin.js';
@@ -260,4 +259,3 @@ window.mostrarPinDemo = function() {
         icon: 'info', confirmButtonText: '<i class="fa-solid fa-copy"></i> Copiar', confirmButtonColor: '#10b981'
     }).then((res) => { if(res.isConfirmed) { navigator.clipboard.writeText(pinCalculado.toString()); window.Toast.fire({ icon: 'success', title: 'PIN copiado' }); } });
 };
-</script>
