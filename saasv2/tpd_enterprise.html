@@ -338,16 +338,24 @@
             <section id="crm-sec-tables" class="hidden flex-1 flex-col min-h-0 w-full overflow-hidden">
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-4 shrink-0 flex flex-col gap-4">
                     <div class="flex flex-col xl:flex-row justify-between items-center gap-4">
-                        <!-- Contenedor Izquierdo: Título y Buscador -->
-                        <div class="flex flex-col sm:flex-row items-center gap-4 w-full xl:w-auto">
-                            <h2 class="font-bold text-lg text-slate-800 flex items-center gap-2 whitespace-nowrap">
-                                <i class="fa-solid fa-chair text-blue-500"></i> Acomodo de Mesas
-                            </h2>
-                            <div class="relative w-full sm:w-64">
-                                <i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-400 text-sm"></i>
-                                <input type="text" id="crm-tables-search" onkeyup="window.searchInTables()" placeholder="Buscar invitado..." class="w-full border-2 border-slate-100 p-2 pl-9 text-sm rounded-xl outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition font-medium">
-                            </div>
-                        </div>
+							<!-- Contenedor Izquierdo: Título y Buscador -->
+							<div class="flex flex-col sm:flex-row items-center gap-4 w-full xl:w-auto">
+		<h2 class="font-bold text-lg text-slate-800 flex items-center gap-2 whitespace-nowrap">
+			<i class="fa-solid fa-chair text-blue-500"></i> Acomodo de Mesas
+		</h2>
+		
+		<div class="flex items-center gap-2 w-full sm:w-auto">
+			<div class="relative flex-1 sm:w-64">
+				<i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-400 text-sm"></i>
+				<input type="text" id="crm-tables-search" onkeyup="window.searchInTables()" placeholder="Buscar invitado..." class="w-full border-2 border-slate-100 p-2 pl-9 text-sm rounded-xl outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition font-medium">
+			</div>
+			
+			<!-- NUEVO BOTÓN: Goma de borrar -->
+			<button onclick="document.getElementById('crm-tables-search').value=''; window.searchInTables()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-2 rounded-xl text-sm font-bold transition shadow-sm shrink-0" title="Limpiar Búsqueda">
+				<i class="fa-solid fa-eraser"></i>
+			</button>
+		</div>
+	</div>
 
                         <!-- Contenedor Derecho: Botones -->
                         <div class="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0 custom-scrollbar w-full xl:w-auto shrink-0">
