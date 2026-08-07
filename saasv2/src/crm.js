@@ -71,6 +71,19 @@ window.crmUpdateConfig = function(k, v) {
 };
 
 window.crmSwitchTab = function(tab) {
+	// --- NUEVO: Limpiar buscadores al cambiar de pestaña ---
+    const searchGuests = document.getElementById('crm-search');
+    if (searchGuests && searchGuests.value !== '') {
+        searchGuests.value = ''; 
+        if (typeof window.crmRenderGuests === 'function') window.crmRenderGuests(); // Resetea lista
+    }
+    
+    const searchTables = document.getElementById('crm-tables-search');
+    if (searchTables && searchTables.value !== '') {
+        searchTables.value = ''; 
+        if (typeof window.searchInTables === 'function') window.searchInTables(); // Resetea mesas
+    }
+	
     ['guests', 'tables', 'stats', 'budget'].forEach(t => {
         const sec = document.getElementById(`crm-sec-${t}`); 
         if(sec) { sec.classList.remove('flex'); sec.classList.add('hidden'); }
