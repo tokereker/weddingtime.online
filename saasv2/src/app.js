@@ -261,43 +261,31 @@ window.searchInTables = function() {
         }
     });
 
-    // 2. Filtrar en el Grid de Mesas
-    // Asumimos que las mesas son los divs hijos directos del grid
+    // 2. Resaltar invitados en el Grid de Mesas (Sin ocultar la mesa)
     const tables = document.querySelectorAll('#crm-tables-grid > div'); 
     
     tables.forEach(table => {
-        // Obtenemos el título de la mesa (ej. "Mesa 1")
-        const tableName = table.innerText.toLowerCase();
         const guestsInTable = table.querySelectorAll('.guest-card');
         
-        let hasMatch = tableName.includes(query); // ¿El nombre de la mesa coincide?
-
         guestsInTable.forEach(guest => {
             const guestName = guest.innerText.toLowerCase();
             if (guestName.includes(query)) {
-                hasMatch = true;
+                // El invitado coincide (o no hay búsqueda): se muestra normal y se resalta
                 guest.style.opacity = '1';
                 if (query !== '') {
-                    guest.style.border = '2px solid #3b82f6'; // Resaltar en azul si coincide
+                    guest.style.border = '2px solid #3b82f6'; 
                     guest.style.boxShadow = '0 0 10px rgba(59, 130, 246, 0.3)';
                 } else {
-                    guest.style.border = 'none'; // Quitar resalte si no hay búsqueda
+                    guest.style.border = 'none'; 
                     guest.style.boxShadow = 'none';
                 }
             } else {
-                // Si hay búsqueda activa pero este invitado no coincide, lo hacemos semi-transparente
+                // Si hay búsqueda y el invitado no coincide, se desvanece
                 guest.style.opacity = query !== '' ? '0.2' : '1';
                 guest.style.border = 'none';
                 guest.style.boxShadow = 'none';
             }
         });
-
-        // Si la mesa no tiene coincidencias con la búsqueda, la ocultamos para limpiar la pantalla
-        if (query !== '' && !hasMatch) {
-            table.style.display = 'none';
-        } else {
-            table.style.display = 'flex'; // O block, dependiendo de tu diseño original
-        }
     });
 };
 
