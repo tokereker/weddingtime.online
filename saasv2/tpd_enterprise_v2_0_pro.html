@@ -629,15 +629,15 @@ body.theme-rosegold .text-white { color: #4a3f35 !important; }
             </section>
 
             <!-- SECCIÓN ESTADÍSTICAS & DASHBOARD LOGÍSTICO -->
-            <section id="crm-sec-stats" class="hidden flex-1 flex-col min-h-0 w-full overflow-y-auto custom-scrollbar pb-32 pr-2">
-                <div class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col gap-2 sm:gap-3">
-                    <button onclick="window.exportStatsExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl shadow-xl font-bold flex items-center gap-2 transform transition hover:scale-105 text-xs sm:text-sm" title="Exportar Logística a Excel">
-                        <i class="fa-solid fa-file-excel text-lg"></i> Excel
-                    </button>
-                    <button onclick="window.exportStatsPDF()" class="bg-slate-900 hover:bg-black text-white px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl shadow-xl font-bold flex items-center gap-2 transform transition hover:scale-105 text-xs sm:text-sm" title="Exportar Reporte a PDF">
-                        <i class="fa-solid fa-file-pdf text-lg"></i> PDF
-                    </button>
-                </div>
+				<section id="crm-sec-stats" class="hidden flex-1 flex-col min-h-0 w-full overflow-y-auto custom-scrollbar pb-32 pr-2">
+					<div class="fixed bottom-24 right-4 sm:bottom-32 sm:right-6 z-50 flex flex-col gap-2 sm:gap-3">
+		<button onclick="window.exportStatsExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl shadow-xl font-bold flex items-center gap-2 transform transition hover:scale-105 text-xs sm:text-sm" title="Exportar Logística a Excel">
+			<i class="fa-solid fa-file-excel text-lg"></i> Excel
+		</button>
+		<button onclick="window.exportStatsPDF()" class="bg-slate-900 hover:bg-black text-white px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl shadow-xl font-bold flex items-center gap-2 transform transition hover:scale-105 text-xs sm:text-sm" title="Exportar Reporte a PDF">
+			<i class="fa-solid fa-file-pdf text-lg"></i> PDF
+		</button>
+	</div>
 
                 <!-- Bento Grid Dashboard -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-7xl mx-auto w-full" id="stats-print-area">
