@@ -246,48 +246,46 @@ window.startDemoEnvironment = async function() {
     } else { Swal.fire({ title: 'Acceso Denegado', text: 'PIN incorrecto.', icon: 'error' }); }
 };
 
-// BUSCADOR EN TIEMPO REAL PARA EL ACOMODO DE MESAS
-window.searchInTables = function() {
-    const query = document.getElementById('crm-tables-search').value.toLowerCase().trim();
-    
-    // 1. Filtrar en la columna de "Sin Asignar"
-    const unassignedCards = document.querySelectorAll('#crm-unassigned-list .guest-card');
-    unassignedCards.forEach(card => {
-        const name = card.innerText.toLowerCase();
-        if (name.includes(query)) {
-            card.style.display = 'block';
-        } else {
-            card.style.display = 'none';
-        }
-    });
+	// BUSCADOR EN TIEMPO REAL PARA EL ACOMODO DE MESAS
+	window.searchInTables = function() {
+		const query = document.getElementById('crm-tables-search').value.toLowerCase().trim();
+		
+		// 1. Filtrar en la columna de "Sin Asignar"
+		const unassignedCards = document.querySelectorAll('#crm-unassigned-list .guest-card');
+		unassignedCards.forEach(card => {
+			const name = card.innerText.toLowerCase();
+			if (name.includes(query)) {
+				card.style.display = ''; // CORRECCIÓN: Dejamos comillas vacías para no romper el Flexbox
+			} else {
+				card.style.display = 'none';
+			}
+		});
 
-    // 2. Resaltar invitados en el Grid de Mesas (Sin ocultar la mesa)
-    const tables = document.querySelectorAll('#crm-tables-grid > div'); 
-    
-    tables.forEach(table => {
-        const guestsInTable = table.querySelectorAll('.guest-card');
-        
-        guestsInTable.forEach(guest => {
-            const guestName = guest.innerText.toLowerCase();
-            if (guestName.includes(query)) {
-                // El invitado coincide (o no hay búsqueda): se muestra normal y se resalta
-                guest.style.opacity = '1';
-                if (query !== '') {
-                    guest.style.border = '2px solid #3b82f6'; 
-                    guest.style.boxShadow = '0 0 10px rgba(59, 130, 246, 0.3)';
-                } else {
-                    guest.style.border = 'none'; 
-                    guest.style.boxShadow = 'none';
-                }
-            } else {
-                // Si hay búsqueda y el invitado no coincide, se desvanece
-                guest.style.opacity = query !== '' ? '0.2' : '1';
-                guest.style.border = 'none';
-                guest.style.boxShadow = 'none';
-            }
-        });
-    });
-};
+		// 2. Resaltar invitados en el Grid de Mesas (Sin ocultar la mesa)
+		const tables = document.querySelectorAll('#crm-tables-grid > div'); 
+		
+		tables.forEach(table => {
+			const guestsInTable = table.querySelectorAll('.guest-card');
+			
+			guestsInTable.forEach(guest => {
+				const guestName = guest.innerText.toLowerCase();
+				if (guestName.includes(query)) {
+					guest.style.opacity = '1';
+					if (query !== '') {
+						guest.style.border = '2px solid #3b82f6'; 
+						guest.style.boxShadow = '0 0 10px rgba(59, 130, 246, 0.3)';
+					} else {
+						guest.style.border = 'none'; 
+						guest.style.boxShadow = 'none';
+					}
+				} else {
+					guest.style.opacity = query !== '' ? '0.2' : '1';
+					guest.style.border = 'none';
+					guest.style.boxShadow = 'none';
+				}
+			});
+		});
+	};
 
 
 window.mostrarPinDemo = function() {
