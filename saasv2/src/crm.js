@@ -738,7 +738,7 @@ window.showTicketVisual = function(id) {
 
     const qrContainer = document.getElementById('ticket-qrcode'); qrContainer.innerHTML = ''; 
     const activeTarget = window.impersonatingId || window.currentUser; 
-	
+    
     // =========================================================================
     // ACTUALIZACIÓN FASE 2: REDIRECCIÓN AL HUB DEL INVITADO (Subdominios)
     // =========================================================================
@@ -748,7 +748,9 @@ window.showTicketVisual = function(id) {
     
     // El QR abre la experiencia interactiva (Menú, DJ, Mesero) manteniendo la 'u' para la Hostess
     const hubUrl = `https://${enlaceDinamico}.tupasedigital.online/invitado.html?u=${activeTarget}&id=${guest.id}`;
-  
+    
+    // 👇 ESTA ES LA LÍNEA QUE DIBUJA EL QR (Asegúrate de que no falte) 👇
+    new QRCode(qrContainer, { text: hubUrl, width: 140, height: 140, colorDark : "#1e293b", colorLight : "#ffffff", correctLevel : QRCode.CorrectLevel.H });
     // =========================================================================
     
     document.getElementById('ticket-modal').classList.remove('hidden'); document.getElementById('ticket-modal').classList.add('flex');
