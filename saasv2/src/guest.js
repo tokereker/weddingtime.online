@@ -43,7 +43,8 @@ function iniciarEscuchaInvitado(eventId) {
             eventDataConfig = data.config || {};
             
             const eventType = data.eventType || "Evento";
-            document.getElementById('g-event-name').innerText = `${eventType}`;
+            let nombresFormateados = currentEventId.toUpperCase().replace('Y', ' y ');
+            document.getElementById('g-event-name').innerText = `${eventType} de ${nombresFormateados}`;
 
             const menuText = eventDataConfig.menuText || "";
             document.getElementById('g-menu-text').innerText = menuText.trim() !== "" ? menuText : "El menú será revelado pronto.";
