@@ -22,7 +22,7 @@ let currentGuestId = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
-    currentEventId = urlParams.get('e');
+    currentEventId = urlParams.get('u');
     currentGuestId = urlParams.get('id');
 
     if (!currentEventId) {
