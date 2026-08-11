@@ -9,10 +9,10 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>TPD Enterprise v2.0 Pro - SaaS CRM & Hub</title>
     <!-- Chart.js para Gráficas Visuales -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- LocalForage para IndexedDB simplificado -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
-    
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- LocalForage para IndexedDB simplificado -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
+	
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome -->
@@ -31,7 +31,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Emoji Picker Element -->
     <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@1.18.1/index.js"></script>
-    <link rel="stylesheet" href="./css/styles.css">
+	<link rel="stylesheet" href="./css/styles.css">
 </head>
 <body class="fixed inset-0 overflow-hidden flex flex-col text-slate-800 bg-slate-50">
 
@@ -220,13 +220,13 @@
             </div>
         </header>
 
-        <nav class="bg-white border-b flex px-6 shrink-0 gap-6 font-semibold text-sm overflow-x-auto custom-scrollbar items-center relative z-10">
+        <nav class="bg-white border-b flex px-6 shrink-0 gap-8 font-semibold text-sm overflow-x-auto custom-scrollbar items-center relative z-10">
             <button onclick="window.crmSwitchTab('guests')" id="tab-guests" class="py-4 text-blue-600 border-b-2 border-blue-600 whitespace-nowrap transition-colors"><i class="fa-solid fa-users mr-2"></i>Lista de Invitados</button>
             <button onclick="window.crmSwitchTab('tables')" id="tab-tables" class="py-4 text-slate-500 hover:text-slate-800 border-b-2 border-transparent whitespace-nowrap transition-colors"><i class="fa-solid fa-chair mr-2"></i>Acomodo de Mesas</button>
             <button onclick="window.crmSwitchTab('budget')" id="tab-budget" style="display: none;" class="py-4 text-slate-500 hover:text-slate-800 border-b-2 border-transparent whitespace-nowrap transition-colors"><i class="fa-solid fa-wallet mr-2"></i>Presupuesto & Menú</button>
             <button onclick="window.crmSwitchTab('stats')" id="tab-stats" class="py-4 text-slate-500 hover:text-slate-800 border-b-2 border-transparent whitespace-nowrap transition-colors"><i class="fa-solid fa-chart-pie mr-2"></i>Logística</button>
             
-            <!-- V2 PREMIUM DESIGN SELECTORS & PREMIUM BUTTON -->
+            <!-- V2 PREMIUM DESIGN SELECTORS -->
             <div id="crm-premium-design" class="ml-auto flex items-center border-l border-slate-200 pl-4 gap-3 py-2 shrink-0">
                 <div class="flex items-center gap-1 hidden md:flex">
                     <label class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Tema:</label>
@@ -257,11 +257,6 @@
                     <input type="file" accept="image/*" class="hidden" onchange="window.uploadTicketBg(event)">
                 </label>
                 <button onclick="window.removeTicketBg()" class="text-slate-400 hover:text-red-500 transition px-1" title="Quitar Fondo"><i class="fa-solid fa-trash-can"></i></button>
-
-                <!-- BOTÓN DORADO (Se muestra si el usuario tiene plan Premium) -->
-                <button id="btn-premium-web" onclick="document.getElementById('premium-web-modal').classList.replace('hidden', 'flex')" class="inline-flex bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white px-4 py-2 rounded-xl text-xs font-black shadow-md transition items-center gap-2 whitespace-nowrap ml-2 border border-amber-300">
-                    <i class="fa-solid fa-crown"></i> Ajustes Web
-                </button>
             </div>
         </nav>
 
@@ -303,7 +298,7 @@
                             </label>
                             
                             <div class="h-8 w-px bg-slate-200 mx-1 shrink-0"></div>
-                            <button onclick="window.crmExportExcel()" class="bg-slate-800 hover:bg-slate-900 text-white px-3 py-2 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap" title="Descargar Excel con Datos"><i class="fa-solid fa-file-excel"></i> Excel</button>
+							<button onclick="window.crmExportExcel()" class="bg-slate-800 hover:bg-slate-900 text-white px-3 py-2 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap" title="Descargar Excel con Datos"><i class="fa-solid fa-file-excel"></i> Excel</button>
                             <button onclick="window.crmExportPDF()" class="bg-slate-800 hover:bg-slate-900 text-white px-3 py-2 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap" title="Descargar Lista de Puerta PDF"><i class="fa-solid fa-file-pdf"></i> PDF</button>
                             
                             <div class="h-8 w-px bg-slate-200 mx-1 shrink-0"></div>
@@ -338,28 +333,29 @@
                     </div>
                 </div>
             </section>
-            
+			
             <!-- SECCIÓN MESAS -->
             <section id="crm-sec-tables" class="hidden flex-1 flex-col min-h-0 w-full overflow-hidden">
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-4 shrink-0 flex flex-col gap-4">
                     <div class="flex flex-col xl:flex-row justify-between items-center gap-4">
-                            <!-- Contenedor Izquierdo: Título y Buscador -->
-                            <div class="flex flex-col sm:flex-row items-center gap-4 w-full xl:w-auto">
-                                <h2 class="font-bold text-lg text-slate-800 flex items-center gap-2 whitespace-nowrap">
-                                    <i class="fa-solid fa-chair text-blue-500"></i> Acomodo de Mesas
-                                </h2>
-                                
-                                <div class="flex items-center gap-2 w-full sm:w-auto">
-                                    <div class="relative flex-1 sm:w-64">
-                                        <i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-400 text-sm"></i>
-                                        <input type="text" id="crm-tables-search" onkeyup="window.searchInTables()" placeholder="Buscar invitado..." class="w-full border-2 border-slate-100 p-2 pl-9 text-sm rounded-xl outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition font-medium">
-                                    </div>
-                                    
-                                    <button onclick="document.getElementById('crm-tables-search').value=''; window.searchInTables()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-2 rounded-xl text-sm font-bold transition shadow-sm shrink-0" title="Limpiar Búsqueda">
-                                        <i class="fa-solid fa-eraser"></i>
-                                    </button>
-                                </div>
-                            </div>
+							<!-- Contenedor Izquierdo: Título y Buscador -->
+							<div class="flex flex-col sm:flex-row items-center gap-4 w-full xl:w-auto">
+		<h2 class="font-bold text-lg text-slate-800 flex items-center gap-2 whitespace-nowrap">
+			<i class="fa-solid fa-chair text-blue-500"></i> Acomodo de Mesas
+		</h2>
+		
+		<div class="flex items-center gap-2 w-full sm:w-auto">
+			<div class="relative flex-1 sm:w-64">
+				<i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-400 text-sm"></i>
+				<input type="text" id="crm-tables-search" onkeyup="window.searchInTables()" placeholder="Buscar invitado..." class="w-full border-2 border-slate-100 p-2 pl-9 text-sm rounded-xl outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition font-medium">
+			</div>
+			
+			<!-- NUEVO BOTÓN: Goma de borrar -->
+			<button onclick="document.getElementById('crm-tables-search').value=''; window.searchInTables()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-2 rounded-xl text-sm font-bold transition shadow-sm shrink-0" title="Limpiar Búsqueda">
+				<i class="fa-solid fa-eraser"></i>
+			</button>
+		</div>
+	</div>
 
                         <!-- Contenedor Derecho: Botones -->
                         <div class="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0 custom-scrollbar w-full xl:w-auto shrink-0">
@@ -427,12 +423,12 @@
             <section id="crm-sec-budget" class="hidden flex-1 flex-col min-h-0 w-full overflow-y-auto custom-scrollbar pb-10 pr-2">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto w-full">
                     
-                    <!-- Columna Única Extendida: Finanzas -->
-                    <div class="lg:col-span-3 space-y-6">
+                    <!-- Columna Izquierda: Finanzas -->
+                    <div class="lg:col-span-2 space-y-6">
                         <!-- Dashboard Financiero -->
                         <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
                             <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-coins text-amber-500"></i> Control de Presupuesto Evento</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                            <div class="grid grid-cols-3 gap-4 text-center">
                                 <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100">
                                     <p class="text-xs text-slate-500 uppercase tracking-widest font-bold mb-1">Costo Total Estimado</p>
                                     <p class="text-2xl font-black text-slate-800" id="budget-total">$0.00</p>
@@ -474,19 +470,44 @@
                         </div>
                     </div>
 
+                    <!-- Columna Derecha: App de Auto-Servicio del Invitado -->
+                    <div class="lg:col-span-1 space-y-6">
+                        <div class="bg-gradient-to-br from-slate-900 to-slate-800 p-6 rounded-3xl shadow-xl border border-slate-700 text-white">
+                            <h3 class="text-lg font-black mb-2 flex items-center gap-2 text-blue-400"><i class="fa-solid fa-mobile-screen"></i> App Modo Invitado</h3>
+                            <p class="text-xs text-slate-300 mb-5 leading-relaxed">Configura lo que verán tus invitados al escanear el código QR de su pase <b class="text-white">estando sentados en su mesa</b> durante la fiesta.</p>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1"><i class="fa-solid fa-utensils"></i> Menú del Evento</label>
+                                    <textarea id="cfg-menu-text" onchange="window.crmUpdateConfig('menuText', this.value)" class="w-full bg-slate-900/50 border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-blue-500 transition min-h-[120px] custom-scrollbar" placeholder="Ej:&#10;Entrada: Crema de Elote&#10;Plato Fuerte: Lomo en salsa de ciruela&#10;Postre: Pastel de Chocolate"></textarea>
+                                </div>
+                                
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1"><i class="fa-brands fa-spotify text-emerald-400"></i> Enlace para pedir canciones (Spotify/Form)</label>
+                                    <input type="text" id="cfg-dj-link" onchange="window.crmUpdateConfig('djLink', this.value)" class="w-full bg-slate-900/50 border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-emerald-500 transition" placeholder="https://open.spotify.com/playlist/...">
+                                </div>
+                                
+                                <div class="bg-blue-500/20 border border-blue-500/30 p-3 rounded-xl text-xs text-blue-200 mt-2 flex items-start gap-2">
+                                    <i class="fa-solid fa-circle-info mt-0.5 text-blue-400"></i>
+                                    <span>Al guardar, el enlace QR de los pases mostrará automáticamente estos datos a los invitados.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </section>
 
             <!-- SECCIÓN ESTADÍSTICAS & DASHBOARD LOGÍSTICO -->
-            <section id="crm-sec-stats" class="hidden flex-1 flex-col min-h-0 w-full overflow-y-auto custom-scrollbar pb-32 pr-2">
-                <div class="fixed bottom-24 right-4 sm:bottom-32 sm:right-6 z-50 flex flex-col gap-2 sm:gap-3">
-                    <button onclick="window.exportStatsExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl shadow-xl font-bold flex items-center gap-2 transform transition hover:scale-105 text-xs sm:text-sm" title="Exportar Logística a Excel">
-                        <i class="fa-solid fa-file-excel text-lg"></i> Excel
-                    </button>
-                    <button onclick="window.exportStatsPDF()" class="bg-slate-900 hover:bg-black text-white px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl shadow-xl font-bold flex items-center gap-2 transform transition hover:scale-105 text-xs sm:text-sm" title="Exportar Reporte a PDF">
-                        <i class="fa-solid fa-file-pdf text-lg"></i> PDF
-                    </button>
-                </div>
+				<section id="crm-sec-stats" class="hidden flex-1 flex-col min-h-0 w-full overflow-y-auto custom-scrollbar pb-32 pr-2">
+					<div class="fixed bottom-24 right-4 sm:bottom-32 sm:right-6 z-50 flex flex-col gap-2 sm:gap-3">
+		<button onclick="window.exportStatsExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl shadow-xl font-bold flex items-center gap-2 transform transition hover:scale-105 text-xs sm:text-sm" title="Exportar Logística a Excel">
+			<i class="fa-solid fa-file-excel text-lg"></i> Excel
+		</button>
+		<button onclick="window.exportStatsPDF()" class="bg-slate-900 hover:bg-black text-white px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl shadow-xl font-bold flex items-center gap-2 transform transition hover:scale-105 text-xs sm:text-sm" title="Exportar Reporte a PDF">
+			<i class="fa-solid fa-file-pdf text-lg"></i> PDF
+		</button>
+	</div>
 
                 <!-- Bento Grid Dashboard -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-7xl mx-auto w-full" id="stats-print-area">
@@ -943,45 +964,6 @@
         </div>
     </div>
 
-    <!-- Modal Premium Web (Ajustes de Pase Digital) -->
-    <div id="premium-web-modal" class="fixed inset-0 bg-slate-900/80 items-center justify-center z-50 hidden glass p-4">
-        <div class="bg-gradient-to-br from-slate-900 to-slate-800 p-8 rounded-3xl shadow-2xl w-full max-w-lg border border-amber-500/30 text-white relative overflow-hidden flex flex-col max-h-[90vh]">
-            <!-- Decoración Premium -->
-            <div class="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
-                <i class="fa-solid fa-crown text-9xl text-amber-400"></i>
-            </div>
-            
-            <div class="flex justify-between items-center mb-6 relative z-10">
-                <h3 class="text-xl font-black flex items-center gap-3 text-amber-400"><i class="fa-solid fa-mobile-screen"></i> Ajustes Premium Web</h3>
-                <button onclick="document.getElementById('premium-web-modal').classList.replace('flex', 'hidden')" class="text-slate-400 hover:text-white transition"><i class="fa-solid fa-times text-xl"></i></button>
-            </div>
-            
-            <p class="text-sm text-slate-300 mb-6 leading-relaxed relative z-10">Configura la experiencia digital interactiva que tendrán tus invitados al abrir su pase y al escanear el código QR en su mesa.</p>
-            
-            <div class="space-y-6 relative z-10 overflow-y-auto custom-scrollbar flex-1 pr-2">
-                <!-- Menú -->
-                <div class="bg-slate-900/50 p-5 rounded-2xl border border-slate-700">
-                    <label class="text-xs font-bold text-slate-300 uppercase tracking-wider block mb-2"><i class="fa-solid fa-utensils text-blue-400 mr-1"></i> Menú del Evento</label>
-                    <textarea id="cfg-menu-text" onchange="window.crmUpdateConfig('menuText', this.value)" class="w-full bg-slate-950/80 border border-slate-600 rounded-xl p-4 text-sm text-white outline-none focus:border-blue-500 transition min-h-[120px] custom-scrollbar" placeholder="Ej:&#10;Entrada: Crema de Elote&#10;Plato Fuerte: Lomo en salsa de ciruela&#10;Postre: Pastel de Chocolate"></textarea>
-                </div>
-                
-                <!-- Fecha límite RSVP -->
-                <div class="bg-slate-900/50 p-5 rounded-2xl border border-slate-700">
-                    <label class="text-xs font-bold text-amber-400 uppercase tracking-wider block mb-2"><i class="fa-regular fa-clock mr-1"></i> Fecha y Hora Límite RSVP</label>
-                    <input type="datetime-local" id="cfg-fecha-limite" onchange="window.crmUpdateConfig('fechaLimite', this.value)" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-4 text-sm text-white outline-none focus:border-amber-500 transition cursor-pointer">
-                    <div class="flex items-center justify-between mt-3">
-                        <p class="text-[10px] text-slate-400 leading-tight flex-1">Bloquea el botón de confirmación si la fecha actual es mayor a la establecida.</p>
-                        <button onclick="document.getElementById('cfg-fecha-limite').value=''; window.crmUpdateConfig('fechaLimite', '')" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-600 transition font-bold shadow-sm">Borrar Límite</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="mt-6 pt-4 border-t border-slate-700 relative z-10 flex justify-end">
-                <button onclick="document.getElementById('premium-web-modal').classList.replace('flex', 'hidden')" class="bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-900 font-black py-3 px-6 rounded-xl shadow-lg transition text-sm flex items-center gap-2"><i class="fa-solid fa-check"></i> Listo</button>
-            </div>
-        </div>
-    </div>
-
     <!-- Modal de Auditoría -->
     <div id="audit-modal" class="fixed inset-0 bg-slate-900/80 items-center justify-center z-50 hidden glass p-4">
         <div class="bg-white p-6 rounded-3xl shadow-2xl w-full max-w-2xl flex flex-col h-[80vh] border-t-8 border-blue-600 relative">
@@ -1011,8 +993,7 @@
             <button onclick="window.sendTPDChat()" class="bg-blue-600 text-white rounded-xl w-10 h-10 flex items-center justify-center hover:bg-blue-700 shadow-md transition"><i class="fa-solid fa-paper-plane text-xs"></i></button>
         </div>
     </div>
-    
-    <script type="module" src="./src/app.js"></script>
+		<script type="module" src="./src/app.js"></script>
 
 </body>
 </html>
