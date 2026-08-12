@@ -417,20 +417,49 @@ window.crmRenderBudget = function() {
     const budgetDebt = document.getElementById('budget-debt');
     if(budgetDebt) budgetDebt.innerText = `$${(total - paid).toLocaleString('en-US')}`;
 };
+
 window.addAbono = function(id) {
-    const item = window.state.presupuesto.find(i => i.id === id); if(!item) return;
+    const item = window.state.presupuesto.find(i => String(i.id) === String(id)); 
+    if(!item) return;
+    
     const today = new Date().toISOString().split('T')[0];
+    
     Swal.fire({
-        title: 'Registrar Nuevo Abono',
+        title: '<h3 class="text-xl font-black text-slate-800 flex items-center justify-center gap-2 mt-2"><i class="fa-solid fa-plus text-emerald-500"></i> Registrar Abono</h3>',
         html: `
-            <p class="text-xs text-slate-500 mb-3 font-bold">Concepto: ${item.concepto}</p>
-            <div class="space-y-3">
-                <div><label class="text-[10px] text-slate-500 font-bold uppercase block text-left">Monto a abonar ($)</label><input type="number" id="swal-abono-monto" class="swal2-input !m-0 !w-full text-center" min="1" placeholder="Ej. 1500"></div>
-                <div><label class="text-[10px] text-slate-500 font-bold uppercase block text-left">Fecha</label><input type="date" id="swal-abono-fecha" class="swal2-input !m-0 !w-full text-center" value="${today}"></div>
-                <div><label class="text-[10px] text-slate-500 font-bold uppercase block text-left">Método de Pago</label><select id="swal-abono-metodo" class="swal2-input !m-0 !w-full text-center"><option value="Efectivo">Efectivo</option><option value="Transferencia">Transferencia</option></select></div>
+            <p class="text-xs text-slate-500 mb-4 font-bold bg-slate-100 py-2 rounded-lg">Concepto: <span class="text-slate-700">${item.concepto}</span></p>
+            <div class="space-y-4 px-2 text-left">
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Monto a abonar ($)</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-dollar-sign absolute left-4 top-3.5 text-emerald-500"></i>
+                        <input type="number" id="swal-abono-monto" class="w-full border-2 border-slate-200 rounded-xl p-3 pl-8 outline-none focus:border-emerald-500 transition font-medium text-sm text-slate-700 bg-slate-50 focus:bg-white text-center" min="1" placeholder="Ej. 1500">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Fecha</label>
+                        <input type="date" id="swal-abono-fecha" class="w-full border-2 border-slate-200 rounded-xl p-3 outline-none focus:border-emerald-500 transition font-medium text-xs text-slate-700 bg-slate-50 focus:bg-white text-center" value="${today}">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Método</label>
+                        <select id="swal-abono-metodo" class="w-full border-2 border-slate-200 rounded-xl p-3 outline-none focus:border-emerald-500 transition font-medium text-xs text-slate-700 bg-slate-50 focus:bg-white cursor-pointer">
+                            <option value="Efectivo">Efectivo</option>
+                            <option value="Transferencia">Transferencia</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         `,
-        showCancelButton: true, confirmButtonText: 'Guardar Abono', confirmButtonColor: '#10b981',
+        showCancelButton: true, 
+        confirmButtonText: '<i class="fa-solid fa-check"></i> Guardar Abono', 
+        confirmButtonColor: '#10b981',
+        cancelButtonText: 'Cancelar',
+        customClass: {
+            popup: 'rounded-3xl border border-slate-100 shadow-2xl',
+            confirmButton: 'rounded-xl font-bold px-5 py-2.5',
+            cancelButton: 'rounded-xl font-bold px-5 py-2.5'
+        },
         preConfirm: () => {
             const monto = parseFloat(document.getElementById('swal-abono-monto').value) || 0;
             const fecha = document.getElementById('swal-abono-fecha').value;
@@ -442,22 +471,27 @@ window.addAbono = function(id) {
         if(r.isConfirmed) {
             if(!item.abonos) item.abonos = [];
             item.abonos.push(r.value);
-            window.crmSave(); window.crmRenderBudget(); 
+            if (typeof window.crmSave === 'function') window.crmSave(); 
+            if (typeof window.crmRenderBudget === 'function') window.crmRenderBudget(); 
             window.Toast.fire({icon:'success', title:'Abono registrado'}); 
             window.logAction(`Registró abono de $${r.value.monto} a ${item.concepto}`);
         }
     });
 };
-window.addBudgetItem = function() {
+
+window.editBudgetItem = function(id) {
+    const item = window.state.presupuesto.find(i => String(i.id) === String(id)); 
+    if(!item) return;
+    
     Swal.fire({
-        title: '<h3 class="text-2xl font-black text-slate-800 flex items-center justify-center gap-2 mt-2"><i class="fa-solid fa-file-invoice-dollar text-blue-500"></i> Nuevo Gasto</h3>',
+        title: '<h3 class="text-2xl font-black text-slate-800 flex items-center justify-center gap-2 mt-2"><i class="fa-solid fa-pen text-blue-500"></i> Editar Gasto</h3>',
         html: `
             <div class="space-y-4 text-left px-2 mt-4">
                 <div>
                     <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Concepto o Proveedor</label>
                     <div class="relative">
                         <i class="fa-solid fa-pen absolute left-4 top-3.5 text-slate-400"></i>
-                        <input id="swal-b-concepto" type="text" class="w-full border-2 border-slate-200 rounded-xl p-3 pl-10 outline-none focus:border-blue-500 transition font-medium text-sm text-slate-700 bg-slate-50 focus:bg-white" placeholder="Ej: DJ, Salón, Banquete...">
+                        <input id="swal-b-concepto" type="text" class="w-full border-2 border-slate-200 rounded-xl p-3 pl-10 outline-none focus:border-blue-500 transition font-medium text-sm text-slate-700 bg-slate-50 focus:bg-white" value="${item.concepto}">
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
@@ -465,21 +499,21 @@ window.addBudgetItem = function() {
                         <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Costo Total ($)</label>
                         <div class="relative">
                             <i class="fa-solid fa-dollar-sign absolute left-4 top-3.5 text-slate-400"></i>
-                            <input type="number" id="swal-b-costo" class="w-full border-2 border-slate-200 rounded-xl p-3 pl-8 outline-none focus:border-blue-500 transition font-medium text-sm text-slate-700 bg-slate-50 focus:bg-white text-center" value="0" min="0">
+                            <input type="number" id="swal-b-costo" class="w-full border-2 border-slate-200 rounded-xl p-3 pl-8 outline-none focus:border-blue-500 transition font-medium text-sm text-slate-700 bg-slate-50 focus:bg-white text-center" value="${item.costo}" min="0">
                         </div>
                     </div>
                     <div>
-                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Pagado ($)</label>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Monto Pagado ($)</label>
                         <div class="relative">
                             <i class="fa-solid fa-hand-holding-dollar absolute left-4 top-3.5 text-emerald-500"></i>
-                            <input type="number" id="swal-b-pagado" class="w-full border-2 border-slate-200 rounded-xl p-3 pl-10 outline-none focus:border-emerald-500 transition font-medium text-sm text-slate-700 bg-slate-50 focus:bg-white text-center" value="0" min="0">
+                            <input type="number" id="swal-b-pagado" class="w-full border-2 border-slate-200 rounded-xl p-3 pl-10 outline-none focus:border-emerald-500 transition font-medium text-sm text-slate-700 bg-slate-50 focus:bg-white text-center" value="${item.pagado}" min="0">
                         </div>
                     </div>
                 </div>
             </div>
         `,
         showCancelButton: true, 
-        confirmButtonText: '<i class="fa-solid fa-check"></i> Guardar', 
+        confirmButtonText: '<i class="fa-solid fa-check"></i> Actualizar', 
         confirmButtonColor: '#3b82f6',
         cancelButtonText: 'Cancelar',
         cancelButtonColor: '#94a3b8',
@@ -492,20 +526,51 @@ window.addBudgetItem = function() {
             const concepto = document.getElementById('swal-b-concepto').value.trim();
             const costo = parseFloat(document.getElementById('swal-b-costo').value) || 0;
             const pagado = parseFloat(document.getElementById('swal-b-pagado').value) || 0;
-            if(!concepto) { Swal.showValidationMessage('Escribe el concepto del gasto'); return false; }
+            if(!concepto) { Swal.showValidationMessage('Escribe el concepto'); return false; }
             return { concepto, costo, pagado };
         }
     }).then(r => {
         if(r.isConfirmed) {
-            if(!window.state.presupuesto) window.state.presupuesto = [];
-            window.state.presupuesto.push({ id: Date.now(), concepto: r.value.concepto, costo: r.value.costo, pagado: r.value.pagado });
-            window.crmSave(); 
-            window.crmRenderBudget(); 
-            window.Toast.fire({icon:'success', title:'Gasto registrado'}); 
-            window.logAction(`Registró un gasto: ${r.value.concepto}`);
+            item.concepto = r.value.concepto; 
+            item.costo = r.value.costo; 
+            item.pagado = r.value.pagado;
+            
+            if (typeof window.crmSave === 'function') window.crmSave(); 
+            if (typeof window.crmRenderBudget === 'function') window.crmRenderBudget(); 
+            
+            window.Toast.fire({icon:'success', title:'Actualizado'}); 
+            window.logAction(`Actualizó un gasto: ${r.value.concepto}`);
         }
     });
 };
+
+window.deleteBudgetItem = function(id) {
+    Swal.fire({ 
+        title: '¿Borrar Gasto?', 
+        text: "Esta acción no se puede deshacer.",
+        icon: 'warning', 
+        showCancelButton: true, 
+        confirmButtonText: '<i class="fa-solid fa-trash-can"></i> Sí, borrar',
+        confirmButtonColor: '#ef4444',
+        cancelButtonText: 'Cancelar',
+        customClass: {
+            popup: 'rounded-3xl',
+            confirmButton: 'rounded-xl font-bold px-5 py-2.5',
+            cancelButton: 'rounded-xl font-bold px-5 py-2.5'
+        }
+    }).then(r => {
+        if(r.isConfirmed) { 
+            window.state.presupuesto = window.state.presupuesto.filter(i => String(i.id) !== String(id)); 
+            
+            if (typeof window.crmSave === 'function') window.crmSave(); 
+            if (typeof window.crmRenderBudget === 'function') window.crmRenderBudget(); 
+            
+            window.logAction(`Borró un registro de gasto.`); 
+            window.Toast.fire({icon:'success', title:'Borrado'});
+        }
+    });
+};
+
 
 // ==========================================
 // 6. ESTADÍSTICAS Y CRONOGRAMA
