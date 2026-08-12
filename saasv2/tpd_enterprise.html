@@ -970,16 +970,18 @@
                 <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1"><i class="fa-solid fa-utensils"></i> Menú del Evento</label>
                 <textarea id="cfg-menu-text" onchange="window.crmUpdateConfig('menuText', this.value)" class="w-full bg-slate-900/50 border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-blue-500 transition min-h-[120px] custom-scrollbar" placeholder="Ej:&#10;Entrada: Crema de Elote&#10;Plato Fuerte: Lomo en salsa de ciruela&#10;Postre: Pastel de Chocolate"></textarea>
             </div>
-            <!-- Fecha y Hora de Cierre RSVP -->
+           <!-- Fecha y Hora de Cierre RSVP -->
 <div>
-    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
-        <i class="fa-solid fa-calendar-xmark"></i> Fecha y Hora Límite (RSVP)
+    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">
+        <!-- Agregamos text-amber-400 para un color amarillo/naranja brillante y text-sm para hacerlo un poco más grande -->
+        <i class="fa-solid fa-calendar-xmark text-amber-400 text-sm mr-1"></i> Fecha y Hora Límite (RSVP)
     </label>
     
-    <!-- Aquí cambiamos type="date" por type="datetime-local" -->
-    <input type="datetime-local" id="cfg-rsvp-deadline" onchange="window.crmUpdateConfig('rsvpDeadline', this.value)" class="w-full bg-slate-900/50 border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-blue-500 transition cursor-pointer">
+    <!-- Agregamos style="color-scheme: dark;" para que el ícono nativo del navegador se vuelva blanco -->
+    <!-- Cambiamos focus:border-blue-500 por focus:border-amber-400 para que combine al hacer clic -->
+    <input type="datetime-local" id="cfg-rsvp-deadline" style="color-scheme: dark;" onchange="window.crmUpdateConfig('rsvpDeadline', this.value)" class="w-full bg-slate-900/50 border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-amber-400 transition cursor-pointer shadow-inner">
     
-    <p class="text-[10px] text-slate-400 mt-1">El invitado no podrá confirmar su asistencia después de este día y hora.</p>
+    <p class="text-[10px] text-slate-400 mt-1.5">El invitado no podrá confirmar su asistencia después de este día y hora.</p>
 </div>
            
     <!-- Asistente TPD Chat Independiente por Evento (Diseño V2) -->
