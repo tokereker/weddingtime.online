@@ -298,7 +298,7 @@
                             </label>
                             
                             <div class="h-8 w-px bg-slate-200 mx-1 shrink-0"></div>
-                            <button onclick="window.crmExportExcel()" class="bg-slate-800 hover:bg-slate-900 text-white px-3 py-2 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap" title="Descargar Excel con Datos"><i class="fa-solid fa-file-excel"></i> Excel</button>
+							<button onclick="window.crmExportExcel()" class="bg-slate-800 hover:bg-slate-900 text-white px-3 py-2 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap" title="Descargar Excel con Datos"><i class="fa-solid fa-file-excel"></i> Excel</button>
                             <button onclick="window.crmExportPDF()" class="bg-slate-800 hover:bg-slate-900 text-white px-3 py-2 rounded-xl text-sm font-bold shadow-md transition whitespace-nowrap" title="Descargar Lista de Puerta PDF"><i class="fa-solid fa-file-pdf"></i> PDF</button>
                             
                             <div class="h-8 w-px bg-slate-200 mx-1 shrink-0"></div>
@@ -333,29 +333,29 @@
                     </div>
                 </div>
             </section>
-            
+			
             <!-- SECCIÓN MESAS -->
             <section id="crm-sec-tables" class="hidden flex-1 flex-col min-h-0 w-full overflow-hidden">
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-4 shrink-0 flex flex-col gap-4">
                     <div class="flex flex-col xl:flex-row justify-between items-center gap-4">
-                            <!-- Contenedor Izquierdo: Título y Buscador -->
-                            <div class="flex flex-col sm:flex-row items-center gap-4 w-full xl:w-auto">
-        <h2 class="font-bold text-lg text-slate-800 flex items-center gap-2 whitespace-nowrap">
-            <i class="fa-solid fa-chair text-blue-500"></i> Acomodo de Mesas
-        </h2>
-        
-        <div class="flex items-center gap-2 w-full sm:w-auto">
-            <div class="relative flex-1 sm:w-64">
-                <i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-400 text-sm"></i>
-                <input type="text" id="crm-tables-search" onkeyup="window.searchInTables()" placeholder="Buscar invitado..." class="w-full border-2 border-slate-100 p-2 pl-9 text-sm rounded-xl outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition font-medium">
-            </div>
-            
-            <!-- NUEVO BOTÓN: Goma de borrar -->
-            <button onclick="document.getElementById('crm-tables-search').value=''; window.searchInTables()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-2 rounded-xl text-sm font-bold transition shadow-sm shrink-0" title="Limpiar Búsqueda">
-                <i class="fa-solid fa-eraser"></i>
-            </button>
-        </div>
-    </div>
+							<!-- Contenedor Izquierdo: Título y Buscador -->
+							<div class="flex flex-col sm:flex-row items-center gap-4 w-full xl:w-auto">
+		<h2 class="font-bold text-lg text-slate-800 flex items-center gap-2 whitespace-nowrap">
+			<i class="fa-solid fa-chair text-blue-500"></i> Acomodo de Mesas
+		</h2>
+		
+		<div class="flex items-center gap-2 w-full sm:w-auto">
+			<div class="relative flex-1 sm:w-64">
+				<i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-400 text-sm"></i>
+				<input type="text" id="crm-tables-search" onkeyup="window.searchInTables()" placeholder="Buscar invitado..." class="w-full border-2 border-slate-100 p-2 pl-9 text-sm rounded-xl outline-none focus:border-blue-500 bg-slate-50 focus:bg-white transition font-medium">
+			</div>
+			
+			<!-- NUEVO BOTÓN: Goma de borrar -->
+			<button onclick="document.getElementById('crm-tables-search').value=''; window.searchInTables()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 px-3 py-2 rounded-xl text-sm font-bold transition shadow-sm shrink-0" title="Limpiar Búsqueda">
+				<i class="fa-solid fa-eraser"></i>
+			</button>
+		</div>
+	</div>
 
                         <!-- Contenedor Derecho: Botones -->
                         <div class="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0 custom-scrollbar w-full xl:w-auto shrink-0">
@@ -419,16 +419,15 @@
                 </div>
             </section>
 
-            <!-- SECCIÓN PRESUPUESTO & MENÚ (Módulo V4) -->
+            <!-- SECCIÓN PRESUPUESTO (Expandido, Sin App Modo Invitado) -->
             <section id="crm-sec-budget" class="hidden flex-1 flex-col min-h-0 w-full overflow-y-auto custom-scrollbar pb-10 pr-2">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto w-full">
+                <div class="grid grid-cols-1 gap-6 max-w-7xl mx-auto w-full">
                     
-                    <!-- Columna Única Extendida: Finanzas ocupa las 3 columnas -->
                     <div class="lg:col-span-3 space-y-6">
                         <!-- Dashboard Financiero -->
                         <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
                             <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-coins text-amber-500"></i> Control de Presupuesto Evento</h3>
-                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
                                 <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100">
                                     <p class="text-xs text-slate-500 uppercase tracking-widest font-bold mb-1">Costo Total Estimado</p>
                                     <p class="text-2xl font-black text-slate-800" id="budget-total">$0.00</p>
@@ -469,20 +468,19 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </section>
 
             <!-- SECCIÓN ESTADÍSTICAS & DASHBOARD LOGÍSTICO -->
-				<section id="crm-sec-stats" class="hidden flex-1 flex-col min-h-0 w-full overflow-y-auto custom-scrollbar pb-32 pr-2">
-					<div class="fixed bottom-24 right-4 sm:bottom-32 sm:right-6 z-50 flex flex-col gap-2 sm:gap-3">
-		<button onclick="window.exportStatsExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl shadow-xl font-bold flex items-center gap-2 transform transition hover:scale-105 text-xs sm:text-sm" title="Exportar Logística a Excel">
-			<i class="fa-solid fa-file-excel text-lg"></i> Excel
-		</button>
-		<button onclick="window.exportStatsPDF()" class="bg-slate-900 hover:bg-black text-white px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl shadow-xl font-bold flex items-center gap-2 transform transition hover:scale-105 text-xs sm:text-sm" title="Exportar Reporte a PDF">
-			<i class="fa-solid fa-file-pdf text-lg"></i> PDF
-		</button>
-	</div>
+            <section id="crm-sec-stats" class="hidden flex-1 flex-col min-h-0 w-full overflow-y-auto custom-scrollbar pb-32 pr-2">
+                <div class="fixed bottom-24 right-4 sm:bottom-32 sm:right-6 z-50 flex flex-col gap-2 sm:gap-3">
+                    <button onclick="window.exportStatsExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl shadow-xl font-bold flex items-center gap-2 transform transition hover:scale-105 text-xs sm:text-sm" title="Exportar Logística a Excel">
+                        <i class="fa-solid fa-file-excel text-lg"></i> Excel
+                    </button>
+                    <button onclick="window.exportStatsPDF()" class="bg-slate-900 hover:bg-black text-white px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl shadow-xl font-bold flex items-center gap-2 transform transition hover:scale-105 text-xs sm:text-sm" title="Exportar Reporte a PDF">
+                        <i class="fa-solid fa-file-pdf text-lg"></i> PDF
+                    </button>
+                </div>
 
                 <!-- Bento Grid Dashboard -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-7xl mx-auto w-full" id="stats-print-area">
@@ -950,25 +948,21 @@
             </div>
         </div>
     </div>
-
-    <!-- Asistente TPD Chat Independiente por Evento (Diseño V2) -->
-    <div id="tpd-fab" onclick="window.toggleTPDChat()" title="Asistente IA del Evento">
-        <i class="fa-solid fa-robot"></i>
-    </div>
-    <div id="tpd-chat-widget">
-        <div id="tpd-chat-header" onclick="window.toggleTPDChat()">
-            <span id="tpd-chat-title"><i class="fa-solid fa-brain mr-2"></i> Asistente de Evento</span>
-            <i class="fa-solid fa-chevron-down"></i>
-        </div>
-        <div id="tpd-chat-messages" class="custom-scrollbar">
-            <div class="tpd-msg bot" id="tpd-chat-welcome">Cargando contexto del evento...</div>
-        </div>
-        <div class="flex border-t border-slate-200 p-3 bg-white gap-2">
-            <input type="text" id="tpd-chat-input" placeholder="Pregúntame sobre tus listas..." onkeypress="if(event.key === 'Enter') window.sendTPDChat()" class="flex-1 border-2 border-slate-100 rounded-xl px-4 py-2 text-sm outline-none focus:border-blue-400 transition bg-slate-50">
-            <button onclick="window.sendTPDChat()" class="bg-blue-600 text-white rounded-xl w-10 h-10 flex items-center justify-center hover:bg-blue-700 shadow-md transition"><i class="fa-solid fa-paper-plane text-xs"></i></button>
-        </div>
-    </div>
-		<script type="module" src="./src/app.js"></script>
+    
+    <!-- Script lógico para abrir la nueva página de extras -->
+    <script>
+        window.abrirPaginaExtras = function() {
+            const userIdText = document.getElementById('crm-header-id').innerText;
+            if (userIdText && userIdText !== 'Cargando...') {
+                const cleanId = userIdText.replace('ID:', '').trim();
+                window.open(`extras.html?u=${cleanId}`, '_blank');
+            } else {
+                Swal.fire('Error', 'Debes tener un evento cargado para configurar los extras.', 'error');
+            }
+        };
+    </script>
+    
+    <script type="module" src="./src/app.js"></script>
 
 </body>
 </html>
