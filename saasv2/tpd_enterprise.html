@@ -236,6 +236,10 @@
                         <option value="rosegold">Rose Gold</option>
                     </select>
                 </div>
+				<!-- NUEVO BOTÓN: App Invitado (Oculto por defecto si requiere validación de estrella) -->
+<button id="btn-app-invitado" onclick="document.getElementById('modal-app-invitado').classList.replace('hidden', 'flex')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider shadow-sm transition flex items-center gap-1 ml-2">
+    <i class="fa-solid fa-mobile-screen"></i> App Invitado
+</button>
                 <div class="h-6 w-px bg-slate-200 mx-1 hidden md:block"></div>
 
                 <label class="text-[10px] text-slate-400 font-bold uppercase tracking-wider text-right leading-tight hidden md:block">Tipografía</label>
@@ -245,11 +249,7 @@
                     <option value="Cinzel">Cinzel (Clásica)</option>
                     <option value="Montserrat">Montserrat (Moderna)</option>
                 </select>
-				<!-- NUEVO BOTÓN: App Invitado (Oculto por defecto si requiere validación de estrella) -->
-<button id="btn-app-invitado" onclick="document.getElementById('modal-app-invitado').classList.replace('hidden', 'flex')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider shadow-sm transition flex items-center gap-1 ml-2">
-    <i class="fa-solid fa-mobile-screen"></i> App Invitado
-</button>
-                <div class="h-6 w-px bg-slate-200 mx-1 hidden md:block"></div>
+        		<div class="h-6 w-px bg-slate-200 mx-1 hidden md:block"></div>
                 <label for="crm-theme-color" class="text-[10px] text-slate-400 font-bold uppercase tracking-wider cursor-pointer text-right leading-tight hidden md:block">Color</label>
                 <input type="color" id="crm-theme-color" onchange="window.crmUpdateConfig('themeColor', this.value)" class="w-8 h-8 rounded cursor-pointer border-0 p-0 bg-transparent shadow-sm" title="Elegir color para RSVP">
                 
