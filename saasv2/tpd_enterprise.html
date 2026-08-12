@@ -257,6 +257,11 @@
                     <input type="file" accept="image/*" class="hidden" onchange="window.uploadTicketBg(event)">
                 </label>
                 <button onclick="window.removeTicketBg()" class="text-slate-400 hover:text-red-500 transition px-1" title="Quitar Fondo"><i class="fa-solid fa-trash-can"></i></button>
+
+				<!-- NUEVO BOTÓN: App Invitado (Oculto por defecto si requiere validación de estrella) -->
+<button id="btn-app-invitado" onclick="document.getElementById('modal-app-invitado').classList.replace('hidden', 'flex')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider shadow-sm transition flex items-center gap-1 ml-2">
+    <i class="fa-solid fa-mobile-screen"></i> App Invitado
+</button>
             </div>
         </nav>
 
