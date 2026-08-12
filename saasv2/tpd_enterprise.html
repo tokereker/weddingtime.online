@@ -970,26 +970,18 @@
                 <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1"><i class="fa-solid fa-utensils"></i> Menú del Evento</label>
                 <textarea id="cfg-menu-text" onchange="window.crmUpdateConfig('menuText', this.value)" class="w-full bg-slate-900/50 border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-blue-500 transition min-h-[120px] custom-scrollbar" placeholder="Ej:&#10;Entrada: Crema de Elote&#10;Plato Fuerte: Lomo en salsa de ciruela&#10;Postre: Pastel de Chocolate"></textarea>
             </div>
-            
-            <!-- Fecha de Cierre RSVP -->
-            <div>
-                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1"><i class="fa-solid fa-calendar-xmark"></i> Fecha Límite de Confirmación (RSVP)</label>
-                <input type="date" id="cfg-rsvp-deadline" onchange="window.crmUpdateConfig('rsvpDeadline', this.value)" class="w-full bg-slate-900/50 border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-blue-500 transition cursor-pointer">
-                <p class="text-[10px] text-slate-400 mt-1">Bloquea el botón de confirmación en el pase digital después de este día.</p>
-            </div>
-             
-            <div class="bg-blue-500/20 border border-blue-500/30 p-3 rounded-xl text-xs text-blue-200 mt-2 flex items-start gap-2">
-                <i class="fa-solid fa-circle-info mt-0.5 text-blue-400"></i>
-                <span>Al guardar, el enlace web y QR de los pases se sincronizarán automáticamente con estos datos.</span>
-            </div>
-        </div>
-
-        <button onclick="document.getElementById('modal-app-invitado').classList.replace('flex', 'hidden')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl shadow-lg transition mt-6 text-sm flex items-center justify-center gap-2">
-            <i class="fa-solid fa-check"></i> Guardar y Cerrar
-        </button>
-    </div>
+            <!-- Fecha y Hora de Cierre RSVP -->
+<div>
+    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+        <i class="fa-solid fa-calendar-xmark"></i> Fecha y Hora Límite (RSVP)
+    </label>
+    
+    <!-- Aquí cambiamos type="date" por type="datetime-local" -->
+    <input type="datetime-local" id="cfg-rsvp-deadline" onchange="window.crmUpdateConfig('rsvpDeadline', this.value)" class="w-full bg-slate-900/50 border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-blue-500 transition cursor-pointer">
+    
+    <p class="text-[10px] text-slate-400 mt-1">El invitado no podrá confirmar su asistencia después de este día y hora.</p>
 </div>
-
+           
     <!-- Asistente TPD Chat Independiente por Evento (Diseño V2) -->
     <div id="tpd-fab" onclick="window.toggleTPDChat()" title="Asistente IA del Evento">
         <i class="fa-solid fa-robot"></i>
