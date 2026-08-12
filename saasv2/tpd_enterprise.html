@@ -473,7 +473,7 @@
         </div>
     </div>
 </section>
-           
+            
 
             <!-- SECCIÓN ESTADÍSTICAS & DASHBOARD LOGÍSTICO -->
 				<section id="crm-sec-stats" class="hidden flex-1 flex-col min-h-0 w-full overflow-y-auto custom-scrollbar pb-32 pr-2">
@@ -954,7 +954,8 @@
             </div>
         </div>
     </div>
-<!-- Modal App Modo Invitado -->
+
+    <!-- Modal App Modo Invitado -->
     <div id="modal-app-invitado" class="fixed inset-0 bg-slate-900/80 items-center justify-center z-50 hidden glass p-4">
         <div class="bg-gradient-to-br from-slate-900 to-slate-800 p-6 rounded-3xl shadow-xl border border-slate-700 text-white w-full max-w-md relative">
             <!-- Botón cerrar -->
@@ -972,9 +973,12 @@
                 <!-- Fecha y Hora de Cierre RSVP -->
                 <div>
                     <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">
+                        <!-- Agregamos text-amber-400 para un color amarillo/naranja brillante y text-sm para hacerlo un poco más grande -->
                         <i class="fa-solid fa-calendar-xmark text-amber-400 text-sm mr-1"></i> Fecha y Hora Límite (RSVP)
                     </label>
                     
+                    <!-- Agregamos style="color-scheme: dark;" para que el ícono nativo del navegador se vuelva blanco -->
+                    <!-- Cambiamos focus:border-blue-500 por focus:border-amber-400 para que combine al hacer clic -->
                     <input type="datetime-local" id="cfg-rsvp-deadline" style="color-scheme: dark;" onchange="window.crmUpdateConfig('rsvpDeadline', this.value)" class="w-full bg-slate-900/50 border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-amber-400 transition cursor-pointer shadow-inner">
                     
                     <p class="text-[10px] text-slate-400 mt-1.5">El invitado no podrá confirmar su asistencia después de este día y hora.</p>
@@ -988,7 +992,8 @@
 
         </div>
     </div> 
-     <!-- Asistente TPD Chat Independiente por Evento (Diseño V2) -->
+
+    <!-- Asistente TPD Chat Independiente por Evento (Diseño V2) -->
     <div id="tpd-fab" onclick="window.toggleTPDChat()" title="Asistente IA del Evento">
         <i class="fa-solid fa-robot"></i>
     </div>
@@ -1001,9 +1006,12 @@
             <div class="tpd-msg bot" id="tpd-chat-welcome">Cargando contexto del evento...</div>
         </div>
         <div class="flex border-t border-slate-200 p-3 bg-white gap-2">
+            <!-- Evento de teclado modificado a onkeydown -->
             <input type="text" id="tpd-chat-input" placeholder="Pregúntame sobre tus listas..." onkeydown="if(event.key === 'Enter') window.sendTPDChat()" class="flex-1 border-2 border-slate-100 rounded-xl px-4 py-2 text-sm outline-none focus:border-blue-400 transition bg-slate-50">
             <button onclick="window.sendTPDChat()" class="bg-blue-600 text-white rounded-xl w-10 h-10 flex items-center justify-center hover:bg-blue-700 shadow-md transition"><i class="fa-solid fa-paper-plane text-xs"></i></button>
         </div>
     </div>
+    <script type="module" src="./src/app.js"></script>
+
 </body>
 </html>
