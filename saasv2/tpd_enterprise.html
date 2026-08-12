@@ -423,58 +423,57 @@
                     </div>
                 </div>
             </section>
+<!-- SECCIÓN PRESUPUESTO & MENÚ (Módulo V4 Centrado) -->
+<section id="crm-sec-budget" class="hidden flex-1 flex-col min-h-0 w-full overflow-y-auto custom-scrollbar pb-10 pr-2">
+    <!-- max-w-5xl y mx-auto centran el contenido automáticamente -->
+    <div class="max-w-5xl mx-auto w-full space-y-6">
+        
+        <!-- Dashboard Financiero -->
+        <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+            <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-coins text-amber-500"></i> Control de Presupuesto Evento</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+                <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100">
+                    <p class="text-xs text-slate-500 uppercase tracking-widest font-bold mb-1">Costo Total Estimado</p>
+                    <p class="text-2xl font-black text-slate-800" id="budget-total">$0.00</p>
+                </div>
+                <div class="bg-emerald-50 rounded-2xl p-4 border border-emerald-100">
+                    <p class="text-xs text-emerald-700 uppercase tracking-widest font-bold mb-1">Total Pagado</p>
+                    <p class="text-2xl font-black text-emerald-600" id="budget-paid">$0.00</p>
+                </div>
+                <div class="bg-red-50 rounded-2xl p-4 border border-red-100">
+                    <p class="text-xs text-red-700 uppercase tracking-widest font-bold mb-1">Por Pagar (Deuda)</p>
+                    <p class="text-2xl font-black text-red-500" id="budget-debt">$0.00</p>
+                </div>
+            </div>
+        </div>
 
-            <!-- SECCIÓN PRESUPUESTO & MENÚ (Módulo V4) -->
-            <section id="crm-sec-budget" class="hidden flex-1 flex-col min-h-0 w-full overflow-y-auto custom-scrollbar pb-10 pr-2">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto w-full">
-                    
-                    <!-- Columna Izquierda: Finanzas -->
-                    <div class="lg:col-span-2 space-y-6">
-                        <!-- Dashboard Financiero -->
-                        <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
-                            <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-coins text-amber-500"></i> Control de Presupuesto Evento</h3>
-                            <div class="grid grid-cols-3 gap-4 text-center">
-                                <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100">
-                                    <p class="text-xs text-slate-500 uppercase tracking-widest font-bold mb-1">Costo Total Estimado</p>
-                                    <p class="text-2xl font-black text-slate-800" id="budget-total">$0.00</p>
-                                </div>
-                                <div class="bg-emerald-50 rounded-2xl p-4 border border-emerald-100">
-                                    <p class="text-xs text-emerald-700 uppercase tracking-widest font-bold mb-1">Total Pagado</p>
-                                    <p class="text-2xl font-black text-emerald-600" id="budget-paid">$0.00</p>
-                                </div>
-                                <div class="bg-red-50 rounded-2xl p-4 border border-red-100">
-                                    <p class="text-xs text-red-700 uppercase tracking-widest font-bold mb-1">Por Pagar (Deuda)</p>
-                                    <p class="text-2xl font-black text-red-500" id="budget-debt">$0.00</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Tabla de Gastos -->
-                        <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
-                            <div class="p-5 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
-                                <h3 class="font-bold text-slate-800 flex items-center gap-2"><i class="fa-solid fa-list-ul text-blue-500"></i> Desglose de Gastos & Proveedores</h3>
-                                <button onclick="window.addBudgetItem()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md transition flex items-center gap-2"><i class="fa-solid fa-plus"></i> Añadir Gasto</button>
-                            </div>
-                            <div class="overflow-x-auto w-full custom-scrollbar">
-                                <table class="w-full text-left text-sm whitespace-nowrap min-w-max">
-                                    <thead class="bg-slate-50 text-slate-500 border-b border-slate-200 text-xs uppercase tracking-wider font-bold">
-                                        <tr>
-                                            <th class="p-4">Concepto / Proveedor</th>
-                                            <th class="p-4 text-right">Costo Total ($)</th>
-                                            <th class="p-4 text-right">Pagado ($)</th>
-                                            <th class="p-4 text-center">Estatus</th>
-                                            <th class="p-4 text-center w-16">Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="budget-tbody" class="divide-y divide-slate-100">
-                                        <!-- Js fills this -->
-                                    </tbody>
-                                </table>
-                                <div id="budget-empty" class="p-8 text-center text-slate-400 italic hidden">No hay gastos registrados aún.</div>
-                            </div>
-                        </div>
-                    </div>
-            </section>
+        <!-- Tabla de Gastos -->
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
+            <div class="p-5 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
+                <h3 class="font-bold text-slate-800 flex items-center gap-2"><i class="fa-solid fa-list-ul text-blue-500"></i> Desglose de Gastos & Proveedores</h3>
+                <button onclick="window.addBudgetItem()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md transition flex items-center gap-2"><i class="fa-solid fa-plus"></i> Añadir Gasto</button>
+            </div>
+            <div class="overflow-x-auto w-full custom-scrollbar">
+                <table class="w-full text-left text-sm whitespace-nowrap min-w-max">
+                    <thead class="bg-slate-50 text-slate-500 border-b border-slate-200 text-xs uppercase tracking-wider font-bold">
+                        <tr>
+                            <th class="p-4">Concepto / Proveedor</th>
+                            <th class="p-4 text-right">Costo Total ($)</th>
+                            <th class="p-4 text-right">Pagado ($)</th>
+                            <th class="p-4 text-center">Estatus</th>
+                            <th class="p-4 text-center w-16">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="budget-tbody" class="divide-y divide-slate-100">
+                        <!-- Js fills this -->
+                    </tbody>
+                </table>
+                <div id="budget-empty" class="p-8 text-center text-slate-400 italic hidden">No hay gastos registrados aún.</div>
+            </div>
+        </div>
+    </div>
+</section>
+           
 
             <!-- SECCIÓN ESTADÍSTICAS & DASHBOARD LOGÍSTICO -->
 				<section id="crm-sec-stats" class="hidden flex-1 flex-col min-h-0 w-full overflow-y-auto custom-scrollbar pb-32 pr-2">
