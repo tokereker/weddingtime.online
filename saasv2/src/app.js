@@ -313,3 +313,82 @@ window.mostrarPinDemo = function() {
         icon: 'info', confirmButtonText: '<i class="fa-solid fa-copy"></i> Copiar', confirmButtonColor: '#10b981'
     }).then((res) => { if(res.isConfirmed) { navigator.clipboard.writeText(pinCalculado.toString()); window.Toast.fire({ icon: 'success', title: 'PIN copiado' }); } });
 };
+
+// ==========================================
+// MÓDULO DE PRESUPUESTO
+// ==========================================
+window.addBudgetItem = async function() {
+    // 1. Mostrar modal pidiendo los datos del gasto
+    const { value: formValues } = await Swal.fire({
+        title: 'Añadir Nuevo Gasto',
+        html: `
+            <input id="swal-concepto" class="swal2-input" placeholder="Nombre del proveedor o concepto">
+            <input id="swal-costo" type="number" class="swal2-input" placeholder="Costo Total Estimado ($)">
+            <input id="swal-pagado" type="number" class="swal2-input" placeholder="Cantidad ya pagada ($)">
+        `,
+        focusConfirm: false,
+        showCancelButton: true,
+        confirmButtonText: '<i class="fa-solid fa-check"></i> Guardar Gasto',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#3b82f6',
+        preConfirm: () => {
+            const concepto = document.getElementById('swal-concepto').value.trim();
+            const costo = parseFloat(document.getElementById('swal-costo').value) || 0;
+            const pagado = parseFloat(document.getElementById('swal-pagado').value) || 0;
+            
+            if (!concepto) {
+                Swal.showValidationMessage('Por favor, ingresa un concepto válido');
+                return false;
+            }
+            
+            return {
+                id: Date.now().toString(), // ID único basado en la fecha exacta
+                concepto: concepto,
+                costo: costo,
+                pagado: pagado,
+                estado: pagado >= costo ? 'Pagado' : 'Pendiente'
+            }
+        }
+    });
+
+    // 2. Si el usuario llenó los datos correctamente
+    if (formValues) {
+        try {
+            // Asegurarnos de que el arreglo de presupuesto exista en el estado actual
+            if (!window.state.presupuesto) {
+                window.state.presupuesto = [];
+            }
+            
+            // Añadir el nuevo gasto a nuestro estado global
+            window.state.presupuesto.push(formValues);
+
+            // 3. Guardar los cambios en Firebase usando tu función existente
+            if (typeof window.crmSave === 'function') {
+                window.crmSave();
+            }
+            
+            // 4. Registrar la acción en la bitácora de auditoría
+            window.logAction(`Añadió gasto de presupuesto: ${formValues.concepto}`);
+            
+            Swal.fire({
+                icon: 'success',
+                title: 'Guardado',
+                text: 'El gasto ha sido añadido con éxito.',
+                timer: 2000,
+                showConfirmButton: false
+            });
+            
+            // 5. Actualizar la interfaz visualmente
+            if (typeof window.crmRenderAll === 'function') {
+                window.crmRenderAll();
+            }
+            
+        } catch(error) {
+            console.error("Error al guardar presupuesto: ", error);
+            Swal.fire('Error', 'No se pudo guardar el gasto', 'error');
+        }
+    }
+};
+
+
+
