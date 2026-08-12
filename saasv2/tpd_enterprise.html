@@ -1005,26 +1005,5 @@
             <button onclick="window.sendTPDChat()" class="bg-blue-600 text-white rounded-xl w-10 h-10 flex items-center justify-center hover:bg-blue-700 shadow-md transition"><i class="fa-solid fa-paper-plane text-xs"></i></button>
         </div>
     </div>
-	
-    <!-- Asistente TPD Chat Independiente por Evento (Diseño V2) -->
-    <div id="tpd-fab" onclick="window.toggleTPDChat()" title="Asistente IA del Evento">
-        <i class="fa-solid fa-robot"></i>
-    </div>
-    <div id="tpd-chat-widget">
-        <div id="tpd-chat-header" onclick="window.toggleTPDChat()">
-            <span id="tpd-chat-title"><i class="fa-solid fa-brain mr-2"></i> Asistente de Evento</span>
-            <i class="fa-solid fa-chevron-down"></i>
-        </div>
-        <div id="tpd-chat-messages" class="custom-scrollbar">
-            <div class="tpd-msg bot" id="tpd-chat-welcome">Cargando contexto del evento...</div>
-        </div>
-        <div class="flex border-t border-slate-200 p-3 bg-white gap-2">
-            <!-- Evento de teclado modificado a onkeydown -->
-            <input type="text" id="tpd-chat-input" placeholder="Pregúntame sobre tus listas..." onkeydown="if(event.key === 'Enter') window.sendTPDChat()" class="flex-1 border-2 border-slate-100 rounded-xl px-4 py-2 text-sm outline-none focus:border-blue-400 transition bg-slate-50">
-            <button onclick="window.sendTPDChat()" class="bg-blue-600 text-white rounded-xl w-10 h-10 flex items-center justify-center hover:bg-blue-700 shadow-md transition"><i class="fa-solid fa-paper-plane text-xs"></i></button>
-        </div>
-    </div>
-    <script type="module" src="./src/app.js"></script>
-
 </body>
 </html>
