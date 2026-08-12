@@ -63,7 +63,7 @@
                     <input type="text" id="login-user" placeholder="ID de Usuario o Email" class="w-full border border-slate-700 p-4 rounded-2xl outline-none focus:border-blue-500 text-sm font-medium bg-slate-900/60 text-white placeholder-slate-500 transition shadow-inner">
                 </div>
                 <div class="relative w-full">
-                    <input type="password" id="login-pass" onkeypress="if(event.key === 'Enter') window.appLogin()" placeholder="Contraseña" class="w-full border border-slate-700 p-4 rounded-2xl outline-none focus:border-blue-500 text-sm font-medium pr-12 bg-slate-900/60 text-white placeholder-slate-500 transition shadow-inner">
+                    <input type="password" id="login-pass" onkeydown="if(event.key === 'Enter') window.appLogin()" placeholder="Contraseña" class="w-full border border-slate-700 p-4 rounded-2xl outline-none focus:border-blue-500 text-sm font-medium pr-12 bg-slate-900/60 text-white placeholder-slate-500 transition shadow-inner">
                     <button onclick="window.togglePassword('login-pass')" class="absolute right-4 top-4 text-slate-500 hover:text-blue-400 transition">
                         <i class="fa-solid fa-eye"></i>
                     </button>
@@ -400,7 +400,8 @@
                         
                         <div id="croquis-preview-container" class="ml-auto hidden items-center gap-2 bg-white p-1 rounded-lg border border-slate-200 shadow-sm">
                             <span class="text-[10px] font-bold text-slate-400 uppercase ml-2">Croquis Activo:</span>
-                            <img id="croquis-thumbnail" src="" class="h-8 w-auto rounded object-cover cursor-pointer hover:opacity-80" onclick="window.viewCroquisFull()" title="Ver Croquis">
+                            <!-- Se agregó atributo alt en img -->
+                            <img id="croquis-thumbnail" src="" alt="Miniatura del croquis activo" class="h-8 w-auto rounded object-cover cursor-pointer hover:opacity-80" onclick="window.viewCroquisFull()" title="Ver Croquis">
                             <button onclick="window.deleteCroquis()" class="text-red-400 hover:text-red-600 px-2 text-xs"><i class="fa-solid fa-times"></i></button>
                         </div>
                     </div>
@@ -469,33 +470,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Columna Derecha: App de Auto-Servicio del Invitado -->
-                    <div class="lg:col-span-1 space-y-6">
-                        <div class="bg-gradient-to-br from-slate-900 to-slate-800 p-6 rounded-3xl shadow-xl border border-slate-700 text-white">
-                            <h3 class="text-lg font-black mb-2 flex items-center gap-2 text-blue-400"><i class="fa-solid fa-mobile-screen"></i> App Modo Invitado</h3>
-                            <p class="text-xs text-slate-300 mb-5 leading-relaxed">Configura lo que verán tus invitados al escanear el código QR de su pase <b class="text-white">estando sentados en su mesa</b> durante la fiesta.</p>
-                            
-                            <div class="space-y-4">
-                                <div>
-                                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1"><i class="fa-solid fa-utensils"></i> Menú del Evento</label>
-                                    <textarea id="cfg-menu-text" onchange="window.crmUpdateConfig('menuText', this.value)" class="w-full bg-slate-900/50 border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-blue-500 transition min-h-[120px] custom-scrollbar" placeholder="Ej:&#10;Entrada: Crema de Elote&#10;Plato Fuerte: Lomo en salsa de ciruela&#10;Postre: Pastel de Chocolate"></textarea>
-                                </div>
-                                
-                                <div>
-                                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1"><i class="fa-brands fa-spotify text-emerald-400"></i> Enlace para pedir canciones (Spotify/Form)</label>
-                                    <input type="text" id="cfg-dj-link" onchange="window.crmUpdateConfig('djLink', this.value)" class="w-full bg-slate-900/50 border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-emerald-500 transition" placeholder="https://open.spotify.com/playlist/...">
-                                </div>
-                                
-                                <div class="bg-blue-500/20 border border-blue-500/30 p-3 rounded-xl text-xs text-blue-200 mt-2 flex items-start gap-2">
-                                    <i class="fa-solid fa-circle-info mt-0.5 text-blue-400"></i>
-                                    <span>Al guardar, el enlace QR de los pases mostrará automáticamente estos datos a los invitados.</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
             </section>
 
             <!-- SECCIÓN ESTADÍSTICAS & DASHBOARD LOGÍSTICO -->
@@ -751,7 +725,8 @@
 
             <div id="hview-croquis" class="hidden flex-col items-center w-full max-w-md mx-auto flex-1">
                 <div class="bg-slate-800 p-4 rounded-2xl border border-slate-700 w-full text-center mb-6">
-                    <img id="hostess-croquis-img" src="" class="w-full rounded-xl shadow-lg border border-slate-600 hidden">
+                    <!-- Se agregó atributo alt en img -->
+                    <img id="hostess-croquis-img" src="" alt="Croquis del salón del evento" class="w-full rounded-xl shadow-lg border border-slate-600 hidden">
                     <p id="hostess-no-croquis" class="text-sm text-slate-400 py-8 italic">Sin croquis subido.</p>
                 </div>
             </div>
@@ -885,7 +860,8 @@
     <div id="ticket-modal" class="fixed inset-0 bg-slate-900/90 items-center justify-center z-50 hidden glass p-4">
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm flex flex-col border border-slate-200 overflow-hidden">
             <div id="ticket-header-bg" class="p-8 pb-4 text-center relative text-white rounded-t-3xl overflow-hidden transition-colors duration-300 flex flex-col justify-between" style="min-height: 400px; background-color: #0f172a;">
-                <img id="ticket-bg-image" src="" class="absolute top-0 left-0 w-full h-[95%] object-cover opacity-0 transition-opacity duration-500 z-0 pointer-events-none">
+                <!-- Se agregó atributo alt en img -->
+                <img id="ticket-bg-image" src="" alt="Fondo decorativo del pase de acceso" class="absolute top-0 left-0 w-full h-[95%] object-cover opacity-0 transition-opacity duration-500 z-0 pointer-events-none">
                 <div id="ticket-dark-overlay" class="absolute top-0 left-0 w-full h-[95%] bg-slate-900/60 z-0 pointer-events-none hidden"></div>
                 <div class="relative z-10 flex flex-col h-full justify-between flex-1">
                     <div>
@@ -989,11 +965,12 @@
             <div class="tpd-msg bot" id="tpd-chat-welcome">Cargando contexto del evento...</div>
         </div>
         <div class="flex border-t border-slate-200 p-3 bg-white gap-2">
-            <input type="text" id="tpd-chat-input" placeholder="Pregúntame sobre tus listas..." onkeypress="if(event.key === 'Enter') window.sendTPDChat()" class="flex-1 border-2 border-slate-100 rounded-xl px-4 py-2 text-sm outline-none focus:border-blue-400 transition bg-slate-50">
+            <!-- Evento de teclado modificado a onkeydown -->
+            <input type="text" id="tpd-chat-input" placeholder="Pregúntame sobre tus listas..." onkeydown="if(event.key === 'Enter') window.sendTPDChat()" class="flex-1 border-2 border-slate-100 rounded-xl px-4 py-2 text-sm outline-none focus:border-blue-400 transition bg-slate-50">
             <button onclick="window.sendTPDChat()" class="bg-blue-600 text-white rounded-xl w-10 h-10 flex items-center justify-center hover:bg-blue-700 shadow-md transition"><i class="fa-solid fa-paper-plane text-xs"></i></button>
         </div>
     </div>
-		<script type="module" src="./src/app.js"></script>
+    <script type="module" src="./src/app.js"></script>
 
 </body>
 </html>
