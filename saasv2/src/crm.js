@@ -359,11 +359,18 @@ function createGuestCard(g, isUnassigned) {
 // 5. MÓDULO DE PRESUPUESTO
 // ==========================================
 window.crmRenderBudget = function() {
-    const tbody = document.getElementById('budget-tbody'); tbody.innerHTML = '';
+    const tbody = document.getElementById('budget-tbody'); 
+    if(tbody) tbody.innerHTML = '';
     const emptyState = document.getElementById('budget-empty');
     
-    document.getElementById('cfg-menu-text').value = window.state.config.menuText || '';
-    document.getElementById('cfg-dj-link').value = window.state.config.djLink || '';
+    // --- SOLUCIÓN AL ERROR AQUÍ ---
+    // Verificamos que los elementos existan en el HTML antes de asignarles un valor
+    const menuText = document.getElementById('cfg-menu-text');
+    if (menuText) menuText.value = window.state.config.menuText || '';
+    
+    const djLink = document.getElementById('cfg-dj-link');
+    if (djLink) djLink.value = window.state.config.djLink || '';
+    // ------------------------------
 
     if(!window.state.presupuesto) window.state.presupuesto = [];
     
@@ -392,15 +399,24 @@ window.crmRenderBudget = function() {
                 <button onclick="window.deleteBudgetItem(${item.id})" class="text-slate-400 hover:text-red-500 transition"><i class="fa-solid fa-trash-can text-xs"></i></button>
             </td>
         `;
-        tbody.appendChild(tr);
+        if(tbody) tbody.appendChild(tr);
     });
 
-    if(window.state.presupuesto.length === 0) { emptyState.classList.remove('hidden'); } else { emptyState.classList.add('hidden'); }
-    document.getElementById('budget-total').innerText = `$${total.toLocaleString('en-US')}`;
-    document.getElementById('budget-paid').innerText = `$${paid.toLocaleString('en-US')}`;
-    document.getElementById('budget-debt').innerText = `$${(total - paid).toLocaleString('en-US')}`;
+    if(window.state.presupuesto.length === 0) { 
+        if(emptyState) emptyState.classList.remove('hidden'); 
+    } else { 
+        if(emptyState) emptyState.classList.add('hidden'); 
+    }
+    
+    const budgetTotal = document.getElementById('budget-total');
+    if(budgetTotal) budgetTotal.innerText = `$${total.toLocaleString('en-US')}`;
+    
+    const budgetPaid = document.getElementById('budget-paid');
+    if(budgetPaid) budgetPaid.innerText = `$${paid.toLocaleString('en-US')}`;
+    
+    const budgetDebt = document.getElementById('budget-debt');
+    if(budgetDebt) budgetDebt.innerText = `$${(total - paid).toLocaleString('en-US')}`;
 };
-
 window.addAbono = function(id) {
     const item = window.state.presupuesto.find(i => i.id === id); if(!item) return;
     const today = new Date().toISOString().split('T')[0];
@@ -432,18 +448,46 @@ window.addAbono = function(id) {
         }
     });
 };
-
 window.addBudgetItem = function() {
     Swal.fire({
-        title: 'Añadir Gasto',
+        title: '<h3 class="text-2xl font-black text-slate-800 flex items-center justify-center gap-2 mt-2"><i class="fa-solid fa-file-invoice-dollar text-blue-500"></i> Nuevo Gasto</h3>',
         html: `
-            <input id="swal-b-concepto" class="swal2-input !m-0 !w-full !mb-3 text-sm" placeholder="Concepto (Ej: DJ, Salón, Banquete)">
-            <div class="grid grid-cols-2 gap-3">
-                <div><label class="text-[10px] text-slate-500 font-bold uppercase block text-left">Costo Total ($)</label><input type="number" id="swal-b-costo" class="swal2-input !m-0 !w-full text-center" value="0" min="0"></div>
-                <div><label class="text-[10px] text-slate-500 font-bold uppercase block text-left">Anticipo Pagado ($)</label><input type="number" id="swal-b-pagado" class="swal2-input !m-0 !w-full text-center" value="0" min="0"></div>
+            <div class="space-y-4 text-left px-2 mt-4">
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Concepto o Proveedor</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-pen absolute left-4 top-3.5 text-slate-400"></i>
+                        <input id="swal-b-concepto" type="text" class="w-full border-2 border-slate-200 rounded-xl p-3 pl-10 outline-none focus:border-blue-500 transition font-medium text-sm text-slate-700 bg-slate-50 focus:bg-white" placeholder="Ej: DJ, Salón, Banquete...">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Costo Total ($)</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-dollar-sign absolute left-4 top-3.5 text-slate-400"></i>
+                            <input type="number" id="swal-b-costo" class="w-full border-2 border-slate-200 rounded-xl p-3 pl-8 outline-none focus:border-blue-500 transition font-medium text-sm text-slate-700 bg-slate-50 focus:bg-white text-center" value="0" min="0">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Pagado ($)</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-hand-holding-dollar absolute left-4 top-3.5 text-emerald-500"></i>
+                            <input type="number" id="swal-b-pagado" class="w-full border-2 border-slate-200 rounded-xl p-3 pl-10 outline-none focus:border-emerald-500 transition font-medium text-sm text-slate-700 bg-slate-50 focus:bg-white text-center" value="0" min="0">
+                        </div>
+                    </div>
+                </div>
             </div>
         `,
-        showCancelButton: true, confirmButtonText: 'Guardar', confirmButtonColor: '#3b82f6',
+        showCancelButton: true, 
+        confirmButtonText: '<i class="fa-solid fa-check"></i> Guardar', 
+        confirmButtonColor: '#3b82f6',
+        cancelButtonText: 'Cancelar',
+        cancelButtonColor: '#94a3b8',
+        customClass: {
+            popup: 'rounded-3xl border border-slate-100 shadow-2xl',
+            confirmButton: 'rounded-xl font-bold px-6 py-2.5',
+            cancelButton: 'rounded-xl font-bold px-6 py-2.5'
+        },
         preConfirm: () => {
             const concepto = document.getElementById('swal-b-concepto').value.trim();
             const costo = parseFloat(document.getElementById('swal-b-costo').value) || 0;
@@ -455,41 +499,11 @@ window.addBudgetItem = function() {
         if(r.isConfirmed) {
             if(!window.state.presupuesto) window.state.presupuesto = [];
             window.state.presupuesto.push({ id: Date.now(), concepto: r.value.concepto, costo: r.value.costo, pagado: r.value.pagado });
-            window.crmSave(); window.crmRenderBudget(); window.Toast.fire({icon:'success', title:'Gasto registrado'}); window.logAction(`Registró un gasto: ${r.value.concepto}`);
+            window.crmSave(); 
+            window.crmRenderBudget(); 
+            window.Toast.fire({icon:'success', title:'Gasto registrado'}); 
+            window.logAction(`Registró un gasto: ${r.value.concepto}`);
         }
-    });
-};
-
-window.editBudgetItem = function(id) {
-    const item = window.state.presupuesto.find(i => i.id === id); if(!item) return;
-    Swal.fire({
-        title: 'Editar Gasto',
-        html: `
-            <input id="swal-b-concepto" class="swal2-input !m-0 !w-full !mb-3 text-sm" value="${item.concepto}">
-            <div class="grid grid-cols-2 gap-3">
-                <div><label class="text-[10px] text-slate-500 font-bold uppercase block text-left">Costo Total ($)</label><input type="number" id="swal-b-costo" class="swal2-input !m-0 !w-full text-center" value="${item.costo}" min="0"></div>
-                <div><label class="text-[10px] text-slate-500 font-bold uppercase block text-left">Monto Pagado ($)</label><input type="number" id="swal-b-pagado" class="swal2-input !m-0 !w-full text-center" value="${item.pagado}" min="0"></div>
-            </div>
-        `,
-        showCancelButton: true, confirmButtonText: 'Actualizar', confirmButtonColor: '#3b82f6',
-        preConfirm: () => {
-            const concepto = document.getElementById('swal-b-concepto').value.trim();
-            const costo = parseFloat(document.getElementById('swal-b-costo').value) || 0;
-            const pagado = parseFloat(document.getElementById('swal-b-pagado').value) || 0;
-            if(!concepto) { Swal.showValidationMessage('Escribe el concepto'); return false; }
-            return { concepto, costo, pagado };
-        }
-    }).then(r => {
-        if(r.isConfirmed) {
-            item.concepto = r.value.concepto; item.costo = r.value.costo; item.pagado = r.value.pagado;
-            window.crmSave(); window.crmRenderBudget(); window.Toast.fire({icon:'success', title:'Actualizado'}); window.logAction(`Actualizó un abono/gasto: ${r.value.concepto}`);
-        }
-    });
-};
-
-window.deleteBudgetItem = function(id) {
-    Swal.fire({ title: '¿Borrar Gasto?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444' }).then(r => {
-        if(r.isConfirmed) { window.state.presupuesto = window.state.presupuesto.filter(i => i.id !== id); window.crmSave(); window.crmRenderBudget(); window.logAction(`Borró un registro de gasto.`); }
     });
 };
 
