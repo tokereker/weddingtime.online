@@ -954,43 +954,58 @@
             </div>
         </div>
     </div>
-
-	<!-- Modal App Modo Invitado -->
-<div id="modal-app-invitado" class="fixed inset-0 bg-slate-900/80 items-center justify-center z-50 hidden glass p-4">
-    <div class="bg-gradient-to-br from-slate-900 to-slate-800 p-6 rounded-3xl shadow-xl border border-slate-700 text-white w-full max-w-md relative">
-        <!-- Botón cerrar -->
-        <button onclick="document.getElementById('modal-app-invitado').classList.replace('flex', 'hidden')" class="absolute top-4 right-4 text-slate-400 hover:text-white transition"><i class="fa-solid fa-times text-xl"></i></button>
-        
-        <h3 class="text-lg font-black mb-2 flex items-center gap-2 text-blue-400"><i class="fa-solid fa-mobile-screen"></i> App Modo Invitado</h3>
-        <p class="text-xs text-slate-300 mb-5 leading-relaxed">Configura lo que verán tus invitados al escanear el código QR de su pase <b class="text-white">estando sentados en su mesa</b>.</p>
-        
-        <div class="space-y-4">
-            <!-- Menú -->
-            <div>
-                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1"><i class="fa-solid fa-utensils"></i> Menú del Evento</label>
-                <textarea id="cfg-menu-text" onchange="window.crmUpdateConfig('menuText', this.value)" class="w-full bg-slate-900/50 border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-blue-500 transition min-h-[120px] custom-scrollbar" placeholder="Ej:&#10;Entrada: Crema de Elote&#10;Plato Fuerte: Lomo en salsa de ciruela&#10;Postre: Pastel de Chocolate"></textarea>
+<!-- Modal App Modo Invitado -->
+    <div id="modal-app-invitado" class="fixed inset-0 bg-slate-900/80 items-center justify-center z-50 hidden glass p-4">
+        <div class="bg-gradient-to-br from-slate-900 to-slate-800 p-6 rounded-3xl shadow-xl border border-slate-700 text-white w-full max-w-md relative">
+            <!-- Botón cerrar -->
+            <button onclick="document.getElementById('modal-app-invitado').classList.replace('flex', 'hidden')" class="absolute top-4 right-4 text-slate-400 hover:text-white transition"><i class="fa-solid fa-times text-xl"></i></button>
+            
+            <h3 class="text-lg font-black mb-2 flex items-center gap-2 text-blue-400"><i class="fa-solid fa-mobile-screen"></i> App Modo Invitado</h3>
+            <p class="text-xs text-slate-300 mb-5 leading-relaxed">Configura lo que verán tus invitados al escanear el código QR de su pase <b class="text-white">estando sentados en su mesa</b>.</p>
+            
+            <div class="space-y-4">
+                <!-- Menú -->
+                <div>
+                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1"><i class="fa-solid fa-utensils"></i> Menú del Evento</label>
+                    <textarea id="cfg-menu-text" onchange="window.crmUpdateConfig('menuText', this.value)" class="w-full bg-slate-900/50 border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-blue-500 transition min-h-[120px] custom-scrollbar" placeholder="Ej:&#10;Entrada: Crema de Elote&#10;Plato Fuerte: Lomo en salsa de ciruela&#10;Postre: Pastel de Chocolate"></textarea>
+                </div>
+                <!-- Fecha y Hora de Cierre RSVP -->
+                <div>
+                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">
+                        <i class="fa-solid fa-calendar-xmark text-amber-400 text-sm mr-1"></i> Fecha y Hora Límite (RSVP)
+                    </label>
+                    
+                    <input type="datetime-local" id="cfg-rsvp-deadline" style="color-scheme: dark;" onchange="window.crmUpdateConfig('rsvpDeadline', this.value)" class="w-full bg-slate-900/50 border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-amber-400 transition cursor-pointer shadow-inner">
+                    
+                    <p class="text-[10px] text-slate-400 mt-1.5">El invitado no podrá confirmar su asistencia después de este día y hora.</p>
+                </div>
             </div>
 
-			
-           <!-- Fecha y Hora de Cierre RSVP -->
-<div>
-    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">
-        <!-- Agregamos text-amber-400 para un color amarillo/naranja brillante y text-sm para hacerlo un poco más grande -->
-        <i class="fa-solid fa-calendar-xmark text-amber-400 text-sm mr-1"></i> Fecha y Hora Límite (RSVP)
-    </label>
-    
-    <!-- Agregamos style="color-scheme: dark;" para que el ícono nativo del navegador se vuelva blanco -->
-    <!-- Cambiamos focus:border-blue-500 por focus:border-amber-400 para que combine al hacer clic -->
-    <input type="datetime-local" id="cfg-rsvp-deadline" style="color-scheme: dark;" onchange="window.crmUpdateConfig('rsvpDeadline', this.value)" class="w-full bg-slate-900/50 border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-amber-400 transition cursor-pointer shadow-inner">
-    
-    <p class="text-[10px] text-slate-400 mt-1.5">El invitado no podrá confirmar su asistencia después de este día y hora.</p>
-<!-- Botón Restaurado: Guardar y cerrar -->
+            <!-- Botón Restaurado: Guardar y cerrar -->
             <button onclick="document.getElementById('modal-app-invitado').classList.replace('flex', 'hidden')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl shadow-lg transition mt-6 text-sm flex items-center justify-center gap-2">
                 <i class="fa-solid fa-check"></i> Guardar y Cerrar
             </button>
 
         </div>
-    </div>    
+    </div> 
+     <!-- Asistente TPD Chat Independiente por Evento (Diseño V2) -->
+    <div id="tpd-fab" onclick="window.toggleTPDChat()" title="Asistente IA del Evento">
+        <i class="fa-solid fa-robot"></i>
+    </div>
+    <div id="tpd-chat-widget">
+        <div id="tpd-chat-header" onclick="window.toggleTPDChat()">
+            <span id="tpd-chat-title"><i class="fa-solid fa-brain mr-2"></i> Asistente de Evento</span>
+            <i class="fa-solid fa-chevron-down"></i>
+        </div>
+        <div id="tpd-chat-messages" class="custom-scrollbar">
+            <div class="tpd-msg bot" id="tpd-chat-welcome">Cargando contexto del evento...</div>
+        </div>
+        <div class="flex border-t border-slate-200 p-3 bg-white gap-2">
+            <input type="text" id="tpd-chat-input" placeholder="Pregúntame sobre tus listas..." onkeydown="if(event.key === 'Enter') window.sendTPDChat()" class="flex-1 border-2 border-slate-100 rounded-xl px-4 py-2 text-sm outline-none focus:border-blue-400 transition bg-slate-50">
+            <button onclick="window.sendTPDChat()" class="bg-blue-600 text-white rounded-xl w-10 h-10 flex items-center justify-center hover:bg-blue-700 shadow-md transition"><i class="fa-solid fa-paper-plane text-xs"></i></button>
+        </div>
+    </div>
+	
     <!-- Asistente TPD Chat Independiente por Evento (Diseño V2) -->
     <div id="tpd-fab" onclick="window.toggleTPDChat()" title="Asistente IA del Evento">
         <i class="fa-solid fa-robot"></i>
