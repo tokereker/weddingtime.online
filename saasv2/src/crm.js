@@ -2,9 +2,7 @@
 import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 import { db } from './auth.js';
 
-// ==========================================
 // 1. GUARDADO Y CARGA DE DATOS (NÚCLEO)
-// ==========================================
 window.crmSave = async function() {
     try {
         const act = window.impersonatingId || window.currentUser;
@@ -71,19 +69,18 @@ window.crmUpdateConfig = function(k, v) {
 };
 
 window.crmSwitchTab = function(tab) {
-	// --- NUEVO: Limpiar buscadores al cambiar de pestaña ---
     const searchGuests = document.getElementById('crm-search');
     if (searchGuests && searchGuests.value !== '') {
         searchGuests.value = ''; 
-        if (typeof window.crmRenderGuests === 'function') window.crmRenderGuests(); // Resetea lista
+        if (typeof window.crmRenderGuests === 'function') window.crmRenderGuests(); 
     }
     
     const searchTables = document.getElementById('crm-tables-search');
     if (searchTables && searchTables.value !== '') {
         searchTables.value = ''; 
-        if (typeof window.searchInTables === 'function') window.searchInTables(); // Resetea mesas
+        if (typeof window.searchInTables === 'function') window.searchInTables(); 
     }
-	
+    
     ['guests', 'tables', 'stats', 'budget'].forEach(t => {
         const sec = document.getElementById(`crm-sec-${t}`); 
         if(sec) { sec.classList.remove('flex'); sec.classList.add('hidden'); }
@@ -100,9 +97,7 @@ window.crmSwitchTab = function(tab) {
     if(tab === 'budget') window.crmRenderBudget();
 };
 
-// ==========================================
 // 2. MÓDULO DE INVITADOS
-// ==========================================
 window.openAddGuestModal = function() {
     const mesaSelect = document.getElementById('modal-guest-mesa');
     mesaSelect.innerHTML = '<option value="0">Sin Asignar</option>' + window.state.mesas.map(m => `<option value="${m.id}">${m.nombre}</option>`).join('');
@@ -145,7 +140,6 @@ window.crmRenderGuests = function() {
         let stColor = g.status === 'Confirmado' ? 'text-emerald-700 bg-emerald-100 border-emerald-200' : (g.status === 'Declinado' ? 'text-red-700 bg-red-100 border-red-200' : 'text-amber-700 bg-amber-100 border-amber-200');
         let ads = parseInt(g.adultos !== undefined ? g.adultos : g.pases) || 0; let nns = parseInt(g.ninos) || 0;
 
-        // Inyectamos el HTML de las filas (Mismo de tu código original, solo asegúrate de llamar a las funciones con window.)
         tr.innerHTML = `
             <td class="p-4 text-center w-12"><input type="checkbox" class="g-cb w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer" value="${g.id}"></td>
             <td class="p-4"><div class="flex items-center gap-2 font-bold text-slate-800">${g.nombre} <button onclick="window.editGuestName(${g.id})" class="text-slate-400 hover:text-blue-600 transition"><i class="fa-solid fa-pencil text-xs"></i></button></div></td>
@@ -208,9 +202,41 @@ window.crmDeleteAllGuests = function() {
     });
 };
 
-// ==========================================
 // 3. MÓDULO DE MESAS Y CROQUIS (Acomodo)
-// ==========================================
+window.searchInTables = function() {
+    const query = document.getElementById('crm-tables-search').value.toLowerCase().trim();
+    const unassignedCards = document.querySelectorAll('#crm-unassigned-list .guest-card');
+    unassignedCards.forEach(card => {
+        const name = card.innerText.toLowerCase();
+        if (name.includes(query)) {
+            card.style.display = ''; 
+        } else {
+            card.style.display = 'none';
+        }
+    });
+    const tables = document.querySelectorAll('#crm-tables-grid > div'); 
+    tables.forEach(table => {
+        const guestsInTable = table.querySelectorAll('.guest-card');
+        guestsInTable.forEach(guest => {
+            const guestName = guest.innerText.toLowerCase();
+            if (guestName.includes(query)) {
+                guest.style.opacity = '1';
+                if (query !== '') {
+                    guest.style.border = '2px solid #3b82f6'; 
+                    guest.style.boxShadow = '0 0 10px rgba(59, 130, 246, 0.3)';
+                } else {
+                    guest.style.border = 'none'; 
+                    guest.style.boxShadow = 'none';
+                }
+            } else {
+                guest.style.opacity = query !== '' ? '0.2' : '1';
+                guest.style.border = 'none';
+                guest.style.boxShadow = 'none';
+            }
+        });
+    });
+};
+
 window.assignTable = function(gId, tId) { window.state.invitados.find(g => g.id === gId).mesa = parseInt(tId); window.crmSave(); window.crmRenderTables(); };
 window.addMultipleTables = function() { 
     let qty = parseInt(document.getElementById('num-tables-add').value) || 1; 
@@ -273,7 +299,6 @@ window.randomizeTables = function() {
     window.logAction("Ejecutó el Llenado Inteligente de Mesas.");
 };
 
-// ... Funciones Drag and drop de la tabla
 window.allowDrop = function(ev) { ev.preventDefault(); ev.currentTarget.classList.add('dragover'); };
 window.leaveDrop = function(ev) { ev.currentTarget.classList.remove('dragover'); };
 window.dragGuest = function(ev, id) { ev.dataTransfer.setData("text/plain", id); setTimeout(() => ev.target.classList.add('dragging'), 0); };
@@ -284,9 +309,8 @@ window.dropGuest = function(ev, tableId) {
     window.state.invitados.find(g => g.id === gId).mesa = parseInt(tableId); 
     window.crmSave(); window.crmRenderTables(); 
 };
-// ==========================================
+
 // 4. CROQUIS Y RENDERIZADO DE MESAS
-// ==========================================
 window.uploadCroquis = function(e) {
     const file = e.target.files[0]; if(!file) return; const reader = new FileReader();
     reader.onload = function(ev) {
@@ -355,22 +379,17 @@ function createGuestCard(g, isUnassigned) {
     return card;
 }
 
-// ==========================================
 // 5. MÓDULO DE PRESUPUESTO
-// ==========================================
 window.crmRenderBudget = function() {
     const tbody = document.getElementById('budget-tbody'); 
     if(tbody) tbody.innerHTML = '';
     const emptyState = document.getElementById('budget-empty');
     
-    // --- SOLUCIÓN AL ERROR AQUÍ ---
-    // Verificamos que los elementos existan en el HTML antes de asignarles un valor
     const menuText = document.getElementById('cfg-menu-text');
     if (menuText) menuText.value = window.state.config.menuText || '';
     
     const djLink = document.getElementById('cfg-dj-link');
     if (djLink) djLink.value = window.state.config.djLink || '';
-    // ------------------------------
 
     if(!window.state.presupuesto) window.state.presupuesto = [];
     
@@ -479,6 +498,65 @@ window.addAbono = function(id) {
     });
 };
 
+window.addBudgetItem = function() {
+    Swal.fire({
+        title: '<h3 class="text-2xl font-black text-slate-800 flex items-center justify-center gap-2 mt-2"><i class="fa-solid fa-file-invoice-dollar text-blue-500"></i> Nuevo Gasto</h3>',
+        html: `
+            <div class="space-y-4 text-left px-2 mt-4">
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Concepto o Proveedor</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-pen absolute left-4 top-3.5 text-slate-400"></i>
+                        <input id="swal-b-concepto" type="text" class="w-full border-2 border-slate-200 rounded-xl p-3 pl-10 outline-none focus:border-blue-500 transition font-medium text-sm text-slate-700 bg-slate-50 focus:bg-white" placeholder="Ej: DJ, Salón, Banquete...">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Costo Total ($)</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-dollar-sign absolute left-4 top-3.5 text-slate-400"></i>
+                            <input type="number" id="swal-b-costo" class="w-full border-2 border-slate-200 rounded-xl p-3 pl-8 outline-none focus:border-blue-500 transition font-medium text-sm text-slate-700 bg-slate-50 focus:bg-white text-center" value="0" min="0">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Pagado ($)</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-hand-holding-dollar absolute left-4 top-3.5 text-emerald-500"></i>
+                            <input type="number" id="swal-b-pagado" class="w-full border-2 border-slate-200 rounded-xl p-3 pl-10 outline-none focus:border-emerald-500 transition font-medium text-sm text-slate-700 bg-slate-50 focus:bg-white text-center" value="0" min="0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `,
+        showCancelButton: true, 
+        confirmButtonText: '<i class="fa-solid fa-check"></i> Guardar', 
+        confirmButtonColor: '#3b82f6',
+        cancelButtonText: 'Cancelar',
+        cancelButtonColor: '#94a3b8',
+        customClass: {
+            popup: 'rounded-3xl border border-slate-100 shadow-2xl',
+            confirmButton: 'rounded-xl font-bold px-6 py-2.5',
+            cancelButton: 'rounded-xl font-bold px-6 py-2.5'
+        },
+        preConfirm: () => {
+            const concepto = document.getElementById('swal-b-concepto').value.trim();
+            const costo = parseFloat(document.getElementById('swal-b-costo').value) || 0;
+            const pagado = parseFloat(document.getElementById('swal-b-pagado').value) || 0;
+            if(!concepto) { Swal.showValidationMessage('Escribe el concepto del gasto'); return false; }
+            return { concepto, costo, pagado };
+        }
+    }).then(r => {
+        if(r.isConfirmed) {
+            if(!window.state.presupuesto) window.state.presupuesto = [];
+            window.state.presupuesto.push({ id: Date.now(), concepto: r.value.concepto, costo: r.value.costo, pagado: r.value.pagado });
+            if (typeof window.crmSave === 'function') window.crmSave(); 
+            if (typeof window.crmRenderBudget === 'function') window.crmRenderBudget(); 
+            window.Toast.fire({icon:'success', title:'Gasto registrado'}); 
+            window.logAction(`Registró un gasto: ${r.value.concepto}`);
+        }
+    });
+};
+
 window.editBudgetItem = function(id) {
     const item = window.state.presupuesto.find(i => String(i.id) === String(id)); 
     if(!item) return;
@@ -572,9 +650,7 @@ window.deleteBudgetItem = function(id) {
 };
 
 
-// ==========================================
 // 6. ESTADÍSTICAS Y CRONOGRAMA
-// ==========================================
 window.crmRenderStats = function() {
     let totalGeneral = 0, conf = 0, decl = 0, ninosTotales = 0, adultosTotales = 0, recuperados = 0;
     window.state.invitados.forEach(g => {
@@ -630,9 +706,7 @@ window.generateTimeline = function(adultosTotales) {
     document.getElementById('st-timeline').innerHTML = html;
 };
 
-// ==========================================
 // 7. EXPORTACIONES E IMPORTACIONES
-// ==========================================
 window.downloadExcelTemplate = function() { const ws = XLSX.utils.json_to_sheet([{"Nombre": "Familia Ejemplo (Borrar)", "Adultos": 2, "Niños": 1, "WhatsApp": "1234567890", "Grupo": "Familia"}]); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Plantilla"); XLSX.writeFile(wb, `Plantilla_Invitados.xlsx`); };
 
 window.crmExportExcel = function() {
@@ -665,7 +739,6 @@ window.exportStatsExcel = function() {
     const stats = [
         { Categoria: "Asistencia", Item: "Lugares Totales", Valor: document.getElementById('st-tot').innerText },
         { Categoria: "Asistencia", Item: "Confirmados", Valor: document.getElementById('st-conf').innerText },
-        // ... (resto de valores)
         { Categoria: "Staff / Extras", Item: "Snacks Trasnoche", Valor: document.getElementById('st-torna-snacks').innerText }
     ];
     const ws = XLSX.utils.json_to_sheet(stats); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Logistica"); XLSX.writeFile(wb, `Logistica_${window.impersonatingId||window.currentUser}.xlsx`);
@@ -691,7 +764,6 @@ window.exportStatsPDF = function() {
             ['Pases Recuperados (Libres)', document.getElementById('st-recup').innerText]
         ], [59, 130, 246]); 
         
-        // Agregar las otras tablas al PDF
         addTable('Decoracion y Flores', [
             ['Centros de Mesa Requeridos', document.getElementById('st-centros').innerText],
             ['Flores Totales Estimadas', document.getElementById('st-flores-totales').innerText]
@@ -729,9 +801,7 @@ window.crmImportExcel = function(e) {
     reader.readAsArrayBuffer(f); e.target.value = '';
 };
 
-// ==========================================
 // 8. TICKET QR, WA Y NOTIFICACIONES
-// ==========================================
 window.uploadTicketBg = function(e) {
     const file = e.target.files[0]; if(!file) return; const reader = new FileReader();
     reader.onload = function(ev) {
@@ -818,19 +888,13 @@ window.showTicketVisual = function(id) {
     const qrContainer = document.getElementById('ticket-qrcode'); qrContainer.innerHTML = ''; 
     const activeTarget = window.impersonatingId || window.currentUser; 
     
-    // =========================================================================
-    // ACTUALIZACIÓN FASE 2: REDIRECCIÓN AL HUB DEL INVITADO (Subdominios)
-    // =========================================================================
     const map = { "XV Años": "xvana", "Bautizo": "bautizo", "Primera Comunión": "comunion", "Confirmación": "confirmacion", "Primera Comunión y Confirmación": "comunion", "Cumpleaños": "cumple", "Boda": "boda" };
     const subdominio = map[window.currentEventType] || "boda";
     const enlaceDinamico = `${subdominio}${activeTarget}`.replace(/\s+/g, '').toLowerCase();
     
-    // El QR abre la experiencia interactiva (Menú, DJ, Mesero) manteniendo la 'u' para la Hostess
     const hubUrl = `https://${enlaceDinamico}.tupasedigital.online/invitado.html?u=${activeTarget}&id=${guest.id}`;
     
-    // 👇 ESTA ES LA LÍNEA QUE DIBUJA EL QR (Asegúrate de que no falte) 👇
     new QRCode(qrContainer, { text: hubUrl, width: 140, height: 140, colorDark : "#1e293b", colorLight : "#ffffff", correctLevel : QRCode.CorrectLevel.H });
-    // =========================================================================
     
     document.getElementById('ticket-modal').classList.remove('hidden'); document.getElementById('ticket-modal').classList.add('flex');
 };
