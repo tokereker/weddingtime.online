@@ -80,8 +80,20 @@ window.sendTPDChat = function() {
             reply = `Tienes ${window.state.mesas.length} mesas (Capacidad: <b>${capacidad} personas</b>). Tienes <b>${totalConfirmados} confirmados</b>.`;
         }
         else if (/presupuesto|dinero|gasto|pagado|deuda|cobro|costo/.test(text)) {
-            let stTotal = window.state.presupuesto.reduce((sum, item) => sum + item.costo, 0);
-            let stPaid = window.state.presupuesto.reduce((sum, item) => sum + item.pagado, 0);
+            let stTotal = 0;
+            let stPaid = 0;
+            
+            window.state.presupuesto.forEach(item => {
+                let totalAbonado = 0;
+                if (item.abonos && item.abonos.length > 0) {
+                    totalAbonado = item.abonos.reduce((sum, abono) => sum + abono.monto, 0);
+                } else if (item.pagado > 0) {
+                    totalAbonado = item.pagado;
+                }
+                stTotal += item.costo;
+                stPaid += totalAbonado;
+            });
+            
             reply = `💰 <b>Resumen Financiero:</b><br>• Tu evento costará aprox: <b>$${stTotal.toLocaleString('en-US')}</b><br>• Has pagado: <b>$${stPaid.toLocaleString('en-US')}</b><br>• Tienes una deuda de: <b>$${(stTotal - stPaid).toLocaleString('en-US')}</b>`;
         }
         else {
