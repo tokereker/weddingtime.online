@@ -1,4 +1,4 @@
-// 1. IMPORTACIONES
+// src/app.js
 import './auth.js';
 import './admin.js';
 import './crm.js';
@@ -142,21 +142,18 @@ window.saveWelcomeEventType = async function() {
 window.subscribeToUser = function(user) {
     if (window.unsubscribe) window.unsubscribe();
     
-    // --- NUEVO: Limpiar los buscadores al cargar un nuevo evento ---
     const searchGuests = document.getElementById('crm-search');
-    if (searchGuests) searchGuests.value = ''; // Limpia buscador de invitados
+    if (searchGuests) searchGuests.value = ''; 
     
     const searchTables = document.getElementById('crm-tables-search');
     if (searchTables) {
-        searchTables.value = ''; // Limpia buscador de mesas
-        if (typeof window.searchInTables === 'function') window.searchInTables(); // Resetea la vista
+        searchTables.value = ''; 
+        if (typeof window.searchInTables === 'function') window.searchInTables(); 
     }
-    // --------------------------------------------------------------
 
     const docRef = doc(db, 'artifacts', 'weddingflow', 'users', user);
     
     window.unsubscribe = onSnapshot(docRef, (docSnap) => {
-   
         if (docSnap.exists()) {
             const data = docSnap.data();
             window.state.invitados = data.invitados || []; window.state.mesas = data.mesas || window.state.mesas; window.state.config = data.config || window.state.config;
@@ -196,6 +193,9 @@ window.subscribeToUser = function(user) {
             const tabBudget = document.getElementById('tab-budget'); if (tabBudget) tabBudget.style.display = window.isPremiumUser ? 'block' : 'none';
             const waPremiumContainer = document.getElementById('wa-premium-link-container'); const waCheckbox = document.getElementById('wa-include-link');
             if (waPremiumContainer && waCheckbox) { waPremiumContainer.style.display = window.isPremiumUser ? 'flex' : 'none'; waCheckbox.checked = window.isPremiumUser; waCheckbox.disabled = !window.isPremiumUser; }
+            
+            const btnAppInvitado = document.getElementById('btn-app-invitado');
+            if (btnAppInvitado) { btnAppInvitado.style.display = window.isPremiumUser ? 'flex' : 'none'; }
 
             if(typeof window.crmRenderAll === 'function') window.crmRenderAll();
             if(typeof window.initEventAssistant === 'function') window.initEventAssistant();
@@ -245,6 +245,7 @@ window.startDemoEnvironment = async function() {
         window.isPremiumUser = true;
         const premiumDesign = document.getElementById('crm-premium-design'); if (premiumDesign) premiumDesign.style.display = window.isPremiumUser ? 'flex' : 'none';
         const tabBudget = document.getElementById('tab-budget'); if (tabBudget) tabBudget.style.display = window.isPremiumUser ? 'block' : 'none';
+        const btnAppInvitado = document.getElementById('btn-app-invitado'); if (btnAppInvitado) btnAppInvitado.style.display = window.isPremiumUser ? 'flex' : 'none';
 
         document.getElementById('view-login').classList.add('hidden'); document.getElementById('view-login').classList.remove('flex');
         document.getElementById('view-crm').classList.remove('hidden'); document.getElementById('view-crm').classList.add('flex');
@@ -259,48 +260,6 @@ window.startDemoEnvironment = async function() {
     } else { Swal.fire({ title: 'Acceso Denegado', text: 'PIN incorrecto.', icon: 'error' }); }
 };
 
-	// BUSCADOR EN TIEMPO REAL PARA EL ACOMODO DE MESAS
-	window.searchInTables = function() {
-		const query = document.getElementById('crm-tables-search').value.toLowerCase().trim();
-		
-		// 1. Filtrar en la columna de "Sin Asignar"
-		const unassignedCards = document.querySelectorAll('#crm-unassigned-list .guest-card');
-		unassignedCards.forEach(card => {
-			const name = card.innerText.toLowerCase();
-			if (name.includes(query)) {
-				card.style.display = ''; // CORRECCIÓN: Dejamos comillas vacías para no romper el Flexbox
-			} else {
-				card.style.display = 'none';
-			}
-		});
-
-		// 2. Resaltar invitados en el Grid de Mesas (Sin ocultar la mesa)
-		const tables = document.querySelectorAll('#crm-tables-grid > div'); 
-		
-		tables.forEach(table => {
-			const guestsInTable = table.querySelectorAll('.guest-card');
-			
-			guestsInTable.forEach(guest => {
-				const guestName = guest.innerText.toLowerCase();
-				if (guestName.includes(query)) {
-					guest.style.opacity = '1';
-					if (query !== '') {
-						guest.style.border = '2px solid #3b82f6'; 
-						guest.style.boxShadow = '0 0 10px rgba(59, 130, 246, 0.3)';
-					} else {
-						guest.style.border = 'none'; 
-						guest.style.boxShadow = 'none';
-					}
-				} else {
-					guest.style.opacity = query !== '' ? '0.2' : '1';
-					guest.style.border = 'none';
-					guest.style.boxShadow = 'none';
-				}
-			});
-		});
-	};
-
-
 window.mostrarPinDemo = function() {
     let usos = parseInt(localStorage.getItem('demo_pin_uses') || '0');
     const now = new Date(); const dia = now.getDate(); const mes = now.getMonth() + 1; const hora = now.getHours();
@@ -313,7 +272,3 @@ window.mostrarPinDemo = function() {
         icon: 'info', confirmButtonText: '<i class="fa-solid fa-copy"></i> Copiar', confirmButtonColor: '#10b981'
     }).then((res) => { if(res.isConfirmed) { navigator.clipboard.writeText(pinCalculado.toString()); window.Toast.fire({ icon: 'success', title: 'PIN copiado' }); } });
 };
-
-
-
-
