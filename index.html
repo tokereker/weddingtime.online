@@ -64,22 +64,17 @@
 </head>
 <body class="text-slate-100 antialiased selection:bg-amber-500 selection:text-white">
 
-    <!-- NAVEGACIÓN SUPERIOR CON EL NUEVO LOGO VECTORIAL -->
+    <!-- NAVEGACIÓN SUPERIOR CON LOGO VECTORIAL -->
     <nav class="fixed top-0 w-full z-50 px-6 py-5 lg:px-12 flex justify-between items-center bg-gradient-to-b from-slate-950/90 to-transparent backdrop-blur-sm">
         
         <!-- LOGO NUEVO TUPASEDIGITAL (SVG) -->
         <a href="#" class="flex items-center gap-3 group">
             <svg class="w-10 h-10 transform group-hover:rotate-6 transition duration-300" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- Boleto / Pase Digital Base -->
                 <rect x="15" y="20" width="70" height="60" rx="12" fill="url(#gold-grad)" stroke="#ffffff" stroke-width="2"/>
-                <!-- Muescas laterales de boleto -->
                 <circle cx="15" cy="50" r="6" fill="#0b0f17"/>
                 <circle cx="85" cy="50" r="6" fill="#0b0f17"/>
-                <!-- Línea punteada de pase -->
                 <line x1="38" y1="20" x2="38" y2="80" stroke="#0b0f17" stroke-width="2" stroke-dasharray="4 4"/>
-                <!-- Estrella / Destello central -->
                 <path d="M62 38L65 46L73 49L65 52L62 60L59 52L51 49L59 46L62 38Z" fill="#ffffff"/>
-                <!-- Degradado Dorado para el Logo -->
                 <defs>
                     <linearGradient id="gold-grad" x1="15" y1="20" x2="85" y2="80" gradientUnits="userSpaceOnUse">
                         <stop stop-color="#F3E5AB"/>
@@ -104,20 +99,16 @@
     <!-- SECCIÓN HERO CON VIDEO MULTIEVENTO DE FONDO -->
     <header class="relative h-screen min-h-[650px] flex items-center justify-center text-center px-4 overflow-hidden">
         
-        <!-- IMAGEN DE RESPALDO SI FALLA EL VIDEO (Luces neutras de celebración) -->
         <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=2070')] bg-cover bg-center animate-zoom"></div>
 
-        <!-- VIDEO DE FONDO EN BUCLE (Luces/Bokeh de fiesta neutro y elegante) -->
         <video id="hero-video" class="absolute inset-0 w-full h-full object-cover pointer-events-none scale-105 z-0" autoplay loop muted playsinline webkit-playsinline preload="auto">
             <source src="https://cdn.coverr.co/videos/coverr-golden-lights-background-4409/1080p.mp4" type="video/mp4">
             <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-gold-lights-background-41552-large.mp4" type="video/mp4">
         </video>
 
-        <!-- CAPA DE OSCURECIMIENTO Y DEGRADADO ELEGANTE -->
         <div class="absolute inset-0 bg-gradient-to-t from-[#0b0f17] via-slate-950/75 to-slate-950/65 z-10"></div>
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-[120px] pointer-events-none z-10"></div>
 
-        <!-- CONTENIDO PRINCIPAL SOBRE EL VIDEO -->
         <div class="relative z-20 max-w-4xl mx-auto px-4 mt-12">
             
             <div class="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 text-gold px-4 py-1.5 rounded-full text-xs font-bold mb-6 tracking-widest uppercase backdrop-blur-md">
@@ -133,21 +124,17 @@
                 Cada evento tiene su propia esencia. Diseñamos experiencias web interactivas a la medida de tu celebración con pases QR, mapa GPS y confirmación RSVP en tiempo real.
             </p>
             
-            <!-- BOTONES DE ACCIÓN PRINCIPALES -->
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <!-- Botón de Demo Real -->
                 <a href="wedding/bodaWC.html" target="_blank" class="w-full sm:w-auto bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-extrabold py-4 px-8 rounded-full shadow-[0_0_30px_rgba(212,175,55,0.4)] transition duration-300 flex items-center justify-center gap-3 transform hover:-translate-y-1">
                     <i class="fa-solid fa-eye text-lg"></i> Ver Ejemplo Demo Real
                 </a>
 
-                <!-- Botón de Cotización por WhatsApp -->
                 <a href="https://wa.me/522202662703?text=Hola,%20vi%20su%20p%C3%A1gina%20web%20y%20me%20gustar%C3%ADa%20cotizar%20una%20invitaci%C3%B3n%20personalizada%20para%20mi%20evento." target="_blank" class="w-full sm:w-auto glass-panel border border-white/20 hover:border-amber-400/50 text-white font-bold py-4 px-8 rounded-full transition duration-300 flex items-center justify-center gap-2">
                     <i class="fa-brands fa-whatsapp text-emerald-400 text-xl"></i> Cotizar mi Diseño
                 </a>
             </div>
         </div>
 
-        <!-- Indicador de Desplazamiento Flotante -->
         <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 animate-float text-slate-400">
             <a href="#personalizacion" class="flex flex-col items-center gap-1 text-xs uppercase tracking-widest hover:text-gold transition">
                 <span>Descubre Más</span>
@@ -159,13 +146,11 @@
     <!-- SECCIÓN DE PERSONALIZACIÓN Y DISEÑO ÚNICO -->
     <section id="personalizacion" class="py-24 px-6 max-w-7xl mx-auto relative z-20">
         <div class="text-center max-w-3xl mx-auto mb-16">
-            <h2 class="text-3xl sm:text-5xl font-bold text-white mb-4 fuente-elegante">Sin Plantillas Genericas</h2>
+            <h2 class="text-3xl sm:text-5xl font-bold text-white mb-4 fuente-elegante">Sin Plantillas Genéricas</h2>
             <p class="text-slate-400 text-base sm:text-lg">Creamos la estructura, los tonos, la música y las fuentes adaptadas exactamente al concepto de tu fiesta especial.</p>
         </div>
 
-        <!-- REJILLA DE CARACTERÍSTICAS VIP -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            
             <div class="glass-panel p-8 rounded-3xl hover:border-amber-500/40 transition duration-500 group">
                 <div class="w-14 h-14 bg-amber-500/10 border border-amber-500/30 rounded-2xl flex items-center justify-center text-gold text-2xl mb-6 group-hover:scale-110 transition duration-300">
                     <i class="fa-solid fa-palette"></i>
@@ -189,24 +174,22 @@
                 <h3 class="text-xl font-bold text-white mb-3 fuente-elegante">Música & Peticiones DJ</h3>
                 <p class="text-sm text-slate-400 leading-relaxed">Sube tu música favorita de fondo e interactúa permitiendo que los invitados propongan canciones para el evento.</p>
             </div>
-
         </div>
     </section>
 
-    <!-- SECCIÓN DE PLANES Y PRECIOS (4 PAQUETES INCLUYENDO IA DE $50 MXN) -->
+    <!-- SECCIÓN DE PLANES Y PRECIOS MULTI-MÉTODO DE PAGO -->
     <section id="planes" class="py-24 bg-slate-950 border-t border-slate-800/80 relative overflow-hidden z-20">
         <div class="max-w-7xl mx-auto px-6">
             
             <div class="text-center max-w-3xl mx-auto mb-16">
-                <span class="text-gold font-bold tracking-widest uppercase text-xs mb-2 block">Tarifas Transparentes</span>
+                <span class="text-gold font-bold tracking-widest uppercase text-xs mb-2 block">Múltiples Formas de Pago</span>
                 <h2 class="text-3xl sm:text-5xl font-bold text-white mb-4 fuente-elegante">Elige el Plan Perfecto para tu Evento</h2>
-                <p class="text-slate-400 text-base sm:text-lg">Aceptamos tarjetas de crédito, débito y pagos en efectivo en OXXO.</p>
+                <p class="text-slate-400 text-base sm:text-lg">Pagos seguros con Tarjeta, Efectivo en OXXO y hasta 12 Meses sin Intereses.</p>
             </div>
 
-            <!-- REJILLA ADAPTADA A 4 COLUMNAS PARA INCLUIR LA OPCIÓN DE $50 MXN -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
                 
-                <!-- PLAN BÁSICO IA: INVITACIÓN SENCILLA AUTOMÁTICA ($50 MXN) -->
+                <!-- PLAN BÁSICO IA ($50 MXN) -->
                 <div class="glass-panel p-6 rounded-3xl text-center flex flex-col justify-between border border-amber-500/40 hover:border-amber-400 transition duration-300 relative">
                     <span class="bg-amber-500/20 text-gold font-bold text-[9px] uppercase tracking-widest px-3 py-1 rounded-full absolute -top-3 left-1/2 -translate-x-1/2 border border-amber-500/30 whitespace-nowrap">
                         <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Autoconfigurable IA
@@ -214,20 +197,23 @@
                     <div>
                         <span class="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-2 mt-2">Sencilla</span>
                         <h3 class="text-xl font-bold text-white mb-3 fuente-elegante">Invitación Exprés IA</h3>
-                        <div class="mb-6">
+                        <div class="mb-4">
                             <span class="text-4xl font-black text-white">$50</span>
                             <span class="text-xs font-bold text-gold">MXN</span>
                         </div>
-                        <ul class="text-left text-xs text-slate-300 space-y-3 mb-8">
+                        <ul class="text-left text-xs text-slate-300 space-y-3 mb-6">
                             <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Generada con IA TPD</li>
                             <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Datos del Evento (Fecha, Hora, Lugar)</li>
                             <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Mapa GPS + Botón WhatsApp</li>
                             <li class="flex items-center gap-2 text-slate-500 line-through"><i class="fa-solid fa-xmark"></i> Sin CRM de Mesas ni Hostess</li>
                         </ul>
                     </div>
-                    <button onclick="abrirModalIA()" class="w-full bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-slate-950 font-extrabold py-3 px-4 rounded-xl transition duration-300 text-xs flex items-center justify-center gap-2 shadow-md">
-                        <i class="fa-solid fa-bolt"></i> Crear por $50 MXN
-                    </button>
+                    <div>
+                        <button onclick="abrirModalIA()" class="w-full bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-slate-950 font-extrabold py-3 px-4 rounded-xl transition duration-300 text-xs flex items-center justify-center gap-2 shadow-md mb-2">
+                            <i class="fa-solid fa-bolt"></i> Crear por $50 MXN
+                        </button>
+                        <p class="text-[9px] text-slate-400"><i class="fa-solid fa-credit-card mr-1"></i> Tarjeta / OXXO</p>
+                    </div>
                 </div>
 
                 <!-- PLAN 1: SOLO INVITACIÓN WEB ($499 MXN) -->
@@ -235,21 +221,23 @@
                     <div>
                         <span class="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-2 mt-2">Diseño a Medida</span>
                         <h3 class="text-xl font-bold text-white mb-3 fuente-elegante">Solo Invitación Web</h3>
-                        <div class="mb-6">
+                        <div class="mb-4">
                             <span class="text-4xl font-black text-white">$499</span>
                             <span class="text-xs font-bold text-gold">MXN</span>
                         </div>
-                        <ul class="text-left text-xs text-slate-300 space-y-3 mb-8">
+                        <ul class="text-left text-xs text-slate-300 space-y-3 mb-6">
                             <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Diseño 100% Personalizado</li>
                             <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Ubicación GPS (Google Maps)</li>
                             <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Confirmación RSVP vía WhatsApp</li>
                             <li class="flex items-center gap-2 text-slate-500 line-through"><i class="fa-solid fa-xmark"></i> Sin acceso al CRM de Mesas</li>
                         </ul>
                     </div>
-                    <!-- Sustituye LINK_PLAN_1 por tu link de Mercado Pago -->
-                    <button onclick="procesarPago('LINK_PLAN_1', 'Solo Invitación Web')" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-4 rounded-xl transition duration-300 text-xs flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-credit-card"></i> Pagar u OXXO
-                    </button>
+                    <div>
+                        <button onclick="procesarPago('LINK_PLAN_1', 'Solo Invitación Web')" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-4 rounded-xl transition duration-300 text-xs flex items-center justify-center gap-2 mb-2">
+                            <i class="fa-solid fa-credit-card text-gold"></i> Pagar / OXXO / MSI
+                        </button>
+                        <p class="text-[9px] text-slate-400"><i class="fa-solid fa-store mr-1 text-gold"></i> Tarjeta, OXXO o Meses</p>
+                    </div>
                 </div>
 
                 <!-- PLAN 2: CRM LOGÍSTICO PRO ($999 MXN) -->
@@ -260,21 +248,23 @@
                     <div>
                         <span class="text-xs font-bold text-gold uppercase tracking-widest block mb-2 mt-2">Completo</span>
                         <h3 class="text-xl font-bold text-white mb-3 fuente-elegante">CRM + Invitación Pro</h3>
-                        <div class="mb-6">
+                        <div class="mb-4">
                             <span class="text-4xl font-black text-white">$999</span>
                             <span class="text-xs font-bold text-gold">MXN</span>
                         </div>
-                        <ul class="text-left text-xs text-slate-200 space-y-3 mb-8">
+                        <ul class="text-left text-xs text-slate-200 space-y-3 mb-6">
                             <li class="flex items-center gap-2"><i class="fa-solid fa-check text-gold"></i> Todo lo del plan Básico</li>
                             <li class="flex items-center gap-2"><i class="fa-solid fa-check text-gold"></i> Acomodo Visual de Mesas y Croquis</li>
                             <li class="flex items-center gap-2"><i class="fa-solid fa-check text-gold"></i> App Lector QR para Hostess</li>
                             <li class="flex items-center gap-2"><i class="fa-solid fa-check text-gold"></i> Gestión de Presupuesto y Abonos</li>
                         </ul>
                     </div>
-                    <!-- Sustituye LINK_PLAN_2 por tu link de Mercado Pago -->
-                    <button onclick="procesarPago('LINK_PLAN_2', 'CRM + Invitación Pro')" class="w-full bg-[#009EE3] hover:bg-[#008ACA] text-white font-bold py-3.5 px-4 rounded-xl shadow-lg transition duration-300 text-xs flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-handshake"></i> Pagar u OXXO
-                    </button>
+                    <div>
+                        <button onclick="procesarPago('LINK_PLAN_2', 'CRM + Invitación Pro')" class="w-full bg-[#009EE3] hover:bg-[#008ACA] text-white font-bold py-3.5 px-4 rounded-xl shadow-lg transition duration-300 text-xs flex items-center justify-center gap-2 mb-2">
+                            <i class="fa-solid fa-handshake"></i> Pagar / OXXO / MSI
+                        </button>
+                        <p class="text-[9px] text-slate-300"><i class="fa-solid fa-[#009EE3] mr-1"></i> Acepta hasta 12 MSI en Mercado Pago</p>
+                    </div>
                 </div>
 
                 <!-- PLAN 3: ENTERPRISE VIP ($1,499 MXN) -->
@@ -282,28 +272,34 @@
                     <div>
                         <span class="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-2 mt-2">Todo Incluido</span>
                         <h3 class="text-xl font-bold text-white mb-3 fuente-elegante">Enterprise VIP</h3>
-                        <div class="mb-6">
+                        <div class="mb-4">
                             <span class="text-4xl font-black text-white">$1,499</span>
                             <span class="text-xs font-bold text-gold">MXN</span>
                         </div>
-                        <ul class="text-left text-xs text-slate-300 space-y-3 mb-8">
+                        <ul class="text-left text-xs text-slate-300 space-y-3 mb-6">
                             <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Todo lo del plan Pro</li>
                             <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Módulo Interactivo para DJ</li>
                             <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Envíos Masivos por WhatsApp</li>
                             <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Asistente de Inteligencia Artificial</li>
                         </ul>
                     </div>
-                    <!-- Sustituye LINK_PLAN_3 por tu link de Mercado Pago -->
-                    <button onclick="procesarPago('LINK_PLAN_3', 'Enterprise VIP')" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-4 rounded-xl transition duration-300 text-xs flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-credit-card"></i> Pagar u OXXO
-                    </button>
+                    <div>
+                        <button onclick="procesarPago('LINK_PLAN_3', 'Enterprise VIP')" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-4 rounded-xl transition duration-300 text-xs flex items-center justify-center gap-2 mb-2">
+                            <i class="fa-solid fa-credit-card text-gold"></i> Pagar / OXXO / MSI
+                        </button>
+                        <p class="text-[9px] text-slate-400"><i class="fa-solid fa-shield-halved mr-1 text-gold"></i> Tarjeta, OXXO o Meses</p>
+                    </div>
                 </div>
 
             </div>
 
-            <p class="text-center text-xs text-slate-500 mt-12">
-                <i class="fa-solid fa-store mr-1 text-gold"></i> Si pagas en OXXO, tu ticket se procesará y podrás enviarnos tu comprobante por WhatsApp para activación inmediata.
-            </p>
+            <!-- BARRA DE CONFIANZA DE MÉTODOS DE PAGO -->
+            <div class="mt-12 bg-slate-900/60 border border-slate-800 rounded-2xl p-4 text-center max-w-2xl mx-auto flex flex-wrap items-center justify-center gap-6 text-xs text-slate-400">
+                <span class="flex items-center gap-1.5"><i class="fa-solid fa-credit-card text-gold"></i> Tarjetas Crédito/Débito</span>
+                <span class="flex items-center gap-1.5"><i class="fa-solid fa-store text-emerald-400"></i> Efectivo OXXO</span>
+                <span class="flex items-center gap-1.5"><i class="fa-solid fa-calendar-check text-blue-400"></i> Hasta 12 MSI</span>
+                <span class="flex items-center gap-1.5"><i class="fa-solid fa-shield-halved text-purple-400"></i> Cobros con Mercado Pago</span>
+            </div>
         </div>
     </section>
 
@@ -335,14 +331,14 @@
             <p class="text-xs text-slate-400 mb-6">Completa los datos de tu evento y nuestra Inteligencia Artificial generará tu pase digital de $50 MXN en segundos.</p>
 
             <div class="space-y-3 text-left bg-slate-950/60 p-4 rounded-2xl border border-slate-800 text-xs text-slate-300 mb-6">
-                <p><i class="fa-solid fa-check text-gold mr-2"></i><b>Paso 1:</b> Paga $50 MXN con Mercado Pago u OXXO.</p>
+                <p><i class="fa-solid fa-check text-gold mr-2"></i><b>Paso 1:</b> Paga $50 MXN con Tarjeta, OXXO o Transferencia.</p>
                 <p><i class="fa-solid fa-check text-gold mr-2"></i><b>Paso 2:</b> Nuestra IA redacta la invitación y ajusta el diseño.</p>
                 <p><i class="fa-solid fa-check text-gold mr-2"></i><b>Paso 3:</b> Recibe tu enlace listo para enviar por WhatsApp.</p>
             </div>
 
             <!-- Sustituye LINK_PLAN_IA_50 por tu enlace de cobro de $50 MXN de Mercado Pago -->
             <button onclick="procesarPago('LINK_PLAN_IA_50', 'Invitación Exprés IA ($50 MXN)')" class="w-full bg-[#009EE3] hover:bg-[#008ACA] text-white font-bold py-3.5 px-4 rounded-xl transition duration-300 text-sm flex items-center justify-center gap-2 mb-3">
-                <i class="fa-solid fa-handshake text-lg"></i> Pagar $50 MXN en Mercado Pago / OXXO
+                <i class="fa-solid fa-handshake text-lg"></i> Pagar $50 MXN (Tarjeta / OXXO)
             </button>
 
             <button onclick="cerrarModalIA()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 px-4 rounded-xl transition text-xs">
