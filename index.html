@@ -192,63 +192,95 @@
 
         </div>
     </section>
+    <!-- SECCIÓN DE PLANES Y PRECIOS (3 PAQUETES) -->
+<section id="planes" class="py-24 bg-slate-950 border-t border-slate-800/80 relative overflow-hidden z-20">
+    <div class="max-w-7xl mx-auto px-6">
+        
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <span class="text-gold font-bold tracking-widest uppercase text-xs mb-2 block">Tarifas Transparentes</span>
+            <h2 class="text-3xl sm:text-5xl font-bold text-white mb-4 fuente-elegante">Elige el Plan Perfecto para tu Evento</h2>
+            <p class="text-slate-400 text-base sm:text-lg">Aceptamos tarjetas de crédito, débito y pagos en efectivo en OXXO.</p>
+        </div>
 
-    <!-- SECCIÓN CRM INTEGRADO (TPD ENTERPRISE) Y PAGO CON MERCADO PAGO -->
-    <section id="software" class="py-24 bg-slate-950 border-t border-slate-800/80 relative overflow-hidden z-20">
-        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <!-- REJILLA DE 3 PLANES -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
             
-            <!-- Lado Izquierdo: Explicación del CRM -->
-            <div class="lg:col-span-7">
-                <span class="text-gold font-bold tracking-widest uppercase text-xs mb-2 block">Potencia para Organizadores & Planners</span>
-                <h2 class="text-3xl sm:text-5xl font-bold text-white mb-6 fuente-elegante leading-tight">
-                    Conecta tus invitaciones con nuestro CRM de Logística
-                </h2>
-                <p class="text-slate-400 mb-8 text-base leading-relaxed">
-                    Obtén un panel de control completo para administrar confirmaciones, acomodo de mesas en croquis interactivo y control de accesos en puerta para Hostess.
-                </p>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm font-semibold text-slate-300">
-                    <div class="flex items-center gap-3 bg-slate-900/80 p-3 rounded-xl border border-slate-800">
-                        <i class="fa-solid fa-chair text-gold text-lg"></i> Acomodo de Mesas en Croquis
+            <!-- PLAN 1: SOLO INVITACIÓN WEB -->
+            <div class="glass-panel p-8 rounded-3xl text-center flex flex-col justify-between border border-slate-800 hover:border-slate-700 transition duration-300">
+                <div>
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-2">Básico</span>
+                    <h3 class="text-2xl font-bold text-white mb-4 fuente-elegante">Solo Invitación Web</h3>
+                    <div class="mb-6">
+                        <span class="text-4xl font-black text-white">$499</span>
+                        <span class="text-xs font-bold text-gold">MXN</span>
                     </div>
-                    <div class="flex items-center gap-3 bg-slate-900/80 p-3 rounded-xl border border-slate-800">
-                        <i class="fa-solid fa-qrcode text-gold text-lg"></i> App Escáner para Hostess
-                    </div>
-                    <div class="flex items-center gap-3 bg-slate-900/80 p-3 rounded-xl border border-slate-800">
-                        <i class="fa-solid fa-calculator text-gold text-lg"></i> Cálculo de Bebidas e Insumos
-                    </div>
-                    <div class="flex items-center gap-3 bg-slate-900/80 p-3 rounded-xl border border-slate-800">
-                        <i class="fa-solid fa-coins text-gold text-lg"></i> Presupuesto & Abonos
-                    </div>
+                    <ul class="text-left text-xs text-slate-300 space-y-3 mb-8">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Diseño Web 100% Personalizado</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Ubicación GPS (Google Maps)</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Confirmación RSVP vía WhatsApp</li>
+                        <li class="flex items-center gap-2 text-slate-500 line-through"><i class="fa-solid fa-xmark"></i> Sin acceso al CRM de Mesas</li>
+                    </ul>
                 </div>
+                <!-- Sustituye LINK_PLAN_1 por tu link de Mercado Pago -->
+                <button onclick="procesarPago('LINK_PLAN_1', 'Solo Invitación Web')" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-4 rounded-xl transition duration-300 text-sm flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-credit-card"></i> Pagar u OXXO
+                </button>
             </div>
 
-            <!-- TARJETA DE PRECIO Y PAGO (MERCADO PAGO) -->
-            <div class="lg:col-span-5">
-                <div class="glass-card-gold p-8 rounded-3xl text-center relative glow-gold">
-                    <span class="bg-gold text-slate-950 font-extrabold text-[10px] uppercase tracking-widest px-4 py-1 rounded-full inline-block mb-4">
-                        Licencia Completa por Evento
-                    </span>
-                    <h3 class="text-2xl font-bold text-white mb-1 fuente-elegante">Organizador Pro</h3>
-                    <p class="text-xs text-slate-400 mb-6">Invitación Web + CRM Logístico Integrado</p>
-                    
+            <!-- PLAN 2: CRM LOGÍSTICO PRO (DESTACADO) -->
+            <div class="glass-card-gold p-8 rounded-3xl text-center flex flex-col justify-between relative glow-gold transform md:-translate-y-4">
+                <span class="bg-gold text-slate-950 font-extrabold text-[10px] uppercase tracking-widest px-4 py-1 rounded-full absolute -top-3 left-1/2 -translate-x-1/2 shadow-lg">
+                    Más Popular
+                </span>
+                <div>
+                    <span class="text-xs font-bold text-gold uppercase tracking-widest block mb-2 mt-2">Completo</span>
+                    <h3 class="text-2xl font-bold text-white mb-4 fuente-elegante">CRM + Invitación Pro</h3>
                     <div class="mb-6">
                         <span class="text-5xl font-black text-white">$999</span>
-                        <span class="text-sm font-bold text-gold">MXN</span>
+                        <span class="text-xs font-bold text-gold">MXN</span>
                     </div>
-
-                    <!-- BOTÓN DE MERCADO PAGO -->
-                    <!-- Reemplaza 'TU_LINK_DE_MERCADO_PAGO_AQUI' por tu enlace real -->
-                    <button onclick="window.open('TU_LINK_DE_MERCADO_PAGO_AQUI', '_blank')" class="w-full bg-[#009EE3] hover:bg-[#008ACA] text-white font-bold py-4 px-6 rounded-xl shadow-lg transition flex items-center justify-center gap-2 mb-4">
-                        <i class="fa-solid fa-handshake text-xl"></i> Pagar con Mercado Pago
-                    </button>
-                    <p class="text-[10px] text-slate-400 uppercase tracking-widest"><i class="fa-solid fa-shield-halved"></i> Pago 100% Seguro</p>
+                    <ul class="text-left text-xs text-slate-200 space-y-3 mb-8">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-gold"></i> Todo lo del plan Básico</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-gold"></i> Acomodo Visual de Mesas y Croquis</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-gold"></i> App Lector QR para Hostess</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-gold"></i> Gestión de Presupuesto y Abonos</li>
+                    </ul>
                 </div>
+                <!-- Sustituye LINK_PLAN_2 por tu link de Mercado Pago -->
+                <button onclick="procesarPago('LINK_PLAN_2', 'CRM + Invitación Pro')" class="w-full bg-[#009EE3] hover:bg-[#008ACA] text-white font-bold py-4 px-4 rounded-xl shadow-lg transition duration-300 text-sm flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-handshake"></i> Pagar u OXXO
+                </button>
+            </div>
+
+            <!-- PLAN 3: ENTERPRISE VIP -->
+            <div class="glass-panel p-8 rounded-3xl text-center flex flex-col justify-between border border-slate-800 hover:border-slate-700 transition duration-300">
+                <div>
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-2">Todo Incluido</span>
+                    <h3 class="text-2xl font-bold text-white mb-4 fuente-elegante">Enterprise VIP</h3>
+                    <div class="mb-6">
+                        <span class="text-4xl font-black text-white">$1,499</span>
+                        <span class="text-xs font-bold text-gold">MXN</span>
+                    </div>
+                    <ul class="text-left text-xs text-slate-300 space-y-3 mb-8">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Todo lo del plan Pro</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Módulo Interactivo para DJ</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Envíos Masivos por WhatsApp</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Asistente de Inteligencia Artificial</li>
+                    </ul>
+                </div>
+                <!-- Sustituye LINK_PLAN_3 por tu link de Mercado Pago -->
+                <button onclick="procesarPago('LINK_PLAN_3', 'Enterprise VIP')" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-4 rounded-xl transition duration-300 text-sm flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-credit-card"></i> Pagar u OXXO
+                </button>
             </div>
 
         </div>
-    </section>
 
+        <p class="text-center text-xs text-slate-500 mt-12">
+            <i class="fa-solid fa-store mr-1 text-gold"></i> Si pagas en OXXO, tu ticket se procesará y podrás enviarnos tu comprobante por WhatsApp para activación inmediata.
+        </p>
+    </div>
+</section>
     <!-- FOOTER -->
     <footer class="bg-slate-950 border-t border-slate-900 text-slate-500 text-center py-10 text-xs relative z-20">
         <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-4">
