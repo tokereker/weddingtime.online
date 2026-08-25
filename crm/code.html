@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo CRM - Pensiones y Afores</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; background-color: #2c3e50; color: white; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; }
+        .roles { background-color: #f39c12; border: none; padding: 10px; border-radius: 5px; color: white; font-weight: bold; cursor: pointer;}
+        
+        .board { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 20px; }
+        .column { background-color: #e2e6ea; min-width: 300px; border-radius: 8px; padding: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .col-title { font-weight: bold; margin-bottom: 15px; color: #333; display: flex; justify-content: space-between;}
+        
+        .card { background-color: white; padding: 15px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 15px; border-left: 4px solid #3498db; }
+        .card h4 { margin: 0 0 10px 0; color: #2c3e50; }
+        .card p { margin: 5px 0; font-size: 0.9em; color: #555; }
+        .badge { background-color: #ecf0f1; padding: 3px 8px; border-radius: 12px; font-size: 0.8em; color: #7f8c8d; }
+
+        .form-container { background: white; padding: 15px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        input { padding: 8px; margin-right: 10px; border: 1px solid #ccc; border-radius: 4px; }
+        button.add-btn { background-color: #27ae60; color: white; border: none; padding: 9px 15px; border-radius: 4px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h2>Panel de Control - Afores y Pensiones</h2>
+        <select class="roles">
+            <option>👤 Vista: Jefe (Acceso Total)</option>
+            <option>👨‍💼 Vista: Asesor (Solo sus clientes)</option>
+            <option>👩‍💻 Vista: Recepcionista (Solo capturas)</option>
+        </select>
+    </div>
+
+    <div class="form-container">
+        <strong>➕ Nuevo Prospecto (Simulación de Recepción)</strong><br><br>
+        <input type="text" id="nombre" placeholder="Nombre completo">
+        <input type="text" id="tel" placeholder="Teléfono">
+        <input type="text" id="nss" placeholder="Número de Seguro Social">
+        <button class="add-btn" onclick="agregarTarjeta()">Agendar Cita</button>
+    </div>
+
+    <div class="board">
+        <div class="column">
+            <div class="col-title">📅 Cita Agendada <span>2</span></div>
+            <div id="col-1">
+                <div class="card">
+                    <h4>Juan Pérez</h4>
+                    <p><strong>NSS:</strong> 1234567890</p>
+                    <p><strong>Tel:</strong> 55 1234 5678</p>
+                    <span class="badge">Asignado a: Carlos</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="col-title">⏳ Trámite al 50% <span>1</span></div>
+            <div id="col-2">
+                <div class="card" style="border-left-color: #f1c40f;">
+                    <h4>María López</h4>
+                    <p><strong>NSS:</strong> 0987654321</p>
+                    <p><strong>Tel:</strong> 55 9876 5432</p>
+                    <span class="badge">Asignado a: Ana</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="col-title">✅ Trámite Finalizado <span>1</span></div>
+            <div id="col-3">
+                 <div class="card" style="border-left-color: #2ecc71;">
+                    <h4>Roberto Gómez</h4>
+                    <p><strong>NSS:</strong> 4561237890</p>
+                    <p><strong>Tel:</strong> 55 4561 2378</p>
+                    <span class="badge">Asignado a: Carlos</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function agregarTarjeta() {
+            let nombre = document.getElementById("nombre").value || "Sin Nombre";
+            let tel = document.getElementById("tel").value || "Sin Teléfono";
+            let nss = document.getElementById("nss").value || "Sin NSS";
+            
+            let nuevaCarta = `
+                <div class="card">
+                    <h4>${nombre}</h4>
+                    <p><strong>NSS:</strong> ${nss}</p>
+                    <p><strong>Tel:</strong> ${tel}</p>
+                    <span class="badge">Nuevo ingreso</span>
+                </div>
+            `;
+            document.getElementById("col-1").innerHTML += nuevaCarta;
+            
+            document.getElementById("nombre").value = "";
+            document.getElementById("tel").value = "";
+            document.getElementById("nss").value = "";
+        }
+    </script>
+</body>
+</html>
