@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Tu Pase Digital</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <script>
+        const verificarAutenticacion = () => {
+            if (!sessionStorage.getItem('usuarioActivo')) {
+                // Interfaz de bloqueo bonita si intentan entrar sin login
+                document.documentElement.innerHTML = `
+                <body style="font-family: 'Inter', sans-serif; background-color: #f8fafc; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0;">
+                    <div style="background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; max-width: 400px; border-top: 4px solid #8B7355;">
+                        <h1 style="font-family: 'Great Vibes', cursive; font-size: 48px; color: #8B7355; margin-top:0; margin-bottom: 5px;">Tu Pase Digital</h1>
+                        <h2 style="color: #1e293b; font-size: 20px; margin-bottom: 10px;">🔒 Acceso Protegido</h2>
+                        <p style="color: #64748b; font-size: 14px; margin-bottom: 20px;">Para acceder al generador de cotizaciones, necesitas iniciar sesión primero.</p>
+                        <p style="color: #475569; font-size: 13px; font-weight: bold; background: #f1f5f9; padding: 12px; border-radius: 8px;">Por favor, abre el archivo <span style="color: #d63384;">login.html</span> e ingresa tus credenciales.</p>
+                    </div>
+                </body>`;
+                
+                try {
+                    window.location.replace('./login.html');
+                } catch (error) {
+                    // Falla silenciosa esperada en el iframe
+                }
+            }
+        };
+        verificarAutenticacion();
+    </script>
+
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #e2e8f0; } /* Fondo gris de escritorio */
+        
+        #modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 50; }
+        .modal-box { background: white; padding: 24px; border-radius: 12px; max-width: 400px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        
+        /* Hoja de papel A4 estricta y perfecta */
+        .pdf-a4 { 
+            background: #ffffff; 
+            width: 210mm; 
+            height: 297mm; 
+            max-height: 297mm;
+            overflow: hidden;
+            margin: 0 auto; 
+            padding: 15mm; 
+            box-sizing: border-box; 
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15); /* Sombra tipo hoja flotante */
+        }
+        
+        .marca-titulo { font-family: 'Great Vibes', cursive; font-size: 52px; color: #8B7355; line-height: 0.9; margin-bottom: 2px;}
+        .marca-sub { font-size: 10px; color: #64748b; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; margin-top: 4px; }
+        
+        .info-cliente { background: #f8fafc; border-left: 3px solid #8B7355; padding: 10px 15px; font-size: 12px; margin-bottom: 20px; color: #334155; }
+        
+        /* Modo Cebra y Tabla */
+        .tabla-cotizacion { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        .tabla-cotizacion th { border-bottom: 2px solid #8B7355; text-align: left; padding: 8px; font-size: 11px; text-transform: uppercase; color: #475569; font-weight: 700; }
+        .tabla-cotizacion td { padding: 12px 8px; font-size: 12px; vertical-align: middle; border-bottom: 1px solid #e2e8f0; color: #1e293b; }
+        
+        .tabla-cotizacion tbody tr:nth-child(odd) { background-color: #F8FAFC; }
+        .tabla-cotizacion tbody tr:nth-child(even) { background-color: #FFFFFF; }
+        
+        .tabla-totales { width: 45%; margin-left: auto; border-collapse: collapse; margin-bottom: 25px; }
+        .tabla-totales td { padding: 6px 8px; font-size: 13px; text-align: right; color: #334155; }
+        .tabla-totales .fila-total { font-weight: bold; font-size: 16px; color: #8B7355; border-top: 2px solid #cbd5e1; }
+
+        .seccion-politicas { margin-top: auto; border-top: 1px solid #e2e8f0; padding-top: 15px; font-size: 10px; color: #475569; line-height: 1.4; }
+        .titulo-politica { font-weight: 700; color: #0f172a; margin-top: 10px; margin-bottom: 3px; text-transform: uppercase; font-size: 10.5px; }
+        .pie-pagina { text-align: center; font-size: 11px; margin-top: 20px; color: #8B7355; font-style: italic; font-weight: 500; }
+
+        /* Ocultar elementos UI al imprimir/exportar */
+        @media print {
+            body { background: white; padding: 0; }
+            #ui-controles, #wrapper-scroll { background: transparent !important; padding: 0 !important; overflow: visible !important; }
+            .pdf-a4 { box-shadow: none; margin: 0; padding: 10mm; }
+        }
+    </style>
+</head>
+<body class="text-slate-800 pb-10">
+
+    <div id="modal-overlay">
+        <div class="modal-box">
+            <h3 id="modal-titulo" class="text-xl font-bold text-slate-800 mb-2"></h3>
+            <p id="modal-mensaje" class="text-slate-600 mb-6 text-sm"></p>
+            <button onclick="cerrarModal()" class="bg-[#8B7355] hover:bg-[#725D42] text-white font-bold py-2 px-6 rounded transition">Entendido</button>
+        </div>
+    </div>
+
+    <div id="ui-controles" class="max-w-[210mm] mx-auto mt-6 mb-6 px-2">
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-sm">
+                👤 <strong id="lbl-usuario" class="text-slate-800"></strong> 
+                <span id="lbl-rol" class="text-slate-500 ml-1 text-xs"></span>
+            </div>
+            <div class="flex flex-wrap justify-center gap-2">
+                <button onclick="generarPDF()" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2 px-4 rounded-lg transition shadow-sm flex items-center gap-2">📄 Guardar PDF</button>
+                <button onclick="enviarWhatsApp()" class="bg-green-500 hover:bg-green-600 text-white text-sm font-semibold py-2 px-4 rounded-lg transition shadow-sm flex items-center gap-2">💬 Enviar</button>
+                <button onclick="cerrarSesion()" class="bg-red-500 hover:bg-red-600 text-white text-sm font-semibold py-2 px-3 rounded-lg transition shadow-sm">🚪 Salir</button>
+            </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl shadow-sm mt-4 border border-slate-200">
+            <h3 class="text-sm font-bold text-slate-800 mb-4 uppercase tracking-wide">➕ Agregar Conceptos</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
+                <div class="md:col-span-12 mb-2">
+                    <label class="block text-[11px] font-bold text-slate-500 mb-1 uppercase">Catálogo de Recuerdos VIP</label>
+                    <select id="sel-catalogo" class="w-full p-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-[#8B7355] bg-slate-50" onchange="alCambiarCatalogo()"></select>
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block text-[11px] font-bold text-slate-500 mb-1 uppercase">Cant.</label>
+                    <input type="number" id="inp-cant" class="w-full p-2 border border-slate-300 rounded-lg text-sm" value="1" min="1">
+                </div>
+                <div class="md:col-span-7">
+                    <label class="block text-[11px] font-bold text-slate-500 mb-1 uppercase">Descripción del Producto</label>
+                    <input type="text" id="inp-desc" class="w-full p-2 border border-slate-300 rounded-lg text-sm bg-slate-100" readonly>
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-[11px] font-bold text-slate-500 mb-1 uppercase">Precio U.</label>
+                    <input type="number" id="inp-precio" class="w-full p-2 border border-slate-300 rounded-lg text-sm" value="0" min="0">
+                </div>
+                <div class="md:col-span-1">
+                    <button onclick="agregarPartida()" class="w-full bg-[#8B7355] hover:bg-[#725D42] text-white font-bold p-2 rounded-lg text-sm h-[38px] flex justify-center items-center">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenedor Wrapper para permitir scroll horizontal si la pantalla es muy angosta -->
+    <div id="wrapper-scroll" class="w-full overflow-x-auto pb-4 flex justify-center px-2">
+        
+        <!-- Hoja de Papel A4 Estricta -->
+        <div id="doc-cotizacion" class="pdf-a4 relative shrink-0">
+            
+            <div class="w-full flex justify-between items-end border-b-2 border-slate-200 pb-4 mb-4">
+                <div class="w-3/5">
+                    <div class="marca-titulo">Tu Pase Digital</div>
+                    <div class="marca-sub">INVITACIONES DIGITALES Y DETALLES</div>
+                    <div class="text-[9px] text-slate-500 mt-1">🌐 tupasedigital.online | 📍 Puebla, Puebla, México</div>
+                </div>
+                <div class="w-2/5 text-right">
+                    <h2 class="text-2xl font-bold text-slate-800 uppercase tracking-widest m-0">Cotización</h2>
+                    <div class="text-[10px] text-slate-600 mt-2 leading-relaxed">
+                        <strong>No. Folio:</strong> 📄 <span id="txt-folio" class="text-slate-800 font-semibold"></span><br>
+                        <strong>Fecha:</strong> 📅 <span id="txt-fecha" class="text-slate-800 font-semibold"></span><br>
+                        <strong>Vigencia:</strong> ⏳ <span class="text-slate-800 font-semibold">15 días naturales</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-cliente">
+                <strong>ATENCIÓN A:</strong> Estimado/a Cliente<br>
+                <strong>ASUNTO:</strong> Cotización de Detalles VIP para Evento
+            </div>
+
+            <table class="tabla-cotizacion">
+                <thead>
+                    <tr>
+                        <th style="width: 15%; text-align: center;">CANT.</th>
+                        <th style="width: 50%;">DESCRIPCIÓN DEL SERVICIO / PRODUCTO</th>
+                        <th style="width: 17%; text-align: right;">PRECIO U.</th>
+                        <th style="width: 18%; text-align: right;">TOTAL</th>
+                    </tr>
+                </thead>
+                <tbody id="lista-partidas"></tbody>
+            </table>
+
+            <table class="tabla-totales">
+                <tr>
+                    <td><strong>Subtotal:</strong></td>
+                    <td id="txt-subtotal">$0.00 MXN</td>
+                </tr>
+                <tr class="fila-total">
+                    <td>TOTAL MXN:</td>
+                    <td id="txt-total">$0.00 MXN</td>
+                </tr>
+            </table>
+
+            <div class="seccion-politicas">
+                <div class="titulo-politica">Términos y Condiciones</div>
+                <ul class="list-disc pl-4 mb-3 space-y-1">
+                    <li><strong>Tiempos de Entrega:</strong> 15 días tras confirmar el 50% de anticipo. Urgencias incrementan 10%.</li>
+                    <li><strong>Liquidación:</strong> El 50% restante se cubre a contra entrega física.</li>
+                    <li>
+                        <strong>Métodos de Pago:</strong> Transferencia bancaria o Tarjeta de Crédito.<br>
+                        <!-- Tarjeta limpia de Mercado Pago -->
+                        <div class="mt-2 p-2 border border-slate-200 rounded-md bg-slate-50 flex items-center gap-3 w-fit">
+                            <img src="https://http2.mlstatic.com/frontend-assets/ui-navigation/5.19.1/mercadopago/logo__large.svg" alt="MP" class="h-4">
+                            <div class="h-4 w-px bg-slate-300"></div>
+                            <span class="text-[10px]">CLABE: <strong class="text-blue-600 text-[11px] tracking-wider">722969010459434199</strong></span>
+                        </div>
+                    </li>
+                </ul>
+
+                <div class="flex gap-4 mt-4">
+                    <div class="flex-1">
+                        <div class="titulo-politica">Política de No Reembolso</div>
+                        <p class="text-justify leading-tight">Transcurridas 24h del anticipo, o ante cancelación del evento por causas ajenas, no se realizarán reembolsos bajo ninguna circunstancia debido a los costos de insumos, reservación y personalización asignada.</p>
+                    </div>
+                    <div class="flex-1">
+                        <div class="titulo-politica">Aviso de Privacidad</div>
+                        <p class="text-justify leading-tight">Los datos recabados serán utilizados exclusivamente para cotizaciones y seguimiento de su evento, garantizando estricta confidencialidad conforme a la ley de protección de datos.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pie-pagina">
+                Gracias por confiar en Tu Pase Digital. Hacemos de tus recuerdos una experiencia inolvidable.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const CATALOGO_VIP = {
+            "manual": { nombre: "✍️ Nueva Partida Manual (Escribir libremente)", desc: "", precio: "" },
+            "abanicos_bambu": { nombre: "🪭 Abanicos Bambú Blanco ($20)", desc: "Abanicos Personalizados (Bambú Blanco). Incluye diseño 100% personalizado con logotipo, tipografía y colores oficiales.", precio: 20 },
+            "abanicos_caja": { nombre: "🎁 Abanicos en Caja de Regalo ($150)", desc: "Abanicos Personalizados (En caja de regalo). Incluye diseño 100% personalizado y presentación premium.", precio: 150 },
+            "kits_agua": { nombre: "💧 Kits Anticruda c/Agua ($2000)", desc: "Kits Anticruda (Con Agua). Incluye: Alka-Seltzer, Trident, Cafiaspirina, Pica Fresa y botella de agua. (Precio por paquete 50pz)", precio: 2000 },
+            "kits_electrolit": { nombre: "⚡ Kits Anticruda c/Electrolit ($3000)", desc: "Kits Anticruda Premium (Con Electrolit). Incluye: Electrolit, Alka-Seltzer, Trident, Cafiaspirina y Pica Fresa. (Precio por paquete 50pz)", precio: 3000 },
+            "onix_joyero": { nombre: "💍 Ónix: Mini Joyero ($60)", desc: "Detalles en Ónix: Mini Joyero artesanal.", precio: 60 },
+            "onix_broche": { nombre: "🎀 Ónix: Broche cabello ($50)", desc: "Detalles en Ónix: Broche para cabello.", precio: 50 },
+            "onix_domino": { nombre: "🎲 Ónix: Dominó c/estuche ($160)", desc: "Detalles en Ónix: Dominó con estuche.", precio: 160 },
+            "velas": { nombre: "🕯️ Velas Aromáticas ($1000)", desc: "Velas Aromáticas (Vainilla y Frutos Rojos). (Precio por paquete de 50 piezas)", precio: 1000 },
+            "licor_anis": { nombre: "🍾 Licor: Anís Criollo ($200)", desc: "Licores Premium: Anís Criollo (500ml).", precio: 200 },
+            "licor_torres5": { nombre: "🥃 Tabla + Copa: Torres 5 ($950)", desc: "Tablas de Madera + Copa: Torres 5.", precio: 950 },
+            "licor_torres10": { nombre: "🥃 Tabla + Copa: Torres 10 ($1100)", desc: "Tablas de Madera + Copa: Torres 10.", precio: 1100 },
+            "licor_etiqueta": { nombre: "🥃 Tabla + Copa: Etiqueta Roja ($1500)", desc: "Tablas de Madera + Copa: Etiqueta Roja.", precio: 1500 },
+            "kits_cerveza": { nombre: "🍻 Kits Cerveza Temáticos", desc: "Kits Cerveza temáticos especiales (Lucha Libre y más). Diseños 100% personalizables.", precio: 0 }
+        };
+
+        let arrayPartidas = [];
+        let totalGlobal = 0;
+        let folioGlobal = "";
+
+        function mostrarModal(titulo, mensaje) {
+            document.getElementById('modal-titulo').innerText = titulo;
+            document.getElementById('modal-mensaje').innerText = mensaje;
+            document.getElementById('modal-overlay').style.display = 'flex';
+        }
+
+        function cerrarModal() {
+            document.getElementById('modal-overlay').style.display = 'none';
+        }
+
+        function cerrarSesion() {
+            sessionStorage.clear();
+            try {
+                window.location.replace('./login.html');
+            } catch (error) {
+                mostrarModal("Sesión Cerrada", "Has cerrado sesión. Por favor, abre el archivo login.html");
+                document.getElementById('ui-controles').style.display = 'none';
+            }
+        }
+
+        function inicializarApp() {
+            document.getElementById('lbl-usuario').innerText = sessionStorage.getItem('usuarioActivo') || 'Demo User';
+            document.getElementById('lbl-rol').innerText = `(${sessionStorage.getItem('rolActivo') || 'Test'})`;
+
+            const d = new Date();
+            document.getElementById('txt-fecha').textContent = d.toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
+            
+            const random = Math.floor(Math.random() * 900) + 100;
+            folioGlobal = `TPD-${String(d.getDate()).padStart(2, '0')}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getFullYear()).slice(-2)}-${random}`;
+            document.getElementById('txt-folio').textContent = folioGlobal;
+
+            const select = document.getElementById('sel-catalogo');
+            for (const key in CATALOGO_VIP) {
+                const opt = document.createElement('option');
+                opt.value = key; opt.textContent = CATALOGO_VIP[key].nombre;
+                select.appendChild(opt);
+            }
+            
+            alCambiarCatalogo();
+            renderizarTabla();
+        }
+
+        function alCambiarCatalogo() {
+            const item = CATALOGO_VIP[document.getElementById('sel-catalogo').value];
+            const isManual = document.getElementById('sel-catalogo').value === 'manual';
+            
+            document.getElementById('inp-desc').value = isManual ? '' : item.desc;
+            document.getElementById('inp-desc').readOnly = !isManual;
+            document.getElementById('inp-desc').className = `w-full p-2 border border-slate-300 rounded-lg text-sm ${isManual ? '' : 'bg-slate-100 text-slate-500'}`;
+            document.getElementById('inp-precio').value = item.precio;
+        }
+
+        function agregarPartida() {
+            if (arrayPartidas.length >= 3) {
+                mostrarModal("Límite de Hoja Alcanzado", "Para garantizar que el diseño A4 encaje perfectamente sin saltos de página, el límite es de 3 partidas.");
+                return;
+            }
+
+            const cant = parseFloat(document.getElementById('inp-cant').value) || 0;
+            const desc = document.getElementById('inp-desc').value.trim();
+            const precio = parseFloat(document.getElementById('inp-precio').value) || 0;
+
+            if (cant <= 0 || desc === '') {
+                mostrarModal("Datos Incompletos", "Por favor ingresa una cantidad válida y una descripción.");
+                return;
+            }
+
+            arrayPartidas.push({ cantidad: cant, descripcion: desc, precioUnitario: precio });
+            renderizarTabla();
+        }
+
+        function eliminarPartida(index) {
+            arrayPartidas.splice(index, 1);
+            renderizarTabla();
+        }
+
+        function obtenerEmoji(texto) {
+            const t = texto.toLowerCase();
+            if(t.includes('abanico')) return '🪭';
+            if(t.includes('kit') && !t.includes('cerveza')) return '🛍️';
+            if(t.includes('ónix') || t.includes('onix')) return '✨';
+            if(t.includes('joyero') || t.includes('broche')) return '💍';
+            if(t.includes('dominó') || t.includes('domino')) return '🎲';
+            if(t.includes('vela')) return '🕯️';
+            if(t.includes('licor') || t.includes('torres') || t.includes('etiqueta')) return '🥃';
+            if(t.includes('cerveza')) return '🍻';
+            return '📦';
+        }
+
+        function renderizarTabla() {
+            const tbody = document.getElementById('lista-partidas');
+            let html = ''; let subtotal = 0;
+
+            arrayPartidas.forEach((item, index) => {
+                const totalFila = item.cantidad * item.precioUnitario;
+                subtotal += totalFila;
+                html += `
+                    <tr class="group relative">
+                        <td class="text-center font-bold text-[13px]">
+                            ${item.cantidad} <span class="text-[15px] ml-1">${obtenerEmoji(item.descripcion)}</span>
+                            <button onclick="eliminarPartida(${index})" class="absolute left-0 top-1/2 -translate-y-1/2 -ml-6 text-red-500 opacity-0 group-hover:opacity-100 transition" title="Eliminar" data-html2canvas-ignore="true">❌</button>
+                        </td>
+                        <td class="leading-snug pr-4">${item.descripcion}</td>
+                        <td class="text-right">$${item.precioUnitario.toFixed(2)}</td>
+                        <td class="text-right font-bold">$${totalFila.toFixed(2)}</td>
+                    </tr>`;
+            });
+
+            if (arrayPartidas.length === 0) html = `<tr><td colspan="4" class="text-center text-slate-400 py-6 italic">Agrega productos desde el panel superior para comenzar...</td></tr>`;
+            
+            tbody.innerHTML = html;
+            document.getElementById('txt-subtotal').innerText = `$${subtotal.toFixed(2)} MXN`;
+            document.getElementById('txt-total').innerText = `$${subtotal.toFixed(2)} MXN`;
+            totalGlobal = subtotal;
+        }
+
+        function generarPDF() {
+            if(arrayPartidas.length === 0) return mostrarModal("Documento Vacío", "Agrega conceptos para imprimir.");
+            const elemento = document.getElementById('doc-cotizacion');
+            html2pdf().set({
+                margin: 0, filename: `Cotizacion_${folioGlobal}.pdf`,
+                image: { type: 'jpeg', quality: 1 }, html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            }).from(elemento).save();
+        }
+
+        function enviarWhatsApp() {
+            if(arrayPartidas.length === 0) return mostrarModal("Documento Vacío", "Agrega conceptos para enviar.");
+            window.open(`https://api.whatsapp.com/send?phone=&text=${encodeURIComponent(`✨ ¡Hola! Te comparto la cotización *${folioGlobal}* de Tu Pase Digital por un total de *$${totalGlobal.toFixed(2)} MXN*.`)}`, '_blank');
+        }
+
+        window.onload = inicializarApp;
+    </script>
+</body>
+</html>

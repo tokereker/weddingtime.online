@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso - Tu Pase Digital</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .titulo-firma { font-family: 'Great Vibes', cursive; }
+        
+        /* Modal Personalizado */
+        #modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 50; }
+        .modal-box { background: white; padding: 24px; border-radius: 12px; max-width: 400px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border-top: 4px solid #8B7355; }
+    </style>
+</head>
+<body class="text-slate-800 flex justify-center items-center h-screen w-full bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-slate-100 via-slate-50 to-slate-200">
+
+    <div id="modal-overlay">
+        <div class="modal-box">
+            <h3 id="modal-titulo" class="text-xl font-bold text-slate-800 mb-2"></h3>
+            <p id="modal-mensaje" class="text-slate-600 mb-6 text-sm"></p>
+            <button onclick="cerrarModal()" class="bg-[#8B7355] hover:bg-[#725D42] text-white font-bold py-2 px-6 rounded-lg transition shadow-md">Entendido</button>
+        </div>
+    </div>
+
+    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-sm border border-slate-100 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-2 bg-[#8B7355]"></div>
+        
+        <h1 class="titulo-firma text-5xl text-[#8B7355] text-center mb-1 mt-2">Tu Pase Digital</h1>
+        <p class="text-center text-[10px] text-slate-400 uppercase tracking-[0.2em] mb-8 font-semibold">Acceso al Sistema</p>
+        
+        <div class="mb-5">
+            <label class="block text-slate-600 text-xs font-bold mb-2 uppercase tracking-wide">👤 Usuario</label>
+            <input type="text" id="input-user" class="w-full p-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8B7355]/30 focus:border-[#8B7355] transition text-sm bg-slate-50" placeholder="Ej. admin" onkeypress="verificarEnter(event)">
+        </div>
+        <div class="mb-8">
+            <label class="block text-slate-600 text-xs font-bold mb-2 uppercase tracking-wide">🔑 Contraseña</label>
+            <input type="password" id="input-pass" class="w-full p-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8B7355]/30 focus:border-[#8B7355] transition text-sm bg-slate-50" placeholder="••••••••" onkeypress="verificarEnter(event)">
+        </div>
+        <button onclick="iniciarSesion()" class="w-full bg-[#8B7355] hover:bg-[#725D42] text-white font-bold py-3 px-4 rounded-lg transition shadow-lg shadow-[#8B7355]/30 text-sm">Ingresar al Cotizador 🚀</button>
+    </div>
+
+    <script>
+        // Base de datos de usuarios autorizados
+        const bdUsuarios = {
+            "admin": { pass: "admin123", rol: "Admin" },
+            "gerente": { pass: "gerente123", rol: "Administrador" },
+            "soporte": { pass: "soporte123", rol: "Soporte Técnico" }
+        };
+
+        function mostrarModal(titulo, mensaje) {
+            document.getElementById('modal-titulo').innerText = titulo;
+            document.getElementById('modal-mensaje').innerText = mensaje;
+            document.getElementById('modal-overlay').style.display = 'flex';
+        }
+
+        function cerrarModal() {
+            document.getElementById('modal-overlay').style.display = 'none';
+        }
+
+        function verificarEnter(e) {
+            if (e.key === 'Enter') iniciarSesion();
+        }
+
+        function iniciarSesion() {
+            const user = document.getElementById('input-user').value.trim();
+            const pass = document.getElementById('input-pass').value.trim();
+
+            if (bdUsuarios[user] && bdUsuarios[user].pass === pass) {
+                // Autenticación exitosa
+                sessionStorage.setItem('usuarioActivo', user);
+                sessionStorage.setItem('rolActivo', bdUsuarios[user].rol);
+                
+                const rutaDestino = './dashboard.html';
+                try {
+                    window.location.href = rutaDestino;
+                } catch (error) {
+                    mostrarModal("¡Acceso Exitoso! ✅", "Has iniciado sesión correctamente. Por favor abre manualmente el archivo 'dashboard.html' en tu editor.");
+                }
+            } else {
+                mostrarModal("Acceso Denegado 🚫", "El usuario o la contraseña son incorrectos. Por favor, intenta de nuevo.");
+            }
+        }
+    </script>
+</body>
+</html>
