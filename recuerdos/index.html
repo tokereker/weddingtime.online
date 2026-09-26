@@ -92,7 +92,8 @@
         .pdf-card { background: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.04); border: 1px solid #f2e8e5; }
         
         /* Uso de object-contain para mantener la proporción de la imagen sin estirarla */
-        .pdf-img-container { width: 100%; height: 120px; background-color: #1a1a1a; display: flex; items-center; justify-content: center; }
+        /* CORRECCIÓN: items-center cambiado a align-items: center */
+        .pdf-img-container { width: 100%; height: 120px; background-color: #1a1a1a; display: flex; align-items: center; justify-content: center; }
         .pdf-img { width: 100%; height: 100%; object-fit: contain; }
         
         .pdf-content { padding: 10px 12px; border-top: 3px solid #d4af37; }
@@ -444,7 +445,7 @@
                             <h2>🕯️ Velas Aromáticas</h2>
                             <p style="font-size: 11px; color: #4b5563; margin-bottom: 4px;">Vainilla y Frutos Rojos.</p>
                             <div style="background: #fff4f5; padding: 6px; border-radius: 6px; text-align: center; border: 1px solid #ffe4e6;">
-                                <p style="font-size: 9px; uppercase; letter-spacing: 1px; margin: 0; color: #be123c; font-weight: bold;">Paquete de 50 piezas</p>
+                                <p style="font-size: 9px; text-transform: uppercase; letter-spacing: 1px; margin: 0; color: #be123c; font-weight: bold;">Paquete de 50 piezas</p>
                                 <p style="font-size: 18px; font-weight: 800; color: #1a1a1a; margin: 0;">$1,000</p>
                             </div>
                         </div>
@@ -498,7 +499,7 @@
         </div>
     </div>
 
-    <!-- SCRIPTS -->
+    <!-- SCRIPTS REVISADOS -->
     <script>
         // Animación de entrada al hacer Scroll
         const observer = new IntersectionObserver((entries) => {
@@ -548,6 +549,7 @@
             const btns = document.querySelectorAll('button[onclick="generarPDF()"]');
             const originalTexts = [];
             
+            // Cambiar estado de los botones a cargando
             btns.forEach((btn, index) => {
                 originalTexts[index] = btn.innerHTML;
                 btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generando PDF...';
@@ -557,19 +559,25 @@
             const printWrapper = document.getElementById('print-wrapper');
             const printContainer = document.getElementById('print-container');
             
+            // 1. Mostrar el contenedor brevemente en pantalla
             printWrapper.style.height = 'auto';
             printWrapper.style.overflow = 'visible';
+            printContainer.style.left = '0';
+            printContainer.style.zIndex = '-1'; // Detrás del contenido normal
             
+            // 2. Dar tiempo al navegador para cargar las imágenes antes de la captura
             setTimeout(() => {
                 html2canvas(printContainer, {
                     scale: 2, 
-                    useCORS: true, 
+                    useCORS: true, // Permite cargar recursos de forma correcta
                     allowTaint: true,
                     logging: false,
                     backgroundColor: "#ffffff"
                 }).then(canvas => {
+                    // 3. Ocultar el contenedor de nuevo
                     printWrapper.style.height = '0';
                     printWrapper.style.overflow = 'hidden';
+                    printContainer.style.left = '-9999px';
 
                     const imgData = canvas.toDataURL('image/jpeg', 1.0);
                     const { jsPDF } = window.jspdf;
@@ -582,6 +590,7 @@
                     pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
                     pdf.save('Catalogo_Recuerdos_VIP.pdf');
                     
+                    // Restaurar botones
                     btns.forEach((btn, index) => {
                         btn.innerHTML = originalTexts[index];
                         btn.disabled = false;
@@ -589,17 +598,19 @@
                 }).catch(error => {
                     console.error("Error generando PDF: ", error);
                     
+                    // Ocultar contenedor en caso de error
                     printWrapper.style.height = '0';
                     printWrapper.style.overflow = 'hidden';
+                    printContainer.style.left = '-9999px';
                     
-                    alert("Error al generar el PDF. Si estás probando de manera local (file:///), el navegador bloquea las imágenes por seguridad. Funcionará sin problemas al subirlo a un hosting.");
+                    alert("Error al generar el PDF. Asegúrate de abrir este archivo usando un Servidor Local (como Live Server).");
                     
                     btns.forEach((btn, index) => {
                         btn.innerHTML = originalTexts[index];
                         btn.disabled = false;
                     });
                 });
-            }, 300);
+            }, 500); // 500 milisegundos de retraso
         }
     </script>
 </body>
