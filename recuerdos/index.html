@@ -91,6 +91,7 @@
         
         .pdf-card { background: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.04); border: 1px solid #f2e8e5; }
         
+        /* Uso de object-contain para mantener la proporción de la imagen sin estirarla */
         .pdf-img-container { width: 100%; height: 120px; background-color: #1a1a1a; display: flex; align-items: center; justify-content: center; }
         .pdf-img { width: 100%; height: 100%; object-fit: contain; }
         
@@ -179,9 +180,9 @@
                     
                     <div class="relative h-64 md:h-80 w-full rounded-[1.5rem] overflow-hidden mb-6 group/carousel">
                         <div id="slider-1" data-current="0" data-total="2" class="flex w-full h-full transition-transform duration-700 ease-in-out">
-                            <!-- Ejemplos con URLs externas y crossorigin -->
-                            <img src="https://picsum.photos/seed/boda1/800/600" crossorigin="anonymous" alt="Abanicos" class="w-full h-full object-cover flex-shrink-0">
-                            <img src="https://picsum.photos/seed/boda2/800/600" crossorigin="anonymous" alt="Bolsas Anticruda" class="w-full h-full object-cover flex-shrink-0">
+                            <!-- Rutas actualizadas -->
+                            <img src="https://tupasedigital.online/recuerdos/detalle-perfecto.png" crossorigin="anonymous" alt="Abanicos" class="w-full h-full object-cover flex-shrink-0">
+                            <img src="https://tupasedigital.online/recuerdos/especiales2.png" crossorigin="anonymous" alt="Bolsas Anticruda" class="w-full h-full object-cover flex-shrink-0">
                         </div>
                         
                         <button onclick="moveSlide('slider-1', -1)" class="absolute left-3 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white w-10 h-10 rounded-full opacity-0 group-hover/carousel:opacity-100 transition-all flex items-center justify-center backdrop-blur-sm z-20"><i class="fa-solid fa-chevron-left"></i></button>
@@ -231,9 +232,10 @@
                     
                     <div class="relative h-64 md:h-80 w-full rounded-[1.5rem] overflow-hidden mb-6 group/carousel bg-neutral-900 flex items-center">
                         <div id="slider-2" data-current="0" data-total="3" class="flex w-full h-full transition-transform duration-700 ease-in-out">
-                            <img src="https://picsum.photos/seed/boda3/800/600" crossorigin="anonymous" alt="Licores Premium" class="w-full h-full object-contain flex-shrink-0">
-                            <img src="https://picsum.photos/seed/boda4/800/600" crossorigin="anonymous" alt="Licores Premium" class="w-full h-full object-contain flex-shrink-0">
-                            <img src="https://picsum.photos/seed/boda5/800/600" crossorigin="anonymous" alt="Licores Premium" class="w-full h-full object-contain flex-shrink-0">
+                            <!-- Rutas actualizadas -->
+                            <img src="https://tupasedigital.online/recuerdos/premium-2.png" crossorigin="anonymous" alt="Licores Premium" class="w-full h-full object-contain flex-shrink-0">
+                            <img src="https://tupasedigital.online/recuerdos/premium.png" crossorigin="anonymous" alt="Licores Premium" class="w-full h-full object-contain flex-shrink-0">
+                            <img src="https://tupasedigital.online/recuerdos/especiales1.png" crossorigin="anonymous" alt="Licores Premium" class="w-full h-full object-contain flex-shrink-0">
                         </div>
                         
                         <button onclick="moveSlide('slider-2', -1)" class="absolute left-3 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 text-white w-10 h-10 rounded-full opacity-0 group-hover/carousel:opacity-100 transition-all flex items-center justify-center backdrop-blur-sm z-20"><i class="fa-solid fa-chevron-left"></i></button>
@@ -284,7 +286,8 @@
                 <!-- 3. PIEDRA ÓNIX -->
                 <article class="bg-white rounded-[2rem] p-3 hover-lift border border-slate-100 fade-in-up shadow-xl">
                     <div class="h-64 md:h-80 w-full rounded-[1.5rem] overflow-hidden mb-6 relative">
-                        <img src="https://picsum.photos/seed/boda6/800/600" crossorigin="anonymous" alt="Detalles en Ónix" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+                        <!-- Rutas actualizadas -->
+                        <img src="https://tupasedigital.online/recuerdos/detalle-elegante.png" crossorigin="anonymous" alt="Detalles en Ónix" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
                     </div>
                     <div class="px-5 pb-6">
                         <h3 class="font-serif text-2xl font-bold text-brand-900 mb-2">🏛️ Elegancia en Piedra Ónix</h3>
@@ -317,7 +320,8 @@
                 <!-- 4. VELAS AROMÁTICAS -->
                 <article class="bg-white rounded-[2rem] p-3 hover-lift border border-slate-100 fade-in-up shadow-xl" style="transition-delay: 100ms;">
                     <div class="h-64 md:h-80 w-full rounded-[1.5rem] overflow-hidden mb-6 relative">
-                        <img src="https://picsum.photos/seed/boda7/800/600" crossorigin="anonymous" alt="Velas Aromáticas" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+                        <!-- Rutas actualizadas -->
+                        <img src="https://tupasedigital.online/recuerdos/aroma-en-recuerdo.png" crossorigin="anonymous" alt="Velas Aromáticas" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
                     </div>
                     <div class="px-5 pb-6 flex flex-col justify-center h-[calc(100%-18rem)] md:h-[calc(100%-22rem)]">
                         <h3 class="font-serif text-2xl font-bold text-brand-900 mb-2 text-center">🕯️ Velas Aromáticas</h3>
@@ -394,7 +398,8 @@
                     <!-- Tarjeta 1 -->
                     <div class="pdf-card">
                         <div class="pdf-img-container">
-                            <img src="https://picsum.photos/seed/boda1/800/600" crossorigin="anonymous" class="pdf-img">
+                            <!-- Rutas actualizadas en PDF -->
+                            <img src="https://tupasedigital.online/recuerdos/detalle-perfecto.png" crossorigin="anonymous" class="pdf-img">
                         </div>
                         <div class="pdf-content">
                             <h2>🪭 Abanicos Personalizados</h2>
@@ -405,10 +410,10 @@
                         </div>
                     </div>
 
-                    <!-- Tarjeta 2 -->
+                    <!-- Tarjeta 2: especiales2.png -->
                     <div class="pdf-card">
                         <div class="pdf-img-container">
-                            <img src="https://picsum.photos/seed/boda2/800/600" crossorigin="anonymous" class="pdf-img">
+                            <img src="https://tupasedigital.online/recuerdos/especiales2.png" crossorigin="anonymous" class="pdf-img">
                         </div>
                         <div class="pdf-content">
                             <h2>🥳 Kits Anticruda</h2>
@@ -423,7 +428,7 @@
                     <!-- Tarjeta 3 -->
                     <div class="pdf-card">
                         <div class="pdf-img-container">
-                            <img src="https://picsum.photos/seed/boda6/800/600" crossorigin="anonymous" class="pdf-img">
+                            <img src="https://tupasedigital.online/recuerdos/detalle-elegante.png" crossorigin="anonymous" class="pdf-img">
                         </div>
                         <div class="pdf-content">
                             <h2>🏛️ Detalles en Ónix</h2>
@@ -438,7 +443,7 @@
                     <!-- Tarjeta 4 -->
                     <div class="pdf-card">
                         <div class="pdf-img-container">
-                            <img src="https://picsum.photos/seed/boda7/800/600" crossorigin="anonymous" class="pdf-img">
+                            <img src="https://tupasedigital.online/recuerdos/aroma-en-recuerdo.png" crossorigin="anonymous" class="pdf-img">
                         </div>
                         <div class="pdf-content">
                             <h2>🕯️ Velas Aromáticas</h2>
@@ -453,7 +458,7 @@
                     <!-- Tarjeta 5 -->
                     <div class="pdf-card">
                         <div class="pdf-img-container">
-                            <img src="https://picsum.photos/seed/boda3/800/600" crossorigin="anonymous" class="pdf-img">
+                            <img src="https://tupasedigital.online/recuerdos/premium-2.png" crossorigin="anonymous" class="pdf-img">
                         </div>
                         <div class="pdf-content">
                             <h2>🍾 Licores Premium</h2>
@@ -466,10 +471,10 @@
                         </div>
                     </div>
 
-                    <!-- Tarjeta 6 -->
+                    <!-- Tarjeta 6: especiales1.png -->
                     <div class="pdf-card">
                         <div class="pdf-img-container">
-                            <img src="https://picsum.photos/seed/boda5/800/600" crossorigin="anonymous" class="pdf-img">
+                            <img src="https://tupasedigital.online/recuerdos/especiales1.png" crossorigin="anonymous" class="pdf-img">
                         </div>
                         <div class="pdf-content">
                             <h2 style="color: #1e40af;">🍻 Kits Cerveza</h2>
@@ -562,13 +567,13 @@
             printContainer.style.left = '0';
             printContainer.style.zIndex = '-1';
             
-            // Tiempo extendido a 1500ms para asegurar la carga completa de recursos externos
+            // Timeout de 1500ms para asegurar la carga completa de recursos externos
             setTimeout(() => {
                 html2canvas(printContainer, {
                     scale: 2, 
-                    useCORS: true,
+                    useCORS: true, 
                     allowTaint: true,
-                    imageTimeout: 15000, // Protege la captura contra conexiones lentas
+                    imageTimeout: 15000,
                     logging: false,
                     backgroundColor: "#ffffff"
                 }).then(canvas => {
@@ -605,7 +610,7 @@
                         btn.disabled = false;
                     });
                 });
-            }, 1500); 
+            }, 1500);
         }
     </script>
 </body>
